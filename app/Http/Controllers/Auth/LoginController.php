@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -25,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard/v1';
 
     /**
      * Create a new controller instance.
@@ -36,4 +39,31 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function login(Request $request)
+    {
+
+        $password = strip_tags($request->input('password'));
+        $email = strip_tags($request->input('email'));
+
+        $user = User::where('email', $email)->first();
+
+        $string = md5($password);
+        $encrypted = Crypt::encrypt($string);
+        $decrypted_string = Crypt::decrypt($encrypted);
+
+        if(!empty($user) && $decrypted_string == $user->password){
+
+            return view('pages/dashboard-v1');
+
+        }
+
+        return view('pages/login-v2');
+    }
+
+    public function logout()
+    {
+        return view('pages/login-v2');
+    }
+
 }

@@ -11,8 +11,10 @@
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
-	return redirect('/dashboard/v2');
+    return view('pages/login-v2');
 });
 Route::get('/dashboard/v1', function () {
     return view('pages/dashboard-v1');
@@ -263,18 +265,19 @@ Route::get('/extra/scrum-board', function () {
 Route::get('/extra/cookie-acceptance-banner', function () {
     return view('pages/extra-cookie-acceptance-banner');
 });
-Route::get('/login/v1', function () {
-    return view('pages/login-v1');
-});
-Route::get('/login/v2', function () {
-    return view('pages/login-v2');
-});
-Route::get('/login/v3', function () {
-    return view('pages/login-v3');
-});
-Route::get('/register/v3', function () {
-    return view('pages/register-v3');
-});
+//Route::get('/login/v1', function () {
+//    return view('pages/login-v1');
+//});
+
+//Route::get('/login/v2', function () {
+//    return view('pages/login-v2');
+//});
+//Route::get('/login/v3', function () {
+//    return view('pages/login-v3');
+//});
+//Route::get('/register/v3', function () {
+//    return view('pages/register-v3');
+//});
 Route::get('/helper/css', function () {
     return view('pages/helper-css');
 });

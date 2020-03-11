@@ -150,7 +150,10 @@
 				<a href="javascript:;" class="dropdown-item">Calendar</a>
 				<a href="javascript:;" class="dropdown-item">Setting</a>
 				<div class="dropdown-divider"></div>
-				<a href="javascript:;" class="dropdown-item">Log Out</a>
+				<form method="POST" action="{{ route('logout') }}">
+					@csrf
+					<button type="submit" class="dropdown-item" class="btn btn-link">Log Out</button>
+				</form>
 			</div>
 		</li>
 		@if($sidebarTwo)
