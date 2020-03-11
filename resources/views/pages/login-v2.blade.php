@@ -16,7 +16,7 @@
 		<div class="login-header">
 			<div class="brand">
 				<span class="logo"></span> <b>Color</b> Admin
-				<small>responsive bootstrap 4 admin template</small>
+{{--				<small>responsive bootstrap 4 admin template</small>--}}
 			</div>
 			<div class="icon">
 				<i class="fa fa-lock"></i>
@@ -25,25 +25,26 @@
 		<!-- end brand -->
 		<!-- begin login-content -->
 		<div class="login-content">
-			<form action="index.html" method="GET" class="margin-bottom-0">
+			<form action="{{ route('login') }}" method="POST" class="margin-bottom-0">
+				@csrf
 				<div class="form-group m-b-20">
-					<input type="text" class="form-control form-control-lg" placeholder="Email Address" required />
+					<input name="email" type="email" class="form-control form-control-lg" placeholder="Email Address" required />
 				</div>
 				<div class="form-group m-b-20">
-					<input type="password" class="form-control form-control-lg" placeholder="Password" required />
+					<input name="password" type="password" class="form-control form-control-lg" placeholder="Password" required />
 				</div>
-				<div class="checkbox checkbox-css m-b-20">
-					<input type="checkbox" id="remember_checkbox" /> 
-					<label for="remember_checkbox">
-						Remember Me
-					</label>
-				</div>
+{{--				<div class="checkbox checkbox-css m-b-20">--}}
+{{--					<input name="remember_checkbox" type="checkbox" id="remember_checkbox" />--}}
+{{--					<label for="remember_checkbox">--}}
+{{--						Remember Me--}}
+{{--					</label>--}}
+{{--				</div>--}}
 				<div class="login-buttons">
 					<button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
 				</div>
-				<div class="m-t-20">
-					Not a member yet? Click <a href="javascript:;">here</a> to register.
-				</div>
+{{--				<div class="m-t-20">--}}
+{{--					Not a member yet? Click <a href="javascript:;">here</a> to register.--}}
+{{--				</div>--}}
 			</form>
 		</div>
 		<!-- end login-content -->

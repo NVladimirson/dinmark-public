@@ -22,12 +22,13 @@
 			<div class="login-body">
 				<!-- begin login-content -->
 				<div class="login-content">
-					<form action="index.html" method="GET" class="margin-bottom-0">
+					<form action="{{ route('login') }}" method="POST" class="margin-bottom-0">
+						@csrf
 						<div class="form-group m-b-20">
-							<input type="text" class="form-control form-control-lg inverse-mode" placeholder="Email Address" required />
+							<input name="email" type="email" class="form-control form-control-lg inverse-mode" placeholder="Email Address" required />
 						</div>
 						<div class="form-group m-b-20">
-							<input type="password" class="form-control form-control-lg inverse-mode" placeholder="Password" required />
+							<input name="password" type="password" class="form-control form-control-lg inverse-mode" placeholder="Password" required />
 						</div>
 						<div class="checkbox checkbox-css m-b-20">
 							<input type="checkbox" id="remember_checkbox" /> 
