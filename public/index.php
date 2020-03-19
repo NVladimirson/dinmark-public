@@ -6,7 +6,7 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
+define('SYS_PASSWORD', '445330853864'); // Сіль для кешування критичних даних (паролі)
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

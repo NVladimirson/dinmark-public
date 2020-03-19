@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class LoginController extends Controller
 {
@@ -28,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard/v1';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -47,23 +49,31 @@ class LoginController extends Controller
         $email = strip_tags($request->input('email'));
 
         $user = User::where('email', $email)->first();
+		$error = [];
+		if(isset($user))
+		{
+			$md5_password = $this->getPassword($user->id,$user->email,$password, false);
 
-        $string = md5($password);
-        $encrypted = Crypt::encrypt($string);
-        $decrypted_string = Crypt::decrypt($encrypted);
+			if ($md5_password == $user->password)
+			{
+				Auth::login($user);
+				return redirect('/');
 
-        if(!empty($user) && $decrypted_string == $user->password){
+			}else{
+				$error['password'] = trans('auth.password');
+			}
 
-            return view('pages/dashboard-v1');
+		}else{
+			$error['email'] =  trans('auth.email');
+		}
 
-        }
-
-        return view('pages/login-v2');
+        return redirect()->back()->withErrors($error);
     }
 
-    public function logout()
-    {
-        return view('pages/login-v2');
-    }
+	protected function getPassword($id, $email, $password, $sequred = false)
+	{
+		if(!$sequred) $password = md5($password);
+		return sha1($email . $password . SYS_PASSWORD . $id);
+	}
 
 }
