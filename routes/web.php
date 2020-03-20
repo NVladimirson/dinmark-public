@@ -16,7 +16,12 @@ Auth::routes(['register' => false]);
 Route::group(['middleware'=>'auth'],function() {
 	Route::get('/', function () {
 		return view('pages/dashboard-v1');
-	});
+	})->name('home');
+
+	Route::get('/profile','UserController@profile')->name('user.profile');
+	Route::post('/profile/data','UserController@updateData')->name('user.profile.update_data');
+	Route::post('/profile/password','UserController@updatePassword')->name('user.profile.update_password');
+	Route::post('/profile/change-request','UserController@chageRequest')->name('user.profile.change_request');
 });
 
 Route::get('/dashboard/v1', function () {

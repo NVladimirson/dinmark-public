@@ -9,6 +9,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     protected $table = 'wl_users';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -27,4 +28,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function info(){
+    	return $this->hasMany('App\Models\User\UserInfo','user');
+	}
+
+
+    public function dataChangeRequest(){
+    	return $this->hasMany('App\Models\User\UserDataChangeRequest','user_id');
+	}
 }

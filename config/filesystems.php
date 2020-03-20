@@ -55,6 +55,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'main_site' => [
+            'driver' => 'local',
+            'root' => env('DINMARK_PATH'),
+            'url' => env('DINMARK_URL'),
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_KEY'),

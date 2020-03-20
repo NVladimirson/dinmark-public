@@ -141,18 +141,26 @@
 		@endisset
 		<li class="dropdown navbar-user">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<img src="/assets/img/user/user-13.jpg" alt="" /> 
-				<span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret"></b>
+				@if(auth()->user()->photo)
+					<img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
+					@else
+					<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+				@endif
+
+				<span class="d-none d-md-inline">{{auth()->user()->name}}</span> <b class="caret"></b>
 			</a>
 			<div class="dropdown-menu dropdown-menu-right">
-				<a href="javascript:;" class="dropdown-item">Edit Profile</a>
+				<a href="{{route('user.profile')}}" class="dropdown-item">@lang('user.edit_link')</a>
+				{{--
 				<a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>
 				<a href="javascript:;" class="dropdown-item">Calendar</a>
 				<a href="javascript:;" class="dropdown-item">Setting</a>
+				--}}
 				<div class="dropdown-divider"></div>
+
 				<form method="POST" action="{{ route('logout') }}">
 					@csrf
-					<button type="submit" class="dropdown-item" class="btn btn-link">Log Out</button>
+					<button type="submit" class="dropdown-item" class="btn btn-link">@lang('user.logout')</button>
 				</form>
 			</div>
 		</li>

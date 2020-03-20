@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Services\User\PasswordCrypt;
 use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -52,7 +53,7 @@ class LoginController extends Controller
 		$error = [];
 		if(isset($user))
 		{
-			$md5_password = $this->getPassword($user->id,$user->email,$password, false);
+			$md5_password = PasswordCrypt::getPassword($user->id,$user->email,$password, false);
 
 			if ($md5_password == $user->password)
 			{
@@ -69,11 +70,5 @@ class LoginController extends Controller
 
         return redirect()->back()->withErrors($error);
     }
-
-	protected function getPassword($id, $email, $password, $sequred = false)
-	{
-		if(!$sequred) $password = md5($password);
-		return sha1($email . $password . SYS_PASSWORD . $id);
-	}
 
 }
