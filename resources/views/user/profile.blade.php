@@ -45,7 +45,7 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">@lang('user.edit_birthday')</label>
                             <div class="col-lg-9">
-                                <input type="text" name="birthday" class="form-control @error('birthday') is-invalid @enderror" id="datepicker-default" placeholder="@lang('user.edit_birthday')" />
+                                <input type="text" name="birthday" class="form-control @error('birthday') is-invalid @enderror" id="datepicker-default" placeholder="@lang('user.edit_birthday')" autocomplete="off"  value="{{ (auth()->user()->info->firstWhere('field','birthday'))? auth()->user()->info->firstWhere('field','birthday')->value : '' }}"/>
                                 @error('birthday')
                                 <span class="invalid-feedback " role="alert">
                                      <strong>{{ $message }}</strong>
@@ -116,7 +116,7 @@
 
                         <button type="submit" class="btn btn-sm btn-primary m-r-5 m-b-15">@lang('user.edit_request')</button>
 
-                        @if(auth()->user()->dataChangeRequest)
+                        @if(auth()->user()->dataChangeRequest->firstWhere('user_id',auth()->user()->id))
                             <div class="alert alert-muted">
                                 <h4>@lang('user.data_change_request_header')</h4>
                                 @if(auth()->user()->dataChangeRequest->firstWhere('type','email'))

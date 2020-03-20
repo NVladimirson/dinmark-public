@@ -123,22 +123,17 @@
 				</div>
 			</div>
 		</li>
-		@isset($headerLanguageBar)
 		<li class="dropdown navbar-language">
 			<a href="#" class="dropdown-toggle pr-1 pl-1 pr-sm-3 pl-sm-3" data-toggle="dropdown">
-				<span class="flag-icon flag-icon-us" title="us"></span>
-				<span class="name d-none d-sm-inline">EN</span> <b class="caret"></b>
+				<span class="flag-icon flag-icon-{{ LaravelLocalization::getCurrentLocale() }}" title="{{ LaravelLocalization::getCurrentLocale() }}"></span>
+				<span class="name d-none d-sm-inline">{{ mb_strtoupper(LaravelLocalization::getCurrentLocale()) }}</span> <b class="caret"></b>
 			</a>
 			<div class="dropdown-menu">
-				<a href="javascript:;" class="dropdown-item"><span class="flag-icon flag-icon-us" title="us"></span> English</a>
-				<a href="javascript:;" class="dropdown-item"><span class="flag-icon flag-icon-cn" title="cn"></span> Chinese</a>
-				<a href="javascript:;" class="dropdown-item"><span class="flag-icon flag-icon-jp" title="jp"></span> Japanese</a>
-				<a href="javascript:;" class="dropdown-item"><span class="flag-icon flag-icon-be" title="be"></span> Belgium</a>
-				<div class="dropdown-divider"></div>
-				<a href="javascript:;" class="dropdown-item text-center">more options</a>
+			@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+					<a rel="alternate"  hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" class="dropdown-item"><span class="flag-icon flag-icon-{{$localeCode}}" title="{{$localeCode}}"></span> {{ $properties['native'] }}</a>
+			@endforeach
 			</div>
 		</li>
-		@endisset
 		<li class="dropdown navbar-user">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				@if(auth()->user()->photo)

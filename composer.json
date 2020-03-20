@@ -9,7 +9,8 @@
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "6.0.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "mcamara/laravel-localization": "^1.5"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
