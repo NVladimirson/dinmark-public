@@ -14,3 +14,8 @@ Breadcrumbs::for('user.profile', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('user.edit_page_name'), route('user.profile'));
 });
+
+Breadcrumbs::for('product.all', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('product.all_page_name'), route('products'));
+});

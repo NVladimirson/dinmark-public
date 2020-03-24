@@ -5,7 +5,7 @@
 	$headerTopMenu = (!empty($headerTopMenu)) ? $headerTopMenu : '';
 @endphp
 <!-- begin #header -->
-<div id="header" class="header {{ $headerClass }}">
+<div id="header" class="header navbar-inverse ">
 	<!-- begin navbar-header -->
 	<div class="navbar-header">
 		@if ($sidebarTwo)
@@ -15,7 +15,7 @@
 			<span class="icon-bar"></span>
 		</button>
 		@endif
-		<a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Color</b> Admin</a>
+		<a href="{{route('home')}}" class="navbar-brand"><img src="{{asset('assets/img/logo/logo.png')}}" alt="Dinmark Logo"></a>
 		@if ($headerMegaMenu)
 			<button type="button" class="navbar-toggle pt-0 pb-0 mr-0" data-toggle="collapse" data-target="#top-navbar">
 				<span class="fa-stack fa-lg text-inverse">

@@ -11,8 +11,8 @@
 |
 */
 Route::group(['prefix' => LaravelLocalization::setLocale(),
-	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function()
-{
+	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
+
 	Auth::routes(['register' => false]);
 
 	Route::group(['middleware'=>'auth'],function() {
@@ -24,6 +24,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/profile/data','UserController@updateData')->name('user.profile.update_data');
 		Route::post('/profile/password','UserController@updatePassword')->name('user.profile.update_password');
 		Route::post('/profile/change-request','UserController@chageRequest')->name('user.profile.change_request');
+
+		Route::get('/products','Product\ProductController@index')->name('products');
+		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
 	});
 });
 

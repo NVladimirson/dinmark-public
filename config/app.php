@@ -167,7 +167,8 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-
+		Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+		Yajra\DataTables\DataTablesServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -226,6 +227,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+		//Package
+		'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+		'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];

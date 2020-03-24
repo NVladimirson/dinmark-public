@@ -10,10 +10,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Artesaos\SEOTools\Facades\SEOTools;
 
 class UserController extends Controller
 {
     function profile(){
+		SEOTools::setTitle(trans('user.edit_page_name'));
     	return view('user.profile');
 	}
 

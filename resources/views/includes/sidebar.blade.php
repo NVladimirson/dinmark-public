@@ -53,7 +53,7 @@
 						$subSubMenu = '';
 						$hasSub = (!empty($menu['sub_menu'])) ? 'has-sub' : '';
 						$hasCaret = (!empty($menu['sub_menu'])) ? '<b class="caret pull-right"></b>' : '';
-						$hasTitle = (!empty($menu['title'])) ? $menu['title'] : '';
+						$hasTitle = (!empty($menu['title'])) ? trans($menu['title']) : '';
 						$hasHighlight = (!empty($menu['highlight'])) ? '<i class="fa fa-paper-plane text-theme m-l-5"></i>' : '';
 						
 						if (!empty($menu['sub_menu'])) {
@@ -73,7 +73,7 @@
 						}
 						$subMenu .= '
 							<li class="'. $hasSub .' '. $active .'">
-								<a href="'. $menu['url'] .'">'. $hasCaret . $hasTitle . $hasHighlight .'</a>
+								<a href="'. (($menu['url'] ==  'javascript:;')?'javascript:;':route($menu['url'])) .'">'. $hasCaret . $hasTitle . $hasHighlight .'</a>
 								'. $subSubMenu .'
 							</li>
 						';
@@ -89,7 +89,7 @@
 					$hasIcon = (!empty($menu['icon'])) ? '<i class="'. $menu['icon'] .'"></i>' : '';
 					$hasImg = (!empty($menu['img'])) ? '<div class="icon-img"><img src="'. $menu['img'] .'" /></div>' : '';
 					$hasLabel = (!empty($menu['label'])) ? '<span class="label label-theme m-l-5">'. $menu['label'] .'</span>' : '';
-					$hasTitle = (!empty($menu['title'])) ? '<span>'. $menu['title'] . $hasLabel .'</span>' : '';
+					$hasTitle = (!empty($menu['title'])) ? '<span>'. trans($menu['title']) . $hasLabel .'</span>' : '';
 					$hasBadge = (!empty($menu['badge'])) ? '<span class="badge pull-right">'. $menu['badge'] .'</span>' : '';
 					
 					$subMenu = '';
@@ -104,7 +104,7 @@
 					$active = (empty($active) && !empty($GLOBALS['parent_active'])) ? 'active' : $active;
 					echo '
 						<li class="'. $hasSub .' '. $active .'">
-							<a href="'. $menu['url'] .'">
+							<a href="'. (($menu['url'] ==  'javascript:;')?'javascript:;':route($menu['url'])) .'">
 								'. $hasImg .'
 								'. $hasBadge .'
 								'. $hasCaret .'

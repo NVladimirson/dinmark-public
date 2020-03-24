@@ -12,6 +12,24 @@ return [
     | the usual Laravel view path has already been registered for you.
     |
     */
+	'menu' => [[
+		'icon' => 'fa fa-th-large',
+		'title' => 'menu.dashboard',
+		'url' => 'home'
+	],[
+		'icon' => 'fa fa-shopping-bag',
+		'title' => 'menu.shop',
+		'url' => 'javascript:;',
+		'caret' => true,
+		'sub_menu' => [[
+			'url' => 'products',
+			'title' => 'menu.shop_all'
+		]]
+	]
+	]
+];
+
+    /*
   'menu' => [[
 		'icon' => 'fa fa-th-large',
 		'title' => 'Dashboard',
@@ -470,3 +488,4 @@ return [
 		]]
 	]]
 ];
+*/
