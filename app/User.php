@@ -33,8 +33,12 @@ class User extends Authenticatable
     	return $this->hasMany('App\Models\User\UserInfo','user');
 	}
 
-
     public function dataChangeRequest(){
     	return $this->hasMany('App\Models\User\UserDataChangeRequest','user_id');
+	}
+
+
+    public function getCompany(){
+    	return $this->hasOne('App\Models\User\Company','id', 'company');
 	}
 }

@@ -42,6 +42,11 @@
                     </span>
 					@enderror
 				</div>
+				@error('access')
+				<div class="alert alert-danger">
+					{{ $message }}
+				</div>
+				@enderror
 				<div class="login-buttons">
 					<button type="submit" class="btn btn-success btn-block btn-lg">@lang('auth.submit')</button>
 				</div>

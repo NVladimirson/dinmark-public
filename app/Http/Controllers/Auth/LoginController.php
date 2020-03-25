@@ -57,8 +57,16 @@ class LoginController extends Controller
 
 			if ($md5_password == $user->password)
 			{
-				Auth::login($user);
-				return redirect('/');
+				$isB2BAccess = false;
+				if($user->getCompany){
+					$isB2BAccess = $user->getCompany->b2b == 1;
+				}
+				if($isB2BAccess || $user->type == 1 || $user->type == 2){
+					Auth::login($user);
+					return redirect('/');
+				}else{
+					$error['access'] = trans('auth.access');
+				}
 
 			}else{
 				$error['password'] = trans('auth.password');
