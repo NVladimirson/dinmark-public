@@ -169,6 +169,7 @@ return [
         Laravel\Tinker\TinkerServiceProvider::class,
 		Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
 		Yajra\DataTables\DataTablesServiceProvider::class,
+		Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -230,6 +231,7 @@ return [
 		//Package
 		'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
 		'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+		'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

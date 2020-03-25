@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User\UserDataChangeRequest;
 use App\Models\User\UserInfo;
 use App\Services\User\PasswordCrypt;
+use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Redirect;
@@ -35,7 +36,11 @@ class UserController extends Controller
 		$user = auth()->user();
 		$user->name = $validatedData['name'];
 		if($request->hasFile('photo')){
-			$path = Storage::disk('main_site')->putFile('images/profile', $request->file('photo'));
+			$path   = $request->file('photo');
+			$resize = Image::make($path)->fit(300)->encode('jpg');
+			$hash = md5($resize->__toString());
+			$path = "/images/profile/{$hash}.jpg";
+			$resize->save(Storage::disk('main_site')->getAdapter()->getPathPrefix() .$path);
 			$path = basename($path);
 			$user->photo = $path;
 		}

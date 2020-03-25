@@ -12,20 +12,22 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover with-shadow"></div>
 					<div class="image">
-						<img src="/assets/img/user/user-13.jpg" alt="" />
+						@if(auth()->user()->photo)
+							<img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
+						@else
+							<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+						@endif
 					</div>
 					<div class="info">
 						<b class="caret pull-right"></b>
-						Sean Ngu
-						<small>Front end developer</small>
+						{{auth()->user()->name}}
+						<small>{{auth()->user()->getCompany?auth()->user()->getCompany->name : auth()->user()->role->title}}</small>
 					</div>
 				</a>
 			</li>
 			<li>
 				<ul class="nav nav-profile">
-					<li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li>
-					<li><a href="javascript:;"><i class="fa fa-pencil-alt"></i> Send Feedback</a></li>
-					<li><a href="javascript:;"><i class="fa fa-question-circle"></i> Helps</a></li>
+					<li><a href="{{route('user.profile')}}"><i class="fa fa-cog"></i> @lang('user.edit_link')</a></li>
 				</ul>
 			</li>
 		</ul>

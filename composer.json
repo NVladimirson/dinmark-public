@@ -9,6 +9,7 @@
         "artesaos/seotools": "^0.17.1",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "fideloper/proxy": "^4.0",
+        "intervention/image": "^2.5",
         "laravel/framework": "6.0.*",
         "laravel/tinker": "^1.0",
         "mcamara/laravel-localization": "^1.5",
