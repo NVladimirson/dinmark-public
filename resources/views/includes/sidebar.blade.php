@@ -40,7 +40,7 @@
         <input type="text" class="form-control" placeholder="Sidebar menu filter..." data-sidebar-search="true" />
 			</li>
 			@endif
-			<li class="nav-header">Navigation</li>
+			<li class="nav-header">@lang('menu.sidebar_title')</li>
 			@php
 				$currentUrl = (Request::path() != '/') ? '/'. Request::path() : '/';
 				

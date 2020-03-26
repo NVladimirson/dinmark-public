@@ -8,4 +8,8 @@ class Product extends Model
 {
 	protected $table = 's_shopshowcase_products';
 	public $timestamps = false;
+
+	public function content(){
+		return $this->hasMany('App\Models\Content','content');
+	}
 }

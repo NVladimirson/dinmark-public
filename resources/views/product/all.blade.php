@@ -85,24 +85,27 @@
 					"processing": true,
 					"serverSide": true,
 					"ajax": "{!! route('products.all_ajax') !!}",
+					"order": [[ 0, "desc" ]],
 					"columns": [
 						{
 							className: 'text-center',
 							data: 'id',
+							"visible": false,
+							"searchable": false
 						},
 						{
 							"orderable":      false,
 							data: 'image_html',
 						},
 						{
-							//data: 'name',
-							data: 'group',
+							"orderable":      false,
+							data: 'name',
 						},
 						{
-							data: 'article',
+							data: 'article_show',
 						},
 						{
-							data: 'price',
+							data: 'user_price',
 						},
 						{
 							data: 'limit_1',
@@ -111,7 +114,7 @@
 							data: 'limit_2',
 						},
 						{
-							data: 'termin',
+							data: 'storage_html',
 						},
 					],
 				} );

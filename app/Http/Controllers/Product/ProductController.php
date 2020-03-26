@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product\Currency;
 use App\Models\Product\Product;
 use App\Models\WlImage;
 use Illuminate\Http\Request;
-
+use LaravelLocalization;
 use Artesaos\SEOTools\Facades\SEOTools;
 
 class ProductController extends Controller
@@ -16,15 +17,17 @@ class ProductController extends Controller
     	return view('product.all');
 	}
 
-	public function allAjax(){
+	public function allAjax(Request $request){
 		$products = Product::select();
+		$lang = LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale();
+		$currencies = Currency::all();
 
 		return datatables()
 			->eloquent($products)
 			->addColumn('image_html', function (Product $product) {
 				$ids[] = -$product->group;
 				$photo = WlImage::where([
-					['alias',8],
+					['alias',$product->wl_alias],
 					['content',$ids],
 					['position',1],
 				])->first();
@@ -35,6 +38,39 @@ class ProductController extends Controller
 
 				return '<img src="'.$src.'" width="80">';
 			})
+			->addColumn('name', function (Product $product) use ($lang) {
+				$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
+
+				return $content?$content->name:'';
+			})
+			->addColumn('user_price', function (Product $product) use ($currencies) {
+				$currency = $currencies->firstWhere('code',$product->currency);
+				$price = $product->price;
+				if($currency){
+					$price *= $currency->currency;
+				}
+				$price *= auth()->user()->price->price;
+				return number_format($price,2,'.',' ');
+			})
+			->addColumn('storage_html', function (Product $product) {
+				return $product->storage_1.'/'.$product->termin;
+			})
+
+			->orderColumn('storage_html','storage_1 $1')
+			->orderColumn('user_price', function ($product, $order){
+				$product
+					->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
+					->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
+					->orderBy("price_with_currency", $order);
+			})
+			->filterColumn('storage_html', function($product, $keyword) {
+				$product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
+			})
+			->filter(function ($product) use ($request) {
+				if (request()->has('storage_html')) {
+					$product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
+				}
+			}, true)
 			->rawColumns(['image_html'])
 			->toJson();
 	}
