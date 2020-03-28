@@ -19,3 +19,18 @@ Breadcrumbs::for('product.all', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('product.all_page_name'), route('products'));
 });
+
+Breadcrumbs::for('chat', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('chat.page_name'), route('chat'));
+});
+
+Breadcrumbs::for('chat.create', function ($trail) {
+	$trail->parent('chat');
+	$trail->push(trans('chat.create_page_name'), route('chat.create'));
+});
+
+Breadcrumbs::for('chat.show', function ($trail, $chat) {
+	$trail->parent('chat');
+	$trail->push(trans('chat.dialog').': '.$chat->subject, route('chat.show',[$chat->id]));
+});

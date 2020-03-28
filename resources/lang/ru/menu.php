@@ -13,7 +13,6 @@ return [
     |
     */
 
-    'sidebar_title' => 'Меню',
     'dashboard' => 'Dashboard',
     'shop' => 'Католог',
     'shop_all' => 'Все товары',

@@ -27,6 +27,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
+
+		Route::get('/messages','ChatController@index')->name('chat');
+		Route::get('/messages/create','ChatController@create')->name('chat.create');
+		Route::post('/messages/create','ChatController@store')->name('chat.store');
+		Route::get('/messages/{id}','ChatController@show')->name('chat.show');
+		Route::post('/messages/{id}','ChatController@update')->name('chat.update');
 	});
 });
 

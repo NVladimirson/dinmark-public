@@ -6,6 +6,8 @@
 	<link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -28,17 +30,37 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
+					<div class="row m-b-15">
+						<div class="col-lg-4">
+							{{--
+							<select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white">
+								<option value="" selected>Select a Country</option>
+								<option value="AF">Afghanistan</option>
+								<option value="AL">Albania</option>
+								<option value="DZ">Algeria</option>
+								<option value="AS">American Samoa</option>
+								<option value="AD">Andorra</option>
+								<option value="AO">Angola</option>
+								<option value="AI">Anguilla</option>
+								<option value="AQ">Antarctica</option>
+								<option value="AG">Antigua and Barbuda</option>
+							</select>
+							--}}
+						</div>
+					</div>
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
-								<th width="1%"></th>{{--hide--}}
-								<th width="1%" data-orderable="false"></th>{{--картинка--}}
+								<th></th>
+								<th width="30"></th>
+								<th width="1%" data-orderable="false"></th>
 								<th class="text-nowrap">@lang('product.table_header_name')</th>
 								<th class="text-nowrap">@lang('product.table_header_article')</th>
 								<th class="text-nowrap">@lang('product.table_header_price')</th>
 								<th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
 								<th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
 								<th class="text-nowrap">@lang('product.table_header_storage')</th>
+								<th width="100"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -68,6 +90,8 @@
 	<script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
 	<script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
 	<script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
+	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
 	<script>
@@ -95,6 +119,10 @@
 						},
 						{
 							"orderable":      false,
+							data: 'check_html',
+						},
+						{
+							"orderable":      false,
 							data: 'image_html',
 						},
 						{
@@ -115,6 +143,9 @@
 						},
 						{
 							data: 'storage_html',
+						},
+						{
+							data: 'actions',
 						},
 					],
 				} );

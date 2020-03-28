@@ -12,8 +12,9 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'dashboard' => 'Dashboard',
-    'shop' => 'Католог',
-    'shop_all' => 'Усі товари',
+
+    'sidebar_title' => 'Меню',
+    'manager' => 'Ваш менеджер',
+    'message' => 'Сообщение',
 
 ];

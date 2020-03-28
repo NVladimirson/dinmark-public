@@ -12,8 +12,17 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'dashboard' => 'Dashboard',
-    'shop' => 'Католог',
-    'shop_all' => 'Усі товари',
 
+    'page_name' => 'Повідомлення',
+	'tab_list' => 'Список діалогів',
+	'button_new' => 'Створити діалог',
+	'empty' => 'У вас ще немає повідомлень',
+
+	'create_page_name' => 'Новий діалог',
+	'tab_create' => 'Новий діалог',
+	'subject' => 'Тема',
+	'message' => 'Повідомлення',
+	'button_send' => 'Надіслати повідомлення',
+
+	'dialog' => 'Діалог',
 ];

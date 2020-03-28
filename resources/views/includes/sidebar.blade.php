@@ -40,7 +40,7 @@
         <input type="text" class="form-control" placeholder="Sidebar menu filter..." data-sidebar-search="true" />
 			</li>
 			@endif
-			<li class="nav-header">@lang('menu.sidebar_title')</li>
+			<li class="nav-header">@lang('sidebar.sidebar_title')</li>
 			@php
 				$currentUrl = (Request::path() != '/') ? '/'. Request::path() : '/';
 				
@@ -123,6 +123,31 @@
 			<!-- end sidebar minify button -->
 		</ul>
 		<!-- end sidebar nav -->
+			@if(auth()->user()->getCompany)
+				@php
+					$manager = auth()->user()->getCompany->getManager;
+				@endphp
+				@if($manager)
+			<ul class="nav">
+				<li class="media media-xs nav-profile">
+					<div class="media-left">
+						@if($manager->photo)
+							<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/profile/{{$manager->photo}}" alt="{{$manager->name}}" />
+						@else
+							<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$manager->name}}" />
+						@endif
+					</div>
+					<div class="media-body">
+						<h5 class="media-heading">@lang('sidebar.manager')</h5>
+						<p>{{$manager->name}}</p>
+						<p class="mb-0">
+							<a href="{{route('chat')}}" class="btn btn-block btn-primary m-r-5">@lang('sidebar.message')</a>
+						</p>
+					</div>
+				</li>
+			</ul>
+				@endif
+			@endif
 	</div>
 	<!-- end sidebar scrollbar -->
 </div>

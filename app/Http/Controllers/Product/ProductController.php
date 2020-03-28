@@ -24,6 +24,12 @@ class ProductController extends Controller
 
 		return datatables()
 			->eloquent($products)
+			->addColumn('check_html', function (Product $product) {
+				return '<div class="checkbox checkbox-css">
+						  <input type="checkbox" id="product-'.$product->id.'"  />
+						  <label for="product-'.$product->id.'"> </label>
+						</div>';
+			})
 			->addColumn('image_html', function (Product $product) {
 				$ids[] = -$product->group;
 				$photo = WlImage::where([
@@ -56,6 +62,9 @@ class ProductController extends Controller
 				return $product->storage_1.'/'.$product->termin;
 			})
 
+			->addColumn('actions', function (Product $product) {
+				return '<button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></button><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-star"></i></button><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-cart-plus"></i></button>';
+			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('user_price', function ($product, $order){
 				$product
@@ -71,7 +80,7 @@ class ProductController extends Controller
 					$product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
 				}
 			}, true)
-			->rawColumns(['image_html'])
+			->rawColumns(['image_html','check_html','actions'])
 			->toJson();
 	}
 }
