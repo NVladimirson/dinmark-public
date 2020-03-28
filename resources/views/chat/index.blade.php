@@ -26,8 +26,14 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row m-b-15">
-						<div class="col-lg-4">
+						<div class="col-md-4">
 							<a href="{{route('chat.create')}}" class="btn btn-primary">@lang('chat.button_new')</a>
+						</div>
+						<div class="col-md-8">
+
+							<div class="pull-right">
+								{{ $chats->links() }}
+							</div>
 						</div>
 					</div>
 					@forelse($chats as $chat)
@@ -64,7 +70,6 @@
 					@empty
 						<div class="alert alert-light fade show">@lang('chat.empty')</div>
 					@endforelse
-
 				</div>
 				<!-- end panel-body -->
 			</div>

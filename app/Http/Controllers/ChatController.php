@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -83,6 +84,8 @@ class ChatController extends Controller
 
 	public function update($id, Request $request){
 		$chat = Chat::find($id);
+		$chat->updated_at = Carbon::now();
+		$chat->save();
 
 		ChatMessage::create([
 			'text' => $request->text,
