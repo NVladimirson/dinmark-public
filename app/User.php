@@ -47,6 +47,6 @@ class User extends Authenticatable
 	}
 
     public function price(){
-    	return $this->hasOne('App\Models\User\UserPrice','id', 'type');
+    	return $this->hasOne('App\Models\User\UserPrice','user_type', 'type');
 	}
 }

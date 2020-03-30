@@ -23,4 +23,10 @@ return [
     'table_header_price_porog_2' => 'Цена порог 2',
     'table_header_storage' => 'Остаток/Срок доставки',
 
+	'show_tab_name' => 'Информация о товаре',
+	'show_article' => 'Артикул',
+	'show_price' => 'Цена (100шт)',
+	'show_price_porog_1' => 'Цена порог 1',
+	'show_price_porog_2' => 'Цена порог 2',
+
 ];

@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product\Currency;
 use App\Models\Product\Product;
-use App\Models\WlImage;
 use Illuminate\Http\Request;
-use LaravelLocalization;
 use Artesaos\SEOTools\Facades\SEOTools;
 
 class ProductController extends Controller
@@ -19,8 +16,6 @@ class ProductController extends Controller
 
 	public function allAjax(Request $request){
 		$products = Product::select();
-		$lang = LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale();
-		$currencies = Currency::all();
 
 		return datatables()
 			->eloquent($products)
@@ -31,41 +26,29 @@ class ProductController extends Controller
 						</div>';
 			})
 			->addColumn('image_html', function (Product $product) {
-				$ids[] = -$product->group;
-				$photo = WlImage::where([
-					['alias',$product->wl_alias],
-					['content',$ids],
-					['position',1],
-				])->first();
-				$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
-				if($photo){
-					$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/group_'.$photo->file_name;
-				}
+				$src = \App\Services\Product\Product::getImagePath($product);
 
 				return '<img src="'.$src.'" width="80">';
 			})
-			->addColumn('name', function (Product $product) use ($lang) {
-				$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
-
-				return $content?$content->name:'';
+			->addColumn('name_html', function (Product $product){
+				$name = \App\Services\Product\Product::getName($product);
+				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
 			})
-			->addColumn('user_price', function (Product $product) use ($currencies) {
-				$currency = $currencies->firstWhere('code',$product->currency);
-				$price = $product->price;
-				if($currency){
-					$price *= $currency->currency;
-				}
-				$price *= auth()->user()->price->price;
-				return number_format($price,2,'.',' ');
+			->addColumn('article_show_html', function (Product $product) {
+				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+			})
+			->addColumn('user_price', function (Product $product) {
+				return \App\Services\Product\Product::getPrice($product);
 			})
 			->addColumn('storage_html', function (Product $product) {
 				return $product->storage_1.'/'.$product->termin;
 			})
 
 			->addColumn('actions', function (Product $product) {
-				return '<button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></button><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-star"></i></button><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-cart-plus"></i></button>';
+				return '<a href="'.route('products.show',[$product->id]).'" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></a><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-star"></i></button><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-cart-plus"></i></button>';
 			})
 			->orderColumn('storage_html','storage_1 $1')
+			->orderColumn('article_show_html','article_show $1')
 			->orderColumn('user_price', function ($product, $order){
 				$product
 					->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
@@ -75,12 +58,30 @@ class ProductController extends Controller
 			->filterColumn('storage_html', function($product, $keyword) {
 				$product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
 			})
+			->filterColumn('article_show_html', function($product, $keyword) {
+				$product->where('article_show', 'like',["%{$keyword}%"]);
+			})
 			->filter(function ($product) use ($request) {
 				if (request()->has('storage_html')) {
 					$product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
 				}
+				if (request()->has('article_show_html')) {
+					$product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
+				}
 			}, true)
-			->rawColumns(['image_html','check_html','actions'])
+			->rawColumns(['name_html','article_show_html','image_html','check_html','actions'])
 			->toJson();
+	}
+
+	public function show($id){
+		$product = Product::find($id);
+
+		$productName = \App\Services\Product\Product::getName($product);
+		$imagePath = \App\Services\Product\Product::getImagePath($product);
+		$price = \App\Services\Product\Product::getPrice($product);
+
+		SEOTools::setTitle($productName);
+
+		return view('product.index', compact('product','productName','imagePath', 'price'));
 	}
 }

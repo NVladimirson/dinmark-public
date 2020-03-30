@@ -33,6 +33,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
+		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');
 
 		Route::get('/messages','ChatController@index')->name('chat');
 		Route::get('/messages/create','ChatController@create')->name('chat.create');

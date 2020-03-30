@@ -127,10 +127,10 @@
 						},
 						{
 							"orderable":      false,
-							data: 'name',
+							data: 'name_html',
 						},
 						{
-							data: 'article_show',
+							data: 'article_show_html',
 						},
 						{
 							data: 'user_price',

@@ -20,6 +20,11 @@ Breadcrumbs::for('product.all', function ($trail) {
 	$trail->push(trans('product.all_page_name'), route('products'));
 });
 
+Breadcrumbs::for('product.show', function ($trail, $product, $name) {
+	$trail->parent('product.all');
+	$trail->push($name, route('products.show',[$product->id]));
+});
+
 Breadcrumbs::for('chat', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('chat.page_name'), route('chat'));

@@ -12,4 +12,8 @@ class Company extends Model
 	public function getManager(){
 		return $this->hasOne('App\User','id', 'manager');
 	}
+
+	public function getPrice(){
+		return $this->hasOne('App\Models\User\UserPrice','user_type', 'price_type');
+	}
 }
