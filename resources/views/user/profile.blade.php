@@ -116,14 +116,14 @@
 
                         <button type="submit" class="btn btn-sm btn-primary m-r-5 m-b-15">@lang('user.edit_request')</button>
 
-                        @if(auth()->user()->dataChangeRequest->firstWhere('user_id',auth()->user()->id))
+                        @if(auth()->user()->dataChangeRequest->firstWhere('status','await'))
                             <div class="alert alert-muted">
                                 <h4>@lang('user.data_change_request_header')</h4>
-                                @if(auth()->user()->dataChangeRequest->firstWhere('type','email'))
-                                    <p><strong>@lang('user.data_change_request_email'):</strong> {{auth()->user()->dataChangeRequest->firstWhere('type','email')->value}}</p>
+                                @if(auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','email'))
+                                    <p><strong>@lang('user.data_change_request_email'):</strong> {{auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','email')->value}}</p>
                                 @endif
-                                @if(auth()->user()->dataChangeRequest->firstWhere('type','phone'))
-                                    <p><strong>@lang('user.data_change_request_phone'):</strong> {{auth()->user()->dataChangeRequest->firstWhere('type','phone')->value}}</p>
+                                @if(auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','phone'))
+                                    <p><strong>@lang('user.data_change_request_phone'):</strong> {{auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','phone')->value}}</p>
                                 @endif
                             </div>
                         @endif

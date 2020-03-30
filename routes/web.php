@@ -16,6 +16,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 	Auth::routes(['register' => false]);
 
 	Route::group(['middleware'=>'auth'],function() {
+
+		Route::group(['prefix' => 'admin', 'as' => 'admin.','namespace' => 'Admin'], function (){
+			Route::get('/user/change-request/{id}','UserController@chageRequest')->name('user.change_request');
+			Route::post('/user/change-request/{id}','UserController@chageRequestAnswer')->name('user.change_request_answer');
+		});
+
 		Route::get('/', function () {
 			return view('pages/dashboard-v1');
 		})->name('home');
@@ -33,6 +39,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/messages/create','ChatController@store')->name('chat.store');
 		Route::get('/messages/{id}','ChatController@show')->name('chat.show');
 		Route::post('/messages/{id}','ChatController@update')->name('chat.update');
+
+		Route::get('/notifications/','NotificationController@index')->name('notification');
+		Route::get('/notifications/mark-read','NotificationController@markRead')->name('notification.mark_read');
 	});
 });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
+use App\Notifications\NewMessage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -44,6 +45,7 @@ class ChatController extends Controller
 			}
 		}
 
+		$toUser = auth()->user();
 		$user = auth()->user()->id;
 		$manager = $user;
 		$isManage = (auth()->user()->type == 1 || auth()->user()->type == 2);
@@ -52,6 +54,7 @@ class ChatController extends Controller
 			$user = $request->id;
 		}else{
 			$manager = auth()->user()->getCompany->getManager->id;
+			$toUser = auth()->user()->getCompany->getManager;
 		}
 
 		$chat = Chat::create([
@@ -60,11 +63,13 @@ class ChatController extends Controller
 			'manager_id' => $manager
 		]);
 
-		ChatMessage::create([
+		$message = ChatMessage::create([
 			'text' => $request->message,
 			'chat_id' => $chat->id,
 			'user_id' => auth()->user()->id
 		]);
+
+		$toUser->notify(new NewMessage($message));
 
 		return redirect()->route('chat.show',[$chat->id]);
 	}
@@ -87,11 +92,18 @@ class ChatController extends Controller
 		$chat->updated_at = Carbon::now();
 		$chat->save();
 
-		ChatMessage::create([
+		$toUser = $chat->user;
+		if($chat->user_id == auth()->user()->id){
+			$toUser = $chat->manager;
+		}
+
+		$message = ChatMessage::create([
 			'text' => $request->text,
 			'chat_id' => $chat->id,
 			'user_id' => auth()->user()->id
 		]);
+
+		$toUser->notify(new NewMessage($message));
 
 		return redirect()->route('chat.show',[$chat->id]);
 	}

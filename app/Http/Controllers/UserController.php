@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User\UserDataChangeRequest;
 use App\Models\User\UserInfo;
+use App\Notifications\UserChangeData;
 use App\Services\User\PasswordCrypt;
 use Image;
 use Illuminate\Http\Request;
@@ -90,6 +91,13 @@ class UserController extends Controller
 
 	public function chageRequest(Request $request){
 		$user = auth()->user();
+		$toUser = null;
+		if($user->getCompany){
+			if($user->getCompany->getManager){
+				$toUser = $user->getCompany->getManager;
+			}
+		}
+
 		$userPhone = UserInfo::where([
 			['user',$user->id],
 			['field','phone'],
@@ -118,21 +126,31 @@ class UserController extends Controller
 				}
 			}
 			if(array_key_exists  ('email',$validateRule)){
-				UserDataChangeRequest::updateOrCreate([
+				$changeData = UserDataChangeRequest::updateOrCreate([
 					'type' => 'email',
-					'user_id' => $user->id
+					'user_id' => $user->id,
+					'status' => 'await'
 				],[
 					'value' => mb_strtolower($request->email),
 					]);
+
+				if($changeData->created_at == $changeData->updated_at && isset($toUser)){
+					$toUser->notify(new UserChangeData($changeData));
+				}
 			}
 
 			if(array_key_exists  ('phone',$validateRule)){
-				UserDataChangeRequest::updateOrCreate([
+				$changeData = UserDataChangeRequest::updateOrCreate([
 					'type' => 'phone',
-					'user_id' => $user->id
+					'user_id' => $user->id,
+					'status' => 'await'
 				],[
 					'value' => mb_strtolower($request->phone),
 				]);
+
+				if($changeData->created_at == $changeData->updated_at && isset($toUser)){
+					$toUser->notify(new UserChangeData($changeData));
+				}
 			}
 
 		}else{

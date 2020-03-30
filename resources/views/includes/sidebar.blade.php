@@ -127,7 +127,7 @@
 				@php
 					$manager = auth()->user()->getCompany->getManager;
 				@endphp
-				@if($manager)
+				@if($manager && auth()->user()->type != 1 && auth()->user()->type != 2)
 			<ul class="nav">
 				<li class="media media-xs nav-profile">
 					<div class="media-left">

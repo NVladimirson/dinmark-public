@@ -34,3 +34,13 @@ Breadcrumbs::for('chat.show', function ($trail, $chat) {
 	$trail->parent('chat');
 	$trail->push(trans('chat.dialog').': '.$chat->subject, route('chat.show',[$chat->id]));
 });
+
+Breadcrumbs::for('notification', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('notification.page_name'), route('notification'));
+});
+
+Breadcrumbs::for('admin.user.change_data', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('admin_user.change_data_page_name'), route('admin.user.change_request'));
+});
