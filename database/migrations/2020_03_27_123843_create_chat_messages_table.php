@@ -13,7 +13,7 @@ class CreateChatMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('chat_messages', function (Blueprint $table) {
+        Schema::create('b2b_chat_messages', function (Blueprint $table) {
             $table->bigIncrements('id');
 			$table->text('text');
 			$table->boolean('is_new')->default(true);
@@ -32,6 +32,6 @@ class CreateChatMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_messages');
+        Schema::dropIfExists('b2b_chat_messages');
     }
 }

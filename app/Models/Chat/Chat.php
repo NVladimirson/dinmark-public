@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Chat extends Model
 {
+	protected $table = 'b2b_chats';
 	protected $fillable = [
 		'subject', 'user_id', 'manager_id'
 	];

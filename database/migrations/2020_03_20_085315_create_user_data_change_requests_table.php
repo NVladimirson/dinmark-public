@@ -13,7 +13,7 @@ class CreateUserDataChangeRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_data_change_requests', function (Blueprint $table) {
+        Schema::create('b2b_user_data_change_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->enum('type',['email','phone']);
             $table->text('value');
@@ -30,6 +30,6 @@ class CreateUserDataChangeRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_data_change_requests');
+        Schema::dropIfExists('b2b_user_data_change_requests');
     }
 }

@@ -13,7 +13,7 @@ class AddStatusToDataChangeRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::table('user_data_change_requests', function (Blueprint $table) {
+        Schema::table('b2b_user_data_change_requests', function (Blueprint $table) {
             $table->enum('status',['await','success','rejected'])->default('await');
         });
     }
@@ -25,7 +25,7 @@ class AddStatusToDataChangeRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_data_change_requests', function (Blueprint $table) {
+        Schema::table('b2b_user_data_change_requests', function (Blueprint $table) {
             $table->dropColumn('status');
         });
     }

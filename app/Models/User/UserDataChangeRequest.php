@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserDataChangeRequest extends Model
 {
+	protected $table = 'b2b_user_data_change_requests';
 	protected $fillable = [
 		'type', 'value', 'user_id', 'status'
 	];
