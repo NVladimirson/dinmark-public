@@ -10,6 +10,7 @@ namespace App\Services\Product;
 
 
 use App\Models\Product\Currency;
+use App\Models\User\Company;
 use App\Models\WlImage;
 use LaravelLocalization;
 
@@ -17,6 +18,7 @@ class Product
 {
 	private  $currencies;
 	private  $lang;
+	private  $company;
 
 	public static function getImagePath($product)
 	{
@@ -44,14 +46,15 @@ class Product
 	public static function getPrice($product){
 		$instance =  static::getInstance();
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
+		$company = $instance->company;
 		$price = $product->price;
 		if($currency){
 			$price *= $currency->currency;
 		}
 
 		$priceCoef = auth()->user()->price->price;
-		if(auth()->user()->getCompany){
-			$priceCoef = auth()->user()->getCompany->getPrice->price;
+		if($company){
+			$priceCoef = $company->getPrice->price;
 		}
 		if($priceCoef > 0){
 			$price *= $priceCoef;
@@ -72,6 +75,10 @@ class Product
 	private function __construct(){
 		$this->currencies = Currency::all();
 		$this->lang = LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale();
+		$this->company = null;
+		if(session()->has('current_company_id')){
+			$this->company = Company::find(session('current_company_id'));
+		}
 	}
 	private function __clone(){}
 	private function __wakeup(){}

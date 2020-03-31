@@ -19,17 +19,23 @@
 						@endif
 					</div>
 					<div class="info">
+						@if(isset($companies))
 						<b class="caret pull-right"></b>
+						@endif
 						{{auth()->user()->name}}
-						<small>{{auth()->user()->getCompany?auth()->user()->getCompany->name : auth()->user()->role->title}}</small>
+						<small>{{auth()->user()->getCompany? session('current_company_name') : auth()->user()->role->title}}</small>
 					</div>
 				</a>
 			</li>
+			@if(isset($companies))
 			<li>
 				<ul class="nav nav-profile">
-					<li><a href="{{route('user.profile')}}"><i class="fa fa-cog"></i> @lang('user.edit_link')</a></li>
+					@foreach($companies as $company)
+					<li><a href="{{route('user.change_company',[$company->id])}}">{{$company->name}}</a></li>
+					@endforeach
 				</ul>
 			</li>
+			@endif
 		</ul>
 		<!-- end sidebar user -->
 		@endif

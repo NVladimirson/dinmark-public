@@ -15,7 +15,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 	Auth::routes(['register' => false]);
 
-	Route::group(['middleware'=>'auth'],function() {
+	Route::group(['middleware'=> ['auth','currentCompany']],function() {
 
 		Route::group(['prefix' => 'admin', 'as' => 'admin.','namespace' => 'Admin'], function (){
 			Route::get('/user/change-request/{id}','UserController@chageRequest')->name('user.change_request');
@@ -30,6 +30,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/profile/data','UserController@updateData')->name('user.profile.update_data');
 		Route::post('/profile/password','UserController@updatePassword')->name('user.profile.update_password');
 		Route::post('/profile/change-request','UserController@chageRequest')->name('user.profile.change_request');
+		Route::get('/profile/change-company/{id}','UserController@changeCompany')->name('user.change_company');
 
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
@@ -43,6 +44,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/notifications/','NotificationController@index')->name('notification');
 		Route::get('/notifications/mark-read','NotificationController@markRead')->name('notification.mark_read');
+
+
 	});
 });
 

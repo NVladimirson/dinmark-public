@@ -159,4 +159,9 @@ class UserController extends Controller
 
 		return redirect()->back()->with('status', trans('user.edit_request_success'));
 	}
+
+	public function changeCompany($id){
+		session(['current_company_id' => $id]);
+		return redirect()->back();
+	}
 }
