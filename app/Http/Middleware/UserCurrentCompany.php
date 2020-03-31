@@ -26,7 +26,7 @@ class UserCurrentCompany
 			$companies = Company::where([
 				['holding',$company->holding],
 				['holding','<>',0]
-			])->get();
+			])->orWhere('id',$company->id)->get();
 
 			view()->share(compact('companies'));
 		}

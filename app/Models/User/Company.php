@@ -16,4 +16,8 @@ class Company extends Model
 	public function getPrice(){
 		return $this->hasOne('App\Models\User\UserPrice','user_type', 'price_type');
 	}
+
+	public function documents(){
+		return $this->hasMany('App\Models\User\CompanyDocument','company_id');
+	}
 }

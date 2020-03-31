@@ -172,11 +172,11 @@
                     </form>
                 </div>
             </div>
-
+            @if(auth()->user()->getCompany)
             <div class="panel panel-primary" data-sortable-id="form-stuff-4">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
-                    <h4 class="panel-title">@lang('user.feeds')</h4>
+                    <h4 class="panel-title">@lang('user.documents')</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -185,9 +185,12 @@
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
                 <div class="panel-body">
-                    <p>Тут будут Фиды</p>
+                    @foreach(auth()->user()->getCompany->documents as $document)
+                        <p><a href="{{env('DINMARK_URL')}}documents/{{$document->document}}" target="_blank">{{$document->name}}</a></p>
+                    @endforeach
                 </div>
             </div>
+            @endif
         </div>
         <!-- end col-6 -->
     </div>

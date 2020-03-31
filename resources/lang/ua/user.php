@@ -38,6 +38,7 @@ return [
 	'edit_password_repeat'		=> 'Повторіть пароль',
 
 	'feeds'						=> 'Індивідуальні фіди',
+	'documents'					=> 'Документи',
 
 	'edit_personal_data_success'=> 'Персональні дані успішно оновлені',
 	'edit_password_success'		=> 'Пароль успішно змінено',

@@ -104,13 +104,7 @@
 			</a>
 			<div class="dropdown-menu dropdown-menu-right">
 				<a href="{{route('user.profile')}}" class="dropdown-item">@lang('user.edit_link')</a>
-				{{--
-				<a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>
-				<a href="javascript:;" class="dropdown-item">Calendar</a>
-				<a href="javascript:;" class="dropdown-item">Setting</a>
-				--}}
 				<div class="dropdown-divider"></div>
-
 				<form method="POST" action="{{ route('logout') }}">
 					@csrf
 					<button type="submit" class="dropdown-item" class="btn btn-link">@lang('user.logout')</button>

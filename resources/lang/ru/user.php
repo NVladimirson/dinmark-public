@@ -38,6 +38,7 @@ return [
 	'edit_password_repeat'		=> 'Повторите пароль',
 
 	'feeds'						=> 'Индивидуальные фиды',
+	'documents'					=> 'Документы',
 
 	'edit_personal_data_success'=> 'Персональные данные успешно обновлены',
 	'edit_password_success'		=> 'Пароль успешно обновлён',
