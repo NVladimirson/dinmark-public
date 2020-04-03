@@ -61,7 +61,7 @@ class LoginController extends Controller
 				if($user->getCompany){
 					$isB2BAccess = $user->getCompany->b2b == 1;
 				}
-				if($isB2BAccess || $user->type == 1 || $user->type == 2){
+				if($isB2BAccess){
 					Auth::login($user);
 					return redirect('/');
 				}else{
@@ -78,5 +78,20 @@ class LoginController extends Controller
 
         return redirect()->back()->withErrors($error);
     }
+
+    public function LoginWithKey(Request $request){
+    	$user = null;
+    	if($request->has('key')){
+			$user = User::where('key_b2b', $request->key)->first();
+		}
+
+    	if($user){
+			Auth::login($user);
+			return redirect('/');
+		}else{
+			$error['access'] =  trans('auth.access_key');
+			return redirect()->route('login')->withErrors($error);
+		}
+	}
 
 }

@@ -14,6 +14,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
 
 	Auth::routes(['register' => false]);
+	Route::get('/login/as_site_user/','Auth\LoginController@LoginWithKey')->name('auth.login_key');
 
 	Route::group(['middleware'=> ['auth','currentCompany']],function() {
 
