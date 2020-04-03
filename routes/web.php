@@ -37,11 +37,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');
 
-		Route::get('/messages','ChatController@index')->name('chat');
-		Route::get('/messages/create','ChatController@create')->name('chat.create');
-		Route::post('/messages/create','ChatController@store')->name('chat.store');
-		Route::get('/messages/{id}','ChatController@show')->name('chat.show');
-		Route::post('/messages/{id}','ChatController@update')->name('chat.update');
+		Route::get('/tickets','TicketController@index')->name('ticket');
+		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
+		Route::post('/tickets/create','TicketController@store')->name('ticket.store');
+		Route::get('/tickets/{id}','TicketController@show')->name('ticket.show');
+		Route::post('/tickets/{id}','TicketController@update')->name('ticket.update');
 
 		Route::get('/notifications/','NotificationController@index')->name('notification');
 		Route::get('/notifications/mark-read','NotificationController@markRead')->name('notification.mark_read');

@@ -5,8 +5,8 @@
 @endpush
 
 @section('content')
-	{{ Breadcrumbs::render('chat.show',$chat) }}
-	<h1 class="page-header">{{trans('chat.dialog').': '.$chat->subject}}</h1>
+	{{ Breadcrumbs::render('ticket.show',$ticket) }}
+	<h1 class="page-header">{{trans('ticket.dialog').': '.$ticket->subject}}</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -15,7 +15,7 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">{{$chat->subject}}</h4>
+					<h4 class="panel-title">{{$ticket->subject}}</h4>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -30,7 +30,7 @@
 							@php
 								$current_date = "";
 							@endphp
-							@foreach($chat->messages as $message)
+							@foreach($ticket->messages as $message)
 								@if($current_date != \Carbon\Carbon::parse($message->created_at)->format('d.m.Y'))
 									@php
 										$current_date = \Carbon\Carbon::parse($message->created_at)->format('d.m.Y');
@@ -63,11 +63,11 @@
 
 						<!-- begin widget-input -->
 						<div class="widget-input widget-input-rounded">
-							<form action="{{route('chat.update',[$chat->id])}}" method="POST">
+							<form action="{{route('ticket.update',[$ticket->id])}}" method="POST">
 								@csrf
 								<div class="widget-input-container">
 									<div class="widget-input-box">
-										<input type="text" name="text" required class="form-control" placeholder="@lang('chat.message')" autofocus/>
+										<input type="text" name="text" required class="form-control" placeholder="@lang('ticket.message')" autofocus/>
 									</div>
 									<div class="widget-input-icon"><button type="submit" class="text-grey btn"><i class="ion fa-2x ion-md-send fa-fw "></i></button></div>
 								</div>

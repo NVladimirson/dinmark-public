@@ -10,4 +10,14 @@
 <link href="/assets/plugins/flag-icon-css/css/flag-icon.min.css" rel="stylesheet" />
 <!-- ================== END BASE CSS STYLE ================== -->
 <link href="/assets/css/default/theme/blue.min.css" rel="stylesheet" id="theme-css-link">
+<style>
+    #page-container:not(.page-sidebar-minified) .sidebar .nav-manager{
+        display: none;
+    }
+    .page-sidebar-minified .sidebar .nav>.nav-manager>a{
+        padding: 10px 13.5px;
+    }
+
+</style>
+
 @stack('css')

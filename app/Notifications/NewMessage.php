@@ -30,7 +30,7 @@ class NewMessage extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database','mail'];
     }
 
     /**
@@ -41,10 +41,10 @@ class NewMessage extends Notification
      */
     public function toMail($notifiable)
     {
-       /* return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');*/
+       return (new MailMessage)
+		   			->subject($this->message->chat->subject)
+		   			->greeting($this->message->chat->subject)
+                    ->line($this->message->text);
     }
 
     /**

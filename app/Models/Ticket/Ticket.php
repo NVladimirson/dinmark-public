@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Models\Chat;
+namespace App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Chat extends Model
+class Ticket extends Model
 {
-	protected $table = 'b2b_chats';
+	protected $dateFormat = 'U';
+	protected $table = 'b2b_tickets';
 	protected $fillable = [
 		'subject', 'user_id', 'manager_id'
 	];
 
 	public function messages(){
-		return $this->hasMany('App\Models\Chat\ChatMessage','chat_id');
+		return $this->hasMany('App\Models\Ticket\TicketMessage','ticket_id');
 	}
 
 	public function user(){

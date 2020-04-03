@@ -6,8 +6,8 @@
 @endpush
 
 @section('content')
-	{{ Breadcrumbs::render('chat.create') }}
-	<h1 class="page-header">@lang('chat.create_page_name')</h1>
+	{{ Breadcrumbs::render('ticket.create') }}
+	<h1 class="page-header">@lang('ticket.create_page_name')</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -16,7 +16,7 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('chat.tab_create')</h4>
+					<h4 class="panel-title">@lang('ticket.tab_create')</h4>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -25,12 +25,12 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<form action="{{route('chat.store')}}" method="post" enctype="multipart/form-data">
+					<form action="{{route('ticket.store')}}" method="post" enctype="multipart/form-data">
 						@csrf
 						<div class="form-group row m-b-15">
-							<label class="col-form-label col-md-2">@lang('chat.subject')</label>
+							<label class="col-form-label col-md-2">@lang('ticket.subject')</label>
 							<div class="col-md-10">
-								<input type="text" name="subject" class="form-control m-b-5 @error('subject') is-invalid @enderror" placeholder="@lang('chat.subject')" value="{{old('subject')}}"/>
+								<input type="text" name="subject" class="form-control m-b-5 @error('subject') is-invalid @enderror" placeholder="@lang('ticket.subject')" value="{{old('subject')}}"/>
 								@error('subject')
 								<span class="invalid-feedback " role="alert">
                                      <strong>{{ $message }}</strong>
@@ -39,9 +39,9 @@
 							</div>
 						</div>
 						<div class="form-group row m-b-15">
-							<label class="col-form-label col-md-2">@lang('chat.message')</label>
+							<label class="col-form-label col-md-2">@lang('ticket.message')</label>
 							<div class="col-md-10">
-								<textarea name="message" rows="10" class="form-control m-b-5 @error('subject') is-invalid @enderror" placeholder="@lang('chat.message')">{{old('message')}}</textarea>
+								<textarea name="message" rows="10" class="form-control m-b-5 @error('subject') is-invalid @enderror" placeholder="@lang('ticket.message')">{{old('message')}}</textarea>
 
 								@error('message')
 								<span class="invalid-feedback " role="alert">
@@ -52,7 +52,7 @@
 						</div>
 
 
-						<button type="submit" class="btn btn-sm btn-primary m-r-5 ">@lang('chat.button_send')</button>
+						<button type="submit" class="btn btn-sm btn-primary m-r-5 ">@lang('ticket.button_send')</button>
 					</form>
 				</div>
 				<!-- end panel-body -->

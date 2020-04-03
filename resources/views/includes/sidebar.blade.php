@@ -147,9 +147,18 @@
 						<h5 class="media-heading">@lang('sidebar.manager')</h5>
 						<p>{{$manager->name}}</p>
 						<p class="mb-0">
-							<a href="{{route('chat')}}" class="btn btn-block btn-primary m-r-5">@lang('sidebar.message')</a>
+							<a href="{{route('ticket')}}" class="btn btn-block btn-primary m-r-5">@lang('sidebar.message')</a>
 						</p>
 					</div>
+				</li>
+				<li class="media media-xs nav-manager">
+					<a href="{{route('ticket')}}">
+					@if($manager->photo)
+						<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/profile/{{$manager->photo}}" alt="{{$manager->name}}" />
+					@else
+						<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$manager->name}}" />
+					@endif
+					</a>
 				</li>
 			</ul>
 				@endif

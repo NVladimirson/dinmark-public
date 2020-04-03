@@ -25,19 +25,19 @@ Breadcrumbs::for('product.show', function ($trail, $product, $name) {
 	$trail->push($name, route('products.show',[$product->id]));
 });
 
-Breadcrumbs::for('chat', function ($trail) {
+Breadcrumbs::for('ticket', function ($trail) {
 	$trail->parent('home');
-	$trail->push(trans('chat.page_name'), route('chat'));
+	$trail->push(trans('ticket.page_name'), route('ticket'));
 });
 
-Breadcrumbs::for('chat.create', function ($trail) {
-	$trail->parent('chat');
-	$trail->push(trans('chat.create_page_name'), route('chat.create'));
+Breadcrumbs::for('ticket.create', function ($trail) {
+	$trail->parent('ticket');
+	$trail->push(trans('ticket.create_page_name'), route('ticket.create'));
 });
 
-Breadcrumbs::for('chat.show', function ($trail, $chat) {
-	$trail->parent('chat');
-	$trail->push(trans('chat.dialog').': '.$chat->subject, route('chat.show',[$chat->id]));
+Breadcrumbs::for('ticket.show', function ($trail, $ticket) {
+	$trail->parent('ticket');
+	$trail->push(trans('ticket.dialog').': '.$ticket->subject, route('ticket.show',[$ticket->id]));
 });
 
 Breadcrumbs::for('notification', function ($trail) {

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Chat\Chat;
-use App\Models\Chat\ChatMessage;
+use App\Models\Ticket\Ticket;
+use App\Models\Ticket\TicketMessage;
 use App\Notifications\NewMessage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
-class ChatController extends Controller
+class TicketController extends Controller
 {
     public function index(){
-		SEOTools::setTitle(trans('chat.page_name'));
+		SEOTools::setTitle(trans('ticket.page_name'));
 
-		$chats = Chat::where('user_id',auth()->user()->id)
+		$tickets = Ticket::where('user_id',auth()->user()->id)
 			->orWhere('manager_id',auth()->user()->id)
 			->withCount(['messages' => function($q){
 				$q->where([
@@ -25,12 +25,12 @@ class ChatController extends Controller
 			->orderBy('updated_at','desc')
 			->paginate(10);
 
-    	return view('chat.index',compact('chats'));
+    	return view('ticket.index',compact('tickets'));
 	}
 
 	public function create(){
-		SEOTools::setTitle(trans('chat.create_page_name'));
-		return view('chat.create');
+		SEOTools::setTitle(trans('ticket.create_page_name'));
+		return view('ticket.create');
 	}
 
 	public function store(Request $request){
@@ -57,54 +57,54 @@ class ChatController extends Controller
 			$toUser = auth()->user()->getCompany->getManager;
 		}
 
-		$chat = Chat::create([
+		$ticket = Ticket::create([
 			'subject' => $request->subject,
 			'user_id' => $user,
 			'manager_id' => $manager
 		]);
 
-		$message = ChatMessage::create([
+		$message = TicketMessage::create([
 			'text' => $request->message,
-			'chat_id' => $chat->id,
+			'ticket_id' => $ticket->id,
 			'user_id' => auth()->user()->id
 		]);
 
 		$toUser->notify(new NewMessage($message));
 
-		return redirect()->route('chat.show',[$chat->id]);
+		return redirect()->route('ticket.show',[$ticket->id]);
 	}
 
 	public function show($id){
-		$chat = Chat::find($id);
+		$ticket = Ticket::find($id);
 
-		SEOTools::setTitle(trans('chat.dialog').': '.$chat->subject);
+		SEOTools::setTitle(trans('ticket.dialog').': '.$ticket->subject);
 
-		ChatMessage::where('is_new', 1)
+		TicketMessage::where('is_new', 1)
 			->where('user_id', '<>', auth()->user()->id)
 			->update(['is_new' => 0]);
 
-		return view('chat.show',compact('chat'));
+		return view('ticket.show',compact('ticket'));
 	}
 
 
 	public function update($id, Request $request){
-		$chat = Chat::find($id);
-		$chat->updated_at = Carbon::now();
-		$chat->save();
+		$ticket = Ticket::find($id);
+		$ticket->updated_at = Carbon::now();
+		$ticket->save();
 
-		$toUser = $chat->user;
-		if($chat->user_id == auth()->user()->id){
-			$toUser = $chat->manager;
+		$toUser = $ticket->user;
+		if($ticket->user_id == auth()->user()->id){
+			$toUser = $ticket->manager;
 		}
 
-		$message = ChatMessage::create([
+		$message = TicketMessage::create([
 			'text' => $request->text,
-			'chat_id' => $chat->id,
+			'ticket_id' => $ticket->id,
 			'user_id' => auth()->user()->id
 		]);
 
 		$toUser->notify(new NewMessage($message));
 
-		return redirect()->route('chat.show',[$chat->id]);
+		return redirect()->route('ticket.show',[$ticket->id]);
 	}
 }
