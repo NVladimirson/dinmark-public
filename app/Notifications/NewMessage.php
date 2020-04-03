@@ -60,7 +60,7 @@ class NewMessage extends Notification
 			'text' => $this->message->text,
 			'user' => $this->message->user,
 			'icon' => 'far fa-envelope text-blue',
-			'link' => route('chat.show',[$this->message->chat->id]),
+			'link' => route('ticket.show',[$this->message->chat->id]),
 		];
     }
 }
