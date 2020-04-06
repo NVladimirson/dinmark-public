@@ -10,7 +10,7 @@ namespace App\Services\Product;
 
 
 use App\Models\Product\Currency;
-use App\Models\User\Company;
+use App\Models\Company\Company;
 use App\Models\WlImage;
 use LaravelLocalization;
 

@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'sidebar_title' => 'Меню',
+	'edit_company' => 'Редагувати компанію',
+	'sidebar_title' => 'Меню',
     'manager' => 'Ваш менеджер',
     'message' => 'Повідомлення',
 

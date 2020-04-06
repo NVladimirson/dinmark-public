@@ -29,6 +29,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/profile/change-company/{id}','UserController@changeCompany')->name('user.change_company');
 		Route::get('/log','UserController@log')->name('user.log');
 
+		Route::get('company','CompanyController@index')->name('company');
+		Route::post('/company/data','CompanyController@updateData')->name('company.update_data');
+		Route::post('/company/add-price','CompanyController@addPrice')->name('company.add_price');
+		Route::post('/company/destroy-price/{id}','CompanyController@destroyPrice')->name('company.destroy_price');
+		Route::post('/company/add-document','CompanyController@addDocument')->name('company.add_document');
+		Route::post('/company/destroy-document/{id}','CompanyController@destroyDocument')->name('company.destroy_document');
+		Route::post('/company/document-request','CompanyController@requestDocument')->name('company.request_document');
+
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');

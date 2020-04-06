@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User\Company;
+use App\Models\Company\Company;
 use Closure;
 
 class UserCurrentCompany

@@ -39,7 +39,7 @@ class User extends Authenticatable
 
 
     public function getCompany(){
-    	return $this->hasOne('App\Models\User\Company','id', 'company');
+    	return $this->hasOne('App\Models\Company\Company','id', 'company');
 	}
 
     public function role(){

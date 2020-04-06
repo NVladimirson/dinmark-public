@@ -12,18 +12,17 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover with-shadow"></div>
 					<div class="image">
-						@if(auth()->user()->photo)
-							<img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
+						@if(auth()->user()->getCompany->logo)
+							<img src="{{env('DINMARK_URL')}}images/company/{{auth()->user()->getCompany->logo}}" alt="{{session('current_company_name')}}" />
 						@else
-							<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+							<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{session('current_company_name')}}" />
 						@endif
 					</div>
 					<div class="info">
 						@if(isset($companies))
 						<b class="caret pull-right"></b>
 						@endif
-						{{auth()->user()->name}}
-						<small>{{auth()->user()->getCompany? session('current_company_name') : auth()->user()->role->title}}</small>
+						{{auth()->user()->getCompany? session('current_company_name') : auth()->user()->role->title}}
 					</div>
 				</a>
 			</li>
@@ -33,6 +32,8 @@
 					@foreach($companies as $company)
 					<li><a href="{{route('user.change_company',[$company->id])}}">{{$company->name}}</a></li>
 					@endforeach
+					<div class="dropdown-divider"></div>
+					<li><a href="{{route('company')}}"><i class="fa fa-cog"></i> @lang('sidebar.edit_company')</a></li>
 				</ul>
 			</li>
 			@endif
@@ -133,7 +134,6 @@
 				@php
 					$manager = auth()->user()->getCompany->getManager;
 				@endphp
-				@if($manager && auth()->user()->type != 1 && auth()->user()->type != 2)
 			<ul class="nav">
 				<li class="media media-xs nav-profile">
 					<div class="media-left">
@@ -161,7 +161,6 @@
 					</a>
 				</li>
 			</ul>
-				@endif
 			@endif
 	</div>
 	<!-- end sidebar scrollbar -->

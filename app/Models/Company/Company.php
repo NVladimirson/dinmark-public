@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models\Company;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,10 @@ class Company extends Model
 	}
 
 	public function documents(){
-		return $this->hasMany('App\Models\User\CompanyDocument','company_id');
+		return $this->hasMany('App\Models\Company\CompanyDocument','company_id');
+	}
+
+	public function type_prices(){
+		return $this->hasMany('App\Models\Company\CompanyPrice','company_id');
 	}
 }

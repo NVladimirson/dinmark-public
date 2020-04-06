@@ -13,6 +13,7 @@ return [
     |
     */
 
+    'edit_company' => 'Редактировать компанию',
     'sidebar_title' => 'Меню',
     'manager' => 'Ваш менеджер',
     'message' => 'Сообщение',
