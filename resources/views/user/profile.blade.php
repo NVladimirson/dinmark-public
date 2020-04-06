@@ -115,18 +115,6 @@
                         </div>
 
                         <button type="submit" class="btn btn-sm btn-primary m-r-5 m-b-15">@lang('user.edit_request')</button>
-
-                        @if(auth()->user()->dataChangeRequest->firstWhere('status','await'))
-                            <div class="alert alert-muted">
-                                <h4>@lang('user.data_change_request_header')</h4>
-                                @if(auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','email'))
-                                    <p><strong>@lang('user.data_change_request_email'):</strong> {{auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','email')->value}}</p>
-                                @endif
-                                @if(auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','phone'))
-                                    <p><strong>@lang('user.data_change_request_phone'):</strong> {{auth()->user()->dataChangeRequest->where('status','await')->firstWhere('type','phone')->value}}</p>
-                                @endif
-                            </div>
-                        @endif
                     </form>
                 </div>
             </div>
@@ -172,11 +160,11 @@
                     </form>
                 </div>
             </div>
-            @if(auth()->user()->getCompany)
+            @if(auth()->user()->export_key)
             <div class="panel panel-primary" data-sortable-id="form-stuff-4">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
-                    <h4 class="panel-title">@lang('user.documents')</h4>
+                    <h4 class="panel-title">@lang('user.feeds')</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -185,9 +173,9 @@
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
                 <div class="panel-body">
-                    @foreach(auth()->user()->getCompany->documents as $document)
-                        <p><a href="{{env('DINMARK_URL')}}documents/{{$document->document}}" target="_blank">{{$document->name}}</a></p>
-                    @endforeach
+                    <p>@lang('user.feed_message')</p>
+                    <p><strong>@lang('user.feed_link_ua'):</strong> <a href="https://dinmark.com.ua/shop/export_prom?userKey={{auth()->user()->export_key}}" target="_blank">https://dinmark.com.ua/shop/export_prom?userKey={{auth()->user()->export_key}}</a></p>
+                    <p><strong>@lang('user.feed_link_ru'):</strong> <a href="https://dinmark.com.ua/ru/shop/export_prom?userKey={{auth()->user()->export_key}}" target="_blank">https://dinmark.com.ua/ru/shop/export_prom?userKey={{auth()->user()->export_key}}</a></p>
                 </div>
             </div>
             @endif

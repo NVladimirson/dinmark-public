@@ -14,6 +14,7 @@ return [
     */
 
     'edit_link' => 'Редактирование профиля',
+    'log_link' => 'Лог действий',
 	'logout' => 'Выход',
 
     'edit_page_name'			=> 'Редактирование профиля',
@@ -38,9 +39,20 @@ return [
 	'edit_password_repeat'		=> 'Повторите пароль',
 
 	'feeds'						=> 'Индивидуальные фиды',
+	'feed_message'				=> 'Ваши ссылки, по котороым вы можете получить номенклатуру:',
+	'feed_link_ua'				=> 'На украинском',
+	'feed_link_ru'				=> 'На русском',
 	'documents'					=> 'Документы',
 
 	'edit_personal_data_success'=> 'Персональные данные успешно обновлены',
 	'edit_password_success'		=> 'Пароль успешно обновлён',
-	'edit_request_success'		=> 'Запрос на изменение данных успешно отправлен',
+	'edit_request_success'		=> 'Запрос на изменение данных успешно отправлен. Ваш менеджер свяжется с вами в ближайшее время.',
+
+	'request_subject'			=> 'Запрос на изменение данных',
+	'request_email_message'		=> 'Замена email с :old на :new',
+	'request_phone_message'		=> 'Замена телефона с :old на :new',
+	'request_set_phone_message'	=> 'Добавить телефон в профиль :new',
+
+	'log_page_name'			=> 'Лог действий',
+	'log_tab_name'			=> 'Список ваших действий',
 ];

@@ -18,11 +18,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 	Route::group(['middleware'=> ['auth','currentCompany']],function() {
 
-		Route::group(['prefix' => 'admin', 'as' => 'admin.','namespace' => 'Admin'], function (){
-			Route::get('/user/change-request/{id}','UserController@chageRequest')->name('user.change_request');
-			Route::post('/user/change-request/{id}','UserController@chageRequestAnswer')->name('user.change_request_answer');
-		});
-
 		Route::get('/', function () {
 			return view('pages/dashboard-v1');
 		})->name('home');
@@ -32,6 +27,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/profile/password','UserController@updatePassword')->name('user.profile.update_password');
 		Route::post('/profile/change-request','UserController@chageRequest')->name('user.profile.change_request');
 		Route::get('/profile/change-company/{id}','UserController@changeCompany')->name('user.change_company');
+		Route::get('/log','UserController@log')->name('user.log');
 
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');

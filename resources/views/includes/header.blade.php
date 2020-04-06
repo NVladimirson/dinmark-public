@@ -104,6 +104,7 @@
 			</a>
 			<div class="dropdown-menu dropdown-menu-right">
 				<a href="{{route('user.profile')}}" class="dropdown-item">@lang('user.edit_link')</a>
+				<a href="{{route('user.log')}}" class="dropdown-item">@lang('user.log_link')</a>
 				<div class="dropdown-divider"></div>
 				<form method="POST" action="{{ route('logout') }}">
 					@csrf

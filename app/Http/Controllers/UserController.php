@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket\Ticket;
+use App\Models\Ticket\TicketMessage;
 use App\Models\User\UserDataChangeRequest;
 use App\Models\User\UserInfo;
+use App\Notifications\NewMessage;
 use App\Notifications\UserChangeData;
 use App\Services\User\PasswordCrypt;
 use Image;
@@ -13,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -113,7 +117,7 @@ class UserController extends Controller
 			if($userPhone->value != $request->phone && $userPhone->value != ''){
 				$validateRule['phone'] = 'nullable|unique:wl_user_info,value';
 			}
-		}elseif($userPhone->value != ''){
+		}elseif($request->phone != ''){
 			$validateRule['phone'] = 'nullable|unique:wl_user_info,value';
 		}
 
@@ -126,31 +130,45 @@ class UserController extends Controller
 				}
 			}
 			if(array_key_exists  ('email',$validateRule)){
-				$changeData = UserDataChangeRequest::updateOrCreate([
-					'type' => 'email',
+				DB::beginTransaction();
+				$ticket = Ticket::create([
+					'subject' => trans('user.request_subject'),
 					'user_id' => $user->id,
-					'status' => 'await'
-				],[
-					'value' => mb_strtolower($request->email),
-					]);
+					'manager_id' => $toUser->id
+				]);
 
-				if($changeData->created_at == $changeData->updated_at && isset($toUser)){
-					$toUser->notify(new UserChangeData($changeData));
-				}
+				$message = TicketMessage::create([
+					'text' => trans('user.request_email_message',['old' => $user->email, 'new' => mb_strtolower($request->email)]),
+					'ticket_id' => $ticket->id,
+					'user_id' => $user->id
+				]);
+
+				DB::commit();
+				$toUser->notify(new NewMessage($message));
+
 			}
 
 			if(array_key_exists  ('phone',$validateRule)){
-				$changeData = UserDataChangeRequest::updateOrCreate([
-					'type' => 'phone',
+				DB::beginTransaction();
+				$ticket = Ticket::create([
+					'subject' => trans('user.request_subject'),
 					'user_id' => $user->id,
-					'status' => 'await'
-				],[
-					'value' => mb_strtolower($request->phone),
+					'manager_id' => $toUser->id
 				]);
 
-				if($changeData->created_at == $changeData->updated_at && isset($toUser)){
-					$toUser->notify(new UserChangeData($changeData));
+				$messageText = trans('user.request_set_phone_message',['new' => mb_strtolower($request->phone)]);
+
+				if($userPhone){
+					$messageText = trans('user.request_phone_message',['old' => $userPhone->value, 'new' => mb_strtolower($request->phone)]);
 				}
+
+				$message = TicketMessage::create([
+					'text' => $messageText,
+					'ticket_id' => $ticket->id,
+					'user_id' => $user->id
+				]);
+				DB::commit();
+				$toUser->notify(new NewMessage($message));
 			}
 
 		}else{
@@ -163,5 +181,10 @@ class UserController extends Controller
 	public function changeCompany($id){
 		session(['current_company_id' => $id]);
 		return redirect()->back();
+	}
+
+	public function log(){
+		SEOTools::setTitle(trans('user.log_page_name'));
+		return view('user.log');
 	}
 }
