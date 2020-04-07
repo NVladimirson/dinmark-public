@@ -26,7 +26,7 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-5 text-center">
-							<img src="{{$imagePath}}" alt="{{$productName}}">
+							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%">
 						</div>
 						<div class="col-md-7">
 							<h3>@lang('product.header_main_info')</h3>
