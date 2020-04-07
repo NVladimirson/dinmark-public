@@ -12,4 +12,8 @@ class Product extends Model
 	public function content(){
 		return $this->hasMany('App\Models\Content','content');
 	}
+
+	public function storages(){
+		return $this->hasMany('App\Models\Storage\StorageProduct','product_id');
+	}
 }

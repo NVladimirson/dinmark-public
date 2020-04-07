@@ -22,6 +22,7 @@ return [
     'table_header_price_porog_1' => 'Цена порог 1',
     'table_header_price_porog_2' => 'Цена порог 2',
     'table_header_storage' => 'Остаток/Срок доставки',
+    'storage_empty' => 'Нет в наличии',
 
 	'show_tab_name' => 'Информация о товаре',
 	'show_article' => 'Артикул',

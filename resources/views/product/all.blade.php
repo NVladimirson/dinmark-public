@@ -143,6 +143,7 @@
 						},
 						{
 							data: 'storage_html',
+							"orderable":      false,
 						},
 						{
 							data: 'actions',

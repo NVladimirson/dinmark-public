@@ -41,7 +41,14 @@ class ProductController extends Controller
 				return \App\Services\Product\Product::getPrice($product);
 			})
 			->addColumn('storage_html', function (Product $product) {
-				return $product->storage_1.'/'.$product->termin;
+				$value = trans('product.storage_empty');
+				if($product->storages){
+					$storage = $product->storages->firstWhere('is_main',1);
+					if($storage){
+						$value = $storage->amount.' / '.$storage->storage->term;
+					}
+				}
+				return $value;
 			})
 
 			->addColumn('actions', function (Product $product) {
