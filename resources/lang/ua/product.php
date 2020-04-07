@@ -25,9 +25,16 @@ return [
 	'storage_empty' => 'Немає в наявності',
 
 	'show_tab_name' => 'Інформація про товар',
+	'header_main_info' => 'Основна інформація',
 	'show_article' => 'Артикул',
 	'show_price' => 'Ціна (100шт)',
 	'show_price_porog_1' => 'Ціна порогу 1',
 	'show_price_porog_2' => 'Ціна порогу 2',
+	'header_storage' => 'Склади',
+	'storage_amount' => 'Залишок',
+	'storage_package' => 'Упаковка (шт)',
+	'storage_limit_1' => 'Ліміт 1',
+	'storage_limit_2' => 'Ліміт 2',
+	'storage_term' => 'Термін доставки',
 
 ];

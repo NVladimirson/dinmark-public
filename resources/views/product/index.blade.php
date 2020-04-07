@@ -25,10 +25,11 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-6 text-center">
+						<div class="col-md-5 text-center">
 							<img src="{{$imagePath}}" alt="{{$productName}}">
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-7">
+							<h3>@lang('product.header_main_info')</h3>
 							<table class="table table-striped">
 								<tr>
 									<th>@lang('product.show_article')</th>
@@ -46,6 +47,31 @@
 									<th>@lang('product.show_price_porog_2')</th>
 									<td>{{ $product->limit_2  }}</td>
 								</tr>
+							</table>
+							<h3>@lang('product.header_storage')</h3>
+							<table class="table table-striped">
+								<tr>
+									<th>#</th>
+									<th>@lang('product.storage_amount')</th>
+									<th>@lang('product.storage_package')</th>
+									<th>@lang('product.storage_limit_1')</th>
+									<th>@lang('product.storage_limit_2')</th>
+									<th>@lang('product.storage_term')</th>
+								</tr>
+								@forelse($product->storages as $storage)
+								<tr>
+									<td>{{ $storage->storage->id }}</td>
+									<td>{{ $storage->amount }}</td>
+									<td>{{ $storage->package }}</td>
+									<td>{{ $storage->limit_1 }}</td>
+									<td>{{ $storage->limit_2 }}</td>
+									<td>{{ $storage->storage->term }}</td>
+								</tr>
+								@empty
+								<tr>
+									<th colspan="6" class="text-center">@lang('product.storage_empty')</th>
+								</tr>
+								@endforelse
 							</table>
 						</div>
 					</div>
