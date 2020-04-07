@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Company\CompanyDocument;
 use App\Models\Company\CompanyPrice;
+use App\Models\Log\Log;
+use App\Models\Log\LogAction;
 use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketMessage;
 use App\Notifications\NewMessage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -112,6 +115,14 @@ class CompanyController extends Controller
 			'manager_add' => auth()->user()->id,
 			'manager_edit' => auth()->user()->id,
 			'company_id' => auth()->user()->getCompany->id
+		]);
+
+
+		Log::create([
+			'date' => Carbon::now()->timestamp,
+			'do' => LogAction::where('name','b2b_add_document_user')->first()->id,
+			'user' => auth()->user()->id,
+			'additionally' => $request->ip()
 		]);
 
 		return redirect()->back()->with('status', trans('company.document_add_success'));

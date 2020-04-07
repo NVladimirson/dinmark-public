@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Log\Log;
+use App\Models\Log\LogAction;
 use App\Services\User\PasswordCrypt;
 use Auth;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\User;
@@ -63,6 +66,14 @@ class LoginController extends Controller
 				}
 				if($isB2BAccess){
 					Auth::login($user);
+
+					Log::create([
+						'date' => Carbon::now()->timestamp,
+						'do' => LogAction::where('name','b2b_login')->first()->id,
+						'user' => $user->id,
+						'additionally' => $request->ip()
+					]);
+
 					return redirect('/');
 				}else{
 					$error['access'] = trans('auth.access');
@@ -87,6 +98,12 @@ class LoginController extends Controller
 
     	if($user){
 			Auth::login($user);
+			Log::create([
+				'date' => Carbon::now()->timestamp,
+				'do' => LogAction::where('name','b2b_login_use_key')->first()->id,
+				'user' => $user->id,
+				'additionally' => $request->ip()
+			]);
 			return redirect('/');
 		}else{
 			$error['access'] =  trans('auth.access_key');

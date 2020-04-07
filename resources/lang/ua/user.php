@@ -55,6 +55,8 @@ return [
 	'request_phone_message'		=> 'Заміна телефона с :old на :new',
 	'request_set_phone_message'	=> 'Додати телефон до профілю :new',
 
-	'log_page_name'			=> 'Лог дій',
-	'log_tab_name'			=> 'Список ваших дій',
+	'log_page_name'				=> 'Лог дій',
+	'log_tab_name'				=> 'Список ваших дій',
+	'log_date'					=> 'Дата и час',
+	'log_action'				=> 'Дія',
 ];

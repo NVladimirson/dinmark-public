@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log\Log;
 use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketMessage;
 use App\Models\User\UserDataChangeRequest;
@@ -184,7 +185,17 @@ class UserController extends Controller
 	}
 
 	public function log(){
+		$logs = Log::whereHas('action', function ($q){
+			$q->where('public',1);
+		})
+			->where([
+				['user',auth()->user()->id],
+				['do','<>',7],
+				['do','<>',15],
+			])
+			->orderBy('date','desc')
+			->paginate(20);
 		SEOTools::setTitle(trans('user.log_page_name'));
-		return view('user.log');
+		return view('user.log',compact('logs'));
 	}
 }

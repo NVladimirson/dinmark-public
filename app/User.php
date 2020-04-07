@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function price(){
     	return $this->hasOne('App\Models\User\UserPrice','user_type', 'type');
 	}
+
+	public function logs(){
+    	return $this->hasMany('App\Models\Log\Log','user');
+	}
 }

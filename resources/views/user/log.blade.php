@@ -28,7 +28,25 @@
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
                 <div class="panel-body">
-                    тут будет лог
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>@lang('user.log_date')</th>
+                            <th>@lang('user.log_action')</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($logs as $log)
+                            <tr>
+                                <td>{{\Carbon\Carbon::parse($log->date)->format('d.m.Y i:h')}}</td>
+                                <td>{{$log->action->title_public}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="pull-right">
+                        {{ $logs->links() }}
+                    </div>
                 </div>
             </div>
             <!-- end panel -->
