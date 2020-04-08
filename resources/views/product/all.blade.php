@@ -11,8 +11,13 @@
 @endpush
 
 @section('content')
-	{{ Breadcrumbs::render('product.all') }}
-	<h1 class="page-header">@lang('product.all_page_name')</h1>
+	@if(isset($breadcrumbs))
+		{{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
+		@else
+		{{ Breadcrumbs::render('product.all') }}
+	@endif
+
+	<h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -31,22 +36,16 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row m-b-15">
+						@if($categories->count() > 0)
 						<div class="col-lg-4">
-							{{--
-							<select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white">
-								<option value="" selected>Select a Country</option>
-								<option value="AF">Afghanistan</option>
-								<option value="AL">Albania</option>
-								<option value="DZ">Algeria</option>
-								<option value="AS">American Samoa</option>
-								<option value="AD">Andorra</option>
-								<option value="AO">Angola</option>
-								<option value="AI">Anguilla</option>
-								<option value="AQ">Antarctica</option>
-								<option value="AG">Antigua and Barbuda</option>
+							<select class="form-control selectpicker" id="category" data-size="10" data-live-search="true" data-style="btn-white">
+								<option value="" selected>Категория</option>
+								@foreach($categories as $category)
+									<option value="{{-$category->content}}">{{$category->name}}</option>
+								@endforeach
 							</select>
-							--}}
 						</div>
+						@endif
 					</div>
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
@@ -98,17 +97,22 @@
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
+				$('#category').change(function () {
+					if($(this).val() != ''){
+						window.location.href = '{{route('products')}}/category/'+$(this).val();
+					}
+				});
+
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {
 						"url": "@lang('table.localization_link')",
-						searchPlaceholder: "Поиск"
 					},
 					//"scrollX": true,
 					"pageLength": 25,
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
-					"ajax": "{!! route('products.all_ajax') !!}",
+					"ajax": "{!! route('products.all_ajax') !!}{!!  (Request::route()->getName() != 'products')?'?category_id='.$id:'' !!}",
 					"order": [[ 0, "desc" ]],
 					"columns": [
 						{

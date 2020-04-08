@@ -30,6 +30,18 @@ Breadcrumbs::for('product.all', function ($trail) {
 	$trail->push(trans('product.all_page_name'), route('products'));
 });
 
+Breadcrumbs::for('product.categories', function ($trail, $categories) {
+	$trail->parent('product.all');
+	foreach ($categories as $category){
+		$trail->push($category['name'], route('products.category',$category['id']));
+	}
+});
+/*
+Breadcrumbs::for('product.category', function ($trail, $category) {
+
+	$trail->push(trans('product.all_page_name'), route('products.category'));
+});*/
+
 Breadcrumbs::for('product.show', function ($trail, $product, $name) {
 	$trail->parent('product.all');
 	$trail->push($name, route('products.show',[$product->id]));

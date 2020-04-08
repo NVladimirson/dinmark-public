@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
+use App\Models\Product\ProductCategory;
+use App\Services\Product\CategoryServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -11,11 +13,28 @@ class ProductController extends Controller
 {
     public function index(){
 		SEOTools::setTitle(trans('product.all_tab_name'));
-    	return view('product.all');
+
+		$categories = CategoryServices::getNames(0);
+
+    	return view('product.all',compact('categories'));
+	}
+
+	public function category($id){
+    	$page_name = CategoryServices::getName($id);
+		SEOTools::setTitle($page_name);
+
+		$categories = CategoryServices::getNames($id);
+		$breadcrumbs = CategoryServices::getBreadcrumbs($id);
+
+		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs'));
 	}
 
 	public function allAjax(Request $request){
 		$products = Product::select();
+
+		if($request->has('category_id')){
+			$products->whereIn('group',CategoryServices::getAllChildrenCategoriesID($request->category_id));
+		}
 
 		return datatables()
 			->eloquent($products)
