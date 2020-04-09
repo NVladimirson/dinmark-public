@@ -9,6 +9,7 @@
 namespace App\Services\Product;
 
 
+use App\Models\Content;
 use App\Models\Product\Currency;
 use App\Models\Company\Company;
 use App\Models\WlImage;
@@ -75,6 +76,23 @@ class Product
 			$price *= $priceCoef;
 		}
 		return number_format($price,2,'.',' ');
+	}
+
+	public static function getIdsSearch($search){
+		if(mb_strlen($search)>1){
+			$instance =  static::getInstance();
+			$ids = Content::where([
+				['language',$instance->lang],
+				['alias', 8],
+				['name', 'like',"%" . $search . "%"]
+			])->pluck('content')->toArray();
+
+			return $ids;
+		}else
+		{
+			return null;
+		}
+
 	}
 
 	private static $instance;

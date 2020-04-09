@@ -8,7 +8,7 @@ use App\Models\Product\ProductCategory;
 use App\Services\Product\CategoryServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
-
+use LaravelLocalization;
 class ProductController extends Controller
 {
     public function index(){
@@ -32,8 +32,12 @@ class ProductController extends Controller
 	public function allAjax(Request $request){
 		$products = Product::select();
 
+		$ids = null;
 		if($request->has('category_id')){
 			$products->whereIn('group',CategoryServices::getAllChildrenCategoriesID($request->category_id));
+		}
+		if($request->has('search')){
+			$ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
 		}
 
 		return datatables()
@@ -87,12 +91,22 @@ class ProductController extends Controller
 			->filterColumn('article_show_html', function($product, $keyword) {
 				$product->where('article_show', 'like',["%{$keyword}%"]);
 			})
-			->filter(function ($product) use ($request) {
+			->filterColumn('name_html', function($product, $keyword) use($ids) {
+				if($ids){
+					$product->whereIn('id',$ids);
+				}else{
+					$product->select();
+				}
+			})
+			->filter(function ($product) use ($request,$ids) {
 				if (request()->has('storage_html')) {
 					$product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
 				}
 				if (request()->has('article_show_html')) {
 					$product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
+				}
+				if(request()->has('name_html')){
+					$product->whereIn('id',$ids);
 				}
 			}, true)
 			->rawColumns(['name_html','article_show_html','image_html','check_html','actions'])
