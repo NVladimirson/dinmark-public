@@ -16,6 +16,8 @@ return [
     'all_page_name' => 'Усі товари',
 	'all_tab_name' => 'Список товарів',
 
+	'select_category' => 'Оберіть категорію',
+
 	'table_header_name' => 'Назва',
 	'table_header_article' => 'Артикул',
 	'table_header_price' => 'Ціна (100шт)',

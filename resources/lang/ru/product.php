@@ -16,6 +16,8 @@ return [
     'all_page_name' => 'Все товары',
     'all_tab_name' => 'Список товаров',
 
+	'select_category' => 'Выберите категорию',
+
     'table_header_name' => 'Название',
     'table_header_article' => 'Артикул',
     'table_header_price' => 'Цена (100шт)',

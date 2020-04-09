@@ -39,7 +39,7 @@
 						@if($categories->count() > 0)
 						<div class="col-lg-4">
 							<select class="form-control selectpicker" id="category" data-size="10" data-live-search="true" data-style="btn-white">
-								<option value="" selected>Категория</option>
+								<option value="" selected>@lang('product.select_category')</option>
 								@foreach($categories as $category)
 									<option value="{{-$category->content}}">{{$category->name}}</option>
 								@endforeach
