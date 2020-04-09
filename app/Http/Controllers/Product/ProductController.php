@@ -105,9 +105,10 @@ class ProductController extends Controller
 		$productName = \App\Services\Product\Product::getName($product);
 		$imagePath = \App\Services\Product\Product::getImagePath($product);
 		$price = \App\Services\Product\Product::getPrice($product);
+		$userPrice = \App\Services\Product\Product::getUserPrice($product);
 
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice'));
 	}
 }

@@ -62,6 +62,21 @@ class Product
 		return number_format($price,2,'.',' ');
 	}
 
+	public static function getUserPrice($product){
+		$instance =  static::getInstance();
+		$currency = $instance->currencies->firstWhere('code',$product->currency);
+		$price = $product->price;
+		if($currency){
+			$price *= $currency->currency;
+		}
+
+		$priceCoef = auth()->user()->price->price;
+		if($priceCoef > 0){
+			$price *= $priceCoef;
+		}
+		return number_format($price,2,'.',' ');
+	}
+
 	private static $instance;
 	public static function getInstance()
 	{
