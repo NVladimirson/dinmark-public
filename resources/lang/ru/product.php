@@ -44,4 +44,5 @@ return [
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
 
+	'modal_wishlist_header' => 'Выберите список'
 ];

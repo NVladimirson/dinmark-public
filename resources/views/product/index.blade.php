@@ -63,15 +63,15 @@
 								@endphp
 								@foreach($product->options as $option)
 									@if(isset($option->option_val))
-									@if( $option->option_val->active > 0)
-									<tr>
-										@php
-											$optionName = $option->translates->firstWhere('language',$lang);
-										@endphp
-										<th>{{$optionName?$optionName->name:''}}</th>
-										<td>{{ $option->val->name }} {{$optionName?$optionName->sufix:''}}</td>
-									</tr>
-									@endif
+										@if( $option->option_val->active > 0)
+										<tr>
+											@php
+												$optionName = $option->translates->firstWhere('language',$lang);
+											@endphp
+											<th>{{$optionName?$optionName->name:''}}</th>
+											<td>{{ $option->val->name }} {{$optionName?$optionName->sufix:''}}</td>
+										</tr>
+										@endif
 									@endif
 								@endforeach
 							</table>

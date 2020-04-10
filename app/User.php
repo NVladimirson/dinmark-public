@@ -53,4 +53,8 @@ class User extends Authenticatable
 	public function logs(){
     	return $this->hasMany('App\Models\Log\Log','user');
 	}
+
+	public function wishlists(){
+		return $this->hasMany('App\Models\Wishlist\LikeGroup','user_id');
+	}
 }

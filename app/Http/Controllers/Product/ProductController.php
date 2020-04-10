@@ -5,18 +5,37 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
+use App\Models\Wishlist\LikeGroup;
 use App\Services\Product\CategoryServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
+
 class ProductController extends Controller
 {
-    public function index(){
+	protected function getWishlist(){
+		if(auth()->user()->wishlists->count() == 0){
+			LikeGroup::create([
+				'name' => trans('wishlist.name_standart').auth()->user()->name,
+				'is_main' => 1,
+				'user_id' => auth()->user()->id,
+				'group_id' => 0
+			]);
+		}
+		$wishlists = LikeGroup::whereHas('user',function ($users){
+			$users->where('company',auth()->user()->company);
+		})->get();
+
+		return $wishlists;
+	}
+
+	public function index(){
 		SEOTools::setTitle(trans('product.all_tab_name'));
 
 		$categories = CategoryServices::getNames(0);
+		$wishlists = $this->getWishlist();
 
-    	return view('product.all',compact('categories'));
+    	return view('product.all',compact('categories','wishlists'));
 	}
 
 	public function category($id){
@@ -75,7 +94,7 @@ class ProductController extends Controller
 			})
 
 			->addColumn('actions', function (Product $product) {
-				return '<a href="'.route('products.show',[$product->id]).'" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></a><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-star"></i></button><button type="button" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-cart-plus"></i></button>';
+				return view('product.include.action_buttons',compact('product'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')

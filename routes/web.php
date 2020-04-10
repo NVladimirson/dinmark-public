@@ -42,6 +42,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');
 
+		Route::get('/catalogs','Product\CatalogController@index')->name('catalogs');
+		Route::get('/catalogs/add-to-catalog/{id}','Product\CatalogController@addToCatalog')->name('catalogs.add_to_catalog');
+
 		Route::get('/tickets','TicketController@index')->name('ticket');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
 		Route::post('/tickets/create','TicketController@store')->name('ticket.store');

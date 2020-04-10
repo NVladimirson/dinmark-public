@@ -8,6 +8,7 @@
 	<link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -73,6 +74,8 @@
 		<!-- end col-10 -->
 	</div>
 	<!-- end row -->
+
+	@include('product.include.modal_wishlist')
 @endsection
 
 @push('scripts')
@@ -91,6 +94,7 @@
 	<script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
 	<script>
@@ -154,6 +158,46 @@
 						},
 					],
 				} );
+
+				$('#modal-wishlist').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product'));
+				})
+
+				$('#form_add_catalog').submit(function (e) {
+					e.preventDefault();
+
+					$('#modal-wishlist').modal('hide');
+
+					var form = $(this);
+					let list_id = $('#wishlist').val();
+					var route = '{{route('catalogs')}}/add-to-catalog/'+list_id;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function(resp)
+						{
+							if(resp == "ok"){
+								$.gritter.add({
+									title: '@lang('wishlist.modal_success')',
+								});
+							}
+						},
+						error:  function(xhr, str){
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				})
 			});
 		})(jQuery);
 	</script>
