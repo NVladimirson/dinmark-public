@@ -2,6 +2,7 @@
 
 @push('css')
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -56,6 +57,7 @@
 									<td>{{ $product->weight  }} @lang('product.weight_kg')</td>
 								</tr>
 							</table>
+							<a href="#modal-wishlist" class="btn btn-sm btn-primary m-r-5 m-b-15" data-toggle="modal" data-product="{{$product->id}}"><i class="fas fa-star"></i> @lang('wishlist.button_add_to_catalog')</a>
 							<h3>@lang('product.header_params')</h3>
 							<table class="table table-striped">
 								@php
@@ -126,8 +128,57 @@
 		<!-- end col-10 -->
 	</div>
 	<!-- end row -->
+	@include('product.include.modal_wishlist')
 @endsection
 
 @push('scripts')
+	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 
+	<script>
+		(function ($) {
+			"use strict";
+			$(document).ready(function () {
+				$('#modal-wishlist').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product'));
+				})
+
+				$('#form_add_catalog').submit(function (e) {
+					e.preventDefault();
+
+					$('#modal-wishlist').modal('hide');
+
+					var form = $(this);
+					let list_id = $('#wishlist').val();
+					var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function (resp) {
+							if (resp == "ok") {
+								$.gritter.add({
+									title: '@lang('wishlist.modal_success')',
+								});
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				})
+			});
+		})(jQuery);
+	</script>
 @endpush

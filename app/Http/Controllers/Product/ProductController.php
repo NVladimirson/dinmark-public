@@ -44,12 +44,13 @@ class ProductController extends Controller
 
 		$categories = CategoryServices::getNames($id);
 		$breadcrumbs = CategoryServices::getBreadcrumbs($id);
+		$wishlists = $this->getWishlist();
 
-		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs'));
+		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs','wishlists'));
 	}
 
 	public function allAjax(Request $request){
-		$products = Product::select();
+		$products = Product::with('storages');
 
 		$ids = null;
 		if($request->has('category_id')){
@@ -139,9 +140,10 @@ class ProductController extends Controller
 		$imagePath = \App\Services\Product\Product::getImagePath($product);
 		$price = \App\Services\Product\Product::getPrice($product);
 		$userPrice = \App\Services\Product\Product::getUserPrice($product);
+		$wishlists = $this->getWishlist();
 
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice', 'wishlists'));
 	}
 }

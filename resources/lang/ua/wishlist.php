@@ -13,6 +13,7 @@ return [
     |
     */
 
+	'button_add_to_catalog' => 'Додати до каталога',
     'name_standart' => 'Список бажань: ',
 	'modal_success' => 'Товар успішно доданий у ваш каталог',
 ];
