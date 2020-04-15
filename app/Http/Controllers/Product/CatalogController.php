@@ -21,7 +21,7 @@ class CatalogController extends Controller
 			$group = LikeGroup::where([
 				['user_id',auth()->user()->id],
 				['is_main',1]
-			]);
+			])->first();
 			session(['current_catalog' => $group->id]);
 		}
 		return view('product.wishlist',compact('wishlists'));
