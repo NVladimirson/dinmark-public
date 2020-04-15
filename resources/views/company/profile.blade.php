@@ -192,7 +192,7 @@
                                 <td>@lang('company.document_'.$document->folder)</td>
                                 <td>{{$document->info}}</td>
                                 <td>
-                                    <a href="{{env('DINMARK_URL')}}documents/{{$document->folder}}/{{$document->document}}" class="btn btn-sm btn-primary m-r-10" target="_blank"><i class="fas fa-download"></i></a>
+                                    <a href="{{env('DINMARK_URL')}}documents/{{$company->id}}/{{$document->folder}}/{{$document->document}}" class="btn btn-sm btn-primary m-r-10" target="_blank"><i class="fas fa-download"></i></a>
                                     @if($document->manager_add == auth()->user()->id)
                                         <form action="{{route('company.destroy_document',[$document->id])}}" method="post" class="d-inline">
                                             @csrf

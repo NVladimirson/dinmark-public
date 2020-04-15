@@ -104,7 +104,7 @@ class CompanyController extends Controller
 		$document = '';
 		if($request->hasFile('document')){
 			$document = Uuid::uuid4().'.'.$request->file('document')->getClientOriginalExtension();
-			Storage::disk('main_site')->putFileAs('documents/'.$request->document_type, $request->file('document'), $document);
+			Storage::disk('main_site')->putFileAs('documents/'.auth()->user()->getCompany->id.'/'.$request->document_type, $request->file('document'), $document);
 		}
 
 		CompanyDocument::create([
