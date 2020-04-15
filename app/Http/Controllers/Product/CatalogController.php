@@ -17,7 +17,7 @@ class CatalogController extends Controller
 		SEOTools::setTitle(trans('wishlist.page_list'));
 
 		$wishlists = CatalogServices::getByCompany();
-		if(!session()->has('current_company_id')){
+		if(!session()->has('current_catalog')){
 			$group = LikeGroup::where([
 				['user_id',auth()->user()->id],
 				['is_main',1]
