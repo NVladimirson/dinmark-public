@@ -18,6 +18,14 @@ class Product extends Model
 	}
 
 	public function options(){
-		return $this->hasMany('App\Models\Product\ProductOption','product', 'id');
+		return $this->hasMany('App\Models\Product\ProductOption','product');
+	}
+
+	public function likes(){
+		return $this->hasMany('App\Models\Wishlist\Like','content');
+	}
+
+	public function holdingArticles(){
+		return $this->hasMany('App\Models\Product\CompanyProductArticle','product_id');
 	}
 }

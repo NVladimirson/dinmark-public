@@ -2,7 +2,6 @@
 
 @section('title', 'Form Elements')
 @push('css')
-    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -189,7 +188,6 @@
 @push('scripts')
     <script src="/assets/plugins/highlight.js/highlight.min.js"></script>
     <script src="/assets/js/demo/render.highlight.js"></script>
-    <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <script>
 		$('#datepicker-default').datepicker({
 			todayHighlight: true
@@ -200,13 +198,6 @@
 			var nextSibling = e.target.nextElementSibling
 			nextSibling.innerText = fileName
 		})
-
-        @if (session('status'))
-		$.gritter.add({
-			title: '{{ session('status') }}',
-		});
-
-        @endif
 
     </script>
 @endpush

@@ -62,8 +62,7 @@ class Product
 		}
 		return number_format($price,2,'.',' ');
 	}
-
-	public static function getUserPrice($product){
+	protected function calcPrice($product){
 		$instance =  static::getInstance();
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
 		$price = $product->price;
@@ -75,7 +74,21 @@ class Product
 		if($priceCoef > 0){
 			$price *= $priceCoef;
 		}
+
+		return $price;
+	}
+
+	public static function getUserPrice($product){
+		$instance =  static::getInstance();
+		$price = $instance->calcPrice($product);
+
 		return number_format($price,2,'.',' ');
+	}
+
+	public static function getPriceWithCoef($product, $coef){
+		$instance =  static::getInstance();
+		$price = $instance->calcPrice($product);
+		return number_format($price * $coef,2,'.',' ');
 	}
 
 	public static function getIdsSearch($search){

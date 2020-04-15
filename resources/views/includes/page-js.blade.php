@@ -1,8 +1,14 @@
 <!-- ================== BEGIN BASE JS ================== -->
 <script src="/assets/js/app.min.js"></script>
 <script src="/assets/js/theme/default.min.js"></script>
+<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 <!-- ================== END BASE JS ================== -->
 <script>
+    @if (session('status'))
+	$.gritter.add({
+		title: '{{ session('status') }}',
+	});
+    @endif
     $('#new_notifications').click(function (e) {
     	if($(this).has('#last_notification')){
     		var button = $(this);

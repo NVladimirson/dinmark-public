@@ -36,15 +36,15 @@ Breadcrumbs::for('product.categories', function ($trail, $categories) {
 		$trail->push($category['name'], route('products.category',$category['id']));
 	}
 });
-/*
-Breadcrumbs::for('product.category', function ($trail, $category) {
-
-	$trail->push(trans('product.all_page_name'), route('products.category'));
-});*/
 
 Breadcrumbs::for('product.show', function ($trail, $product, $name) {
 	$trail->parent('product.all');
 	$trail->push($name, route('products.show',[$product->id]));
+});
+
+Breadcrumbs::for('catalogs', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('wishlist.page_list'), route('catalogs'));
 });
 
 Breadcrumbs::for('ticket', function ($trail) {

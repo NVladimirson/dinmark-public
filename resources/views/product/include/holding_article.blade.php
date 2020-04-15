@@ -1,0 +1,1 @@
+<input type="text" class="holding-article" data-product="{{$product->id}}" value="{{$article}}">

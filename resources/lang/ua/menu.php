@@ -15,5 +15,6 @@ return [
     'dashboard' => 'Dashboard',
     'shop' => 'Католог',
     'shop_all' => 'Усі товари',
+	'my_catalog' => 'Мої каталоги',
 
 ];

@@ -22,4 +22,8 @@ class LikeGroup extends Model
 	public function user(){
 		return $this->hasOne('App\User', 'id', 'user_id');
 	}
+
+	public function price(){
+		return $this->hasOne('App\Models\Company\CompanyPrice','id','price_id');
+	}
 }

@@ -40,10 +40,19 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/category/{id}','Product\ProductController@category')->name('products.category');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
+		Route::get('/products/search','Product\ProductController@search')->name('products.search');
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');
 
 		Route::get('/catalogs','Product\CatalogController@index')->name('catalogs');
+		Route::post('/catalogs/','Product\CatalogController@store')->name('catalogs.store');
 		Route::get('/catalogs/add-to-catalog/{id}','Product\CatalogController@addToCatalog')->name('catalogs.add_to_catalog');
+		Route::post('/catalogs/remove-to-catalog/{id}','Product\CatalogController@removeToCatalog')->name('catalogs.remove_to_catalog');
+		Route::get('/catalogs/all-ajax/','Product\CatalogController@allAjax')->name('catalogs.all_ajax');
+		Route::post('/catalogs/{id}','Product\CatalogController@update')->name('catalogs.update');
+		Route::post('/catalogs/destroy/{id}','Product\CatalogController@destroy')->name('catalogs.destroy');
+		Route::post('/catalogs/change-article/{id}','Product\CatalogController@changeArticle')->name('catalogs.change_article');
+		Route::post('/catalogs/set-price/{id}','Product\CatalogController@setPrice')->name('catalogs.change_article');
+
 
 		Route::get('/tickets','TicketController@index')->name('ticket');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');

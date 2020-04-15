@@ -14,4 +14,8 @@ class Like extends Model
 	protected $fillable = [
 		'user', 'alias', 'content', 'group_id', 'status'
 	];
+
+	public function product(){
+		return $this->hasMany('App\Models\Product\Product','id','content')->where('wl_alias',8);
+	}
 }

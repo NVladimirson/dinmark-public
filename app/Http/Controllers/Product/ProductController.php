@@ -4,36 +4,19 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
-use App\Models\Product\ProductCategory;
-use App\Models\Wishlist\LikeGroup;
 use App\Services\Product\CategoryServices;
+use App\Services\Product\CatalogServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
 
 class ProductController extends Controller
 {
-	protected function getWishlist(){
-		if(auth()->user()->wishlists->count() == 0){
-			LikeGroup::create([
-				'name' => trans('wishlist.name_standart').auth()->user()->name,
-				'is_main' => 1,
-				'user_id' => auth()->user()->id,
-				'group_id' => 0
-			]);
-		}
-		$wishlists = LikeGroup::whereHas('user',function ($users){
-			$users->where('company',auth()->user()->company);
-		})->get();
-
-		return $wishlists;
-	}
-
 	public function index(){
 		SEOTools::setTitle(trans('product.all_tab_name'));
 
 		$categories = CategoryServices::getNames(0);
-		$wishlists = $this->getWishlist();
+		$wishlists = CatalogServices::getByCompany();
 
     	return view('product.all',compact('categories','wishlists'));
 	}
@@ -44,7 +27,7 @@ class ProductController extends Controller
 
 		$categories = CategoryServices::getNames($id);
 		$breadcrumbs = CategoryServices::getBreadcrumbs($id);
-		$wishlists = $this->getWishlist();
+		$wishlists = CatalogServices::getByCompany();
 
 		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs','wishlists'));
 	}
@@ -145,5 +128,30 @@ class ProductController extends Controller
 		SEOTools::setTitle($productName);
 
 		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice', 'wishlists'));
+	}
+
+	public function search(Request $request){
+		$search = $request->name;
+		$formatted_data = [];
+
+		$ids = \App\Services\Product\Product::getIdsSearch($search);
+
+		$products = Product::whereIn('id',$ids)
+			->orWhere([
+				['article','like',"%".$search."%"],
+			])->orWhere([
+				['article_show','like',"%".$search."%"],
+			])
+			->orderBy('article')
+			->limit(10)
+			->get();
+
+		foreach ($products as $product) {
+			$name = \App\Services\Product\Product::getName($product);
+			$formatted_data[] = ['id' => $product->id, 'text' => $name.' ('.$product->article_show.')'];
+		}
+
+
+		return \Response::json($formatted_data);
 	}
 }

@@ -21,10 +21,15 @@ return [
 		'title' => 'menu.shop',
 		'url' => 'javascript:;',
 		'caret' => true,
-		'sub_menu' => [[
+		'sub_menu' => [
+			[
 			'url' => 'products',
 			'title' => 'menu.shop_all'
-		]]
+		],[
+			'url' => 'catalogs',
+			'title' => 'menu.my_catalog'
+		],
+		]
 	]
 	]
 ];
