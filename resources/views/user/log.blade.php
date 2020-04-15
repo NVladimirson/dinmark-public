@@ -38,7 +38,7 @@
                         <tbody>
                         @foreach($logs as $log)
                             <tr>
-                                <td>{{\Carbon\Carbon::parse($log->date)->format('d.m.Y i:h')}}</td>
+                                <td>{{\Carbon\Carbon::parse($log->date)->format('d.m.Y h:i')}}</td>
                                 <td>{{$log->action->title_public}}</td>
                             </tr>
                         @endforeach
