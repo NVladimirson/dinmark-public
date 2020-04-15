@@ -17,7 +17,13 @@ class CatalogController extends Controller
 		SEOTools::setTitle(trans('wishlist.page_list'));
 
 		$wishlists = CatalogServices::getByCompany();
-
+		if(!session()->has('current_company_id')){
+			$group = LikeGroup::where([
+				['user_id',auth()->user()->id],
+				['is_main',1]
+			]);
+			session(['current_catalog' => $group->id]);
+		}
 		return view('product.wishlist',compact('wishlists'));
 	}
 
@@ -59,6 +65,7 @@ class CatalogController extends Controller
 
 	public function allAjax(Request $request){
 		$group = LikeGroup::with(['price'])->find($request->group);
+
 		session(['current_catalog' => $group->id]);
 		$products = Product::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
 			$likes->where([
