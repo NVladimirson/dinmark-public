@@ -11,6 +11,9 @@
 <link href="/assets/css/default/theme/blue.min.css" rel="stylesheet" id="theme-css-link">
 <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 <style>
+    #ui-datepicker-div{
+        z-index: 5!important;
+    }
     #page-container:not(.page-sidebar-minified) .sidebar .nav-manager{
         display: none;
     }
