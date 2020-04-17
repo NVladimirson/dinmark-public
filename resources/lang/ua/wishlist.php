@@ -16,6 +16,7 @@ return [
 	'button_add_to_catalog' => 'Додати до каталога',
     'name_standart' => 'Список бажань: ',
 	'modal_success' => 'Товар успішно доданий у ваш каталог',
+	'article_already_exists' => 'Даний артикул вже існує',
 
 	'page_list'		=> 'Мої каталоги',
 	'list'			=> 'Ваші списки',

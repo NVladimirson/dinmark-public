@@ -56,14 +56,23 @@ class CatalogController extends Controller
 
 	public function changeArticle($id, Request $request){
 		$holdingId = auth()->user()->getCompany->holding;
-		CompanyProductArticle::updateOrCreate([
-			'product_id' => $id,
-			'holding_id' => $holdingId,
-		],[
-			'article' => $request->article
-		]);
+		$article = CompanyProductArticle::where([
+			['holding_id', $holdingId],
+			['article', $request->article]
+		])->first();
 
-		return 'ok';
+		if($article){
+			return trans('wishlist.article_already_exists');
+		}else{
+			CompanyProductArticle::updateOrCreate([
+				'product_id' => $id,
+				'holding_id' => $holdingId,
+			],[
+				'article' => $request->article
+			]);
+
+			return 'ok';
+		}
 	}
 
 	public function allAjax(Request $request){

@@ -227,6 +227,11 @@
 								success: function (resp) {
 									if (resp == "ok") {
 										window.table.ajax.reload();
+									}else{
+										window.table.ajax.reload();
+										$.gritter.add({
+											title: resp,
+										});
 									}
 								},
 								error: function (xhr, str) {
