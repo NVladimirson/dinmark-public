@@ -55,7 +55,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/catalogs/set-price/{id}','Product\CatalogController@setPrice')->name('catalogs.change_article');
 
 		Route::get('/orders','Order\OrderController@index')->name('orders');
+		Route::get('/orders/create','Order\OrderController@create')->name('orders.create');
+		Route::get('/orders/all-ajax/','Order\OrderController@allAjax')->name('orders.all_ajax');
 		Route::post('/orders/add-to-order/{id}','Order\OrderController@addToOrder')->name('orders.add_to_order');
+		Route::get('/orders/{id}','Order\OrderController@show')->name('orders.show');
 
 		Route::get('/tickets','TicketController@index')->name('ticket');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');

@@ -5,12 +5,20 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
+use App\Models\Order\OrderStatus;
 use App\Models\Product\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Artesaos\SEOTools\Facades\SEOTools;
 
 class OrderController extends Controller
 {
+	public function index(){
+		SEOTools::setTitle(trans('order.page_list'));
+		$statuses = OrderStatus::all();
+		return view('order.index',compact('statuses'));
+	}
+
 	public function addToOrder($id, Request $request){
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
@@ -45,5 +53,49 @@ class OrderController extends Controller
 		]);
 
 		return 'ok';
+	}
+
+	public function allAjax(Request $request){
+		$orders = Order::whereHas('getUser', function ($users){
+			$users->where('company',auth()->user()->company);
+		});
+
+		if($request->has('status_id')){
+			$orders->where('status',$request->status_id);
+		}
+
+		return datatables()
+			->eloquent($orders)
+			->addColumn('number_html', function (Order $order) {
+				$number = $order->id;
+				if($order->public_number){
+					$number = $order->public_number;
+				}
+				return $number;
+			})
+			->addColumn('date_html', function (Order $order) {
+				$date = Carbon::parse($order->date)->format('d.m.Y h:i');
+				return $date;
+			})
+			->addColumn('status_html', function (Order $order) {
+				return $order->getStatus->name;
+			})
+			->addColumn('payment_html', function (Order $order) {
+				return $order->getStatus->name;
+			})
+			->addColumn('total_html', function (Order $order) {
+				return number_format($order->total,2,'.',' ');
+			})
+			->addColumn('customer', function (Order $order) {
+				return $order->getUser->name;
+			})
+			->addColumn('author', function (Order $order) {
+				return $order->getUser->name;
+			})
+			->addColumn('actions', function (Order $order) {
+				return view('order.include.action_buttons',compact('order'));
+			})
+			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','article_holding'])
+			->toJson();
 	}
 }

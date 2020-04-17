@@ -15,4 +15,16 @@ return [
 
 
     'modal_success' => 'Товар успішно доданий у замовлення',
+
+	'page_list' => 'Замовлення',
+	'all_tab_name' 	=> 'Список Замовлень',
+	'select_status' 	=> 'Оберіть статус',
+
+	'table_header_number' 			=> 'Номер',
+	'table_header_date' 			=> 'Дата',
+	'table_header_status' 			=> 'Статус',
+	'table_header_status_payment' 	=> 'Статус Опл.',
+	'table_header_total' 			=> 'Сума',
+	'table_header_customer' 		=> 'Отримувач',
+	'table_header_user' 			=> 'Автор',
 ];

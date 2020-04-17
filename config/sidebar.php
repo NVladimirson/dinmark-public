@@ -13,24 +13,38 @@ return [
     |
     */
 	'menu' => [[
-		'icon' => 'fa fa-th-large',
-		'title' => 'menu.dashboard',
-		'url' => 'home'
-	],[
-		'icon' => 'fa fa-shopping-bag',
-		'title' => 'menu.shop',
-		'url' => 'javascript:;',
-		'caret' => true,
-		'sub_menu' => [
-			[
-			'url' => 'products',
-			'title' => 'menu.shop_all'
+			'icon' => 'fa fa-th-large',
+			'title' => 'menu.dashboard',
+			'url' => 'home'
 		],[
-			'url' => 'catalogs',
-			'title' => 'menu.my_catalog'
-		],
+			'icon' => 'fa fa-shopping-bag',
+			'title' => 'menu.shop',
+			'url' => 'javascript:;',
+			'caret' => true,
+			'sub_menu' => [
+				[
+				'url' => 'products',
+				'title' => 'menu.shop_all'
+				],[
+					'url' => 'catalogs',
+					'title' => 'menu.my_catalog'
+				],
+			]
+		],[
+			'icon' => 'fas fa-shopping-cart',
+			'title' => 'menu.orders',
+			'url' => 'javascript:;',
+			'caret' => true,
+			'sub_menu' => [
+				[
+					'url' => 'orders',
+					'title' => 'menu.orders_all'
+				],[
+					'url' => 'orders.create',
+					'title' => 'menu.orders_new'
+				],
+			]
 		]
-	]
 	]
 ];
 

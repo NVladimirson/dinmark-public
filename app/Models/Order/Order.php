@@ -34,4 +34,8 @@ class Order extends Model
 		return $this->hasOne('App\User','id','user');
 	}
 
+	public function getStatus(){
+		return $this->hasOne('App\Models\Order\OrderStatus','id','status');
+	}
+
 }

@@ -1,0 +1,1 @@
+<a href="{{route('orders.show',[$order->id])}}" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></a>
