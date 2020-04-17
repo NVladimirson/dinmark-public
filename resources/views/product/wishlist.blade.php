@@ -66,18 +66,49 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="get">
-						@csrf
-					<div class="row m-b-15">
-						<div class="col-lg-10">
-							<select class="form-control m-b-5" id="product_select" name="product_id">
-							</select>
-						</div>
-						<div class="col-lg-2">
-							<button type="submit" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
-						</div>
+					<div class="m-b-15">
+						<p class="m-b-5">@lang('wishlist.add_hand_message')</p>
+						<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="get">
+							@csrf
+							<div class="row m-b-15">
+								<div class="col-lg-10">
+									<select class="form-control m-b-5" id="product_select" name="product_id">
+									</select>
+								</div>
+								<div class="col-lg-2">
+									<button type="submit" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
+								</div>
+							</div>
+						</form>
 					</div>
-					</form>
+					<div class="m-b-15">
+						<p class="m-b-5">@lang('wishlist.add_import_message')</p>
+						<form id="wishlist_import_product_form" action="{{route('catalogs.import')}}" method="post" enctype="multipart/form-data">
+							@csrf
+							<div class="row">
+								<div class="col-lg-10">
+									<div class="form-group">
+										<div class="input-group mb-3 @error('import') is-invalid @enderror">
+											<div class="custom-file">
+												<input type="file" name="import" class="custom-file-input @error('import') is-invalid @enderror" id="uploadPhoto">
+												<label class="custom-file-label" for="uploadPhoto">@lang('wishlist.select_file')</label>
+											</div>
+										</div>
+										@error('import')
+										<span class="invalid-feedback " role="alert">
+											 <strong>{{ $message }}</strong>
+										</span>
+										@enderror
+									</div>
+								</div>
+								<div class="col-lg-2">
+									<button type="submit" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.import_product_btn')</button>
+								</div>
+							</div>
+						</form>
+						<p class="m-b-0">@lang('wishlist.import_file_note') <a href="{{asset('import/catalog_import.xlsx')}}" target="_blank">@lang('wishlist.import_file_example')</a></p>
+					</div>
+
 				</div>
 			</div>
 			<!-- begin panel -->
@@ -408,6 +439,14 @@
 					});
 
 					return false;
+				})
+
+
+
+				document.querySelector('.custom-file-input').addEventListener('change',function(e){
+					var fileName = document.getElementById("uploadPhoto").files[0].name;
+					var nextSibling = e.target.nextElementSibling
+					nextSibling.innerText = fileName
 				})
 
 				@error('name')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CatalogImport;
 use App\Models\Product\CompanyProductArticle;
 use App\Models\Product\Product;
 use App\Models\Wishlist\Like;
@@ -11,6 +12,7 @@ use App\Services\Order\OrderServices;
 use Illuminate\Http\Request;
 use App\Services\Product\CatalogServices;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Excel;
 
 class CatalogController extends Controller
 {
@@ -52,6 +54,38 @@ class CatalogController extends Controller
 		])->delete();
 
     	return 'ok';
+	}
+
+	public function import(Request $request)
+	{
+		$validatedData = $request->validate([
+			'import' => 'required|mimes:xls,xlsx,csv'
+		]);
+
+		if(!is_array($validatedData) ){
+			if($validatedData->fails()) {
+				return Redirect::back()->withErrors($validatedData);
+			}
+		}
+		$group = LikeGroup::find(session('current_catalog'));
+		$count = Product::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
+			$likes->where([
+				['alias',8],
+				['group_id',$group->group_id],
+				['user',$group->user_id],
+			]);
+		})->count();
+
+		Excel::import(new CatalogImport(), request()->file('import'));
+
+		$count = Product::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
+			$likes->where([
+				['alias',8],
+				['group_id',$group->group_id],
+				['user',$group->user_id],
+			]);
+		})->count() - $count;
+		return redirect()->back()->with('status', $count.trans('wishlist.import_success'));
 	}
 
 	public function changeArticle($id, Request $request){

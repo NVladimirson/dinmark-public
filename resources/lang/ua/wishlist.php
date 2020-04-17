@@ -46,4 +46,12 @@ return [
 	'modal_delete_success'	=> 'Список успішно видаленно',
 	'confirm_delete_header'	=> 'Підтвердити видалення',
 	'confirm_delete_text'	=> 'Віддалений список не можна буде відновити.',
+
+	'add_hand_message'		=> 'Ручне додавання товарів',
+	'add_import_message'	=> 'Додавання товарів за допомогою файлу імпорту',
+	'select_file'			=> 'Оберіть файл імпорту',
+	'import_product_btn'	=> 'Завантажити',
+	'import_file_note'		=> 'Приклад файлу імпорту ви можете завантажити за',
+	'import_file_example'	=> 'посиланням',
+	'import_success'		=> ' товарів успішно доданий у ваш каталог.',
 ];
