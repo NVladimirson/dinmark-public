@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
+use App\Services\Order\OrderServices;
 use App\Services\Product\CategoryServices;
 use App\Services\Product\CatalogServices;
 use Illuminate\Http\Request;
@@ -17,8 +18,9 @@ class ProductController extends Controller
 
 		$categories = CategoryServices::getNames(0);
 		$wishlists = CatalogServices::getByCompany();
+		$orders = OrderServices::getByCompany();
 
-    	return view('product.all',compact('categories','wishlists'));
+    	return view('product.all',compact('categories','wishlists', 'orders'));
 	}
 
 	public function category($id){
@@ -78,7 +80,8 @@ class ProductController extends Controller
 			})
 
 			->addColumn('actions', function (Product $product) {
-				return view('product.include.action_buttons',compact('product'));
+				$storage = $product->storages->firstWhere('is_main',1);
+				return view('product.include.action_buttons',compact('product','storage'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')
@@ -123,11 +126,12 @@ class ProductController extends Controller
 		$imagePath = \App\Services\Product\Product::getImagePath($product);
 		$price = \App\Services\Product\Product::getPrice($product);
 		$userPrice = \App\Services\Product\Product::getUserPrice($product);
-		$wishlists = $this->getWishlist();
+		$wishlists = CatalogServices::getByCompany();
+		$orders = OrderServices::getByCompany();
 
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice', 'wishlists'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice', 'wishlists', 'orders'));
 	}
 
 	public function search(Request $request){

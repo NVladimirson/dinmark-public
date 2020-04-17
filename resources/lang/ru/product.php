@@ -43,6 +43,11 @@ return [
 	'storage_limit_1' => 'Лимит 1',
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
+	'storage_quantity' => 'Количество',
 
-	'modal_wishlist_header' => 'Выберите список'
+	'modal_wishlist_header' => 'Выберите список',
+	'modal_order_header' => 'Добавление товара в заказ',
+	'select_order' => 'Выберите заказ',
+	'new_order' => 'Новый заказ',
+	'quantity_order' => 'Количество',
 ];

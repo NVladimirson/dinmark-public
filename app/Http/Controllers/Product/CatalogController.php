@@ -7,6 +7,7 @@ use App\Models\Product\CompanyProductArticle;
 use App\Models\Product\Product;
 use App\Models\Wishlist\Like;
 use App\Models\Wishlist\LikeGroup;
+use App\Services\Order\OrderServices;
 use Illuminate\Http\Request;
 use App\Services\Product\CatalogServices;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -24,7 +25,9 @@ class CatalogController extends Controller
 			])->first();
 			session(['current_catalog' => $group->id]);
 		}
-		return view('product.wishlist',compact('wishlists'));
+		$orders = OrderServices::getByCompany();
+
+		return view('product.wishlist',compact('wishlists','orders'));
 	}
 
     public function addToCatalog($id, Request $request){
@@ -132,7 +135,8 @@ class CatalogController extends Controller
 			})
 
 			->addColumn('actions', function (Product $product) {
-				return view('product.include.wishlist_action_buttons',compact('product'));
+				$storage = $product->storages->firstWhere('is_main',1);
+				return view('product.include.wishlist_action_buttons',compact('product','storage'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')

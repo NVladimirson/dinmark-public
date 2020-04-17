@@ -103,6 +103,8 @@
 									<th>@lang('product.storage_limit_1')</th>
 									<th>@lang('product.storage_limit_2')</th>
 									<th>@lang('product.storage_term')</th>
+									<th>@lang('product.storage_quantity')</th>
+									<th></th>
 								</tr>
 								@forelse($product->storages as $storage)
 								<tr>
@@ -112,6 +114,12 @@
 									<td>{{ $storage->limit_1 }}</td>
 									<td>{{ $storage->limit_2 }}</td>
 									<td>{{ $storage->storage->term }}</td>
+									<td>
+										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" max="{{$storage->amount}}"/>
+									</td>
+									<td>
+										<a href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount}}" ><i class="fas fa-cart-plus"></i></a>
+									</td>
 								</tr>
 								@empty
 								<tr>
@@ -129,6 +137,7 @@
 	</div>
 	<!-- end row -->
 	@include('product.include.modal_wishlist')
+	@include('product.include.modal_order')
 @endsection
 
 @push('scripts')
@@ -144,6 +153,21 @@
 					var button = $(event.relatedTarget);
 					var modal = $(this);
 					modal.find('.product_id').val(button.data('product'));
+				})
+
+				$('#modal-order').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					var quntity_el = button.parent().prev().find('input[name="quantity"');
+					modal.find('.product_id').val(button.data('product'));
+					modal.find('.storage_id').val(button.data('storage'));
+					var quantity = modal.find('input[name="quantity"');
+
+					quantity.val(quntity_el.val());
+					quantity.attr('min',quntity_el.attr('min'));
+					quantity.attr('step',quntity_el.attr('step'));
+					quantity.attr('max',quntity_el.attr('max'));
+					quantity.parent().hide(0);
 				})
 
 				$('#form_add_catalog').submit(function (e) {
@@ -172,6 +196,44 @@
 							}
 						},
 						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				})
+
+				$('#form_add_order').submit(function (e) {
+					e.preventDefault();
+
+					$('#modal-order').modal('hide');
+
+					var form = $(this);
+
+					var order_id = $('#order_id').val();
+					var route = '{{route('orders')}}/add-to-order/'+order_id;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "POST",
+						url: route,
+						data: form.serialize(),
+						success: function(resp)
+						{
+							if(resp == "ok"){
+								$.gritter.add({
+									title: '@lang('order.modal_success')',
+								});
+								if(order_id == 0){
+									document.location.reload(true);
+								}
+							}
+						},
+						error:  function(xhr, str){
 							console.log(xhr);
 						}
 					});

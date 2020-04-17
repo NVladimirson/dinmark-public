@@ -62,7 +62,7 @@ class Product
 		}
 		return number_format($price,2,'.',' ');
 	}
-	protected function calcPrice($product){
+	public static function calcPrice($product){
 		$instance =  static::getInstance();
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
 		$price = $product->price;
