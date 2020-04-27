@@ -27,4 +27,28 @@ return [
     'table_header_total' 			=> 'Сумма',
     'table_header_customer' 		=> 'Получатель',
     'table_header_user' 			=> 'Автор',
+
+	'page_create' 				=> 'Новый заказ',
+	'page_update' 				=> 'Заказ №',
+	'order_number'				=> 'Заявка №',
+	'btn_new_request'			=> 'Сохранить Заявку',
+	'btn_new_order'				=> 'Оформить Заказ',
+	'btn_cancel_order'			=> 'Отменить',
+	'select_sender'				=> 'Отправитель',
+	'sender_dinmark'			=> 'Dinmark',
+	'select_customer'			=> 'Получатель',
+	'form_pdv_label'			=> 'Цена',
+	'form_pdv'					=> 'с НДС',
+	'form_select_product'		=> 'Выберите продукт',
+	'form_quantity_product'		=> 'Количество',
+	'form_comment'				=> 'Комментарий к заказу',
+
+	'table_new_prodct'		=> 'Товар',
+	'table_new_quantity'	=> 'Количество',
+	'table_new_price'		=> 'Цена',
+	'table_new_total'		=> 'Сумма',
+
+
+	'import_not_found'			=> 'Следующие товары не найдены:',
+	'import_not_available'		=> 'Следующих товаров нет в наличии:',
 ];

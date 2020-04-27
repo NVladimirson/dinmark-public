@@ -152,7 +152,23 @@ class ProductController extends Controller
 
 		foreach ($products as $product) {
 			$name = \App\Services\Product\Product::getName($product);
-			$formatted_data[] = ['id' => $product->id, 'text' => $name.' ('.$product->article_show.')'];
+			$storage = $product->storages->firstWhere('is_main',1);
+			$min = 0;
+			$max = 0;
+			$storage_id = 1;
+			if($storage){
+				$min = $storage->package;
+				$max = $storage->amount;
+				$storage_id = $storage->storage_id;
+			}
+
+			$formatted_data[] = [
+				'id' => $product->id,
+				'text' => $name.' ('.$product->article_show.')',
+				'min' => $min,
+				'max' => $max,
+				'storage_id' => $storage_id,
+			];
 		}
 
 

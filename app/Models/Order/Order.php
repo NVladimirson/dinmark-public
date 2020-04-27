@@ -38,4 +38,7 @@ class Order extends Model
 		return $this->hasOne('App\Models\Order\OrderStatus','id','status');
 	}
 
+	public function products(){
+		return $this->hasMany('App\Models\Order\OrderProduct','cart');
+	}
 }

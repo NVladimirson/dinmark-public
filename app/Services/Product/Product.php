@@ -46,6 +46,12 @@ class Product
 
 	public static function getPrice($product){
 		$instance =  static::getInstance();
+		$price = $instance->calcPrice($product);
+		return number_format($price,2,'.',' ');
+	}
+	public static function calcPrice($product){
+		$instance =  static::getInstance();
+
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
 		$company = $instance->company;
 		$price = $product->price;
@@ -60,9 +66,13 @@ class Product
 		if($priceCoef > 0){
 			$price *= $priceCoef;
 		}
-		return number_format($price,2,'.',' ');
+
+		$price = ((int)($price*100)/100);
+
+		return $price;
 	}
-	public static function calcPrice($product){
+
+	public static function getUserPrice($product){
 		$instance =  static::getInstance();
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
 		$price = $product->price;
@@ -74,13 +84,6 @@ class Product
 		if($priceCoef > 0){
 			$price *= $priceCoef;
 		}
-
-		return $price;
-	}
-
-	public static function getUserPrice($product){
-		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product);
 
 		return number_format($price,2,'.',' ');
 	}

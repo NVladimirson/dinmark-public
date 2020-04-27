@@ -14,4 +14,8 @@ class CompanyProductArticle extends Model
 	protected $fillable = [
 		'article', 'holding_id', 'product_id'
 	];
+
+	public function product(){
+		$this->hasOne('App\Models\Product\Product','id', 'product_id');
+	}
 }

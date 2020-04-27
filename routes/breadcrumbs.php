@@ -71,3 +71,13 @@ Breadcrumbs::for('order.all', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('order.page_list'), route('orders'));
 });
+
+Breadcrumbs::for('order.create', function ($trail) {
+	$trail->parent('order.all');
+	$trail->push(trans('order.page_create'), route('orders.create'));
+});
+
+Breadcrumbs::for('order.show', function ($trail, $order) {
+	$trail->parent('order.all');
+	$trail->push(trans('order.page_update').$order->id, route('orders.show',[$order->id]));
+});

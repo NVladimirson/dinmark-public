@@ -28,5 +28,12 @@ class OrderProduct extends Model
 		'date',
 	];
 
+	public function getCart(){
+		return $this->hasOne('App\Models\Order\Order','id','cart');
+	}
+
+	public function product(){
+		return $this->hasOne('App\Models\Product\Product','id','product_id');
+	}
 
 }

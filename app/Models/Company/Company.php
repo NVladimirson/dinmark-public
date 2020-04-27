@@ -21,6 +21,10 @@ class Company extends Model
 		return $this->hasMany('App\Models\Company\CompanyDocument','company_id');
 	}
 
+	public function users(){
+		return $this->hasMany('App\User','company');
+	}
+
 	public function type_prices(){
 		return $this->hasMany('App\Models\Company\CompanyPrice','company_id');
 	}
