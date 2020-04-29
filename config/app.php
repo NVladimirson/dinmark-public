@@ -170,6 +170,7 @@ return [
 		Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
 		Yajra\DataTables\DataTablesServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
+		Barryvdh\Snappy\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -234,6 +235,8 @@ return [
 		'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 		'Image' => Intervention\Image\Facades\Image::class,
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+		'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+		'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];

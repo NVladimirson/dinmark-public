@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Imports\OrderImport;
 use App\Models\Company\Company;
+use App\Models\Company\CompanyPrice;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Order\OrderStatus;
 use App\Models\Product\Product;
+use App\Services\TimeServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Excel;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -171,7 +174,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$order = Order::with(['products.product'])->find($id);
+		$order = Order::with(['products.product.storages','products.storageProduct.storage'])->find($id);
 		$order->sender_id = $request->sender_id;
 		$order->user = $request->customer_id;
 		$order->comment = $request->comment;
@@ -201,8 +204,44 @@ class OrderController extends Controller
 			$order->status = 1;
 		}
 
-
 		$order->save();
+
+		if($request->submit == 'cp_generate'){
+			$products = [];
+			$companyPrice = CompanyPrice::find($request->cp_price_id);
+			$orderTotal = 0;
+
+			foreach($order->products as $orderProduct){
+				$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * $companyPrice->koef;
+
+				$total = $price * $orderProduct->quantity;
+				$orderTotal += $total;
+
+				$products[] = [
+					'id'	=> $orderProduct->id,
+					'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
+					'quantity' => number_format($orderProduct->quantity/$orderProduct->storageProduct->package,1,',',' '),
+					'package' => $orderProduct->storageProduct->package,
+					'price' => number_format($price*100,2,',', ' '),
+					'total' => number_format($total,2,',', ' '),
+					'storage_termin' => $orderProduct->storageProduct->storage->term,
+				];
+			}
+
+			$pdf = PDF::loadView('order.pdf', [
+				'order' => $order,
+				'date' => TimeServices::getFromTime($order->date_add),
+				'products' => $products,
+				'total' => number_format($orderTotal, 2, ',', ' '),
+				'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
+				'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
+				'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
+				'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+			]);
+			$pdf->setOption('enable-smart-shrinking', true);
+			$pdf->setOption('no-stop-slow-scripts', true);
+			return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
+		}
 
 		return redirect()->route('orders.show',$id);
 	}

@@ -46,12 +46,17 @@ class CompanyController extends Controller
 		$company->prefix = $validatedData['prefix'];
 		if($request->hasFile('logo')){
 			$path   = $request->file('logo');
+			$full = Image::make($path)->encode('jpg');
 			$resize = Image::make($path)->fit(300)->encode('jpg');
 			$hash = md5($resize->__toString());
 			$path = "/images/company/{$company->id}_{$hash}.jpg";
+			$full_path = "/images/company/{$company->id}_{$hash}_full.jpg";
 			$resize->save(Storage::disk('main_site')->getAdapter()->getPathPrefix() .$path);
+			$full->save(Storage::disk('main_site')->getAdapter()->getPathPrefix() .$full_path);
 			$path = basename($path);
+			$full_path = basename($full_path);
 			$company->logo = $path;
+			$company->full_logo = $full_path;
 		}
 
 		$company->save();

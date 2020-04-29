@@ -56,7 +56,9 @@
 							<select class="form-control selectpicker" id="sender_id" name="sender_id" data-live-search="true" data-style="btn-white">
 								<option value="0" @if($order->sender_id == 0) selected="selected" @endif>@lang('order.sender_dinmark')</option>
 								@foreach($companies as $company)
-									<option value="{{$company->id}}" @if($company->id == $order->sender_id) selected="selected" @endif>{{$company->name}}</option>
+									@foreach($company->users as $user)
+									<option value="{{$user->id}}" @if($user->id == $order->sender_id) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
+									@endforeach
 								@endforeach
 							</select>
 						</div>
@@ -184,7 +186,26 @@
 					</table>
 						<div class="row">
 							<div class="col-lg-6">
-
+                                <h3>@lang('order.cp_header')</h3>
+                                <div class="form-group m-b-15">
+                                    <label>@lang('order.cp_price')</label>
+                                    <select class="form-control selectpicker" id="cp_price_id" name="cp_price_id" data-live-search="true" data-style="btn-white">
+                                        @foreach(auth()->user()->getCompany->type_prices as $type_price)
+                                            <option value="{{$type_price->id}}">{{$type_price->name}} ({{$type_price->koef}})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group m-b-15">
+                                    <label>@lang('order.cp_user')</label>
+                                    <select class="form-control selectpicker" id="cp_cliet_id" name="cp_cliet_id" data-live-search="true" data-style="btn-white">
+                                        {{--@foreach($companies as $company)
+                                            @foreach($company->users as $user)
+                                                <option value="{{$user->id}}" @if($user->id == $order->user) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
+                                            @endforeach
+                                        @endforeach--}}
+                                    </select>
+                                </div>
+                                <button type="submit" name="submit" value="cp_generate" class="btn btn-lg btn-primary">@lang('order.cp_btn')</button>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group m-b-15">

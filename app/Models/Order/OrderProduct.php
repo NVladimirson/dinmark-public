@@ -36,4 +36,8 @@ class OrderProduct extends Model
 		return $this->hasOne('App\Models\Product\Product','id','product_id');
 	}
 
+	public function storageProduct(){
+		return $this->hasOne('App\Models\Storage\StorageProduct','id','storage_alias');
+	}
+
 }
