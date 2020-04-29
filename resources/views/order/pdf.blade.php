@@ -155,7 +155,7 @@
 <table class="f8-5 f-b" style="margin-top: 20px">
     <tr>
         <td>Виконавець</td>
-        <td class="f7 f-n">@if($order->sender_id != 0) {{$order->sender->name}} @else Тетяна Шалан @endif</td>
+        <td class="f7 f-n">@if($order->sender_id != 0) {{$order->sender->name}} @else {{auth()->user()->getCompany->getManager->name}} @endif</td>
         <td class="t-r">Замовник</td>
         <td class="f-n t-r td-border-b-1">Олег Вікторович</td>
     </tr>
