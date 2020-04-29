@@ -178,7 +178,6 @@ class OrderController extends Controller
 		$order->sender_id = $request->sender_id;
 		$order->user = $request->customer_id;
 		$order->comment = $request->comment;
-		$order->is_pdv = $request->has('is_pdv');
 		$order->save();
 
 		if($request->submit == 'add_product'){

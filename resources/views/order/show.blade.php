@@ -51,7 +51,7 @@
 						</div>
 					</div>
 					<div class="row m-b-15">
-						<div class="col-md-5">
+						<div class="col-md-6">
 							<label>@lang('order.select_sender')</label>
 							<select class="form-control selectpicker" id="sender_id" name="sender_id" data-live-search="true" data-style="btn-white">
 								<option value="0" @if($order->sender_id == 0) selected="selected" @endif>@lang('order.sender_dinmark')</option>
@@ -71,13 +71,6 @@
 									@endforeach
 								@endforeach
 							</select>
-						</div>
-						<div class="col-md-1">
-							<p class="m-b-5">@lang('order.form_pdv_label')</p>
-							<div class="checkbox checkbox-css">
-								<input type="checkbox" id="is_pdv" name="is_pdv" value="true" @if($order->is_pdv) checked="checked" @endif >
-								<label for="is_pdv">@lang('order.form_pdv')</label>
-							</div>
 						</div>
 					</div>
 						<div class="row">
