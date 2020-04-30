@@ -42,6 +42,9 @@ return [
 				],[
 					'url' => 'orders.create',
 					'title' => 'menu.orders_new'
+				],[
+					'url' => 'implementations',
+					'title' => 'menu.implementations'
 				],
 			]
 		]

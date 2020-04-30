@@ -20,5 +20,6 @@ return [
     'orders' => 'Заказы',
     'orders_all' => 'Мои заказы',
     'orders_new' => 'Новый заказ',
+    'implementations' => 'Реализации',
 
 ];

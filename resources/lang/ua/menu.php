@@ -19,5 +19,5 @@ return [
 	'orders' => 'Замовлення',
 	'orders_all' => 'Мої замовлення',
 	'orders_new' => 'Нове замовлення',
-
+	'implementations' => 'Реалізації',
 ];
