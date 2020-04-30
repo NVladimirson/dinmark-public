@@ -47,6 +47,20 @@ return [
 					'title' => 'menu.implementations'
 				],
 			]
+		],[
+			'icon' => 'fas fa-exchange-alt',
+			'title' => 'menu.reclamations',
+			'url' => 'javascript:;',
+			'caret' => true,
+			'sub_menu' => [
+				[
+					'url' => 'reclamations',
+					'title' => 'menu.reclamations_all'
+				],[
+					'url' => 'reclamations.create',
+					'title' => 'menu.reclamations_new'
+				],
+			]
 		]
 	]
 ];

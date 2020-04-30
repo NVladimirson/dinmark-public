@@ -93,6 +93,8 @@
 					"serverSide": true,
 					"ajax": "{!! route('implementations.ajax') !!}",
 					"order": [[ 0, "desc" ]],
+					"ordering": false,
+					"searching": false,
 					"columns": [
 						{
 							data: 'id',

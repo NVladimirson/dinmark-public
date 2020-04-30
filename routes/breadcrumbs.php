@@ -86,3 +86,8 @@ Breadcrumbs::for('implementations', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('implementation.page_list'), route('implementations'));
 });
+
+Breadcrumbs::for('reclamation.all', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('reclamation.page_list'), route('reclamations'));
+});

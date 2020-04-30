@@ -32,7 +32,8 @@ class ImplementationController extends Controller
 						['holding', '<>', 0],
 					]);
 				});
-			});
+			})
+			->orderBy('id','desc');
 
 		return datatables()
 			->eloquent($implementations)

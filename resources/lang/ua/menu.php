@@ -20,4 +20,7 @@ return [
 	'orders_all' => 'Мої замовлення',
 	'orders_new' => 'Нове замовлення',
 	'implementations' => 'Реалізації',
+	'reclamations'		=> 'Рекламації',
+	'reclamations_all'	=> 'Мої рекламації',
+	'reclamations_new'	=> 'Нова рекламація',
 ];

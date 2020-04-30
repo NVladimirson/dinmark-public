@@ -72,7 +72,8 @@ class OrderController extends Controller
 
 	public function allAjax(Request $request){
 		$orders = Order::whereHas('getUser', function ($users){
-			$users->where('company',auth()->user()->company);
+			$users->where('company',auth()->user()->company)
+				->orderBy('id','desc');
 		});
 
 		if($request->has('status_id')){

@@ -12,9 +12,9 @@
 @endpush
 
 @section('content')
-	{{ Breadcrumbs::render('order.all') }}
+	{{ Breadcrumbs::render('reclamation.all') }}
 
-	<h1 class="page-header">@lang('order.page_list')</h1>
+	<h1 class="page-header">@lang('reclamation.page_list')</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -23,7 +23,7 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('order.all_tab_name')</h4>
+					<h4 class="panel-title">@lang('reclamation.all_tab_name')</h4>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -32,27 +32,16 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<div class="row m-b-15">
-							<div class="col-lg-3">
-								<select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
-									<option value="" selected>@lang('order.select_status')</option>
-									@foreach($statuses as $status)
-										<option value="{{$status->id}}">{{$status->name}}</option>
-									@endforeach
-								</select>
-							</div>
-					</div>
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
-								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
-								<th class="text-nowrap">@lang('order.table_header_date')</th>
-								<th class="text-nowrap">@lang('order.table_header_status')</th>
-								<th class="text-nowrap">@lang('order.table_header_status_payment')</th>
-								<th class="text-nowrap">@lang('order.table_header_total')</th>
-								<th class="text-nowrap">@lang('order.table_header_customer')</th>
-								<th class="text-nowrap">@lang('order.table_header_user')</th>
-								<th width="100"></th>
+								<th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
+								<th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
+								<th class="text-nowrap">@lang('reclamation.table_header_product')</th>
+								<th class="text-nowrap">@lang('reclamation.table_header_quantity')</th>
+								<th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
+								<th class="text-nowrap">@lang('reclamation.table_header_status')</th>
+								<th class="text-nowrap">@lang('reclamation.table_header_author')</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -93,12 +82,6 @@
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
-				var ajaxRouteBase = "{!! route('orders.all_ajax') !!}";
-
-				$('#status').change(function () {
-					var ajaxRoute = ajaxRouteBase+'?status_id='+$(this).val();
-					window.table.ajax.url( ajaxRoute ).load();
-				});
 
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {
@@ -108,37 +91,34 @@
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
-					"ajax": "{!! route('orders.all_ajax') !!}",
+					"ajax": "{!! route('reclamations.ajax') !!}",
 					"order": [[ 0, "desc" ]],
 					"ordering": false,
 					"searching": false,
 					"columns": [
 						{
 							className: 'text-center',
-							data: 'number_html',
+							data: 'id',
 						},
 						{
-							data: 'date_html',
+							className: 'text-center',
+							data: 'implementation',
 						},
 						{
+							data: 'product',
+						},
+						{
+							data: 'quantity',
+						},
+						{
+							data: 'ttn',
+						},
+						{
+							className: 'text-center',
 							data: 'status_html',
 						},
 						{
-							data: 'payment_html',
-							"visible": false,
-						},
-						{
-							data: 'total_html',
-						},
-						{
-							data: 'customer',
-						},
-						{
-							data: 'author',
-							"orderable":      false,
-						},
-						{
-							data: 'actions',
+							data: 'user',
 						},
 					],
 				} );
