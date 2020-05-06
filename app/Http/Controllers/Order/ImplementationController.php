@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order\Implementation;
+use App\Models\Order\ImplementationProduct;
+use App\Models\Product\Product;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -22,6 +24,8 @@ class ImplementationController extends Controller
 					$companies->where([
 						['holding', auth()->user()->getCompany->holding],
 						['holding', '<>', 0],
+					])->orWhere([
+						['id', auth()->user()->getCompany->id],
 					]);
 				});
 			})
@@ -30,6 +34,8 @@ class ImplementationController extends Controller
 					$companies->where([
 						['holding', auth()->user()->getCompany->holding],
 						['holding', '<>', 0],
+					])->orWhere([
+						['id', auth()->user()->getCompany->id],
 					]);
 				});
 			})
@@ -70,5 +76,69 @@ class ImplementationController extends Controller
 			})
 			->rawColumns(['products'])
 			->toJson();
+	}
+
+	public function find(Request $request)
+	{
+		$search = $request->name;
+		$formatted_data = [];
+
+		$implementations = Implementation::whereHas('sender',function ($users){
+				$users->whereHas('getCompany',function ($companies){
+					$companies->where([
+						['holding', auth()->user()->getCompany->holding],
+						['holding', '<>', 0],
+					])->orWhere([
+						['id', auth()->user()->getCompany->id],
+					]);
+				});
+			})
+			->orWhereHas('customer',function ($users){
+				$users->whereHas('getCompany',function ($companies){
+					$companies->where([
+						['holding', auth()->user()->getCompany->holding],
+						['holding', '<>', 0],
+					])->orWhere([
+						['id', auth()->user()->getCompany->id],
+					]);
+				});
+			})
+			->where(function ($userImplementation) use ($search){
+				$userImplementation
+					->where('id','like',"%".$search."%")
+					->orWhere('public_number','like',"%".$search."%");
+			})
+			->orderBy('id','desc')
+			->limit(10)
+			->get();
+
+		foreach ($implementations as $implementation) {
+			$formatted_data [] = [
+				'id' => $implementation->id,
+				'text' => $implementation->id.' ('.$implementation->public_number.')',
+			];
+		}
+
+		return \Response::json($formatted_data);
+	}
+
+	public function getProductsAjax($id)
+	{
+		$implementationProducts = ImplementationProduct::with(['orderProduct.product'])
+			->where('implementation_id',$id)
+			->get();
+
+		$formatted_data = [];
+
+		foreach ($implementationProducts as $implementationProduct){
+			$formatted_data[] = [
+				'id'	=> $implementationProduct->id,
+				'name'	=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product).'('.$implementationProduct->orderProduct->product->article_show.')',
+				//'min'	=> $implementationProduct->quantity,
+				'max'	=> $implementationProduct->quantity,
+			];
+		}
+
+		return \Response::json($formatted_data);
 	}
 }

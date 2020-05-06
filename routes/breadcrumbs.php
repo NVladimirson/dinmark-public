@@ -91,3 +91,8 @@ Breadcrumbs::for('reclamation.all', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('reclamation.page_list'), route('reclamations'));
 });
+
+Breadcrumbs::for('reclamation.create', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('reclamation.page_create'), route('reclamations.create'));
+});

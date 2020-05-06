@@ -15,7 +15,9 @@ return [
 
 
     'page_list' => 'Рекламации',
+    'page_create' => 'Новая Рекламация',
     'all_tab_name' 	=> 'Список Рекламаций',
+    'create_tab_name' 	=> 'Информация о Рекламации',
 
     'table_header_number' 				=> 'Номер',
     'table_header_realisation_number' 	=> 'Реализация',
@@ -30,4 +32,11 @@ return [
 	'status_return'			=> 'Возврат денег',
 	'status_change'			=> 'Замена товара',
 	'status_fail'			=> 'Отказ в расмотрении',
+
+	'select_implementation'	=> 'Выберите реализацию',
+	'select_product'		=> 'Выберите товар',
+	'quantity_product'		=> 'Количество товара для рекламации',
+	'ttn'					=> 'ТТН рекламации',
+	'comment'				=> 'Причина рекламации',
+	'btn_submit'			=> 'Создать рекламацию',
 ];

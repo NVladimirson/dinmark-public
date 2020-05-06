@@ -8,7 +8,7 @@ class Reclamation extends Model
 {
 	protected $table = 'b2b_reclamations';
 	const CREATED_AT = 'date_add';
-	const UPDATED_AT = 'date_edit';
+	const UPDATED_AT = 'date_update';
 	protected $dateFormat = 'U';
 
 	protected $fillable = [

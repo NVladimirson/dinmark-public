@@ -15,7 +15,9 @@ return [
 
 
     'page_list' => 'Рекламації',
+	'page_create' => 'Нова Рекламация',
     'all_tab_name' 	=> 'Список Рекламацій',
+	'create_tab_name' 	=> 'Інформація про Рекламацію',
 
     'table_header_number' 				=> 'Номер',
     'table_header_realisation_number' 	=> 'Реалізація',
@@ -30,4 +32,11 @@ return [
 	'status_return'			=> 'Повернення коштів',
 	'status_change'			=> 'Заміна товару',
 	'status_fail'			=> 'Відмова у розгляді',
+
+	'select_implementation'	=> 'Оберіть реалізацію',
+	'select_product'		=> 'Оберіть товар',
+	'quantity_product'		=> 'Кількість товару для рекламації',
+	'ttn'					=> 'ТТН рекламації',
+	'comment'				=> 'Причина рекламації',
+	'btn_submit'			=> 'Створити рекламацію',
 ];

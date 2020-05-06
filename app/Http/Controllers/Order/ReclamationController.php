@@ -62,4 +62,22 @@ class ReclamationController extends Controller
 			->rawColumns(['product','status_html'])
 			->toJson();
 	}
+
+	public function create(){
+		SEOTools::setTitle(trans('reclamation.page_create'));
+		return view('reclamation.create');
+	}
+
+	public function store(Request $request)
+	{
+		Reclamation::create([
+			'implementation_product_id'	=> $request->product_id,
+			'quantity'					=> $request->quantity_product,
+			'note'						=> $request->comment,
+			'ttn'						=> $request->ttn,
+			'author'					=> auth()->user()->id,
+		]);
+
+		return redirect()->route('reclamations');
+	}
 }

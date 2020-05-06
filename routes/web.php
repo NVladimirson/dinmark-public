@@ -64,10 +64,13 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/implementations','Order\ImplementationController@index')->name('implementations');
 		Route::get('/implementations/ajax','Order\ImplementationController@ajax')->name('implementations.ajax');
+		Route::get('/implementations/find','Order\ImplementationController@find')->name('implementations.find');
+		Route::get('/implementations/products/{id}','Order\ImplementationController@getProductsAjax')->name('implementations.products');
 
 		Route::get('/reclamations','Order\ReclamationController@index')->name('reclamations');
 		Route::get('/reclamations/ajax','Order\ReclamationController@ajax')->name('reclamations.ajax');
 		Route::get('/reclamations/create','Order\ReclamationController@create')->name('reclamations.create');
+		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
 
 		Route::get('/tickets','TicketController@index')->name('ticket');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
