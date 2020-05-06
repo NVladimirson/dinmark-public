@@ -101,7 +101,13 @@
                 @endif
             </div>
         </td>
-        <td rowspan="2"><img align="logo" src="@if($order->sender_id != 0) {{env('DINMARK_URL')}}images/company/{{$order->sender->getCompany->full_logo}} @else {{asset('logo.png')}} @endif" width="200"></td>
+        @if($order->sender_id != 0)
+            @if($order->sender->getCompany->full_logo)
+            <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$order->sender->getCompany->full_logo}}" width="200"></td>
+            @endif
+        @else
+            <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{asset('logo.png')}} " width="200"></td>
+        @endif
     </tr>
     <tr>
         <td class="f-u f8-5">Покупець:</td>
