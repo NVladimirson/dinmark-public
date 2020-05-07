@@ -108,78 +108,79 @@
         <td class="f-u f8-5 td-v-b">Покупець:</td>
         <td class="f-b f8-5">{{$user->getCompany->name}}
             <div class="f-n" style="margin-left: 15px">
-                Тел.: 380675791587
+              {{--  Тел.: 380675791587 --}}
             </div>
         </td>
     </tr>
     <tr class="f8-5">
         <td>№ договору:</td>
-        <td>К-10/12 <br>
-            Згідно рахунку №7221 від 25 березня 2020 р.</td>
+        <td>Основний договір</td>
+        {{--<td>К-10/12 <br>
+    Згідно рахунку №7221 від 25 березня 2020 р.</td> --}}
     </tr>
 
 </table>
 <table class="border" style="margin-top: 25px">
-    <thead class="f8-5 f-b t-c">
-    <tr>
-        <td>№</td>
-        <td>Товар</td>
-        <td colspan="2">Кількість</td>
-        <td>Ціна без ПДВ</td>
-        <td>Сума без ПДВ</td>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($products as $i => $product)
-        <tr class="f7">
-            <td class="t-c">{{$i+1}}</td>
-            <td>{{$product['name']}}</td>
-            <td>{{$product['quantity']}}</td>
-            <td>{{$product['package']}} шт</td>
-            <td>{{$product['price']}}</td>
-            <td>{{$product['total']}}</td>
-        </tr>
-    @endforeach
-    </tbody>
+<thead class="f8-5 f-b t-c">
+<tr>
+<td>№</td>
+<td>Товар</td>
+<td colspan="2">Кількість</td>
+<td>Ціна без ПДВ</td>
+<td>Сума без ПДВ</td>
+</tr>
+</thead>
+<tbody>
+@foreach($products as $i => $product)
+<tr class="f7">
+    <td class="t-c">{{$i+1}}</td>
+    <td>{{$product['name']}}</td>
+    <td>{{$product['quantity']}}</td>
+    <td>{{$product['package']}} шт</td>
+    <td>{{$product['price']}}</td>
+    <td>{{$product['total']}}</td>
+</tr>
+@endforeach
+</tbody>
 </table>
 <div style="width: 50%; margin-left: auto; margin-top: 10px">
-    <table cellpadding="3" class="f-b f8-5">
-        <tr>
-            <td class="t-r">Разом:</td>
-            <td class="t-c">{{$total}}</td>
-        </tr>
-        <tr>
-            <td class="t-r">Сума ПДВ:</td>
-            <td class="t-c">{{$pdv}}</td>
-        </tr>
-        <tr>
-            <td class="t-r">Усього з ПДВ:</td>
-            <td class="t-c">{{$totalPdv}}</td>
-        </tr>
-    </table>
+<table cellpadding="3" class="f-b f8-5">
+<tr>
+    <td class="t-r">Разом:</td>
+    <td class="t-c">{{$total}}</td>
+</tr>
+<tr>
+    <td class="t-r">Сума ПДВ:</td>
+    <td class="t-c">{{$pdv}}</td>
+</tr>
+<tr>
+    <td class="t-r">Усього з ПДВ:</td>
+    <td class="t-c">{{$totalPdv}}</td>
+</tr>
+</table>
 </div>
 <p class="m0 f7">Всього найменувань {{count($products)}}, на суму {{$totalPdv}} грн.</p>
 <p class="f-b m0 f8-5 td-border-b">{{$totalPdv_text}}<br>
-    т.ч. ПДВ: {{$pdv_text}}</p>
+т.ч. ПДВ: {{$pdv_text}}</p>
 <p class="td-border-b f8-5">
-    Місце складання: с.Наконечне Перше
+Місце складання: с.Наконечне Перше
 </p>
 <table class="f8-5 f-b" style="margin-top: 20px">
-    <tr>
-        <td class="td-v-b">Від постачальника*</td>
-        <td style="padding: 20px"></td>
-        <td class="td-v-b">Отримав(ла)</td>
-    </tr>
-    <td class="td-border-t-1 f-n">
-        <p class="f-b m0">Менеджер із збуту ЗУБАЧ ПАВЛО АНДРІЙОВИЧ</p>
-        <p class="m0">* Відповідальний за здійснення господарської<br>
-            операції і правильність її оформлення</p>
-    </td>
-    <td></td>
-    <td class="td-border-t-1">
-        <p class="f-b m0">Директор</p>
-        <p class="m0 f-n">За довіреністю &emsp; &emsp; &emsp; &emsp; № &emsp; &emsp; &emsp; &emsp; від</p>
-    </td>
+<tr>
+<td class="td-v-b">Від постачальника*</td>
+<td style="padding: 20px"></td>
+<td class="td-v-b">Отримав(ла)</td>
+</tr>
+<td class="td-border-t-1 f-n">
+<p class="f-b m0">Менеджер із збуту ЗУБАЧ ПАВЛО АНДРІЙОВИЧ</p>
+<p class="m0">* Відповідальний за здійснення господарської<br>
+    операції і правильність її оформлення</p>
+</td>
+<td></td>
+<td class="td-border-t-1">
+<p class="f-b m0">Директор</p>
+<p class="m0 f-n">За довіреністю &emsp; &emsp; &emsp; &emsp; № &emsp; &emsp; &emsp; &emsp; від</p>
+</td>
 </table>
 </body>
 </html>
