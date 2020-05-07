@@ -28,4 +28,5 @@ return [
 	'table_product_total' 		=> 'Сума',
 	'table_product_order' 		=> 'Замовлення',
 
+	'btn_generate_pdf' 			=> 'Видаткова накладна',
 ];

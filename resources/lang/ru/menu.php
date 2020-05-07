@@ -14,15 +14,22 @@ return [
     */
 
     'dashboard' 		=> 'Dashboard',
+
     'shop' 				=> 'Католог',
     'shop_all'			=> 'Все товары',
     'my_catalog'		=> 'Мои каталоги',
+
     'orders'			=> 'Заказы',
     'orders_all'		=> 'Мои заказы',
     'orders_new'		=> 'Новый заказ',
     'implementations'	=> 'Реализации',
+
     'reclamations'		=> 'Рекламации',
     'reclamations_all'	=> 'Мои рекламации',
     'reclamations_new'	=> 'Новая рекламация',
+
+    'clients'		=> 'Клиенты',
+    'clients_all'	=> 'Список клиентов',
+    'clients_new'	=> 'Новый клиент',
 
 ];

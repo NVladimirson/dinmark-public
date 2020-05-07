@@ -21,6 +21,8 @@ class ReclamationController extends Controller
 					$companies->where([
 						['holding', auth()->user()->getCompany->holding],
 						['holding', '<>', 0],
+					])->orWhere([
+						['id', auth()->user()->getCompany->id],
 					]);
 				});
 			})

@@ -1,0 +1,1 @@
+<a href="{{route('clients.edit',[$client->id])}}" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></a><a href="#modal-client_delete" data-toggle="modal" data-action="{{route('clients.destroy',[$client->id])}}" class="btn btn-sm btn-danger" ><i class="fas fa-trash"></i></a>

@@ -73,6 +73,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/reclamations/create','Order\ReclamationController@create')->name('reclamations.create');
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
 
+		Route::get('/clients','ClientController@index')->name('clients');
+		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');
+		Route::get('/clients/create','ClientController@create')->name('clients.create');
+		Route::post('/clients/create','ClientController@store')->name('clients.store');
+		Route::get('/clients/{id}','ClientController@edit')->name('clients.edit');
+		Route::post('/clients/{id}','ClientController@update')->name('clients.update');
+		Route::post('/clients/destroy/{id}','ClientController@destroy')->name('clients.destroy');
+
 		Route::get('/tickets','TicketController@index')->name('ticket');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
 		Route::post('/tickets/create','TicketController@store')->name('ticket.store');

@@ -13,14 +13,21 @@ return [
     |
     */
     'dashboard' => 'Dashboard',
+
     'shop' => 'Католог',
     'shop_all' => 'Усі товари',
 	'my_catalog' => 'Мої каталоги',
+
 	'orders' => 'Замовлення',
 	'orders_all' => 'Мої замовлення',
 	'orders_new' => 'Нове замовлення',
 	'implementations' => 'Реалізації',
+
 	'reclamations'		=> 'Рекламації',
 	'reclamations_all'	=> 'Мої рекламації',
 	'reclamations_new'	=> 'Нова рекламація',
+
+	'clients'		=> 'Клієнти',
+	'clients_all'	=> 'Список клієнтів',
+	'clients_new'	=> 'Новий клієнт',
 ];

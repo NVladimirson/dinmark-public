@@ -61,6 +61,20 @@ return [
 					'title' => 'menu.reclamations_new'
 				],
 			]
+		],[
+			'icon' => 'fas fa-users',
+			'title' => 'menu.clients',
+			'url' => 'javascript:;',
+			'caret' => true,
+			'sub_menu' => [
+				[
+					'url' => 'clients',
+					'title' => 'menu.clients_all'
+				],[
+					'url' => 'clients.create',
+					'title' => 'menu.clients_new'
+				],
+			]
 		]
 	]
 ];
