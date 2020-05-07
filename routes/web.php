@@ -66,6 +66,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/implementations/ajax','Order\ImplementationController@ajax')->name('implementations.ajax');
 		Route::get('/implementations/find','Order\ImplementationController@find')->name('implementations.find');
 		Route::get('/implementations/products/{id}','Order\ImplementationController@getProductsAjax')->name('implementations.products');
+		Route::get('/implementations/pdf/{id}','Order\ImplementationController@generatePDF')->name('implementations.pdf');
 
 		Route::get('/reclamations','Order\ReclamationController@index')->name('reclamations');
 		Route::get('/reclamations/ajax','Order\ReclamationController@ajax')->name('reclamations.ajax');

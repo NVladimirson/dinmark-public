@@ -220,13 +220,14 @@ class OrderController extends Controller
 				$products[] = [
 					'id'	=> $orderProduct->id,
 					'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
-					'quantity' => number_format($orderProduct->quantity/$orderProduct->storageProduct->package,1,',',' '),
-					'package' => $orderProduct->storageProduct->package,
+					'quantity' => $orderProduct->quantity/100,//number_format($orderProduct->quantity/$orderProduct->storageProduct->package,1,',',' '),
+					'package' => 100,//$orderProduct->storageProduct->package,
 					'price' => number_format($price*100,2,',', ' '),
 					'total' => number_format($total,2,',', ' '),
 					'storage_termin' => $orderProduct->storageProduct->storage->term,
 				];
 			}
+
 
 			$pdf = PDF::loadView('order.pdf', [
 				'order' => $order,

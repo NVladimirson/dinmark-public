@@ -28,4 +28,6 @@ return [
     'table_product_total' 		=> 'Сумма',
     'table_product_order' 		=> 'Заказ',
 
+	'btn_generate_pdf' 			=> 'Расходная накладная',
+
 ];

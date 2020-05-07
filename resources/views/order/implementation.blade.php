@@ -42,6 +42,7 @@
 								<th class="text-nowrap">@lang('implementation.table_header_customer')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_ttn')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_total')</th>
+								<th class="text-nowrap" width="10"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -125,6 +126,9 @@
 						},
 						{
 							data: 'total',
+						},
+						{
+							data: 'btn_pdf',
 						},
 					],
 				} );

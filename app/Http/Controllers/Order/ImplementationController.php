@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
 use App\Models\Product\Product;
+use App\Services\TimeServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
+use PDF;
 
 class ImplementationController extends Controller
 {
@@ -61,6 +63,10 @@ class ImplementationController extends Controller
 
 				return number_format($implementation->products->sum('total'),2,',',' ');
 			})
+			->addColumn('btn_pdf',function (Implementation $implementation){
+
+				return '<a href="'.route('implementations.pdf',[$implementation->id]).'" class="btn btn-sm btn-primary">'.trans('implementation.btn_generate_pdf').'</a>';
+			})
 			->addColumn('products',function (Implementation $implementation){
 				$products = [];
 				foreach ($implementation->products as $implementationProduct){
@@ -74,7 +80,7 @@ class ImplementationController extends Controller
 				}
 				return view('order.include.implementation_products',compact(['products']))->render();
 			})
-			->rawColumns(['products'])
+			->rawColumns(['products','btn_pdf'])
 			->toJson();
 	}
 
@@ -140,5 +146,44 @@ class ImplementationController extends Controller
 		}
 
 		return \Response::json($formatted_data);
+	}
+
+	public function generatePDF($id){
+		$implementation = Implementation::with(['products.orderProduct.product','products.orderProduct.getCart'])->find($id);
+
+		$products = [];
+		$orderTotal = 0;
+
+		foreach($implementation->products as $implementationProduct){
+			$price = \App\Services\Product\Product::calcPriceWithoutPDV($implementationProduct->orderProduct->product)/100 ;
+
+			$total = $price * $implementationProduct->quantity;
+			$orderTotal += $total;
+
+			$products[] = [
+				'id'	=> $implementationProduct->id,
+				'name' => \App\Services\Product\Product::getName($implementationProduct->orderProduct->product,'uk'),
+				'quantity' => $implementationProduct->quantity/100,//number_format($orderProduct->quantity/$orderProduct->storageProduct->package,1,',',' '),
+				'package' => 100,//$orderProduct->storageProduct->package,
+				'price' => number_format($price*100,2,',', ' '),
+				'total' => number_format($total,2,',', ' '),
+			];
+		}
+		$user = $implementation->products->first()->orderProduct->getCart->getUser;
+
+		$pdf = PDF::loadView('order.pdf_expense_invoice', [
+			'implementation' => $implementation,
+			'date' => TimeServices::getFromTime($implementation->date_add),
+			'products' => $products,
+			'total' => number_format($orderTotal, 2, ',', ' '),
+			'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
+			'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
+			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
+			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+			'user'	=> $user
+		]);
+		$pdf->setOption('enable-smart-shrinking', true);
+		$pdf->setOption('no-stop-slow-scripts', true);
+		return $pdf->download(($user->getCompany->prefix).'_'.$id.'.pdf');
 	}
 }
