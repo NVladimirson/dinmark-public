@@ -246,4 +246,43 @@ class OrderController extends Controller
 
 		return redirect()->route('orders.show',$id);
 	}
+
+	public function pdf_bill($id)
+	{
+		$order = Order::with(['products.product.storages','products.storageProduct.storage'])->find($id);
+		$products = [];
+		$orderTotal = 0;
+
+		foreach($order->products as $orderProduct){
+			$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 ;
+
+			$total = $price * $orderProduct->quantity;
+			$orderTotal += $total;
+
+			$products[] = [
+				'id'	=> $orderProduct->id,
+				'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
+				'quantity' => $orderProduct->quantity/100,
+				'package' => 100,
+				'price' => number_format($price*100,2,',', ' '),
+				'total' => number_format($total,2,',', ' '),
+				//'storage_termin' => $orderProduct->storageProduct->storage->term,
+			];
+		}
+
+		$pdf = PDF::loadView('order.pdf_bill', [
+			'order' => $order,
+			'user' => $order->getUser,
+			'date' => TimeServices::getFromTime($order->date_add),
+			'products' => $products,
+			'total' => number_format($orderTotal, 2, ',', ' '),
+			'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
+			'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
+			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
+			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+		]);
+		$pdf->setOption('enable-smart-shrinking', true);
+		$pdf->setOption('no-stop-slow-scripts', true);
+		return $pdf->download(($order->sender?$order->sender->getCompany->prefix.'_':'').'bill_'.$order->id.'.pdf');
+	}
 }

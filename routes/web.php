@@ -61,6 +61,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/orders/remove-of-order/{id}','Order\OrderController@removeOfOrder')->name('orders.remove_of_order');
 		Route::get('/orders/{id}','Order\OrderController@show')->name('orders.show');
 		Route::post('/orders/{id}','Order\OrderController@update')->name('orders.update');
+		Route::get('/orders/{id}/bill','Order\OrderController@pdf_bill')->name('orders.pdf_bill');
 
 		Route::get('/implementations','Order\ImplementationController@index')->name('implementations');
 		Route::get('/implementations/ajax','Order\ImplementationController@ajax')->name('implementations.ajax');

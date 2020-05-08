@@ -37,10 +37,16 @@
 
 						<input type="hidden" id="order_id" name="order_id" value="{{$order->id}}">
 					<div class="row m-b-15">
-						<div class="col-lg-12">
+						<div class="col-lg-3">
 							<h3 class="m-b-5">
 								@lang('order.order_number'){{$order->id}}
 							</h3>
+						</div>
+
+						<div class="col-lg-9">
+							<div class="pull-right">
+								<a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
+							</div>
 						</div>
 					</div>
 					<div class="row m-b-15">
