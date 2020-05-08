@@ -74,6 +74,10 @@
             border-top: 1px solid black;
         }
 
+        .td-border-l {
+            border-left: 2px solid black;
+        }
+
         .td-v-b {
             vertical-align: baseline;
         }

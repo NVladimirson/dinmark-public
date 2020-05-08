@@ -56,4 +56,6 @@ return [
 	'cp_price'			=> 'Націнка',
 	'cp_user'			=> 'Клієнт',
 	'cp_btn'			=> 'Згенерувати PDF',
+
+	'btn_pdf_bill'		=> 'Рахунок PDF',
 ];
