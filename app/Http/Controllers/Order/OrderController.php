@@ -247,7 +247,7 @@ class OrderController extends Controller
 		return redirect()->route('orders.show',$id);
 	}
 
-	public function pdf_bill($id)
+	public function PDFBill($id)
 	{
 		$order = Order::with(['products.product.storages','products.storageProduct.storage'])->find($id);
 		$products = [];
@@ -285,4 +285,25 @@ class OrderController extends Controller
 		$pdf->setOption('no-stop-slow-scripts', true);
 		return $pdf->download(($order->sender?$order->sender->getCompany->prefix.'_':'').'bill_'.$order->id.'.pdf');
 	}
+
+	public function PDFAct()
+	{
+		$user = auth()->user();
+		$pdf = PDF::loadView('order.pdf_act', [
+			'user' => $user,
+			/*'order' => $order,
+			'user' => $order->getUser,
+			'date' => TimeServices::getFromTime($order->date_add),
+			'products' => $products,
+			'total' => number_format($orderTotal, 2, ',', ' '),
+			'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
+			'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
+			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
+			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),*/
+		]);
+		$pdf->setOption('enable-smart-shrinking', true);
+		$pdf->setOption('no-stop-slow-scripts', true);
+		return $pdf->download(($user->getCompany->prefix.'_').'act'.'.pdf');
+	}
+
 }

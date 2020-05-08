@@ -58,4 +58,5 @@ return [
 	'cp_btn'			=> 'Сгенерировать PDF',
 
 	'btn_pdf_bill'		=> 'Счёт PDF',
+	'btn_act_pdf'		=> 'Акт взаиморасчётов PDF',
 ];

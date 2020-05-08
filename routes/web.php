@@ -59,9 +59,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/orders/all-ajax/','Order\OrderController@allAjax')->name('orders.all_ajax');
 		Route::post('/orders/add-to-order/{id}','Order\OrderController@addToOrder')->name('orders.add_to_order');
 		Route::post('/orders/remove-of-order/{id}','Order\OrderController@removeOfOrder')->name('orders.remove_of_order');
+		Route::get('/orders/act-pdf','Order\OrderController@PDFAct')->name('orders.act_pdf');
 		Route::get('/orders/{id}','Order\OrderController@show')->name('orders.show');
 		Route::post('/orders/{id}','Order\OrderController@update')->name('orders.update');
-		Route::get('/orders/{id}/bill','Order\OrderController@pdf_bill')->name('orders.pdf_bill');
+		Route::get('/orders/{id}/bill','Order\OrderController@PDFBill')->name('orders.pdf_bill');
 
 		Route::get('/implementations','Order\ImplementationController@index')->name('implementations');
 		Route::get('/implementations/ajax','Order\ImplementationController@ajax')->name('implementations.ajax');

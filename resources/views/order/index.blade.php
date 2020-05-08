@@ -41,6 +41,11 @@
 									@endforeach
 								</select>
 							</div>
+						<div class="col-lg-9">
+							<div class="pull-right">
+								<a href="{{ route('orders.act_pdf') }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_act_pdf')</a>
+							</div>
+						</div>
 					</div>
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
