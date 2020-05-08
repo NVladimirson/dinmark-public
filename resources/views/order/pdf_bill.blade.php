@@ -96,25 +96,28 @@
 </table>
 <Br>
 <div class="border">
-    <table>
-        <tr>
-            <td colspan="3" class="f10 f-b" style="text-align: center">Зразок заповнення платіжного доручення</td>
+    <table style="border-spacing: 0;">
+        <tbody><tr>
+            <td colspan="4" class="f10 f-b" style="text-align: center">Зразок заповнення платіжного доручення</td>
         </tr>
         <tr class="f8-5">
             <td style="width: 20%">Одержувач</td>
             <td class="f-b" colspan="2">Товариство з обмеженою відповідальністю "Леомарк"</td>
+            <td style="width:15%" class="td-border-l">&nbsp;</td>
         </tr>
         <tr class="f8-5">
             <td>Код</td>
             <td class="f-b"><span style="border: 2px solid black;padding:5px 20px;display: inline-block">23266835</span></td>
             <td>КРЕДИТ рах. N</td>
+            <td class="td-border-l">&nbsp;</td>
         </tr>
         <tr class="f8-5">
             <td>
                 Банк одержувача
             </td>
             <td>Код банку</td>
-            <td style="border: 2px solid black;padding:5px 20px;width: 33%">UA883253650000002600501445973</td>
+            <td style="border: 2px solid black;padding:5px 20px;width: 33%;border-bottom: 0;border-right: 0;">UA883253650000002600501445973</td>
+            <td class="td-border-l">&nbsp;</td>
         </tr>
         <tr class="f8-5">
             <td class="f-b">
@@ -123,11 +126,12 @@
             <td class="f-b">
                 <span style="border: 2px solid black;padding:5px 20px;display: inline-block">325365</span>
             </td>
-            <td style="border: 2px solid black;padding:5px 20px;width: 33%">
+            <td style="border: 2px solid black;padding:5px 20px;width: 33%;border-right: 0;">
                 &nbsp;
             </td>
+            <td class="td-border-l">&nbsp;</td>
         </tr>
-    </table>
+        </tbody></table>
 </div>
 
 <br>
