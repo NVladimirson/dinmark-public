@@ -14,9 +14,10 @@ return [
     */
 
 
-    'page_list'		=> 'Клиенты',
-    'all_tab_name'	=> 'Список клиентов',
-    'page_create'	=> 'Новый клиент',
+    'page_list'			=> 'Клиенты',
+    'all_tab_name'		=> 'Список клиентов',
+    'page_create'		=> 'Новый клиент',
+    'create_tab_name'	=> 'Информация о клиенте',
 
 
     'table_header_id'		=> 'id',
@@ -30,5 +31,12 @@ return [
     'confirm_delete_header'	=> 'Удаление клиента',
     'confirm_delete_text'	=> 'Клиент будет удалён навсегда. Вы не сможете его востановить.',
     'modal_destroy_success'	=> 'Клиент успешно удалён.',
+
+	'btn_store'				=> 'Создать',
+	'btn_update'			=> 'Сохранить',
+
+	'create_success'		=> 'Клиент успешно создан.',
+	'update_success'		=> 'Данные клиента успешно обновлены.',
+	'client_already_exist'	=> 'Клиент с таким email или телефоном уже существует',
 
 ];

@@ -174,6 +174,12 @@
 				})
 
 			});
+
+			@if (session('status'))
+			$.gritter.add({
+				title: '{{ session('status') }}',
+			});
+			@endif
 		})(jQuery);
 	</script>
 @endpush

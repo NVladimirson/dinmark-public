@@ -106,3 +106,8 @@ Breadcrumbs::for('client.create', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('client.page_create'), route('clients.create'));
 });
+
+Breadcrumbs::for('client.edit', function ($trail, $client) {
+	$trail->parent('home');
+	$trail->push($client->name, route('clients.edit',[$client->id]));
+});
