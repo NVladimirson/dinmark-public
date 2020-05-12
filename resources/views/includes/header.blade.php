@@ -53,6 +53,9 @@
 	
 	<!-- begin header-nav -->
 	<ul class="navbar-nav navbar-right">
+		<li class="navbar-text lead m-b-0">
+			<span class="text-white">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
+		</li>
 		<li class="navbar-form">
 			<form action="" method="POST" name="search_form">
 				<div class="form-group">

@@ -14,4 +14,8 @@ class ImplementationProduct extends Model
 	public function orderProduct(){
 		return $this->hasOne('App\Models\Order\OrderProduct','id','order_product_id');
 	}
+
+	public function implementation(){
+		return $this->hasOne('App\Models\Order\Implementation','id','implementation_id');
+	}
 }
