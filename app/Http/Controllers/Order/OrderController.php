@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Imports\OrderImport;
 use App\Models\Company\Company;
 use App\Models\Company\CompanyPrice;
+use App\Models\Order\Implementation;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Order\OrderStatus;
+use App\Models\Order\Payment;
 use App\Models\Product\Product;
 use App\Services\TimeServices;
 use Carbon\Carbon;
@@ -289,21 +291,48 @@ class OrderController extends Controller
 	public function PDFAct()
 	{
 		$user = auth()->user();
+		$implementations =  Implementation::whereHas('sender',function ($users){
+				$users->whereHas('getCompany',function ($companies){
+					$companies->where([
+						['id', auth()->user()->getCompany->id],
+					]);
+				});
+			})
+			->orWhereHas('customer',function ($users){
+				$users->whereHas('getCompany',function ($companies){
+					$companies->where([
+						['id', auth()->user()->getCompany->id],
+					]);
+				});
+			})->get();
+		$payments = Payment::whereHas('order',function ($orders) use ($user){
+			$orders->whereHas('getUser',function ($users) use ($user){
+				$users->whereHas('getCompany',function ($companies){
+					$companies->where([
+						['id', auth()->user()->getCompany->id],
+					]);
+				});
+			})->orWhereHas('sender',function ($users) use ($user){
+				$users->whereHas('getCompany',function ($companies){
+					$companies->where([
+						['id', auth()->user()->getCompany->id],
+					]);
+				});
+			});
+		})->get();
+
+		$actData = $implementations->concat($payments)->sortBy('date_add');
+
 		$pdf = PDF::loadView('order.pdf_act', [
 			'user' => $user,
-			/*'order' => $order,
-			'user' => $order->getUser,
-			'date' => TimeServices::getFromTime($order->date_add),
-			'products' => $products,
-			'total' => number_format($orderTotal, 2, ',', ' '),
-			'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
-			'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
-			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
-			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),*/
+			'actData'=> $actData,
+			'implementtions' => $implementations,
+			'payments' => $payments,
 		]);
 		$pdf->setOption('enable-smart-shrinking', true);
 		$pdf->setOption('no-stop-slow-scripts', true);
 		return $pdf->download(($user->getCompany->prefix.'_').'act'.'.pdf');
+
 	}
 
 }

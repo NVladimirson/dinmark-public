@@ -30,8 +30,9 @@ class ProductController extends Controller
 		$categories = CategoryServices::getNames($id);
 		$breadcrumbs = CategoryServices::getBreadcrumbs($id);
 		$wishlists = CatalogServices::getByCompany();
+		$orders = OrderServices::getByCompany();
 
-		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs','wishlists'));
+		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs','wishlists', 'orders'));
 	}
 
 	public function allAjax(Request $request){

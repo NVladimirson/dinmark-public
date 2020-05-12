@@ -90,7 +90,7 @@
 <body>
 
 <p class="f12-5 f-b t-c">Акт звірки взаєморозрахунків</p>
-<p class="t-c f8" style="width: 50%; margin: 0 auto;">взаємних розрахунків по стану за період: 01.10.2019 - 30.03.2020 між Товариство з обмеженою відповідальністю "Леомарк"
+<p class="t-c f8" style="width: 50%; margin: 0 auto;">взаємних розрахунків по стану за період: {{($actData->first())?\Carbon\Carbon::parse($actData->first()->date_add)->format('d.m.Y'):'01.01.2000'}} - {{\Carbon\Carbon::now()->format('d.m.Y')}} між Товариство з обмеженою відповідальністю "Леомарк"
     і {{$user->getCompany->name}}
 </p>
 
@@ -139,64 +139,63 @@
             &nbsp;
         </td>
     </tr>
+    @php
+        $outPaid = 0;
+        $inPaid = 0;
+        $saldo = 0;
+    @endphp
+    @foreach($actData as $data)
     <tr>
         <td>
-            07.10.19
+            {{\Carbon\Carbon::parse($data->date_add)->format('d.m.Y')}}
         </td>
-        <td>
-            Прийнято (07.10.2019)
-        </td>
-        <td>
-            850,80
-        </td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        @if($data instanceof \App\Models\Order\Implementation)
+            <td>
+                Прийнято ({{\Carbon\Carbon::parse($data->date_add)->format('d.m.Y')}})
+            </td>
+            <td>
+                @php
+                    $sum = $data->products->sum('total');
+                    $outPaid += $sum;
+                @endphp
+                {{number_format($sum,2,',',' ')}}
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        @else
+            <td>
+                Передано ({{$data->public_number}} від {{\Carbon\Carbon::parse($data->date_add)->format('d.m.Y')}})
+            </td>
+            <td>
+
+            </td>
+            <td>
+                @php
+                    $sum = $data->payed;
+                    $inPaid += $sum;
+                @endphp
+                {{number_format($sum,2,',',' ')}}
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        @endif
     </tr>
-    <tr>
-        <td>
-            07.10.19
-        </td>
-        <td>
-            Прийнято (07.10.2019)
-        </td>
-        <td>
-            850,80
-        </td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>
-            07.10.19
-        </td>
-        <td>
-            Прийнято (07.10.2019)
-        </td>
-        <td>
-            850,80
-        </td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
+    @endforeach
 
     <tr class="f-b">
         <td colspan="2">
             Обороти за період
         </td>
         <td>
-            5 362,86
+            {{number_format($outPaid,2,',',' ')}}
         </td>
         <td>
-            5 158,76
+            {{number_format($inPaid,2,',',' ')}}
         </td>
         <td colspan="2">
             Обороти за період
@@ -209,7 +208,10 @@
             Сальдо кінцеве
         </td>
         <td>
-            204,10
+            @php
+                $saldo = $outPaid - $inPaid;
+            @endphp
+            {{number_format($saldo,2,',',' ')}}
         </td>
         <td>&nbsp;</td>
         <td colspan="2">
@@ -223,8 +225,14 @@
 
 <p class="f7">
     За даними Товариство з обмеженою відповідальністю "Леомарк" <br>
-    <b>на 30.03.2020 заборгованість на користь  Товариство з обмеженою <br>
-        відповідальністю "Леомарк" 204,10 грн</b>
+    @if($saldo > 0)
+    <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь  Товариство з обмеженою <br>
+        відповідальністю "Леомарк" {{number_format($saldo,2,',',' ')}} грн</b>
+    @elseif($saldo < 0)
+        <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь <br/> {{$user->getCompany->name}} {{number_format(-$saldo,2,',',' ')}} грн</b>
+    @else
+        <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість відсутня</b>
+    @endif
 </p>
 
 <table class="f8-5" style="margin-top: 20px">
