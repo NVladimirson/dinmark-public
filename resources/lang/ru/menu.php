@@ -32,4 +32,6 @@ return [
     'clients_all'	=> 'Список клиентов',
     'clients_new'	=> 'Новый клиент',
 
+	'faq'	=> 'FAQ',
+
 ];

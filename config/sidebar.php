@@ -75,7 +75,11 @@ return [
 					'title' => 'menu.clients_new'
 				],
 			]
-		]
+		],[
+			'icon' => 'fa fa-question',
+			'title' => 'menu.faq',
+			'url' => 'faq'
+		],
 	]
 ];
 

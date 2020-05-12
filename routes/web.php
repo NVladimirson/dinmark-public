@@ -83,6 +83,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/clients/{id}','ClientController@update')->name('clients.update');
 		Route::post('/clients/destroy/{id}','ClientController@destroy')->name('clients.destroy');
 
+		Route::get('/faq','FAQController@index')->name('faq');
+
 		Route::get('/tickets','TicketController@index')->name('ticket');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
 		Route::post('/tickets/create','TicketController@store')->name('ticket.store');

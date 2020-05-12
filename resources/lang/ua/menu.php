@@ -30,4 +30,6 @@ return [
 	'clients'		=> 'Клієнти',
 	'clients_all'	=> 'Список клієнтів',
 	'clients_new'	=> 'Новий клієнт',
+
+	'faq'	=> 'FAQ',
 ];
