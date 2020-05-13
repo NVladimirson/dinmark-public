@@ -42,4 +42,34 @@ class NewsController extends Controller
 		SEOTools::setTitle(trans('news.index_page_name'));
 		return view('news.index',compact('news','newsData'));
     }
+
+	public function show($id)
+	{
+
+		$news = News::with(['content'])
+			->find($id);
+		if(empty($news)){
+			abort(404);
+		}
+		$content = NewsServices::getContent($news);
+		if($content){
+			$newsData = [
+				'id'	=> $news->id,
+				'name'	=> $content->name,
+				'text'	=> $content->text,
+				'image' => NewsServices::getImagePath($news)
+			];
+		}else{
+			$newsData = [
+				'id'	=> $news->id,
+				'name'	=> '',
+				'text'	=> '',
+				'image' => NewsServices::getImagePath($news)
+			];
+		}
+
+
+		SEOTools::setTitle($newsData['name']);
+		return view('news.show',compact('news','newsData'));
+    }
 }

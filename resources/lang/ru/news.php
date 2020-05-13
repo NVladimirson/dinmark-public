@@ -15,5 +15,6 @@ return [
 
     'index_page_name' 	=> 'Новости',
     'all_tab_name' 		=> 'Список новостей',
+    'show_tab_name' 	=> 'Новость',
 
 ];

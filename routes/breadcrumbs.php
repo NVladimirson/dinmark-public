@@ -117,6 +117,11 @@ Breadcrumbs::for('news', function ($trail) {
 	$trail->push(trans('news.index_page_name'), route('news'));
 });
 
+Breadcrumbs::for('news.show', function ($trail, $newsData) {
+	$trail->parent('news');
+	$trail->push($newsData['name'], route('news.show',[$newsData['id']]));
+});
+
 Breadcrumbs::for('faq', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('faq.page_name'), route('faq'));
