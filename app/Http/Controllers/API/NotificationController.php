@@ -47,4 +47,42 @@ class NotificationController extends Controller
 			'status' => 'success',
 		]);
 	}
+
+    public function news(Request $request){
+		if($request->has('user_id')){
+			$user = User::find($request->user_id);
+			if(empty($user)){
+				return response()->json([
+					'status' => 'error',
+					'message' => 'User not found'
+				]);
+			}
+		}else{
+			return response()->json([
+				'status' => 'error',
+				'message' => 'user_id required parameter'
+			]);
+		}
+
+		if($request->has('news_id')){
+			$message = TicketMessage::find($request->message_id);
+			if(empty($message)){
+				return response()->json([
+					'status' => 'error',
+					'message' => 'Message not found'
+				]);
+			}
+		}else{
+			return response()->json([
+				'status' => 'error',
+				'message' => 'message_id required parameter'
+			]);
+		}
+
+		$user->notify(new NewMessage($message));
+
+		return response()->json([
+			'status' => 'success',
+		]);
+	}
 }

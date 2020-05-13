@@ -33,5 +33,6 @@ return [
     'clients_new'	=> 'Новый клиент',
 
 	'faq'	=> 'FAQ',
+	'news'	=> 'Новости',
 
 ];

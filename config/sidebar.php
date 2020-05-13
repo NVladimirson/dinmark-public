@@ -76,6 +76,10 @@ return [
 				],
 			]
 		],[
+			'icon' => 'far fa-newspaper',
+			'title' => 'menu.news',
+			'url' => 'news'
+		],[
 			'icon' => 'fa fa-question',
 			'title' => 'menu.faq',
 			'url' => 'faq'
