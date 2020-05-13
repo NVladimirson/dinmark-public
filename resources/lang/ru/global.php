@@ -21,4 +21,5 @@ return [
 	'apply' => 'Применить',
 
 	'header_debt'	=> 'Задолженность: :debt грн.',
+	'header_search'	=> 'Поиск номенклатур',
 ];

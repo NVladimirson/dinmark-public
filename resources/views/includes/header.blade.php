@@ -57,9 +57,10 @@
 			<span class="text-white">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
 		</li>
 		<li class="navbar-form">
-			<form action="" method="POST" name="search_form">
+			<form action="{{route('products.find')}}" method="GET" name="search_form">
+				@csrf
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Enter keyword" />
+					<input type="text" name="search" class="form-control" placeholder="@lang('global.header_search')" min="3" required value="{{request()->has('search')?request()->input('search'):''}}"/>
 					<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
 				</div>
 			</form>

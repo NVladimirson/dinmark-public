@@ -14,7 +14,11 @@ return [
     */
 
     'all_page_name' => 'Усі товари',
+	'search_page_name' => 'Результати пошуку',
 	'all_tab_name' => 'Список товарів',
+	'search_tab_name' => 'Список товарів',
+
+	'empty'	=> 'За запитом нічого не знайдено',
 
 	'select_category' => 'Оберіть категорію',
 

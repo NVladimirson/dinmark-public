@@ -30,6 +30,11 @@ Breadcrumbs::for('product.all', function ($trail) {
 	$trail->push(trans('product.all_page_name'), route('products'));
 });
 
+Breadcrumbs::for('product.search', function ($trail) {
+	$trail->parent('product.all');
+	$trail->push(trans('product.search_page_name'), route('products.find'));
+});
+
 Breadcrumbs::for('product.categories', function ($trail, $categories) {
 	$trail->parent('product.all');
 	foreach ($categories as $category){

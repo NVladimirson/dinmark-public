@@ -175,4 +175,33 @@ class ProductController extends Controller
 
 		return \Response::json($formatted_data);
 	}
+
+	public function find(Request $request)
+	{
+		$search = $request->search;
+		$formatted_data = [];
+
+		$ids = \App\Services\Product\Product::getIdsSearch($search);
+
+		$products = Product::whereIn('id',$ids)
+			->orWhere([
+				['article','like',"%".$search."%"],
+			])->orWhere([
+				['article_show','like',"%".$search."%"],
+			])
+			->orderBy('article')
+			->limit(20)
+			->get();
+
+		foreach ($products as $product) {
+			$name = \App\Services\Product\Product::getName($product);
+
+			$formatted_data[] = [
+				'id' => $product->id,
+				'text' => $name.' ('.$product->article_show.')',
+			];
+		}
+
+		return view('product.search',compact('formatted_data'));
+	}
 }
