@@ -92,7 +92,7 @@ class OrderController extends Controller
 				return $number;
 			})
 			->addColumn('date_html', function (Order $order) {
-				$date = Carbon::parse($order->date)->format('d.m.Y h:i');
+				$date = Carbon::parse($order->date_add)->format('d.m.Y h:i');
 				return $date;
 			})
 			->addColumn('status_html', function (Order $order) {

@@ -14,5 +14,14 @@ return [
     */
 
     'page_name' => 'Dashboard',
+    'chart_price_order' => 'Сумма/Вес заказов по месяцам',
+    'chart_status_order' => 'Соотношение статусов заказов по месяцам',
+
+    'data_price' => 'Сумма (грн.)',
+    'data_weight' => 'Вес (кг.)',
+
+    'data_status_oll' => 'Всего заказов/заявок',
+    'data_status_success' => 'Принято',
+    'data_status_complete' => 'Выполнено',
 
 ];
