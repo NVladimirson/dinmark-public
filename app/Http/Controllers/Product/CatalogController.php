@@ -28,8 +28,9 @@ class CatalogController extends Controller
 			session(['current_catalog' => $group->id]);
 		}
 		$orders = OrderServices::getByCompany();
+		$curentWishlist = LikeGroup::find(session('current_catalog'));
 
-		return view('product.wishlist',compact('wishlists','orders'));
+		return view('product.wishlist',compact('wishlists','orders', 'curentWishlist'));
 	}
 
     public function addToCatalog($id, Request $request){
