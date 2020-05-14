@@ -25,8 +25,8 @@ return [
     'table_header_status' 			=> 'Статус',
     'table_header_status_payment' 	=> 'Статус Опл.',
     'table_header_total' 			=> 'Сумма',
-    'table_header_customer' 		=> 'Получатель',
-    'table_header_user' 			=> 'Автор',
+    'table_header_customer' 		=> 'Отправитель',
+    'table_header_user' 			=> 'Получатель',
 
 	'page_create' 				=> 'Новый заказ',
 	'page_update' 				=> 'Заказ №',

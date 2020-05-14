@@ -107,7 +107,7 @@ class OrderController extends Controller
 				return number_format($order->total,2,'.',' ');
 			})
 			->addColumn('customer', function (Order $order) {
-				return $order->getUser->name;
+				return $order->sender?$order->sender->name:'Dinmark';
 			})
 			->addColumn('author', function (Order $order) {
 				return $order->getUser->name;

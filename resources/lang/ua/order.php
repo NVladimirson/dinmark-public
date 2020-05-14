@@ -25,8 +25,8 @@ return [
 	'table_header_status' 			=> 'Статус',
 	'table_header_status_payment' 	=> 'Статус Опл.',
 	'table_header_total' 			=> 'Сума',
-	'table_header_customer' 		=> 'Отримувач',
-	'table_header_user' 			=> 'Автор',
+	'table_header_customer' 		=> 'Відправник',
+	'table_header_user' 			=> 'Отримувач',
 
 	'page_create' 				=> 'Нове замовлення',
 	'page_update' 				=> 'Замовлення №',
