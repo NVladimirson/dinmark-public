@@ -14,7 +14,7 @@
                         <select class="form-control selectpicker" id="order_id" data-live-search="true" data-style="btn-white">
                             <option value="0">@lang('product.new_order')</option>
                             @foreach($orders as $order)
-                                <option value="{{$order->id}}">{{$order->id}}</option>
+                                <option value="{{$order->id}}">{{$order->id}} ({{Carbon\Carbon::parse($order->date_add)->format('d.m.Y')}})</option>
                             @endforeach
                         </select>
                     </div>
