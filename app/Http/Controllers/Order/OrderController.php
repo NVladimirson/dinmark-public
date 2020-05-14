@@ -87,7 +87,9 @@ class OrderController extends Controller
 			->addColumn('number_html', function (Order $order) {
 				$number = $order->id;
 				if($order->public_number){
-					$number = $order->public_number;
+					$number .= ' / '. $order->public_number;
+				}else{
+					$number .= ' / -';
 				}
 				return $number;
 			})

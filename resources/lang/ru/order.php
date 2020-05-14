@@ -31,6 +31,7 @@ return [
 	'page_create' 				=> 'Новый заказ',
 	'page_update' 				=> 'Заказ №',
 	'order_number'				=> 'Заявка №',
+	'from'						=> 'от',
 	'btn_new_request'			=> 'Сохранить Заявку',
 	'btn_new_order'				=> 'Оформить Заказ',
 	'btn_cancel_order'			=> 'Отменить',

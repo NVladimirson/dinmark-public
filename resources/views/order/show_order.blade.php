@@ -14,7 +14,7 @@
 @section('content')
 	{{ Breadcrumbs::render('order.show',$order) }}
 
-	<h1 class="page-header">@lang('order.page_update'){{$order->id}}</h1>
+	<h1 class="page-header">@lang('order.page_update'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}} @lang('order.from') {{Carbon\Carbon::parse($order->date_add)->format('d.m.Y')}}</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -39,7 +39,7 @@
 					<div class="row m-b-15">
 						<div class="col-lg-3">
 							<h3 class="m-b-5">
-								@lang('order.order_number'){{$order->id}}
+								@lang('order.page_update'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}}
 							</h3>
 						</div>
 
