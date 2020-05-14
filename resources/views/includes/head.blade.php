@@ -21,6 +21,19 @@
         padding: 10px 13.5px;
     }
 
+    @media screen and (max-width: 1280px){
+        table{
+            display: block;
+            width: 100%!important;
+            overflow-x: scroll;
+        }
+
+        .pagination{
+            flex-wrap: wrap;
+        }
+
+    }
+
 </style>
 
 @stack('css')
