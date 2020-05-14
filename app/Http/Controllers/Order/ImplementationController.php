@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company\Client;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
 use App\Models\Product\Product;
@@ -160,9 +161,9 @@ class ImplementationController extends Controller
 		$orderTotal = 0;
 
 		foreach($implementation->products as $implementationProduct){
-			$price = \App\Services\Product\Product::calcPriceWithoutPDV($implementationProduct->orderProduct->product)/100 ;
+			$price = $implementationProduct->total/ $implementationProduct->quantity;
 
-			$total = $price * $implementationProduct->quantity;
+			$total = $implementationProduct->total;
 			$orderTotal += $total;
 
 			$products[] = [
@@ -174,7 +175,17 @@ class ImplementationController extends Controller
 				'total' => number_format($total,2,',', ' '),
 			];
 		}
-		$user = $implementation->products->first()->orderProduct->getCart->getUser;
+		$user = null;
+		$company = null;
+		if($implementation->products->first()->orderProduct->getCart->user > 0){
+			$user = $implementation->products->first()->orderProduct->getCart->getUser;
+			$company = $user->getCompany;
+		}else{
+			$user = Client::find(-$implementation->products->first()->orderProduct->getCart->user);
+			$company = $user->company;
+		}
+
+
 
 		$pdf = PDF::loadView('order.pdf_expense_invoice', [
 			'implementation' => $implementation,
@@ -189,6 +200,6 @@ class ImplementationController extends Controller
 		]);
 		$pdf->setOption('enable-smart-shrinking', true);
 		$pdf->setOption('no-stop-slow-scripts', true);
-		return $pdf->download(($user->getCompany->prefix).'_'.$id.'.pdf');
+		return $pdf->download(($company->prefix).'_'.$id.'.pdf');
 	}
 }

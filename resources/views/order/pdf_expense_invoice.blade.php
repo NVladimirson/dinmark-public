@@ -106,11 +106,19 @@
     </tr>
     <tr>
         <td class="f-u f8-5 td-v-b">Покупець:</td>
+        @if($user instanceof \App\User)
         <td class="f-b f8-5">{{$user->getCompany->name}}
             <div class="f-n" style="margin-left: 15px">
               {{--  Тел.: 380675791587 --}}
             </div>
         </td>
+            @else
+            <td class="f-b f8-5">{{$user->company->name}}
+                <div class="f-n" style="margin-left: 15px">
+                    {{--  Тел.: 380675791587 --}}
+                </div>
+            </td>
+        @endif
     </tr>
     <tr class="f8-5">
         <td>№ договору:</td>
