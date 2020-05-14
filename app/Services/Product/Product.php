@@ -37,6 +37,22 @@ class Product
 		return $src;
 	}
 
+	public static function getImagePathThumb($product)
+	{
+		$ids[] = -$product->group;
+		$photo = WlImage::where([
+			['alias',$product->wl_alias],
+			['content',$ids],
+			['position',1],
+		])->first();
+		$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
+		if($photo){
+			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/group_'.$photo->file_name;
+		}
+
+		return $src;
+	}
+
 	public static function getName($product, $lang = null){
 		$instance =  static::getInstance();
 		if(empty($lang)){

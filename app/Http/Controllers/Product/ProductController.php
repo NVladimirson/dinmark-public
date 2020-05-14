@@ -124,7 +124,7 @@ class ProductController extends Controller
 		$product = Product::find($id);
 
 		$productName = \App\Services\Product\Product::getName($product);
-		$imagePath = \App\Services\Product\Product::getImagePath($product);
+		$imagePath = \App\Services\Product\Product::getImagePathThumb($product);
 		$price = \App\Services\Product\Product::getPrice($product);
 		$userPrice = \App\Services\Product\Product::getUserPrice($product);
 		$wishlists = CatalogServices::getByCompany();
