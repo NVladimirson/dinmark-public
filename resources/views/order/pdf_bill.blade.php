@@ -225,7 +225,7 @@
     <tr>
         <td>Рахунок дійсний до сплати протягом 3-х банківських днів</td>
         <td class="t-r f-b">Виписав(ла):</td>
-        <td class="f-n t-r td-border-b-1">Тетяна Шалан</td>
+        <td class="f-n t-r td-border-b-1">{{$user->getCompany->getManager->name}}</td>
     </tr>
 </table>
 </body>
