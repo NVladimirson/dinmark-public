@@ -49,8 +49,8 @@ class CompanyController extends Controller
 			$full = Image::make($path)->encode('jpg');
 			$resize = Image::make($path)->fit(300)->encode('jpg');
 			$hash = md5($resize->__toString());
-			$path = "/images/company/{$company->id}_{$hash}.jpg";
-			$full_path = "/images/company/{$company->id}_{$hash}_full.jpg";
+			$path = "images/company/{$company->id}_{$hash}.jpg";
+			$full_path = "images/company/{$company->id}_{$hash}_full.jpg";
 			$resize->save(Storage::disk('main_site')->getAdapter()->getPathPrefix() .$path);
 			$full->save(Storage::disk('main_site')->getAdapter()->getPathPrefix() .$full_path);
 			$path = basename($path);
