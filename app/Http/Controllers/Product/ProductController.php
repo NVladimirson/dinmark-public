@@ -126,13 +126,13 @@ class ProductController extends Controller
 		$productName = \App\Services\Product\Product::getName($product);
 		$imagePath = \App\Services\Product\Product::getImagePathThumb($product);
 		$price = \App\Services\Product\Product::getPrice($product);
-		$userPrice = \App\Services\Product\Product::getUserPrice($product);
+		$basePrice = \App\Services\Product\Product::getBasePrice($product);
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
 
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'userPrice', 'wishlists', 'orders'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders'));
 	}
 
 	public function search(Request $request){

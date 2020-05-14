@@ -38,7 +38,7 @@
 								</tr>
 								<tr>
 									<th>@lang('product.show_price')</th>
-									<td>{{ $userPrice }}</td>
+									<td>{{ $basePrice }}</td>
 								</tr>
 								<tr>
 									<th>@lang('product.show_your_price')</th>

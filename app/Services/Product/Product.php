@@ -63,9 +63,22 @@ class Product
 		return $productName;
 	}
 
+	public static function getBasePrice($product){
+		$instance =  static::getInstance();
+		$currency = $instance->currencies->firstWhere('code',$product->currency);
+
+		$price = $product->price;
+		if($currency){
+			$price *= $currency->currency;
+		}
+		$price *= 1.2 * 2;
+
+		return number_format($price,2,'.',' ');
+	}
+
 	public static function getPrice($product){
 		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product)*2;
+		$price = $instance->calcPrice($product);
 		return number_format($price,2,'.',' ');
 	}
 	public static function calcPrice($product){
