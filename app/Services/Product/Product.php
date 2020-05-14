@@ -65,7 +65,7 @@ class Product
 
 	public static function getPrice($product){
 		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product);
+		$price = $instance->calcPrice($product)*2;
 		return number_format($price,2,'.',' ');
 	}
 	public static function calcPrice($product){
