@@ -38,6 +38,8 @@ return [
 	'select_sender'				=> 'Отправитель',
 	'sender_dinmark'			=> 'Dinmark',
 	'select_customer'			=> 'Получатель',
+	'select_customer_user'		=> 'Пользователи',
+	'select_customer_client'	=> 'Клиенты',
 	'form_pdv_label'			=> 'Цена',
 	'form_pdv'					=> 'с НДС',
 	'form_select_product'		=> 'Выберите продукт',

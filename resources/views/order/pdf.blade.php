@@ -112,7 +112,7 @@
     </tr>
     <tr>
         <td class="f-u f8-5">Покупець:</td>
-        <td class="f-b f8-5">ПРИВАТНЕ ПІДПРИЄМСТВО "МЕТИЗ"</td>
+        <td class="f-b f8-5">{{$client?($client->company_name??$client->name):''}}</td>
     </tr>
 </table>
 <table class="border" style="margin-top: 25px">
@@ -164,7 +164,7 @@
         <td>Виконавець</td>
         <td class="f7 f-n">@if($order->sender_id != 0) {{$order->sender->name}} @else {{auth()->user()->getCompany->getManager->name}} @endif</td>
         <td class="t-r">Замовник</td>
-        <td class="f-n t-r td-border-b-1">Олег Вікторович</td>
+        <td class="f-n t-r td-border-b-1">{{$client?($client->name):''}}</td>
     </tr>
     <tr>
         <td colspan="4" style="padding-top: 15px">Ціни дійсні протягом 3-х банківських днів</td>

@@ -64,11 +64,18 @@
 						<div class="col-md-6">
 							<label>@lang('order.select_customer')</label>
 							<select class="form-control selectpicker" id="customer_id" name="customer_id" data-live-search="true" data-style="btn-white" disabled>
-								@foreach($companies as $company)
-									@foreach($company->users as $user)
-										<option value="{{$user->id}}" @if($user->id == $order->user) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
+								<optgroup label="@lang('order.select_customer_user')">
+									@foreach($companies as $company)
+										@foreach($company->users as $user)
+											<option value="{{$user->id}}" @if($user->id == $order->user) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
+										@endforeach
 									@endforeach
-								@endforeach
+								</optgroup>
+								<optgroup label="@lang('order.select_customer_client')">
+									@foreach($clients as $client)
+										<option value="{{-$client->id}}" @if($client->id == -$order->user) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
+									@endforeach
+								</optgroup>
 							</select>
 						</div>
 					</div>

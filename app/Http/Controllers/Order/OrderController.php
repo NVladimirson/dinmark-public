@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Imports\OrderImport;
+use App\Models\Company\Client;
 use App\Models\Company\Company;
 use App\Models\Company\CompanyPrice;
 use App\Models\Order\Implementation;
@@ -74,9 +75,11 @@ class OrderController extends Controller
 
 	public function allAjax(Request $request){
 		$orders = Order::whereHas('getUser', function ($users){
-			$users->where('company',auth()->user()->company)
-				->orderBy('id','desc');
-		});
+							$users->where('company',auth()->user()->company);
+						})
+					->orWhereHas('sender', function ($users){
+						$users->where('company',auth()->user()->company);
+					})->orderBy('id','desc');
 
 		if($request->has('status_id')){
 			$orders->where('status',$request->status_id);
@@ -110,12 +113,18 @@ class OrderController extends Controller
 				return $order->sender?$order->sender->name:'Dinmark';
 			})
 			->addColumn('author', function (Order $order) {
-				return $order->getUser->name;
+				if($order->user > 0){
+					return $order->getUser->name;
+				}else{
+					return '<i class="fas fa-users"></i> '.Client::find(-$order->user)->name;
+				}
+
+
 			})
 			->addColumn('actions', function (Order $order) {
 				return view('order.include.action_buttons',compact('order'));
 			})
-			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','article_holding'])
+			->rawColumns(['name_html','article_show_html','image_html','author','check_html','actions','article_holding'])
 			->toJson();
 	}
 
@@ -134,8 +143,18 @@ class OrderController extends Controller
 			['holding','<>',0]
 		])->orWhere('id',auth()->user()->company)->get();
 
+		$clients = Client::with(['company'])
+			->whereHas('company',function ($companies){
+				$companies->where([
+					['holding', auth()->user()->getCompany->holding],
+					['holding', '<>', 0],
+				])->orWhere([
+					['id', auth()->user()->getCompany->id],
+				]);
+			})->get();
 
-		return view('order.create',compact('order', 'companies'));
+
+		return view('order.create',compact('order', 'companies', 'clients'));
 	}
 
 	public function show($id){
@@ -167,10 +186,20 @@ class OrderController extends Controller
 			];
 		}
 
+		$clients = Client::with(['company'])
+			->whereHas('company',function ($companies){
+				$companies->where([
+					['holding', auth()->user()->getCompany->holding],
+					['holding', '<>', 0],
+				])->orWhere([
+					['id', auth()->user()->getCompany->id],
+				]);
+			})->get();
+
 		if($order->status == 8){
-			return view('order.show',compact('order', 'companies', 'products', 'koef'));
+			return view('order.show',compact('order', 'companies', 'products', 'koef', 'clients'));
 		}else{
-			return view('order.show_order',compact('order', 'companies', 'products', 'koef'));
+			return view('order.show_order',compact('order', 'companies', 'products', 'koef', 'clients'));
 		}
 
 	}
@@ -212,11 +241,12 @@ class OrderController extends Controller
 
 		if($request->submit == 'cp_generate'){
 			$products = [];
-			$companyPrice = CompanyPrice::find($request->cp_price_id);
+			$companyPrice = CompanyPrice::find($request->has('cp_price_id')?$request->cp_price_id:0);
 			$orderTotal = 0;
+			$client = Client::find($request->cp_client_id);
 
 			foreach($order->products as $orderProduct){
-				$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * $companyPrice->koef;
+				$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * (($companyPrice)?$companyPrice->koef:1);
 
 				$total = $price * $orderProduct->quantity;
 				$orderTotal += $total;
@@ -242,6 +272,7 @@ class OrderController extends Controller
 				'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
 				'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
 				'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+				'client'	=> $client
 			]);
 			$pdf->setOption('enable-smart-shrinking', true);
 			$pdf->setOption('no-stop-slow-scripts', true);
