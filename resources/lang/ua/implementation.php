@@ -17,6 +17,7 @@ return [
     'page_list' => 'Реалізації',
     'all_tab_name' 	=> 'Список Реалізацій',
 
+	'table_header_data' 		=> 'Дата',
 	'table_header_number' 		=> 'Номер реалізації',
 	'table_header_sender' 		=> 'Відправник',
 	'table_header_customer' 	=> 'Одержувач',

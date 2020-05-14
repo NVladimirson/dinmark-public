@@ -9,6 +9,7 @@ use App\Models\Product\Product;
 use App\Services\TimeServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Carbon;
 use PDF;
 
 class ImplementationController extends Controller
@@ -45,6 +46,10 @@ class ImplementationController extends Controller
 
 		return datatables()
 			->eloquent($implementations)
+			->addColumn('date',function (Implementation $implementation){
+
+				return Carbon::parse($implementation->date_add)->format('d.m.Y');
+			})
 			->addColumn('sender',function (Implementation $implementation){
 				if($implementation->sender_id == 0){
 					return 'Dinmark';

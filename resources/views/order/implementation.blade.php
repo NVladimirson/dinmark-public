@@ -37,6 +37,7 @@
 							<tr>
 								<th class="text-nowrap text-center"></th>
 								<th class="text-nowrap text-center"></th>
+								<th class="text-nowrap text-center">@lang('implementation.table_header_data')</th>
 								<th class="text-nowrap text-center">@lang('implementation.table_header_number')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_sender')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_customer')</th>
@@ -110,6 +111,10 @@
 							render: function ( data, type, row ) {
 								return '<i class="fa fa-plus" aria-hidden="true"></i>';
 							},
+						},
+						{
+							className: 'text-center',
+							data: 'date',
 						},
 						{
 							className: 'text-center',
