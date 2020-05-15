@@ -113,7 +113,7 @@
             @if($client->company->full_logo)
                 <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$client->company->full_logo}}" width="200"></td>
                 @else
-                <td rowspan="2"></td>
+                <td rowspan="2">&nbsp;</td>
             @endif
         @endif
         {{--
