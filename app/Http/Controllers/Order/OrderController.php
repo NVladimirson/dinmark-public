@@ -226,9 +226,12 @@ class OrderController extends Controller
 		$order->sender_id = $request->sender_id;
 		$order->user = $request->customer_id;
 		$order->comment = $request->comment;
-		foreach ($request->product_quantity as $key => $quantity){
-			$this->changeQuantity($key, $quantity, $order);
+		if($request->has('product_quantity')){
+			foreach ($request->product_quantity as $key => $quantity){
+				$this->changeQuantity($key, $quantity, $order);
+			}
 		}
+
 
 		$order->save();
 
