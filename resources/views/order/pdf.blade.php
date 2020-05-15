@@ -88,10 +88,17 @@
         <td class="f-u f8-5 td-v-b">Постачальник:</td>
         <td class="f8">
             <div class="f-b f8-5">
-               @if($order->sender_id != 0) {{$order->sender->getCompany->name}} @else Товариство з обмеженою відповідальністю "Леомарк" @endif
+                @if($client)
+                    {{$client->company->name}}
+                @endif
+
+               {{--@if($order->sender_id != 0) {{$order->sender->getCompany->name}} @else Товариство з обмеженою відповідальністю "Леомарк" @endif--}}
             </div>
             <div style="margin-left: 15px; margin-bottom: 20px">
-                @if($order->sender_id != 0)
+                @if($client)
+                    {{--$client->company--}}
+                @endif
+                {{--@if($order->sender_id != 0)
 
                 @else
                 П/р UA883253650000002600501445973, Банк Банк ПАТ КРЕДОБАНК,<br>
@@ -99,9 +106,15 @@
                 81032, Львівська обл., Яворівський р-н, с.Наконечне Перше, М.Лисенка,<br>
                 будинок № 17,<br>
                 код за ЄДРПОУ 23266835, ІПН 232668313332
-                @endif
+                @endif--}}
             </div>
         </td>
+        @if($client)
+            @if($client->company->full_logo)
+                <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$client->company->full_logo}}" width="200"></td>
+            @endif
+        @endif
+        {{--
         @if($order->sender_id != 0)
             @if($order->sender->getCompany->full_logo)
             <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$order->sender->getCompany->full_logo}}" width="200"></td>
@@ -109,6 +122,7 @@
         @else
             <td rowspan="2"><img align="logo" src=" {{asset('logo.png')}} " width="200"></td>
         @endif
+        --}}
     </tr>
     <tr>
         <td class="f-u f8-5">Покупець:</td>
