@@ -63,6 +63,16 @@ class OrderController extends Controller
 		return 'ok';
 	}
 
+	protected function changeQuantity($id, $quantity, $order){
+		$orderProduct = OrderProduct::find($id);
+		$total  = round($orderProduct->price*$orderProduct->quantity, 2);
+		$order->total -= $total;
+		$orderProduct->quantity = $quantity;
+		$orderProduct->save();
+		$order->total += round($orderProduct->price*$orderProduct->quantity, 2);
+		$order->save();
+	}
+
 	public function removeOfOrder($id){
 		$orderProduct = OrderProduct::with(['getCart'])->find($id);
 
@@ -161,7 +171,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$order = Order::with(['products.product'])->find($id);
+		$order = Order::with(['products.product','products.storageProduct'])->find($id);
 		SEOTools::setTitle(trans('order.page_update').$order->id);
 		$companies = Company::with(['users'])
 			->where([
@@ -173,14 +183,17 @@ class OrderController extends Controller
 		$koef = $order->is_pdv?1.2:1;
 
 		foreach($order->products as $orderProduct){
-			$price = \App\Services\Product\Product::calcPrice($orderProduct->product)/100 * $koef;
+			$price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
 
 			$total = $price * $orderProduct->quantity;
+
 
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'name' => \App\Services\Product\Product::getName($orderProduct->product),
 				'quantity' => $orderProduct->quantity,
+				'min' => ($orderProduct->storageProduct)?$orderProduct->storageProduct->package:0,
+				'max' => ($orderProduct->storageProduct)?$orderProduct->storageProduct->amount:0,
 				'price' => number_format($price*100,2,'.', ' '),
 				'total' => number_format($total,2,'.', ' '),
 			];
@@ -212,6 +225,10 @@ class OrderController extends Controller
 		$order->sender_id = $request->sender_id;
 		$order->user = $request->customer_id;
 		$order->comment = $request->comment;
+		foreach ($request->product_quantity as $key => $quantity){
+			$this->changeQuantity($key, $quantity, $order);
+		}
+
 		$order->save();
 
 		if($request->submit == 'add_product'){

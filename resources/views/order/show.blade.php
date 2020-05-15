@@ -169,7 +169,7 @@
 							@foreach($products as $product)
 								<tr>
 									<td>{{$product['name']}}</td>
-									<td class="text-nowrap text-center">{{$product['quantity']}}</td>
+									<td class="text-nowrap text-center"><input type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}"></td>
 									<td class="text-nowrap text-center">{{$product['price']}}</td>
 									<td class="text-nowrap text-center">{{$product['total']}}</td>
 									<td><a href="#" data-id="{{$product['id']}}"  class="btn btn-sm btn-danger delete-product"><i class="fas fa-times"></i></a></td>
