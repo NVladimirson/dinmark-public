@@ -91,11 +91,11 @@
 
 <p class="f12-5 f-b t-c">Акт звірки взаєморозрахунків</p>
 <p class="t-c f8" style="width: 50%; margin: 0 auto;">взаємних розрахунків по стану за період: {{($actData->first())?\Carbon\Carbon::parse($actData->first()->date_add)->format('d.m.Y'):'01.01.2000'}} - {{\Carbon\Carbon::now()->format('d.m.Y')}} між Товариство з обмеженою відповідальністю "Леомарк"
-    і {{$user->getCompany->name}}
+    і {{$company->name}}
 </p>
 
 <p class="f8" style="text-align: justify;">Ми, що нижче підписалися, Менеджер із збуту Товариство з обмеженою відповідальністю "Леомарк" ЗУБАЧ ПАВЛО АНДРІЙОВИЧ, з одного
-    боку, і ________________ {{$user->getCompany->name}} _______________________, з іншого боку, склали даний
+    боку, і ________________ {{$company->name}} _______________________, з іншого боку, склали даний
     акт звірки у тому, що стан взаємних розрахунків за даними обліку наступний:
 </p>
 
@@ -103,7 +103,7 @@
     <thead>
     <tr>
         <td colspan="4">За даними Товариство з обмеженою відповідальністю "Леомарк", грн </td>
-        <td colspan="4">За даними {{$user->getCompany->name}}, грн </td>
+        <td colspan="4">За даними {{$company->name}}, грн </td>
     </tr>
     </thead>
     <tbody>
@@ -229,7 +229,7 @@
     <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь  Товариство з обмеженою <br>
         відповідальністю "Леомарк" {{number_format($saldo,2,',',' ')}} грн</b>
     @elseif($saldo < 0)
-        <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь <br/> {{$user->getCompany->name}} {{number_format(-$saldo,2,',',' ')}} грн</b>
+        <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь <br/> {{$company->name}} {{number_format(-$saldo,2,',',' ')}} грн</b>
     @else
         <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість відсутня</b>
     @endif
@@ -239,7 +239,7 @@
     <tfoot>
     <tr>
         <td>Від Товариство з обмеженою відповідальністю "Леомарк"</td>
-        <td>Від {{$user->getCompany->name}}</td>
+        <td>Від {{$company->name}}</td>
     </tr>
     <tr>
         <td style="padding: 20px 0">Менеджер із збуту"</td>

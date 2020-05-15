@@ -13,7 +13,7 @@ class DashboardController extends Controller
 	{
 		$orders = Order::with(['products.product'])
 			->whereHas('getUser', function ($users){
-				$users->where('company',auth()->user()->company)
+				$users->where('company',session('current_company_id'))
 					->orderBy('id','desc');
 			})->get()->groupBy(function($val) {
 				return Carbon::parse($val->date_add)->format('m Y');

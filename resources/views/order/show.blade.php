@@ -190,7 +190,7 @@
                                 <div class="form-group m-b-15">
                                     <label>@lang('order.cp_price')</label>
                                     <select class="form-control selectpicker" id="cp_price_id" name="cp_price_id" data-live-search="true" data-style="btn-white">
-                                        @foreach(auth()->user()->getCompany->type_prices as $type_price)
+                                        @foreach($curent_company->type_prices as $type_price)
                                             <option value="{{$type_price->id}}">{{$type_price->name}} ({{$type_price->koef}})</option>
                                         @endforeach
                                     </select>

@@ -12,11 +12,7 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover with-shadow"></div>
 					<div class="image">
-						@if(auth()->user()->getCompany->logo)
-							<img src="{{env('DINMARK_URL')}}images/company/{{auth()->user()->getCompany->logo}}" alt="{{session('current_company_name')}}" />
-						@else
-							<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{session('current_company_name')}}" />
-						@endif
+						<img src="{{$logo}}" alt="{{session('current_company_name')}}" />
 					</div>
 					<div class="info">
 						@if(isset($companies))

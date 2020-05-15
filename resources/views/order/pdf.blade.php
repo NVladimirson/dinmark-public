@@ -115,6 +115,8 @@
                 @else
                 <td rowspan="2" width="200"><span width="200" style="display: inline-block;">&nbsp;</span></td>
             @endif
+        @else
+            <td rowspan="2" width="200"><span width="200" style="display: inline-block;">&nbsp;</span></td>
         @endif
         {{--
         @if($order->sender_id != 0)

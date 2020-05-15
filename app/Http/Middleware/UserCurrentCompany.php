@@ -20,15 +20,22 @@ class UserCurrentCompany
 			if(!$request->session()->has('current_company_id')){
 				session(['current_company_id' => auth()->user()->getCompany->id]);
 			}
-			$company = Company::find(session('current_company_id'));
-			session(['current_company_name' => $company->name]);
+			$curent_company = Company::find(session('current_company_id'));
+			session(['current_company_name' => $curent_company->name]);
 
 			$companies = Company::where([
-				['holding',$company->holding],
+				['holding',$curent_company->holding],
 				['holding','<>',0]
-			])->orWhere('id',$company->id)->get();
+			])->orWhere('id',$curent_company->id)->get();
+
+			$logo = env('DINMARK_URL').'images/empty-avatar.png';
+			if($curent_company->logo){
+				$logo = env('DINMARK_URL').'images/company/'.$curent_company->logo;
+			}
 
 			view()->share(compact('companies'));
+			view()->share(compact('logo'));
+			view()->share(compact('curent_company'));
 		}
 
 

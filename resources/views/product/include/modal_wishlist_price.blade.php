@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <select class="form-control selectpicker" name="price" data-live-search="true" data-style="btn-white">
                         <option value="">@lang('wishlist.empty_price')</option>
-                        @foreach(auth()->user()->getCompany->type_prices as $type_price)
+                        @foreach($curent_company->type_prices as $type_price)
                             <option value="{{$type_price->id}}">{{$type_price->name}}</option>
                         @endforeach
                     </select>

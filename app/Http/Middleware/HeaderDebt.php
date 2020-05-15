@@ -22,14 +22,14 @@ class HeaderDebt
 				$implementations->whereHas('sender',function ($users){
 					$users->whereHas('getCompany',function ($companies){
 						$companies->where([
-							['id', auth()->user()->getCompany->id],
+							['id', session('current_company_id')],
 						]);
 					});
 				})
 					->orWhereHas('customer',function ($users){
 						$users->whereHas('getCompany',function ($companies){
 							$companies->where([
-								['id', auth()->user()->getCompany->id],
+								['id', session('current_company_id')],
 							]);
 						});
 					});
@@ -40,13 +40,13 @@ class HeaderDebt
 			$orders->whereHas('getUser',function ($users){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
-						['id', auth()->user()->getCompany->id],
+						['id', session('current_company_id')],
 					]);
 				});
 			})->orWhereHas('sender',function ($users){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
-						['id', auth()->user()->getCompany->id],
+						['id', session('current_company_id')],
 					]);
 				});
 			});

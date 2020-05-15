@@ -178,7 +178,7 @@ class OrderController extends Controller
 				['holding',auth()->user()->getCompany->holding],
 				['holding','<>',0]
 			])->orWhere('id',auth()->user()->company)->get();
-
+		$curent_company = Company::find(session('current_company_id'));
 		$products = [];
 		$koef = $order->is_pdv?1.2:1;
 
@@ -211,9 +211,9 @@ class OrderController extends Controller
 			})->get();
 
 		if($order->status == 8){
-			return view('order.show',compact('order', 'companies', 'products', 'koef', 'clients'));
+			return view('order.show',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients'));
 		}else{
-			return view('order.show_order',compact('order', 'companies', 'products', 'koef', 'clients'));
+			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients'));
 		}
 
 	}
@@ -345,17 +345,18 @@ class OrderController extends Controller
 	public function PDFAct()
 	{
 		$user = auth()->user();
+		$company = Company::find(session('current_company_id'));
 		$implementations =  Implementation::whereHas('sender',function ($users){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
-						['id', auth()->user()->getCompany->id],
+						['id', session('current_company_id')],
 					]);
 				});
 			})
 			->orWhereHas('customer',function ($users){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
-						['id', auth()->user()->getCompany->id],
+						['id', session('current_company_id')],
 					]);
 				});
 			})->get();
@@ -363,13 +364,13 @@ class OrderController extends Controller
 			$orders->whereHas('getUser',function ($users) use ($user){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
-						['id', auth()->user()->getCompany->id],
+						['id', session('current_company_id')],
 					]);
 				});
 			})->orWhereHas('sender',function ($users) use ($user){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
-						['id', auth()->user()->getCompany->id],
+						['id', session('current_company_id')],
 					]);
 				});
 			});
@@ -379,13 +380,14 @@ class OrderController extends Controller
 
 		$pdf = PDF::loadView('order.pdf_act', [
 			'user' => $user,
+			'company' => $company,
 			'actData'=> $actData,
 			'implementtions' => $implementations,
 			'payments' => $payments,
 		]);
 		$pdf->setOption('enable-smart-shrinking', true);
 		$pdf->setOption('no-stop-slow-scripts', true);
-		return $pdf->download(($user->getCompany->prefix.'_').'act'.'.pdf');
+		return $pdf->download(($company->prefix.'_').'act'.'.pdf');
 
 	}
 
