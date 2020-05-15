@@ -168,7 +168,7 @@
 						<tbody>
 							@foreach($products as $product)
 								<tr>
-									<td>{{$product['name']}}</td>
+									<td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
 									<td class="text-nowrap text-center"><input type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}"></td>
 									<td class="text-nowrap text-center">{{$product['price']}}</td>
 									<td class="text-nowrap text-center">{{$product['total']}}</td>

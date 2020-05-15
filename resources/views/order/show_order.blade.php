@@ -93,7 +93,7 @@
 						<tbody>
 							@foreach($products as $product)
 								<tr>
-									<td>{{$product['name']}}</td>
+									<td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
 									<td class="text-nowrap text-center">{{$product['quantity']}}</td>
 									<td class="text-nowrap text-center">{{$product['price']}}</td>
 									<td class="text-nowrap text-center">{{$product['total']}}</td>

@@ -190,6 +190,7 @@ class OrderController extends Controller
 
 			$products[] = [
 				'id'	=> $orderProduct->id,
+				'product_id'	=> $orderProduct->product->id,
 				'name' => \App\Services\Product\Product::getName($orderProduct->product),
 				'quantity' => $orderProduct->quantity,
 				'min' => ($orderProduct->storageProduct)?$orderProduct->storageProduct->package:0,

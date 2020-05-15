@@ -34,7 +34,7 @@ class ReclamationController extends Controller
 				return $reclamation->product->implementation_id;
 			})
 			->addColumn('product',function (Reclamation $reclamation){
-				return \App\Services\Product\Product::getName($reclamation->product->orderProduct->product);
+				return '<a href="'.route('products.show',[$reclamation->product->orderProduct->product->id]).'">'.\App\Services\Product\Product::getName($reclamation->product->orderProduct->product).'</a>';
 			})
 			->addColumn('status_html',function (Reclamation $reclamation){
 				$class = '';

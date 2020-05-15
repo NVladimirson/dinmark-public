@@ -77,6 +77,7 @@ class ImplementationController extends Controller
 				$products = [];
 				foreach ($implementation->products as $implementationProduct){
 					$products[] = [
+						'product_id'	=> $implementationProduct->orderProduct->product->id,
 						'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
 						'quantity'		=> $implementationProduct->quantity,
 						'total'			=> number_format($implementationProduct->total,2,',',' '),
@@ -145,6 +146,7 @@ class ImplementationController extends Controller
 		foreach ($implementationProducts as $implementationProduct){
 			$formatted_data[] = [
 				'id'	=> $implementationProduct->id,
+				'product_id'	=> $implementationProduct->orderProduct->product->id,
 				'name'	=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product).'('.$implementationProduct->orderProduct->product->article_show.')',
 				//'min'	=> $implementationProduct->quantity,
 				'max'	=> $implementationProduct->quantity,
