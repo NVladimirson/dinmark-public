@@ -87,10 +87,7 @@ class OrderController extends Controller
 	public function allAjax(Request $request){
 		$orders = Order::whereHas('getUser', function ($users){
 							$users->where('company',auth()->user()->company);
-						})
-					->orWhereHas('sender', function ($users){
-						$users->where('company',auth()->user()->company);
-					})->orderBy('id','desc');
+						});
 
 		if($request->has('status_id')){
 			$orders->where('status',$request->status_id);
@@ -137,6 +134,15 @@ class OrderController extends Controller
 			->addColumn('actions', function (Order $order) {
 				return view('order.include.action_buttons',compact('order'));
 			})
+			->filterColumn('number_html', function($order, $keyword) {
+				$order->where('id', 'like',["%{$keyword}%"])->orWhere('public_number', 'like',["%{$keyword}%"]);
+
+			})
+			->filter(function ($order) use ($request) {
+				if(request()->has('name_html')){
+					$order->whereHas('id', 'like',"%" . request('number_html') . "%")->orWhere()->whereHas('public_number', 'like',"%" . request('number_html') . "%");
+				}
+			}, true)
 			->rawColumns(['name_html','article_show_html','image_html','author','customer','check_html','actions','article_holding'])
 			->toJson();
 	}

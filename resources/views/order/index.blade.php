@@ -51,6 +51,7 @@
 						<thead>
 							<tr>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
+								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
 								<th class="text-nowrap">@lang('order.table_header_date')</th>
 								<th class="text-nowrap">@lang('order.table_header_status')</th>
 								<th class="text-nowrap">@lang('order.table_header_status_payment')</th>
@@ -115,18 +116,25 @@
 					"serverSide": true,
 					"ajax": "{!! route('orders.all_ajax') !!}",
 					"order": [[ 0, "desc" ]],
-					"ordering": false,
-					"searching": false,
+					//"ordering": false,
+					//"searching": true,
 					"columns": [
+						{
+							data: 'id',
+							"visible": false,
+						},
 						{
 							className: 'text-center',
 							data: 'number_html',
+							"orderable":      false,
 						},
 						{
 							data: 'date_html',
+							"orderable":      false,
 						},
 						{
 							data: 'status_html',
+							"orderable":      false,
 						},
 						{
 							data: 'payment_html',
@@ -134,9 +142,11 @@
 						},
 						{
 							data: 'total_html',
+							"orderable":      false,
 						},
 						{
 							data: 'sender',
+							"orderable":      false,
 						},
 						{
 							data: 'customer',
@@ -144,6 +154,7 @@
 						},
 						{
 							data: 'actions',
+							"orderable":      false,
 						},
 					],
 				} );
