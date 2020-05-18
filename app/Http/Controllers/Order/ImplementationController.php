@@ -171,8 +171,8 @@ class ImplementationController extends Controller
 			$products[] = [
 				'id'	=> $implementationProduct->id,
 				'name' => \App\Services\Product\Product::getName($implementationProduct->orderProduct->product,'uk'),
-				'quantity' => $implementationProduct->quantity/100,//number_format($orderProduct->quantity/$orderProduct->storageProduct->package,1,',',' '),
-				'package' => 100,//$orderProduct->storageProduct->package,
+				'quantity' => $implementationProduct->quantity/100,
+				'package' => 100,
 				'price' => number_format($price*100,2,',', ' '),
 				'total' => number_format($total,2,',', ' '),
 			];

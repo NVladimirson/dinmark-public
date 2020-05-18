@@ -174,7 +174,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$order = Order::with(['products.product','products.storageProduct'])->find($id);
+		$order = Order::with(['products.product','products.storage'])->find($id);
 		SEOTools::setTitle(trans('order.page_update').$order->id);
 		$companies = Company::with(['users'])
 			->where([
@@ -190,14 +190,20 @@ class OrderController extends Controller
 
 			$total = $price * $orderProduct->quantity;
 
+			$storageProduct = null;
+			if($orderProduct->storage){
+				if($orderProduct->storage->storageProducts->firstWhere('product_id',$orderProduct->product_id)){
+					$storageProduct = $orderProduct->storage->storageProducts->firstWhere('product_id',$orderProduct->product_id);
+				}
+			}
 
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
 				'name' => \App\Services\Product\Product::getName($orderProduct->product),
 				'quantity' => $orderProduct->quantity,
-				'min' => ($orderProduct->storageProduct)?$orderProduct->storageProduct->package:0,
-				'max' => ($orderProduct->storageProduct)?$orderProduct->storageProduct->amount:0,
+				'min' => ($storageProduct)?$storageProduct->package:0,
+				'max' => ($storageProduct)?$storageProduct->amount:0,
 				'price' => number_format($price*100,2,'.', ' '),
 				'total' => number_format($total,2,'.', ' '),
 			];
@@ -225,7 +231,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$order = Order::with(['products.product.storages','products.storageProduct.storage'])->find($id);
+		$order = Order::with(['products.product.storages','products.storage'])->find($id);
 		$order->sender_id = $request->sender_id;
 		if($request->customer_id > 0){
 			$order->user = $request->customer_id;
@@ -292,11 +298,11 @@ class OrderController extends Controller
 				$products[] = [
 					'id'	=> $orderProduct->id,
 					'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
-					'quantity' => $orderProduct->quantity/100,//number_format($orderProduct->quantity/$orderProduct->storageProduct->package,1,',',' '),
-					'package' => 100,//$orderProduct->storageProduct->package,
+					'quantity' => $orderProduct->quantity/100,
+					'package' => 100,
 					'price' => number_format($price*100,2,',', ' '),
 					'total' => number_format($total,2,',', ' '),
-					'storage_termin' => $orderProduct->storageProduct->storage->term,
+					'storage_termin' => $orderProduct->storage->term,
 				];
 			}
 
@@ -322,7 +328,7 @@ class OrderController extends Controller
 
 	public function PDFBill($id)
 	{
-		$order = Order::with(['products.product.storages','products.storageProduct.storage'])->find($id);
+		$order = Order::with(['products.product.storages','products.storage'])->find($id);
 		$products = [];
 		$orderTotal = 0;
 
@@ -339,7 +345,6 @@ class OrderController extends Controller
 				'package' => 100,
 				'price' => number_format($price*100,2,',', ' '),
 				'total' => number_format($total,2,',', ' '),
-				//'storage_termin' => $orderProduct->storageProduct->storage->term,
 			];
 		}
 
