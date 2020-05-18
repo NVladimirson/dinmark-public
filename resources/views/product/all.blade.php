@@ -145,10 +145,10 @@
 							data: 'user_price',
 						},
 						{
-							data: 'limit_1',
+							data: 'html_limit_1',
 						},
 						{
-							data: 'limit_2',
+							data: 'html_limit_2',
 						},
 						{
 							data: 'storage_html',

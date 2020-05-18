@@ -69,6 +69,14 @@ class ProductController extends Controller
 			->addColumn('user_price', function (Product $product) {
 				return \App\Services\Product\Product::getPrice($product);
 			})
+			->addColumn('html_limit_1', function (Product $product) {
+				return $product->limit_1;
+				//return \App\Services\Product\Product::getPrice($product);
+			})
+			->addColumn('html_limit_2', function (Product $product) {
+				return $product->limit_2;
+				//return \App\Services\Product\Product::getPrice($product);
+			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
 				if($product->storages){
