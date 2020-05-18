@@ -65,13 +65,13 @@
 								<optgroup label="@lang('order.select_customer_user')">
 									@foreach($companies as $company)
 										@foreach($company->users as $user)
-											<option value="{{$user->id}}" @if($user->id == $order->user) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
+											<option value="{{$user->id}}" @if(($order->customer_id == $user->id) || ( !$order->customer_id && $user->id == $order->user)) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
 										@endforeach
 									@endforeach
 								</optgroup>
 								<optgroup label="@lang('order.select_customer_client')">
 									@foreach($clients as $client)
-										<option value="{{-$client->id}}" @if($client->id == -$order->user) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
+										<option value="{{-$client->id}}" @if($client->id == -$order->customer_id) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
 									@endforeach
 								</optgroup>
 							</select>

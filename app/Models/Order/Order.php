@@ -14,6 +14,8 @@ class Order extends Model
 	protected $fillable = [
 		'public_number',
 		'user',
+		'sender_id',
+		'customer_id',
 		'status',
 		'shipping_id',
 		'shipping_info',
@@ -44,5 +46,9 @@ class Order extends Model
 
 	public function sender(){
 		return $this->hasOne('App\User','id', 'sender_id');
+	}
+
+	public function customer(){
+		return $this->hasOne('App\User','id', 'customer_id');
 	}
 }

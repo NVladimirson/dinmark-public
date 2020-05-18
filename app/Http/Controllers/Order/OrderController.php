@@ -36,6 +36,7 @@ class OrderController extends Controller
 		if($id == 0){
 			$order = Order::create([
 				'user' => auth()->user()->id,
+				'customer_id' => auth()->user()->id,
 				'status' => 8,
 				'total' => $total,
 				'source' => 'b2b',
@@ -119,22 +120,24 @@ class OrderController extends Controller
 			->addColumn('total_html', function (Order $order) {
 				return number_format($order->total,2,'.',' ');
 			})
-			->addColumn('customer', function (Order $order) {
+			->addColumn('sender', function (Order $order) {
 				return $order->sender?$order->sender->name:'Dinmark';
 			})
-			->addColumn('author', function (Order $order) {
-				if($order->user > 0){
-					return $order->getUser->name;
+			->addColumn('customer', function (Order $order) {
+				if($order->customer_id){
+					if($order->customer_id > 0){
+						return $order->customer->name;
+					}else{
+						return '<i class="fas fa-users"></i> '.Client::find(-$order->customer_id)->name;
+					}
 				}else{
-					return '<i class="fas fa-users"></i> '.Client::find(-$order->user)->name;
+					return $order->getUser->name;
 				}
-
-
 			})
 			->addColumn('actions', function (Order $order) {
 				return view('order.include.action_buttons',compact('order'));
 			})
-			->rawColumns(['name_html','article_show_html','image_html','author','check_html','actions','article_holding'])
+			->rawColumns(['name_html','article_show_html','image_html','author','customer','check_html','actions','article_holding'])
 			->toJson();
 	}
 
@@ -224,14 +227,28 @@ class OrderController extends Controller
 
 		$order = Order::with(['products.product.storages','products.storageProduct.storage'])->find($id);
 		$order->sender_id = $request->sender_id;
-		$order->user = $request->customer_id;
+		if($request->customer_id > 0){
+			$order->user = $request->customer_id;
+		}else{
+			if($request->sender_id > 0){
+				$order->user = $request->sender_id;
+			}else{
+				$client = Client::find(-$request->customer_id);
+				$user = $client->company->users->first();
+				if($user){
+					$order->user = $user->id;
+				}else{
+					$order->user = auth()->user()->id;
+				}
+			}
+		}
+		$order->customer_id = $request->customer_id;
 		$order->comment = $request->comment;
 		if($request->has('product_quantity')){
 			foreach ($request->product_quantity as $key => $quantity){
 				$this->changeQuantity($key, $quantity, $order);
 			}
 		}
-
 
 		$order->save();
 

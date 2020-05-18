@@ -136,10 +136,10 @@
 							data: 'total_html',
 						},
 						{
-							data: 'customer',
+							data: 'sender',
 						},
 						{
-							data: 'author',
+							data: 'customer',
 							"orderable":      false,
 						},
 						{
