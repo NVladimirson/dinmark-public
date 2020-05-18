@@ -290,9 +290,9 @@ class OrderController extends Controller
 			$client = Client::find($request->cp_client_id);
 
 			foreach($order->products as $orderProduct){
-				$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * (($companyPrice)?$companyPrice->koef:1);
-
-				$total = $price * $orderProduct->quantity;
+				//$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * (($companyPrice)?$companyPrice->koef:1);
+				$price = $orderProduct->price/120 * 100;
+				$total = round($price * $orderProduct->quantity,2);
 				$orderTotal += $total;
 
 				$products[] = [
