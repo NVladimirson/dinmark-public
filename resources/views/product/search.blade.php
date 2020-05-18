@@ -27,7 +27,7 @@
 					<div class="row">
 					@forelse($formatted_data as $formatted_datum)
 						<div class="col-12 m-b-15">
-							<a href="{{route('products.find',[$formatted_datum['id']])}}">{{$formatted_datum['text']}}</a>
+							<a href="{{route('products.show',[$formatted_datum['id']])}}">{{$formatted_datum['text']}}</a>
 						</div>
 					@empty
 						<div class="alert alert-light fade show">@lang('product.empty')</div>
