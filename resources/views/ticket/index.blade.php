@@ -61,7 +61,9 @@
 								</div>
 								<div class="widget-list-action">
 									@if($ticket->messages_count > 0)
-									<span class="badge badge-secondary pull-right">{{$ticket->messages_count}}</span>
+									<span class="badge badge-primary pull-right">{{$ticket->messages_count}}</span>
+										@else
+										<span class="badge badge-secondary pull-right">{{$ticket->messages_count}}</span>
 									@endif
 								</div>
 							</a>
@@ -87,63 +89,4 @@
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
-
-	<script>
-		(function ($) {
-			"use strict";
-			$(document).ready(function() {
-				window.table = $('#data-table-buttons').DataTable( {
-					"language": {
-						"url": "@lang('table.localization_link')",
-						searchPlaceholder: "Поиск"
-					},
-					//"scrollX": true,
-					"pageLength": 25,
-					"autoWidth": true,
-					"processing": true,
-					"serverSide": true,
-					"ajax": "{!! route('products.all_ajax') !!}",
-					"order": [[ 0, "desc" ]],
-					"columns": [
-						{
-							className: 'text-center',
-							data: 'id',
-							"visible": false,
-							"searchable": false
-						},
-						{
-							"orderable":      false,
-							data: 'check_html',
-						},
-						{
-							"orderable":      false,
-							data: 'image_html',
-						},
-						{
-							"orderable":      false,
-							data: 'name',
-						},
-						{
-							data: 'article_show',
-						},
-						{
-							data: 'user_price',
-						},
-						{
-							data: 'limit_1',
-						},
-						{
-							data: 'limit_2',
-						},
-						{
-							data: 'storage_html',
-						},
-						{
-							data: 'actions',
-						},
-					],
-				} );
-			});
-		})(jQuery);
-	</script>
 @endpush

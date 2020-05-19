@@ -16,7 +16,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 	Auth::routes(['register' => false]);
 	Route::get('/login/as_site_user/','Auth\LoginController@LoginWithKey')->name('auth.login_key');
 
-	Route::group(['middleware'=> ['auth','currentCompany','headerDebt']],function() {
+	Route::group(['middleware'=> ['auth','currentCompany','headerDebt','ticketSeidebar']],function() {
 
 		Route::get('/', 'DashboardController@index')->name('home');
 

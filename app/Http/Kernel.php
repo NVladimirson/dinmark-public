@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
 		'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
 		'currentCompany' 		  => \App\Http\Middleware\UserCurrentCompany::class,
 		'headerDebt' 		  	  => \App\Http\Middleware\HeaderDebt::class,
+		'ticketSeidebar' 	  	  => \App\Http\Middleware\TicketSidebar::class,
     ];
 }

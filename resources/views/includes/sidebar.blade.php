@@ -143,7 +143,7 @@
 						<h5 class="media-heading">@lang('sidebar.manager')</h5>
 						<p>{{$manager->name}}</p>
 						<p class="mb-0">
-							<a href="{{route('ticket')}}" class="btn btn-block btn-primary m-r-5">@lang('sidebar.message')</a>
+							<a href="{{route('ticket')}}" class="btn btn-block btn-primary">@lang('sidebar.message') <span class="badge badge-light">{{$countMessage}}</span></a>
 						</p>
 					</div>
 				</li>
