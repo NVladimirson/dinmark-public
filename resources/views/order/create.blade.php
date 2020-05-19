@@ -43,9 +43,9 @@
 						</div>
 						<div class="col-lg-9">
 							<div class="pull-right">
-								<button type="submit" name="submit" value="save" class="btn btn-sm btn-primary m-b-5 m-r-5" data-toggle="modal">@lang('order.btn_new_request')</button>
-								<button type="submit" name="submit" value="order" class="btn btn-sm btn-primary m-b-5 m-r-5" data-toggle="modal">@lang('order.btn_new_order')</button>
-								<button type="submit" name="submit" value="cancel" class="btn btn-sm btn-danger m-b-5" data-toggle="modal">@lang('order.btn_cancel_order')</button>
+								<button type="submit" name="submit" value="save" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_new_request')</button>
+								<button type="submit" name="submit" value="order" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_new_order')</button>
+								<a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5">@lang('order.btn_cancel_order')</a>
 							</div>
 						</div>
 					</div>
