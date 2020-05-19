@@ -40,6 +40,7 @@ return [
 	'select_customer'			=> 'Получатель',
 	'select_customer_user'		=> 'Пользователи',
 	'select_customer_client'	=> 'Клиенты',
+	'new_client'				=> 'Новый клиент',
 	'form_pdv_label'			=> 'Цена',
 	'form_pdv'					=> 'с НДС',
 	'form_select_product'		=> 'Выберите продукт',

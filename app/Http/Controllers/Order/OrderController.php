@@ -237,11 +237,15 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
+		$client = null;
+
 		$order = Order::with(['products.product.storages','products.storage'])->find($id);
 		$order->sender_id = $request->sender_id;
+		$order->customer_id = $request->customer_id;
+
 		if($request->customer_id > 0){
 			$order->user = $request->customer_id;
-		}else{
+		}elseif($request->customer_id < 0){
 			if($request->sender_id > 0){
 				$order->user = $request->sender_id;
 			}else{
@@ -253,8 +257,25 @@ class OrderController extends Controller
 					$order->user = auth()->user()->id;
 				}
 			}
+		}else{
+			$client = Client::create([
+				'name' => trans('order.new_client'),
+				'company_name'  => ' ',
+				'company_edrpo'  => ' ',
+				'email'  => ' ',
+				'phone'  => ' ',
+				'address'  => ' ',
+				'company_id'  => auth()->user()->company,
+			]);
+			$order->customer_id = -$client->id;
+
+			if($request->sender_id > 0){
+				$order->user = $request->sender_id;
+			}else{
+				$order->user = auth()->user()->id;
+			}
 		}
-		$order->customer_id = $request->customer_id;
+
 		$order->comment = $request->comment;
 		if($request->has('product_quantity')){
 			foreach ($request->product_quantity as $key => $quantity){
@@ -329,7 +350,11 @@ class OrderController extends Controller
 			return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
 		}
 
-		return redirect()->route('orders.show',$id);
+		if($client){
+			return redirect()->route('clients.edit',$client->id);
+		}else{
+			return redirect()->route('orders.show',$id);
+		}
 	}
 
 	public function PDFBill($id)

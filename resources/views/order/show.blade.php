@@ -76,6 +76,7 @@
 									@foreach($clients as $client)
 										<option value="{{-$client->id}}" @if($client->id == -$order->customer_id) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
 									@endforeach
+										<option value="0">@lang('order.new_client')</option>
 								</optgroup>
 							</select>
 						</div>
