@@ -163,9 +163,9 @@ class ImplementationController extends Controller
 		$orderTotal = 0;
 
 		foreach($implementation->products as $implementationProduct){
-			$price = $implementationProduct->total/ $implementationProduct->quantity;
+			$price = ($implementationProduct->total/ $implementationProduct->quantity)/120 * 100;
 
-			$total = $implementationProduct->total;
+			$total = $implementationProduct->total/120 * 100;
 			$orderTotal += $total;
 
 			$products[] = [
