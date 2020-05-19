@@ -339,9 +339,8 @@ class OrderController extends Controller
 		$orderTotal = 0;
 
 		foreach($order->products as $orderProduct){
-			$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 ;
-
-			$total = $price * $orderProduct->quantity;
+			$price = $orderProduct->price/120 * 100;
+			$total = round($price * $orderProduct->quantity,2);
 			$orderTotal += $total;
 
 			$products[] = [
