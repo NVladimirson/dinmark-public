@@ -70,12 +70,18 @@ class ProductController extends Controller
 				return \App\Services\Product\Product::getPrice($product);
 			})
 			->addColumn('html_limit_1', function (Product $product) {
-				return $product->limit_1;
-				//return \App\Services\Product\Product::getPrice($product);
+				if($product->limit_1 > 0){
+					return \App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
+				}else{
+					return '-';
+				}
 			})
 			->addColumn('html_limit_2', function (Product $product) {
-				return $product->limit_2;
-				//return \App\Services\Product\Product::getPrice($product);
+				if($product->limit_2 > 0){
+					return \App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2]);
+				}else{
+					return '-';
+				}
 			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
@@ -134,13 +140,16 @@ class ProductController extends Controller
 		$productName = \App\Services\Product\Product::getName($product);
 		$imagePath = \App\Services\Product\Product::getImagePathThumb($product);
 		$price = \App\Services\Product\Product::getPrice($product);
+		$limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
+		$limit2 = ($product->limit_2 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
+
 		$basePrice = \App\Services\Product\Product::getBasePrice($product);
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
 
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2'));
 	}
 
 	public function search(Request $request){

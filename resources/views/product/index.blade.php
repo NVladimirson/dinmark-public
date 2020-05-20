@@ -44,14 +44,18 @@
 									<th>@lang('product.show_your_price')</th>
 									<td>{{ $price }}</td>
 								</tr>
+								@if($product->limit_1 > 0)
 								<tr>
 									<th>@lang('product.show_price_porog_1')</th>
-									<td>{{ $product->limit_1 }}</td>
+									<td>{{ $limit1 }}</td>
 								</tr>
+								@endif
+								@if($product->limit_2 > 0)
 								<tr>
 									<th>@lang('product.show_price_porog_2')</th>
-									<td>{{ $product->limit_2  }}</td>
+									<td>{{ $limit2  }}</td>
 								</tr>
+								@endif
 								<tr>
 									<th>@lang('product.show_weight')</th>
 									<td>{{ $product->weight  }} @lang('product.weight_kg')</td>
@@ -161,13 +165,24 @@
 					var quntity_el = button.parent().prev().find('input[name="quantity"');
 					modal.find('.product_id').val(button.data('product'));
 					modal.find('.storage_id').val(button.data('storage'));
-					var quantity = modal.find('input[name="quantity"');
 
-					quantity.val(quntity_el.val());
-					quantity.attr('min',quntity_el.attr('min'));
-					quantity.attr('step',quntity_el.attr('step'));
-					quantity.attr('max',quntity_el.attr('max'));
-					quantity.parent().hide(0);
+					var modalQuantity = modal.find('input[name="quantity"');
+					var quantity = +quntity_el.val();
+					if((quantity % quntity_el.attr('step')) != 0){
+						if(quantity > quntity_el.attr('max')){
+							quntity_el.val(quntity_el.attr('max'));
+						}else if(quantity < quntity_el.attr('min')){
+							quntity_el.val(quntity_el.attr('min'));
+						}else{
+							quantity = quantity - quantity % (+quntity_el.attr('step')) + (+quntity_el.attr('step'));
+							quntity_el.val(quantity);
+						}
+					}
+					modalQuantity.val(quntity_el.val());
+					modalQuantity.attr('min',quntity_el.attr('min'));
+					modalQuantity.attr('step',quntity_el.attr('step'));
+					modalQuantity.attr('max',quntity_el.attr('max'));
+					modalQuantity.parent().hide(0);
 				})
 
 				$('#form_add_catalog').submit(function (e) {

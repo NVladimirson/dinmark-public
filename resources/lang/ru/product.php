@@ -27,6 +27,7 @@ return [
     'table_header_price' => 'Цена (100шт)',
     'table_header_price_porog_1' => 'Цена порог 1',
     'table_header_price_porog_2' => 'Цена порог 2',
+    'table_header_price_from' => '(от :quantity шт.)',
     'table_header_storage' => 'Остаток/Срок доставки',
     'storage_empty' => 'Нет в наличии',
 

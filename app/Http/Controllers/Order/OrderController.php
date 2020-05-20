@@ -31,7 +31,16 @@ class OrderController extends Controller
 	public function addToOrder($id, Request $request){
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
-		$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100);
+
+		$storage = $product->storages->firstWhere('id',$request->storage_id);
+		$koef = 1;
+		if($storage->limit_2 > 0 && $request->quantity >= $storage->limit_2 ){
+			$koef = 0.93;
+		}elseif($storage->limit_1 > 0 && $request->quantity >= $storage->limit_1 ){
+			$koef = 0.97;
+		}
+
+		$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100) * $koef;
 		$total = round($price * $request->quantity,2);
 		if($id == 0){
 			$order = Order::create([
@@ -69,6 +78,18 @@ class OrderController extends Controller
 		$total  = round($orderProduct->price*$orderProduct->quantity, 2);
 		$order->total -= $total;
 		$orderProduct->quantity = $quantity;
+		$orderProduct->save();
+
+		$koef = 1;
+		if($orderProduct->product->storages){
+			$storage = $orderProduct->product->storages->firstWhere('id',$orderProduct->storage_alias);
+			if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
+				$koef = 0.93;
+			}elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
+				$koef = 0.97;
+			}
+		}
+		$orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product)/(float)100) * $koef;
 		$orderProduct->save();
 		$order->total += round($orderProduct->price*$orderProduct->quantity, 2);
 		$order->save();

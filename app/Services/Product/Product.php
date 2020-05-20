@@ -104,6 +104,18 @@ class Product
 		return $price;
 	}
 
+	public static function getPriceLimit1($product){
+		$instance =  static::getInstance();
+		$price = $instance->calcPrice($product) * 0.97;
+		return $price;
+	}
+
+	public static function getPriceLimit2($product){
+		$instance =  static::getInstance();
+		$price = $instance->calcPrice($product) * 0.93;
+		return $price;
+	}
+
 	public static function calcPriceWithoutPDV($product){
 		$instance =  static::getInstance();
 
@@ -148,6 +160,8 @@ class Product
 		$price = $instance->calcPrice($product);
 		return number_format($price * $coef,2,'.',' ');
 	}
+
+
 
 	public static function getStringPrice($num){
 		$instance =  static::getInstance();

@@ -57,9 +57,17 @@ class OrderImport implements OnEachRow
 							if($storage->amount >= $row[2]){
 								$quantity = $this->getQuantity($storage,$row[2]);
 
-								$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100);
-								$total = round($price * $quantity,2);
 
+								$koef = 1;
+
+								if($storage->limit_2 > 0 && $quantity >= $storage->limit_2 ){
+									$koef = 0.93;
+								}elseif($storage->limit_1 > 0 && $quantity >= $storage->limit_1 ){
+									$koef = 0.97;
+								}
+
+								$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100) * $koef;
+								$total = round($price * $quantity,2);
 
 								$this->order->total += $total;
 								$this->order->save();
