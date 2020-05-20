@@ -39,4 +39,6 @@ return [
 	'update_success'		=> 'Дані клієнта успішно оновлені.',
 	'client_already_exist'	=> 'Клієнт з таким email або телефоном вже існує',
 
+	'client_deleted'	=> 'Клієнт видалений',
+
 ];

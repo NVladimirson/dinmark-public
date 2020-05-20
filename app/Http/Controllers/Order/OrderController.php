@@ -146,7 +146,12 @@ class OrderController extends Controller
 					if($order->customer_id > 0){
 						return $order->customer->name;
 					}else{
-						return '<i class="fas fa-users"></i> '.Client::find(-$order->customer_id)->name;
+						$client = Client::find(-$order->customer_id);
+						if($client){
+							return '<i class="fas fa-users"></i> '.Client::find(-$order->customer_id)->name;
+						}else{
+							return trans('client.client_deleted');
+						}
 					}
 				}else{
 					return $order->getUser->name;
