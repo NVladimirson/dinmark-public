@@ -33,12 +33,12 @@ class OrderImport implements OnEachRow
 		if($rowIndex > 1 && ($row[0] || $row[1]) && $row[2]){
 			$product = null;
 			if($row[0]){
-				$product = Product::with(['storages'])
+				$product = Product::with(['storages.storage'])
 					->where('article_show',trim($row[0]))
 					->first();
 			}elseif( $row[1] ){
 				$holdingId = $this->holdingId;
-				$product = Product::with(['storages'])
+				$product = Product::with(['storages.storage'])
 					->whereHas('holdingArticles', function($articles) use ($row,$holdingId){
 						$articles->where([
 							['holding_id', $holdingId],
@@ -70,7 +70,7 @@ class OrderImport implements OnEachRow
 									'active' => 1,
 									'product_alias' => $product->wl_alias,
 									'product_id' => $product->id,
-									'storage_alias' => $storage->id,
+									'storage_alias' => $storage->storage->id,
 									'price' => $price,
 									'price_in' => $product->price,
 									'quantity' => $quantity,
