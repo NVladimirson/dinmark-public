@@ -259,7 +259,7 @@ class OrderController extends Controller
 			}
 		}else{
 			$client = Client::create([
-				'name' => trans('order.new_client'),
+				'name' => $request->client_name,
 				'company_name'  => ' ',
 				'company_edrpo'  => ' ',
 				'email'  => ' ',

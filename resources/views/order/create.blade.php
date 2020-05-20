@@ -76,6 +76,9 @@
                                         <option value="0">@lang('order.new_client')</option>
 								</optgroup>
 							</select>
+							<div class="form-group">
+								<input class="form-control m-t-15" type="text" id="client_name" name="client_name" style="display: none" placeholder="@lang('client.table_header_name')">
+							</div>
 						</div>
 					</div>
 						<div class="row">
@@ -271,6 +274,16 @@
 					$('#product_count').attr('max',curOption.data('max'));
 				});
 
+
+				$('#customer_id').change(function () {
+					if($(this).val() == 0){
+						$('#client_name').show(0);
+						$('#client_name').attr('required','required');
+					}else{
+						$('#client_name').hide(0);
+						$('#client_name').removeAttr('required');
+					}
+				});
 			});
 		})(jQuery);
 	</script>
