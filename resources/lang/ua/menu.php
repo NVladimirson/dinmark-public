@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'dashboard' => 'Dashboard',
+    'dashboard' => 'Головна',
 
     'shop' => 'Каталог',
     'shop_all' => 'Усі товари',
@@ -21,16 +21,16 @@ return [
 	'orders' => 'Замовлення',
 	'orders_all' => 'Мої замовлення',
 	'orders_new' => 'Нове замовлення',
-	'implementations' => 'Реалізації',
+	'implementations' => 'Відправлення',
 
-	'reclamations'		=> 'Рекламації',
-	'reclamations_all'	=> 'Мої рекламації',
-	'reclamations_new'	=> 'Нова рекламація',
+	'reclamations'		=> 'Повернення',
+	'reclamations_all'	=> 'Мої повернення',
+	'reclamations_new'	=> 'Нове повернення',
 
-	'clients'		=> 'Клієнти',
-	'clients_all'	=> 'Список клієнтів',
-	'clients_new'	=> 'Новий клієнт',
+	'clients'		=> 'Отримувачі',
+	'clients_all'	=> 'Список отримувачів',
+	'clients_new'	=> 'Новий отримувач',
 
-	'faq'	=> 'FAQ',
+	'faq'	=> 'Питання/Відповідь',
 	'news'	=> 'Новини',
 ];
