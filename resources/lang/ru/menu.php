@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'dashboard' 		=> 'Dashboard',
+    'dashboard' 		=> 'Главная',
 
-    'shop' 				=> 'Католог',
+    'shop' 				=> 'Каталог',
     'shop_all'			=> 'Все товары',
     'my_catalog'		=> 'Мои каталоги',
 
@@ -24,15 +24,15 @@ return [
     'orders_new'		=> 'Новый заказ',
     'implementations'	=> 'Реализации',
 
-    'reclamations'		=> 'Рекламации',
-    'reclamations_all'	=> 'Мои рекламации',
-    'reclamations_new'	=> 'Новая рекламация',
+    'reclamations'		=> 'Возвраты',
+    'reclamations_all'	=> 'Мои возвраты',
+    'reclamations_new'	=> 'Новый возврат',
 
-    'clients'		=> 'Клиенты',
-    'clients_all'	=> 'Список клиентов',
-    'clients_new'	=> 'Новый клиент',
+    'clients'		=> 'Получатели',
+    'clients_all'	=> 'Список получателей',
+    'clients_new'	=> 'Новый получатель',
 
-	'faq'	=> 'FAQ',
+	'faq'	=> 'Вопрос/Ответ',
 	'news'	=> 'Новости',
 
 ];
