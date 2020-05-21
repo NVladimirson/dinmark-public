@@ -32,43 +32,46 @@ class OrderController extends Controller
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 
-		$storage = $product->storages->firstWhere('id',$request->storage_id);
-		$koef = 1;
-		if($storage->limit_2 > 0 && $request->quantity >= $storage->limit_2 ){
-			$koef = 0.93;
-		}elseif($storage->limit_1 > 0 && $request->quantity >= $storage->limit_1 ){
-			$koef = 0.97;
-		}
+		$storage = $product->storages->firstWhere('storage_id',$request->storage_id);
+		if($storage){
+			$koef = 1;
+			if($storage->limit_2 > 0 && $request->quantity >= $storage->limit_2 ){
+				$koef = 0.93;
+			}elseif($storage->limit_1 > 0 && $request->quantity >= $storage->limit_1 ){
+				$koef = 0.97;
+			}
 
-		$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100) * $koef;
-		$total = round($price * $request->quantity,2);
-		if($id == 0){
-			$order = Order::create([
+			$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100) * $koef;
+			$total = round($price * $request->quantity,2);
+			if($id == 0){
+				$order = Order::create([
+					'user' => auth()->user()->id,
+					'customer_id' => auth()->user()->id,
+					'status' => 8,
+					'total' => $total,
+					'source' => 'b2b',
+				]);
+			}else{
+				$order = Order::find($id);
+				$order->total += $total;
+				$order->save();
+			}
+
+			OrderProduct::create([
+				'cart' => $order->id,
 				'user' => auth()->user()->id,
-				'customer_id' => auth()->user()->id,
-				'status' => 8,
-				'total' => $total,
-				'source' => 'b2b',
+				'active' => 1,
+				'product_alias' => $product->wl_alias,
+				'product_id' => $product->id,
+				'storage_alias' => $request->storage_id,
+				'price' => $price,
+				'price_in' => $product->price,
+				'quantity' => $request->quantity,
+				'quantity_wont' => $request->quantity,
+				'date' => Carbon::now()->timestamp,
 			]);
-		}else{
-			$order = Order::find($id);
-			$order->total += $total;
-			$order->save();
 		}
 
-		OrderProduct::create([
-			'cart' => $order->id,
-			'user' => auth()->user()->id,
-			'active' => 1,
-			'product_alias' => $product->wl_alias,
-			'product_id' => $product->id,
-			'storage_alias' => $request->storage_id,
-			'price' => $price,
-			'price_in' => $product->price,
-			'quantity' => $request->quantity,
-			'quantity_wont' => $request->quantity,
-			'date' => Carbon::now()->timestamp,
-		]);
 
 		return 'ok';
 	}
