@@ -85,7 +85,7 @@ class OrderController extends Controller
 
 		$koef = 1;
 		if($orderProduct->product->storages){
-			$storage = $orderProduct->product->storages->firstWhere('id',$orderProduct->storage_alias);
+			$storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
 			if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
 				$koef = 0.93;
 			}elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
