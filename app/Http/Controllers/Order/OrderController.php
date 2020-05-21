@@ -266,7 +266,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$client = null;
+		$newClient = null;
 
 		$order = Order::with(['products.product.storages','products.storage'])->find($id);
 		$order->sender_id = $request->sender_id;
@@ -287,7 +287,7 @@ class OrderController extends Controller
 				}
 			}
 		}else{
-			$client = Client::create([
+			$newClient = Client::create([
 				'name' => $request->client_name,
 				'company_name'  => ' ',
 				'company_edrpo'  => ' ',
@@ -296,7 +296,7 @@ class OrderController extends Controller
 				'address'  => ' ',
 				'company_id'  => auth()->user()->company,
 			]);
-			$order->customer_id = -$client->id;
+			$order->customer_id = -$newClient->id;
 
 			if($request->sender_id > 0){
 				$order->user = $request->sender_id;
@@ -379,8 +379,8 @@ class OrderController extends Controller
 			return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
 		}
 
-		if($client){
-			return redirect()->route('clients.edit',$client->id);
+		if($newClient){
+			return redirect()->route('clients.edit',$newClient->id);
 		}else{
 			return redirect()->route('orders.show',$id);
 		}
