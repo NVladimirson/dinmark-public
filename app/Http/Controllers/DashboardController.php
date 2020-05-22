@@ -38,7 +38,11 @@ class DashboardController extends Controller
 			])
 			->get();
 		$order_counts = $ordersWithoutRequest->count();
-		$success_procent = $ordersSuccess->count() / $order_counts * 100;
+		$success_procent = 0;
+		if($order_counts  != 0){
+			$success_procent = $ordersSuccess->count() / $order_counts * 100;
+		}
+
 		$success_total = $ordersSuccess->sum('total');
 
 		$success_weight = 0;
