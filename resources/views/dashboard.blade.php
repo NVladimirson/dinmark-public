@@ -13,8 +13,65 @@
 	<!-- begin page-header -->
 	<h1 class="page-header">@lang('dashboard.page_name')</h1>
 	<!-- end page-header -->
-	
 
+	<div class="row">
+
+		<div class="col-xl-3 col-md-6">
+			<div class="widget widget-stats bg-blue">
+				<div class="stats-icon"><i class="fas fa-shopping-cart"></i></div>
+				<div class="stats-info">
+					<h4>@lang('dashboard.order_count')</h4>
+					<p>{{$order_counts}}</p>
+				</div>
+				<div class="stats-link">
+					<a href="{{route('orders')}}">@lang('global.detail') <i class="fa fa-arrow-alt-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-xl-3 col-md-6">
+			<div class="widget widget-stats bg-info">
+				<div class="stats-icon"><i class="fas fa-percent"></i></div>
+				<div class="stats-info">
+					<h4>@lang('dashboard.success_procent')</h4>
+					<p>{{number_format($success_procent,2,'.','')}}%</p>
+				</div>
+				<div class="stats-link">
+					<a href="{{route('orders')}}">@lang('global.detail') <i class="fa fa-arrow-alt-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-xl-3 col-md-6">
+			<div class="widget widget-stats bg-orange">
+				<div class="stats-icon"><i class="fas fa-hryvnia"></i></div>
+				<div class="stats-info">
+					<h4>@lang('dashboard.success_total')</h4>
+					<p>{{$success_total}} @lang('global.grn')</p>
+				</div>
+				<div class="stats-link">
+					<a href="{{route('orders')}}">@lang('global.detail') <i class="fa fa-arrow-alt-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-xl-3 col-md-6">
+			<div class="widget widget-stats bg-red">
+				<div class="stats-icon"><i class="fas fa-weight-hanging"></i></div>
+				<div class="stats-info">
+					<h4>@lang('dashboard.success_weight')</h4>
+					<p>{{$success_weight}} @lang('global.kg')</p>
+				</div>
+				<div class="stats-link">
+					<a href="{{route('orders')}}">@lang('global.detail') <i class="fa fa-arrow-alt-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+
+	</div>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-8 -->

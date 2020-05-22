@@ -24,4 +24,8 @@ return [
 	'data_status_success' => 'Прийнято',
 	'data_status_complete' => 'Виконано',
 
+	'order_count' => 'Кількість замовлень',
+	'success_procent' => '% Підтверджених замовлень',
+	'success_total' => 'Сума підтверджених замовлень',
+	'success_weight' => 'Вага підтверджених замовлень',
 ];
