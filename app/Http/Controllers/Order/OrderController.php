@@ -448,6 +448,8 @@ class OrderController extends Controller
 					});
 				});
 			})
+			->where('date_add','>=',$dateFrom)
+			->where('date_add','<=',$dateTo)
 			->get();
 		$payments = Payment::whereHas('order',function ($orders) use ($user){
 				$orders->whereHas('getUser',function ($users) use ($user){
@@ -464,18 +466,12 @@ class OrderController extends Controller
 					});
 				});
 			})
-
+			->where('date_add','>=',$dateFrom)
+			->where('date_add','<=',$dateTo)
 			->get();
 
 
-		$actData = $implementations
-			->where('date_add','>=',$dateFrom)
-			->where('date_add','<=',$dateTo)
-			->concat(
-				$payments
-				->where('date_add','>=',$dateFrom)
-				->where('date_add','<=',$dateTo)
-			)->sortBy('date_add');
+		$actData = $implementations->concat($payments)->sortBy('date_add');
 
 		$saldoStart = 0;
 		$saldoEnd = 0;
