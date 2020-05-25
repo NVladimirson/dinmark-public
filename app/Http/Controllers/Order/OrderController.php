@@ -513,7 +513,7 @@ class OrderController extends Controller
 		foreach ($implementations as $implementation){
 			$saldoStart += $implementation->products->sum('total');
 		}
-		foreach ($payments->where('date_add','<',$dateFrom) as $payment){
+		foreach ($payments as $payment){
 			$saldoStart -= $payment->payed;
 		}
 
@@ -552,10 +552,10 @@ class OrderController extends Controller
 			->where('date_add','>',$dateTo)
 			->get();
 
-		foreach ($implementations->where('date_add','>',$dateTo) as $implementation){
+		foreach ($implementations as $implementation){
 			$saldoEnd += $implementation->products->sum('total');
 		}
-		foreach ($payments->where('date_add','>',$dateTo) as $payment){
+		foreach ($payments as $payment){
 			$saldoEnd -= $payment->payed;
 		}
 
