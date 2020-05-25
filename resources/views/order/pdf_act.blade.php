@@ -90,7 +90,7 @@
 <body>
 
 <p class="f12-5 f-b t-c">Акт звірки взаєморозрахунків</p>
-<p class="t-c f8" style="width: 50%; margin: 0 auto;">взаємних розрахунків по стану за період: {{($actData->first())?\Carbon\Carbon::parse($actData->first()->date_add)->format('d.m.Y'):'01.01.2000'}} - {{\Carbon\Carbon::now()->format('d.m.Y')}} між Товариство з обмеженою відповідальністю "Леомарк"
+<p class="t-c f8" style="width: 50%; margin: 0 auto;">взаємних розрахунків по стану за період: {{$dateFromCarbon->format('d.m.Y')}} - {{$dateToCarbon->format('d.m.Y')}} між Товариство з обмеженою відповідальністю "Леомарк"
     і {{$company->name}}
 </p>
 
@@ -124,7 +124,7 @@
             Сальдо початкове
         </td>
         <td>
-            &nbsp;
+            {{number_format($saldoStart,2,',',' ')}}
         </td>
         <td>
             &nbsp;
@@ -211,7 +211,8 @@
             @php
                 $saldo = $outPaid - $inPaid;
             @endphp
-            {{number_format($saldo,2,',',' ')}}
+            {{-- number_format($saldo,2,',',' ') --}}
+            {{number_format($saldoEnd,2,',',' ')}}
         </td>
         <td>&nbsp;</td>
         <td colspan="2">
@@ -226,12 +227,12 @@
 <p class="f7">
     За даними Товариство з обмеженою відповідальністю "Леомарк" <br>
     @if($saldo > 0)
-    <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь  Товариство з обмеженою <br>
+    <b>на {{$dateToCarbon->format('d.m.Y')}} заборгованість на користь  Товариство з обмеженою <br>
         відповідальністю "Леомарк" {{number_format($saldo,2,',',' ')}} грн</b>
     @elseif($saldo < 0)
-        <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість на користь <br/> {{$company->name}} {{number_format(-$saldo,2,',',' ')}} грн</b>
+        <b>на {{$dateToCarbon->format('d.m.Y')}} заборгованість на користь <br/> {{$company->name}} {{number_format(-$saldo,2,',',' ')}} грн</b>
     @else
-        <b>на {{\Carbon\Carbon::now()->format('d.m.Y')}} заборгованість відсутня</b>
+        <b>на {{$dateToCarbon->format('d.m.Y')}} заборгованість відсутня</b>
     @endif
 </p>
 

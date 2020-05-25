@@ -9,6 +9,9 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
 @endpush
 
 @section('content')
@@ -41,10 +44,25 @@
 									@endforeach
 								</select>
 							</div>
-						<div class="col-lg-9">
-							<div class="pull-right">
-								<a href="{{ route('orders.act_pdf') }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_act_pdf')</a>
-							</div>
+						<div class="col-lg-7 offset-lg-2">
+							<form action="{{ route('orders.act_pdf') }}" enctype="multipart/form-data" method="get">
+								@csrf
+								<div class="row">
+									<div class="col-lg-9">
+										<div class="row row-space-10">
+											<div class="col-xs-6 mb-2 mb-sm-0">
+												<input type="text" name="act_date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
+											</div>
+											<div class="col-xs-6">
+												<input type="text" name="act_date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-3">
+										<button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block">@lang('order.btn_act_pdf')</button>
+									</div>
+								</div>
+							</form>
 						</div>
 					</div>
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
@@ -77,6 +95,8 @@
 @endsection
 
 @push('scripts')
+	<script src="/assets/plugins/moment/moment.js"></script>
+
 	<script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 	<script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
@@ -93,6 +113,13 @@
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script src="/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+	<script src="/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+	<script src="/assets/plugins/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
 	<script>
@@ -159,7 +186,18 @@
 					],
 				} );
 
-
+				$('#datetimepicker3').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+				$('#datetimepicker4').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+				$("#datetimepicker3").on("dp.change", function (e) {
+					$('#datetimepicker4').data("DateTimePicker").minDate(e.date);
+				});
+				$("#datetimepicker4").on("dp.change", function (e) {
+					$('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
+				});
 			});
 		})(jQuery);
 	</script>
