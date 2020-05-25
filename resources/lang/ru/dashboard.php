@@ -14,7 +14,8 @@ return [
     */
 
     'page_name' => 'Dashboard',
-    'chart_price_order' => 'Сумма/Вес заказов по месяцам',
+    'chart_price_order' => 'Сумма заказов по месяцам',
+    'chart_weight_order' => 'Вес заказов по месяцам',
     'chart_status_order' => 'Соотношение статусов заказов по месяцам',
 
     'data_price' => 'Сумма (грн.)',

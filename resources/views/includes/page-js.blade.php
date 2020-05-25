@@ -42,11 +42,13 @@
 	});
 
 
+	if ($('.custom-file-input').length !== 0){
+		document.querySelector('.custom-file-input').addEventListener('change',function(e){
+			var fileName = document.getElementById("uploadPhoto").files[0].name;
+			var nextSibling = e.target.nextElementSibling
+			nextSibling.innerText = fileName
+		})
+    }
 
-	document.querySelector('.custom-file-input').addEventListener('change',function(e){
-		var fileName = document.getElementById("uploadPhoto").files[0].name;
-		var nextSibling = e.target.nextElementSibling
-		nextSibling.innerText = fileName
-	})
 </script>
 @stack('scripts')

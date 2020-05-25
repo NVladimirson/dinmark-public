@@ -75,7 +75,7 @@
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-8 -->
-		<div class="col-xl-12">
+		<div class="col-lg-6">
 			<!-- begin panel -->
 			<div class="panel panel-primary" data-sortable-id="index-1">
 				<div class="panel-heading">
@@ -86,11 +86,27 @@
 					</div>
 				</div>
 				<div class="panel-body pr-1">
-					<div id="order-sum-weight-chart" class="height-sm"></div>
+					<div id="order-sum-chart" class="height-sm"></div>
 				</div>
 			</div>
-
+		</div>
+		<div class="col-lg-6">
+			<!-- begin panel -->
 			<div class="panel panel-primary" data-sortable-id="index-2">
+				<div class="panel-heading">
+					<h4 class="panel-title">@lang('dashboard.chart_weight_order')</h4>
+					<div class="panel-heading-btn">
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+					</div>
+				</div>
+				<div class="panel-body pr-1">
+					<div id="order-weight-chart" class="height-sm"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-12">
+			<div class="panel panel-primary" data-sortable-id="index-3">
 				<div class="panel-heading">
 					<h4 class="panel-title">@lang('dashboard.chart_status_order')</h4>
 					<div class="panel-heading-btn">
@@ -129,7 +145,7 @@
 					left: x - 55
 				}).appendTo("body").fadeIn(200);
 			}
-			if ($('#order-sum-weight-chart').length !== 0) {
+			if ($('#order-sum-chart').length !== 0) {
 
 				var data1 = [
 					@php
@@ -146,6 +162,71 @@
 					[{{$i++}}, {{$sum}}],
 					@endforeach
 				];
+				var xLabel = [
+						@php
+							$i = 1;
+						@endphp
+						@foreach($orders as $month =>$order)
+
+						[{{$i++}}, '{{$month}}'],
+						@endforeach
+				];
+				$.plot($("#order-sum-chart"), [{
+					data: data1,
+					label: "@lang('dashboard.data_price')",
+					color: COLOR_BLUE,
+					lines: { show: true, fill:false, lineWidth: 2 },
+					points: { show: true, radius: 3, fillColor: COLOR_WHITE },
+					shadowSize: 0
+				}], {
+					xaxis: {  ticks:xLabel, tickDecimals: 0, tickColor: COLOR_DARK_TRANSPARENT_2 },
+					yaxis: {  /*ticks: 10,*/ tickColor: COLOR_DARK_TRANSPARENT_2, min: 0/*, max: 20000000*/ },
+					grid: {
+						hoverable: true,
+						clickable: true,
+						tickColor: COLOR_DARK_TRANSPARENT_2,
+						borderWidth: 1,
+						backgroundColor: 'transparent',
+						borderColor: COLOR_DARK_TRANSPARENT_2
+					},
+					legend: {
+						labelBoxBorderColor: COLOR_DARK_TRANSPARENT_2,
+						margin: 10,
+						noColumns: 1,
+						show: true
+					}
+				});
+				var previousPoint = null;
+				$("#order-sum-chart").bind("plothover", function (event, pos, item) {
+					$("#x").text(pos.x.toFixed(2));
+					$("#y").text(pos.y.toFixed(2));
+					if (item) {
+						if (previousPoint !== item.dataIndex) {
+							previousPoint = item.dataIndex;
+							$("#tooltip").remove();
+							var y = item.datapoint[1].toFixed(2);
+
+							var content = item.series.label + " " + y;
+							showTooltip(item.pageX, item.pageY, content);
+						}
+					} else {
+						$("#tooltip").remove();
+						previousPoint = null;
+					}
+					event.preventDefault();
+				});
+			}
+		};
+		var handleWeightChart = function () {
+			"use strict";
+			function showTooltipWeight(x, y, contents) {
+				$('<div id="tooltip" class="flot-tooltip">' + contents + '</div>').css( {
+					top: y - 45,
+					left: x - 55
+				}).appendTo("body").fadeIn(200);
+			}
+			if ($('#order-weight-chart').length !== 0) {
+
 				var data2 = [
 						@php
 							$i = 1;
@@ -172,14 +253,7 @@
 						[{{$i++}}, '{{$month}}'],
 						@endforeach
 				];
-				$.plot($("#order-sum-weight-chart"), [{
-					data: data1,
-					label: "@lang('dashboard.data_price')",
-					color: COLOR_BLUE,
-					lines: { show: true, fill:false, lineWidth: 2 },
-					points: { show: true, radius: 3, fillColor: COLOR_WHITE },
-					shadowSize: 0
-				}, {
+				$.plot($("#order-weight-chart"), [ {
 					data: data2,
 					label: "@lang('dashboard.data_weight')",
 					color: COLOR_GREEN,
@@ -205,7 +279,7 @@
 					}
 				});
 				var previousPoint = null;
-				$("#order-sum-weight-chart").bind("plothover", function (event, pos, item) {
+				$("#order-weight-chart").bind("plothover", function (event, pos, item) {
 					$("#x").text(pos.x.toFixed(2));
 					$("#y").text(pos.y.toFixed(2));
 					if (item) {
@@ -215,7 +289,7 @@
 							var y = item.datapoint[1].toFixed(2);
 
 							var content = item.series.label + " " + y;
-							showTooltip(item.pageX, item.pageY, content);
+							showTooltipWeight(item.pageX, item.pageY, content);
 						}
 					} else {
 						$("#tooltip").remove();
@@ -241,7 +315,7 @@
 					@endphp
 					@foreach($orders as $order)
 
-					[{{$i++}}, {{$order->count()}}],
+					[{{$i++}}, {{$order->where('status','<>',8)->count()}}],
 					@endforeach
 				];
 				var data2 = [
@@ -250,7 +324,7 @@
 						@endphp
 						@foreach($orders as $order)
 
-					[{{$i++}}, {{$order->where('status',2)->count()}}],
+					[{{$i++}}, {{$order->where('status','<>',8)->where('status','<>',1)->where('status','<>',7)->count()}}],
 						@endforeach
 				];
 				var data3 = [
@@ -259,7 +333,7 @@
 						@endphp
 						@foreach($orders as $order)
 
-					[{{$i++}}, {{$order->where('status',7)->count()}}],
+					[{{$i++}}, {{$order->where('status',6)->count()}}],
 						@endforeach
 				];
 				var xLabel = [
@@ -341,6 +415,7 @@
 				init: function () {
 					handlePriceChart();
 					handleStatusChart();
+					handleWeightChart();
 				}
 			};
 		}();
