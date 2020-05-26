@@ -289,11 +289,11 @@ class OrderController extends Controller
 		}else{
 			$newClient = Client::create([
 				'name' => $request->client_name,
-				'company_name'  => ' ',
-				'company_edrpo'  => ' ',
-				'email'  => ' ',
-				'phone'  => ' ',
-				'address'  => ' ',
+				'company_name'  => $request->client_company,
+				'company_edrpo'  => $request->client_edrpo,
+				'email'  => $request->client_email,
+				'phone'  => $request->client_phone,
+				'address'  => $request->client_address,
 				'company_id'  => auth()->user()->company,
 			]);
 			$order->customer_id = -$newClient->id;
@@ -379,11 +379,8 @@ class OrderController extends Controller
 			return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
 		}
 
-		if($newClient){
-			return redirect()->route('clients.edit',$newClient->id);
-		}else{
-			return redirect()->route('orders.show',$id);
-		}
+
+        return redirect()->route('orders.show',$id);
 	}
 
 	public function PDFBill($id)

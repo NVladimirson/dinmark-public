@@ -79,9 +79,14 @@
 										<option value="0">@lang('order.new_client')</option>
 								</optgroup>
 							</select>
-							<div class="form-group">
-								<input class="form-control m-t-15" type="text" id="client_name" name="client_name" style="display: none" placeholder="@lang('client.table_header_name')">
-							</div>
+							<div class="form-group" id="client_data" style="display: none">
+								<input class="form-control m-t-15 m-b-5 client-required" type="text" id="client_name" name="client_name" placeholder="@lang('client.table_header_name')">
+                                <input class="form-control m-b-5 client-required" type="tel" id="client_phone" name="client_phone" placeholder="@lang('client.table_header_phone')">
+                                <input class="form-control m-b-5 client-required" type="email" id="client_email" name="client_email" placeholder="@lang('client.table_header_email')">
+                                <input class="form-control m-b-5" type="text" id="client_company" name="client_company" placeholder="@lang('client.table_header_company')">
+                                <input class="form-control m-b-5" type="text" id="client_edrpo" name="client_edrpo" placeholder="@lang('client.table_header_edrpo')">
+                                <textarea class="form-control m-b-5 client-required" name="client_address" id="client_address" cols="30" rows="10" placeholder="@lang('client.table_header_address')"></textarea>
+                            </div>
 						</div>
 					</div>
 						<div class="row">
@@ -373,11 +378,11 @@
 
 				$('#customer_id').change(function () {
 					if($(this).val() == 0){
-						$('#client_name').show(0);
-						$('#client_name').attr('required','required');
+						$('#client_data').show(0);
+						$('.client-required').attr('required','required');
 					}else{
-						$('#client_name').hide(0);
-						$('#client_name').removeAttr('required');
+						$('#client_data').hide(0);
+						$('.client-required').removeAttr('required');
 					}
 				});
 
