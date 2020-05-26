@@ -76,14 +76,26 @@ class ImplementationController extends Controller
 			->addColumn('products',function (Implementation $implementation){
 				$products = [];
 				foreach ($implementation->products as $implementationProduct){
-					$products[] = [
-						'product_id'	=> $implementationProduct->orderProduct->product->id,
-						'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
-						'quantity'		=> $implementationProduct->quantity,
-						'total'			=> number_format($implementationProduct->total,2,',',' '),
-						'order'			=> $implementationProduct->orderProduct->getCart->id,
-						'order_number'	=> $implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id,
-					];
+				    if($implementationProduct->orderProduct->product){
+                        $products[] = [
+                            'product_id'	=> $implementationProduct->orderProduct->product->id,
+                            'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
+                            'quantity'		=> $implementationProduct->quantity,
+                            'total'			=> number_format($implementationProduct->total,2,',',' '),
+                            'order'			=> $implementationProduct->orderProduct->getCart->id,
+                            'order_number'	=> $implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id,
+                        ];
+                    }else{
+                        $products[] = [
+                            'product_id'	=> 0,
+                            'name'			=> '',
+                            'quantity'		=> $implementationProduct->quantity,
+                            'total'			=> number_format($implementationProduct->total,2,',',' '),
+                            'order'			=> $implementationProduct->orderProduct->getCart->id,
+                            'order_number'	=> $implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id,
+                        ];
+                    }
+
 				}
 				return view('order.include.implementation_products',compact(['products']))->render();
 			})
