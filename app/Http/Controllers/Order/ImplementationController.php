@@ -82,8 +82,8 @@ class ImplementationController extends Controller
                             'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
                             'quantity'		=> $implementationProduct->quantity,
                             'total'			=> number_format($implementationProduct->total,2,',',' '),
-                            'order'			=> $implementationProduct->orderProduct->getCart->id,
-                            'order_number'	=> $implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id,
+                            'order'			=> $implementationProduct->orderProduct->getCart?$implementationProduct->orderProduct->getCart->id:'?',
+                            'order_number'	=> $implementationProduct->orderProduct->getCart?($implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id):'?',
                         ];
                     }else{
                         $products[] = [

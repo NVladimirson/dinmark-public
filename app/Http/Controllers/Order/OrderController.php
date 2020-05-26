@@ -427,7 +427,7 @@ class OrderController extends Controller
 	{
 		$user = auth()->user();
 		$dateFromCarbon = Carbon::parse($request->act_date_from);
-		$dateToCarbon = Carbon::parse($request->act_date_to);
+		$dateToCarbon = Carbon::parse($request->act_date_to)->addDay();
 		$dateFrom = $dateFromCarbon->timestamp;
 		$dateTo = $dateToCarbon->timestamp;
 
