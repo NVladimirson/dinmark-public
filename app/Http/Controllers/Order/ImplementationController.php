@@ -76,7 +76,7 @@ class ImplementationController extends Controller
 			->addColumn('products',function (Implementation $implementation){
 				$products = [];
 				foreach ($implementation->products as $implementationProduct){
-				    if($implementationProduct->orderProduct->product){
+				    if($implementationProduct->orderProduct){
                         $products[] = [
                             'product_id'	=> $implementationProduct->orderProduct->product->id,
                             'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
@@ -88,11 +88,11 @@ class ImplementationController extends Controller
                     }else{
                         $products[] = [
                             'product_id'	=> 0,
-                            'name'			=> '',
+                            'name'			=> '?',
                             'quantity'		=> $implementationProduct->quantity,
                             'total'			=> number_format($implementationProduct->total,2,',',' '),
-                            'order'			=> $implementationProduct->orderProduct->getCart->id,
-                            'order_number'	=> $implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id,
+                            'order'			=> '?',
+                            'order_number'	=> '?',
                         ];
                     }
 
