@@ -114,7 +114,7 @@ class CatalogController extends Controller
 		$group = LikeGroup::with(['price'])->find($request->group);
 
 		session(['current_catalog' => $group->id]);
-		$products = Product::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
+		$products = Product::with(['storages','holdingArticles','content'])->whereHas('likes',function($likes) use ($group){
 			$likes->where([
 				['alias',8],
 				['group_id',$group->group_id],

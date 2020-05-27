@@ -209,7 +209,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$order = Order::with(['products.product','products.storage'])->find($id);
+		$order = Order::with(['products.product.content','products.storage'])->find($id);
 		SEOTools::setTitle(trans('order.page_update').$order->id);
 		$companies = Company::with(['users'])
 			->where([

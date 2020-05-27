@@ -22,7 +22,7 @@ class ImplementationController extends Controller
 
 	public function ajax(Request $request)
 	{
-		$implementations = Implementation::with(['products.orderProduct.product','products.orderProduct.getCart'])
+		$implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
 			->whereHas('sender',function ($users){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
