@@ -36,7 +36,7 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		$products = Product::with('storages');
+		$products = Product::with(['storages','content']);
 
 		$ids = null;
 		if($request->has('category_id')){
