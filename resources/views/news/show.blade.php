@@ -23,7 +23,7 @@
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
-				<div class="panel-body">
+				<div class="panel-body news-content">
 					{!! html_entity_decode ($newsData['text']) !!}
 				</div>
 				<!-- end panel-body -->

@@ -25,6 +25,9 @@
         font-size: 18px;
         margin-top: 4px;
     }
+    .news-content table{
+        width: 100%!important;
+    }
     @media screen and (max-width: 1280px){
 
         div:not(.legend)>table{
@@ -32,7 +35,9 @@
             width: 100%!important;
             overflow-x: scroll;
         }
-
+        .news-content table{
+            overflow-x: auto!important;
+        }
         .pagination{
             flex-wrap: wrap;
         }
