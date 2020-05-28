@@ -240,7 +240,9 @@ class OrderController extends Controller
 				'min' => ($storageProduct)?$storageProduct->package:0,
 				'max' => ($storageProduct)?$storageProduct->amount:0,
 				'price' => number_format($price*100,2,'.', ' '),
+				'price_raw' => $price,
 				'total' => number_format($total,2,'.', ' '),
+				'total_raw' => $total,
 			];
 		}
 

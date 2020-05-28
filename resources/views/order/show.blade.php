@@ -178,9 +178,9 @@
 							@foreach($products as $product)
 								<tr>
 									<td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
-									<td class="text-nowrap text-center"><input type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}"></td>
-									<td class="text-nowrap text-center">{{$product['price']}}</td>
-									<td class="text-nowrap text-center">{{$product['total']}}</td>
+									<td class="text-nowrap text-center"><input class="order-product-counter" type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}" data-old-quantity="{{$product['quantity']}}"></td>
+									<td class="text-nowrap text-center order-product-price" data-price="{{$product['price_raw']}}">{{$product['price']}}</td>
+									<td class="text-nowrap text-center order-product-total" data-price="{{$product['total_raw']}}">{{$product['total']}}</td>
 									<td><a href="#" data-id="{{$product['id']}}"  class="btn btn-sm btn-danger delete-product"><i class="fas fa-times"></i></a></td>
 								</tr>
 							@endforeach
@@ -188,7 +188,7 @@
 						<tfoot>
 							<tr>
 								<td colspan="3"></td>
-								<th class="text-nowrap text-center">{{number_format($order->total*$koef,2,'.',' ')}}</th>
+								<th class="text-nowrap text-center order-total" data-price="{{$order->total*$koef}}">{{number_format($order->total*$koef,2,'.',' ')}}</th>
 								<td></td>
 							</tr>
 						</tfoot>
@@ -384,6 +384,32 @@
 						$('#client_data').hide(0);
 						$('.client-required').removeAttr('required');
 					}
+				});
+				function numberStringFormat(nStr)
+				{
+					nStr = nStr.toFixed(2);
+					nStr += '';
+					var x = nStr.split('.');
+					var x1 = x[0];
+					var x2 = x.length > 1 ? '.' + x[1] : '';
+					var rgx = /(\d+)(\d{3})/;
+					while (rgx.test(x1)) {
+						x1 = x1.replace(rgx, '$1' + ' ' + '$2');
+					}
+					return x1 + x2;
+				}
+				$('.order-product-counter').on('input change',function () {
+                    var oldQuantity = $(this).data('old-quantity');
+                    var newQuantity = $(this).val();
+                    var differenceQuantity = newQuantity - oldQuantity;
+					$(this).data('old-quantity',newQuantity);
+					var price = $(this).parent().parent().find('.order-product-price').data('price');
+					var differencePrice = differenceQuantity * price;
+                    $(this).parent().parent().find('.order-product-total').text(numberStringFormat(price*newQuantity));
+                    var total = $('.order-total').data('price');
+                    total = total + differencePrice;
+					$('.order-total').data('price',total);
+					$('.order-total').text(numberStringFormat(total));
 				});
 
 			});
