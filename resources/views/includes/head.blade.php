@@ -22,7 +22,8 @@
     }
 
     @media screen and (max-width: 1280px){
-        table{
+
+        :not('.legend') table{
             display: block;
             width: 100%!important;
             overflow-x: scroll;
