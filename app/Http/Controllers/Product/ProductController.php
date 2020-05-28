@@ -200,7 +200,7 @@ class ProductController extends Controller
 
 		$ids = \App\Services\Product\Product::getIdsSearch($search);
 
-		$products = Product::whereIn('id',$ids)
+		$products = Product::with(['content'])->whereIn('id',$ids)
 			->orWhere([
 				['article','like',"%".$search."%"],
 			])->orWhere([
