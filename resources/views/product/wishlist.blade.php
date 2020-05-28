@@ -68,27 +68,27 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-lg-7 m-b-15">
+						<div class="col-lg-6 m-b-15">
 							<p class="m-b-5">@lang('wishlist.add_hand_message')</p>
 							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="get">
 								@csrf
 								<div class="row m-b-15">
-									<div class="col-lg-10">
+									<div class="col-lg-8 m-b-5">
 										<select class="form-control m-b-5" id="product_select" name="product_id">
 										</select>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-4">
 										<button type="submit" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
 									</div>
 								</div>
 							</form>
 						</div>
-						<div class="col-lg-5 m-b-15">
+						<div class="col-lg-6 m-b-15">
 							<p class="m-b-5">@lang('wishlist.add_import_message')</p>
 							<form id="wishlist_import_product_form" action="{{route('catalogs.import')}}" method="post" enctype="multipart/form-data">
 								@csrf
 								<div class="row">
-									<div class="col-lg-10">
+									<div class="col-lg-8">
 										<div class="form-group m-b-5">
 											<div class="input-group m-b-5 @error('import') is-invalid @enderror">
 												<div class="custom-file">
@@ -103,7 +103,7 @@
 											@enderror
 										</div>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-4">
 										<button type="submit" class="btn btn-sm btn-primary btn-block">@lang('wishlist.import_product_btn')</button>
 									</div>
 								</div>
