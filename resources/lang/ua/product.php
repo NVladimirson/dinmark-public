@@ -34,7 +34,7 @@ return [
 	'show_tab_name' => 'Інформація про товар',
 	'header_main_info' => 'Основна інформація',
 	'show_article' => 'Артикул',
-	'show_price' => 'Ціна (100шт)',
+	'show_price' => 'Роздрібна ціна (100шт)',
 	'show_your_price' => 'Ваша ціна (100шт)',
 	'show_price_porog_1' => 'Ціна порогу 1',
 	'show_price_porog_2' => 'Ціна порогу 2',
