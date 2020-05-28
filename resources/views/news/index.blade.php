@@ -31,7 +31,7 @@
 								<img class="card-img" src="{{$newsDatum['image']}}" alt="{{$newsDatum['name']}}">
 								<div class="card-img-overlay bg-black-transparent-5 rounded">
 									<h4 class="card-title">{{$newsDatum['name']}}</h4>
-									<p class="card-text">{!! $newsDatum['text'] !!}...</p>
+									<p class="card-text">{!! mb_strimwidth($newsDatum['text'],0,100,'...') !!}</p>
 								</div>
 							</a>
 						</div>
