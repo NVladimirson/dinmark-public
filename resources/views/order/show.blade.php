@@ -44,8 +44,8 @@
 						</div>
 						<div class="col-lg-9">
 							<div class="pull-right">
-								<button type="submit" name="submit" value="save" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_new_request')</button>
-								<button type="submit" name="submit" value="order" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_new_order')</button>
+								<button type="submit" name="submit" value="save" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_new_request')</button>
+								<button type="submit" name="submit" value="order" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_new_order')</button>
 								<a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5">@lang('order.btn_cancel_order')</a>
 							</div>
 						</div>
@@ -89,52 +89,52 @@
                             </div>
 						</div>
 					</div>
-						<div class="row">
-							<div class="col-lg-8">
-								<div class="m-b-15">
-									<p class="m-b-5"><strong>@lang('wishlist.add_hand_message')</strong></p>
-									<div class="row m-b-15">
-										<div class="col-lg-8">
-											<select class="form-control m-b-5" id="product_select" name="product_id">
-											</select>
-										</div>
-										<div class="col-lg-2">
-											<input type="number" id="product_count" name="quantity" class="form-control m-b-5" value="0">
-											<input type="hidden" id="storage_id" name="storage_id" value="1">
-										</div>
-										<div class="col-lg-2">
-											<button type="submit" name="submit" value="add_product" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-4">
-								<div class="m-b-15">
-									<p class="m-b-5"><strong>@lang('wishlist.add_import_message')</strong></p>
-									<div class="row">
-										<div class="col-lg-8">
-											<div class="form-group">
-												<div class="input-group mb-3 @error('import') is-invalid @enderror">
-													<div class="custom-file">
-														<input type="file" name="import" class="custom-file-input @error('import') is-invalid @enderror" id="uploadPhoto">
-														<label class="custom-file-label" for="uploadPhoto">@lang('wishlist.select_file')</label>
-													</div>
-												</div>
-												@error('import')
-												<span class="invalid-feedback " role="alert">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="m-b-15">
+                                    <p class="m-b-5"><strong>@lang('wishlist.add_hand_message')</strong></p>
+                                    <div class="row m-b-15">
+                                        <div class="col-xl-6 m-b-15">
+                                            <select class="form-control m-b-5" id="product_select" name="product_id">
+                                            </select>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6">
+                                            <input type="number" id="product_count" name="quantity" class="form-control m-b-5" value="0">
+                                            <input type="hidden" id="storage_id" name="storage_id" value="1">
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6">
+                                            <button type="submit" name="submit" value="add_product" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="m-b-15">
+                                    <p class="m-b-5"><strong>@lang('wishlist.add_import_message')</strong></p>
+                                    <div class="row">
+                                        <div class="col-xl-8">
+                                            <div class="form-group">
+                                                <div class="input-group mb-3 @error('import') is-invalid @enderror">
+                                                    <div class="custom-file">
+                                                        <input type="file" name="import" class="custom-file-input @error('import') is-invalid @enderror" id="uploadPhoto">
+                                                        <label class="custom-file-label" for="uploadPhoto">@lang('wishlist.select_file')</label>
+                                                    </div>
+                                                </div>
+                                                @error('import')
+                                                <span class="invalid-feedback " role="alert">
 													 <strong>{{ $message }}</strong>
 												</span>
-												@enderror
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<button type="submit" name="submit" value="import_product" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.import_product_btn')</button>
-										</div>
-									</div>
-									<p class="m-b-0">@lang('wishlist.import_file_note') <a href="{{asset('import/order_import.xlsx')}}" target="_blank">@lang('wishlist.import_file_example')</a></p>
-								</div>
-							</div>
-						</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            <button type="submit" name="submit" value="import_product" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.import_product_btn')</button>
+                                        </div>
+                                    </div>
+                                    <p class="m-b-0">@lang('wishlist.import_file_note') <a href="{{asset('import/order_import.xlsx')}}" target="_blank">@lang('wishlist.import_file_example')</a></p>
+                                </div>
+                            </div>
+                        </div>
 
                         @if(session()->has('not_founds') || session()->has('not_available'))
                             <div class="row">
