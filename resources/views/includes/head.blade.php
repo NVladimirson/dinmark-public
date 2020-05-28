@@ -20,7 +20,11 @@
     .page-sidebar-minified .sidebar .nav>.nav-manager>a{
         padding: 10px 13.5px;
     }
-
+    .debt{
+        text-transform: uppercase;
+        font-size: 18px;
+        margin-top: 4px;
+    }
     @media screen and (max-width: 1280px){
 
         :not('.legend') table{
@@ -33,6 +37,13 @@
             flex-wrap: wrap;
         }
 
+    }
+
+    @media screen and (max-width: 768px){
+        .debt{
+            width: 100%;
+            margin-top: 0;
+        }
     }
 
 </style>

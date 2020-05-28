@@ -1,7 +1,7 @@
 @php
 	$headerClass = (!empty($headerInverse)) ? 'navbar-inverse ' : 'navbar-default ';
 	$headerMenu = (!empty($headerMenu)) ? $headerMenu : '';
-	$headerMegaMenu = (!empty($headerMegaMenu)) ? $headerMegaMenu : ''; 
+	$headerMegaMenu = (!empty($headerMegaMenu)) ? $headerMegaMenu : '';
 	$headerTopMenu = (!empty($headerTopMenu)) ? $headerTopMenu : '';
 @endphp
 <!-- begin #header -->
@@ -48,12 +48,12 @@
 		@endif
 	</div>
 	<!-- end navbar-header -->
-	
+
 	@includeWhen($headerMegaMenu, 'includes.header-mega-menu')
-	
+
 	<!-- begin header-nav -->
-	<ul class="navbar-nav navbar-right">
-		<li class="navbar-text lead m-b-0">
+	<ul class="navbar-nav navbar-right flex-wrap">
+		<li class="navbar-text debt m-b-0">
 			<span class="text-white">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
 		</li>
 		<li class="navbar-form">
