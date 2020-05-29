@@ -53,9 +53,10 @@
 
 	<!-- begin header-nav -->
 	<ul class="navbar-nav navbar-right flex-wrap">
+        {{--
 		<li class="navbar-text debt m-b-0">
 			<span class="text-white">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
-		</li>
+		</li>--}}
 		<li class="navbar-form">
 			<form action="{{route('products.find')}}" method="GET" name="search_form">
 				@csrf
