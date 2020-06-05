@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Order;
+namespace App\Models\Reclamation;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +12,7 @@ class Reclamation extends Model
 	protected $dateFormat = 'U';
 
 	protected $fillable = [
-		'implementation_product_id',
-		'quantity',
-		'note',
 		'ttn',
-		'status',
 		'author',
 	];
 
@@ -24,7 +20,7 @@ class Reclamation extends Model
 		return $this->hasOne('App\User','id','author');
 	}
 
-	public function product(){
-		return $this->hasOne('App\Models\Order\ImplementationProduct','id','implementation_product_id');
-	}
+	public function products(){
+	    return $this->hasMany('App\Models\Reclamation\ReclamationProduct','reclamation_id');
+    }
 }

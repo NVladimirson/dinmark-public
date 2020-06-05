@@ -35,12 +35,10 @@
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
+                                <th class="text-nowrap">@lang('reclamation.table_header_product')</th>
 								<th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
 								<th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
-								<th class="text-nowrap">@lang('reclamation.table_header_product')</th>
-								<th class="text-nowrap">@lang('reclamation.table_header_quantity')</th>
-								<th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
-								<th class="text-nowrap">@lang('reclamation.table_header_status')</th>
+                                <th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
 								<th class="text-nowrap">@lang('reclamation.table_header_author')</th>
 							</tr>
 						</thead>
@@ -96,6 +94,16 @@
 					"ordering": false,
 					"searching": false,
 					"columns": [
+
+						{
+							"className":      'details-control text-center',
+							"orderable":      false,
+							"data":           null,
+							"defaultContent": '',
+							render: function ( data, type, row ) {
+								return '<i class="fa fa-plus" aria-hidden="true"></i>';
+							},
+						},
 						{
 							className: 'text-center',
 							data: 'id',
@@ -104,25 +112,48 @@
 							className: 'text-center',
 							data: 'implementation',
 						},
-						{
+						/*{
 							data: 'product',
 						},
 						{
 							data: 'quantity',
-						},
+						},*/
 						{
 							data: 'ttn',
 						},
-						{
+						/*{
 							className: 'text-center',
 							data: 'status_html',
-						},
+						},*/
 						{
 							data: 'user',
 						},
 					],
 				} );
 
+				function format_implementation_products(data) {
+					return data.products;
+				}
+
+				$('#data-table-buttons tbody').on('click', 'td.details-control', function () {
+					var tr = $(this).closest('tr');
+					var row = table.row( tr );
+
+					if ( row.child.isShown() ) {
+						// This row is already open - close it
+						row.child.hide();
+						tr.removeClass('shown');
+						$(this).find('i').removeClass('fa-minus');
+						$(this).find('i').addClass('fa-plus');
+					}
+					else {
+						// Open this row
+						row.child( format_implementation_products(row.data()) ).show();
+						tr.addClass('shown');
+						$(this).find('i').removeClass('fa-plus');
+						$(this).find('i').addClass('fa-minus');
+					}
+				} );
 
 			});
 		})(jQuery);

@@ -21,7 +21,7 @@ return [
 
     'table_header_number' 				=> 'Номер',
     'table_header_realisation_number' 	=> 'Реалізація',
-    'table_header_product' 				=> 'Товар',
+    'table_header_product' 				=> 'Товари',
     'table_header_quantity' 			=> 'Кількість',
     'table_header_ttn' 					=> 'Номер ТТН',
     'table_header_status' 				=> 'Статус',
@@ -35,7 +35,9 @@ return [
 
 	'select_implementation'	=> 'Оберіть реалізацію',
 	'select_product'		=> 'Оберіть товар',
+    'add_product'		    => 'Додати товар',
 	'quantity_product'		=> 'Кількість товару для рекламації',
+    'product'		        => 'Товар',
 	'ttn'					=> 'ТТН рекламації',
 	'comment'				=> 'Причина рекламації',
 	'btn_submit'			=> 'Створити рекламацію',

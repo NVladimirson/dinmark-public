@@ -18,7 +18,7 @@
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
-        <div class="col-xl-8">
+       {{-- <div class="col-xl-8">
             <!-- begin panel -->
             <div class="panel panel-primary">
                 <!-- begin panel-heading -->
@@ -71,8 +71,8 @@
                 <!-- end panel-body -->
             </div>
             <!-- end panel -->
-        </div>
-		{{--<div class="col-xl-12">
+        </div>--}}
+		<div class="col-xl-12">
 			<!-- begin panel -->
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
@@ -94,30 +94,21 @@
 							<select class="form-control m-b-5" id="implementation_id" name="implementation_id">
 							</select>
 						</div>
-
-						<div class="col-md-5">
-							<label for="product_id">@lang('reclamation.select_product')</label>
-							<select class="form-control m-b-5" id="product_id" name="product_id" required>
-							</select>
-
-							<label for="quantity_product">@lang('reclamation.quantity_product')</label>
-							<input class="form-control m-b-5" type="number" id="quantity_product" name="quantity_product" min="0" max="0" required>
-						</div>
-                        <div class="col-md-4">
-                            <label for="comment">@lang('reclamation.comment')</label>
-                            <textarea class="form-control m-b-5" name="comment" id="comment" cols="30" rows="3" required></textarea>
+                        <div class="col-md-9">
+                            <label for="product_id">@lang('reclamation.select_product')</label>
+                            <select class="form-control m-b-5" id="product_id" required>
+                            </select>
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-sm btn-primary m-b-5 m-r-5" data-toggle="modal">@lang('reclamation.btn_submit')</button>
+                            <a href="#" id="add_product_btn" class="btn btn-mb btn-block btn-primary m-t-25 m-b-5" >@lang('reclamation.add_product')</a>
                         </div>
-                        <div class="col-md-12">
-                            <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                        <div class="col-md-12 m-t-15">
+                            <table id="reclamation_product_table" class="table table-striped table-bordered table-td-valign-middle m-b-15">
                                 <thead>
                                 <tr>
-                                    <th class="text-nowrap">@lang('order.table_new_prodct')</th>
-                                    <th class="text-nowrap text-center">@lang('order.table_new_quantity')</th>
-                                    <th class="text-nowrap text-center">@lang('order.table_new_price')</th>
-                                    <th class="text-nowrap text-center">@lang('order.table_new_total')</th>
+                                    <th class="text-nowrap">@lang('reclamation.product')</th>
+                                    <th class="text-nowrap text-center">@lang('reclamation.quantity_product')</th>
+                                    <th class="text-nowrap text-center">@lang('reclamation.comment')</th>
                                     <th width="20"></th>
                                 </tr>
                                 </thead>
@@ -134,7 +125,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="pull-right">
-									<button type="submit" class="btn btn-sm btn-primary m-b-5 m-r-5" data-toggle="modal">@lang('reclamation.btn_submit')</button>
+									<button type="submit" id="form_submit" class="btn btn-sm btn-primary m-b-5 m-r-5" disabled="disabled">@lang('reclamation.btn_submit')</button>
 								</div>
 							</div>
 						</div>
@@ -144,7 +135,7 @@
 				<!-- end panel-body -->
 			</div>
 			<!-- end panel -->
-		</div>--}}
+		</div>
 		<!-- end col-10 -->
 	</div>
 	<!-- end row -->
@@ -206,8 +197,9 @@
 						url: route,
 						success: function (resp) {
 							$('#product_id').html('');
+							$('#reclamation_product_table tbody').html('');
 							resp.forEach(function (element) {
-								$('#product_id').append('<option value="'+element['id']+'" data-max="'+element['max']+'">'+element['name']+'</option>');
+								$('#product_id').append('<option value="'+element['id']+'" id="option_'+element['id']+'" data-max="'+element['max']+'">'+element['name']+'</option>');
 							});
 							$('#product_id').trigger('change');
 						},
@@ -216,11 +208,43 @@
 						}
 					});
 				});
-				$('#product_id').change(function (e) {
+
+				$('#add_product_btn').click(function (e) {
+                    e.preventDefault();
+					var id = $("#product_id").val();
+                    var name = $("#product_id option:selected").text();
+					var max = $("#product_id option:selected").data('max');
+					$('#quantity_product').val(1);
+					$("#product_id option:selected").remove();
+                    $('#form_submit').removeAttr('disabled');
+
+					$('#reclamation_product_table tbody').append(
+                    	'<tr id="row_'+id+'">' +
+                        '<td><input type="hidden" name="product_id['+id+']" value="'+id+'">'+name+'</td>'+
+                        '<td><input class="form-control m-b-5" type="number" name="quantity_product['+id+']" min="0" max="'+max+'" required value="1"></td>'+
+                        '<td><textarea class="form-control m-b-5" name="comment['+id+']" cols="30" rows="2" required></textarea></td>'+
+                        '<td><a href="#" data-id="'+id+'" data-name="'+name+'"  data-max="'+max+'"  class="btn btn-sm btn-danger delete-product"><i class="fas fa-times"></i></a></td>'+
+                        '</tr>');
+					$('.delete-product').unbind();
+                    $('.delete-product').click(function (e) {
+						e.preventDefault();
+
+						var tr_id = $(this).data('id');
+						var tr_name = $(this).data('name');
+						var tr_max = $(this).data('max');
+						$('#row_'+tr_id).remove();
+                        $('#product_id').append('<option value="'+tr_id+'" id="option_'+tr_id+'" data-max="'+tr_max+'">'+tr_name+'</option>');
+                        if($('#reclamation_product_table tbody tr').length == 0){
+							$('#form_submit').attr('disabled','disabled');
+                        }
+					})
+				})
+
+				/*$('#product_id').change(function (e) {
 					e.preventDefault();
 					$('#quantity_product').attr('max',$("#product_id option:selected").data('max'));
 					$('#quantity_product').val(1);
-				});
+				});*/
 
 			});
 		})(jQuery);

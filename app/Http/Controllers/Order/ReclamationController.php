@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order\Reclamation;
+use App\Models\Reclamation\Reclamation;
+use App\Models\Reclamation\ReclamationProduct;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -15,7 +16,7 @@ class ReclamationController extends Controller
 	}
 
 	public function ajax(Request $request){
-		$reclamations = Reclamation::with(['user','product.orderProduct.product'])
+		$reclamations = Reclamation::with(['user','products.product.orderProduct.product'])
 			->whereHas('user',function ($users){
 				$users->whereHas('getCompany',function ($companies){
 					$companies->where([
@@ -31,37 +32,82 @@ class ReclamationController extends Controller
 		return datatables()
 			->eloquent($reclamations)
 			->addColumn('implementation',function (Reclamation $reclamation){
-				return $reclamation->product->implementation_id;
-			})
-			->addColumn('product',function (Reclamation $reclamation){
-				return '<a href="'.route('products.show',[$reclamation->product->orderProduct->product->id]).'">'.\App\Services\Product\Product::getName($reclamation->product->orderProduct->product).'</a>';
-			})
-			->addColumn('status_html',function (Reclamation $reclamation){
-				$class = '';
-				switch ($reclamation->status){
-					case 'wait':
-						$class = 'label-default';
-						break;
-					case 'consideration':
-						$class = 'label-yellow';
-						break;
-					case 'return':
-						$class = 'label-green';
-						break;
-					case 'change':
-						$class = 'label-green';
-						break;
-					case 'fail':
-						$class = 'label-danger';
-						break;
-				}
 
-				return '<span class="label '.$class.'">'.trans('reclamation.status_'.$reclamation->status).'</span>';
+
+				return $reclamation->products->first()->product->implementation->public_number;
 			})
+
+            ->addColumn('products',function (Reclamation $reclamation){
+                $products = [];
+                foreach ($reclamation->products as $reclamationProduct){
+                    $class = '';
+                    switch ($reclamationProduct->status){
+                        case 'wait':
+                            $class = 'label-default';
+                            break;
+                        case 'consideration':
+                            $class = 'label-yellow';
+                            break;
+                        case 'return':
+                            $class = 'label-green';
+                            break;
+                        case 'change':
+                            $class = 'label-green';
+                            break;
+                        case 'fail':
+                            $class = 'label-danger';
+                            break;
+                    }
+
+                    $status = '<span class="label '.$class.'">'.trans('reclamation.status_'.$reclamationProduct->status).'</span>';
+                    $name = '?';
+                    $id = 0;
+
+                    if($reclamationProduct->product){
+                        if($reclamationProduct->product->orderProduct){
+                            if($reclamationProduct->product->orderProduct->product){
+                                $id = $reclamationProduct->product->orderProduct->product->id;
+                                $name = \App\Services\Product\Product::getName($reclamationProduct->product->orderProduct->product);
+
+                            }
+                        }
+                    }
+
+                    $products[] = [
+                        'product_id'	=> $id,
+                        'name'			=> $name,
+                        'quantity'		=> $reclamationProduct->quantity,
+                        'status'		=> $status,
+                        'note'		=> $reclamationProduct->note,
+                    ];
+
+                    /*if($reclamationProduct->product){
+                        $products[] = [
+                            'product_id'	=> $implementationProduct->orderProduct->product->id,
+                            'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
+                            'quantity'		=> $implementationProduct->quantity,
+                            'total'			=> number_format($implementationProduct->total,2,',',' '),
+                            'order'			=> $implementationProduct->orderProduct->getCart?$implementationProduct->orderProduct->getCart->id:'?',
+                            'order_number'	=> $implementationProduct->orderProduct->getCart?($implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id):'?',
+                        ];
+                    }else{
+                        $products[] = [
+                            'product_id'	=> 0,
+                            'name'			=> '?',
+                            'quantity'		=> $implementationProduct->quantity,
+                            'total'			=> number_format($implementationProduct->total,2,',',' '),
+                            'order'			=> '?',
+                            'order_number'	=> '?',
+                        ];
+                    }*/
+
+                }
+                return view('reclamation.include.products',compact(['products']))->render();
+            })
 			->addColumn('user',function (Reclamation $reclamation){
 				return $reclamation->user->name;
 			})
-			->rawColumns(['product','status_html'])
+			->rawColumns(['products','status_html'])
 			->toJson();
 	}
 
@@ -72,13 +118,20 @@ class ReclamationController extends Controller
 
 	public function store(Request $request)
 	{
-		Reclamation::create([
-			'implementation_product_id'	=> $request->product_id,
-			'quantity'					=> $request->quantity_product,
-			'note'						=> $request->comment,
+		$reclamation = Reclamation::create([
 			'ttn'						=> $request->ttn,
 			'author'					=> auth()->user()->id,
 		]);
+
+		foreach ($request->product_id as $key => $product){
+            ReclamationProduct::create([
+                'reclamation_id'	=> $reclamation->id,
+                'implementation_product_id'	=> $product,
+                'quantity'					=> $request->quantity_product[$key],
+                'note'						=> $request->comment[$key],
+            ]);
+        }
+
 
 		return redirect()->route('reclamations');
 	}
