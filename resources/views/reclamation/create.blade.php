@@ -103,6 +103,7 @@
                             <a href="#" id="add_product_btn" class="btn btn-mb btn-block btn-primary m-t-25 m-b-5" >@lang('reclamation.add_product')</a>
                         </div>
                         <div class="col-md-12 m-t-15">
+                            <div class="table-scroll-container">
                             <table id="reclamation_product_table" class="table table-striped table-bordered table-td-valign-middle m-b-15">
                                 <thead>
                                 <tr>
@@ -115,6 +116,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            </div>
                         </div>
 
 						<div class="col-md-12">

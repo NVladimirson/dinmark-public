@@ -111,7 +111,7 @@
 							<p class="m-b-0">@lang('wishlist.import_file_note') <a href="{{asset('import/catalog_import.xlsx')}}" target="_blank">@lang('wishlist.import_file_example')</a></p>
 						</div>
 					</div>
-
+                    <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
@@ -131,6 +131,7 @@
 						<tbody>
 						</tbody>
 					</table>
+                    </div>
 				</div>
 				<!-- end panel-body -->
 			</div>

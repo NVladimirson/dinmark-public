@@ -99,6 +99,7 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
+                        <div class="table-scroll-container">
 							<table class="table table-striped">
 								<tr>
 									<th>@lang('product.storage_name')</th>
@@ -131,6 +132,7 @@
 								</tr>
 								@endforelse
 							</table>
+                        </div>
 					</div>
 				</div>
 				<!-- end panel-body -->

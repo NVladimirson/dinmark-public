@@ -163,7 +163,7 @@
                             </div>
                         @endif
 
-
+                    <div class="table-scroll-container">
 					<table class="table table-striped table-bordered table-td-valign-middle m-b-15">
 						<thead>
 							<tr>
@@ -193,6 +193,7 @@
 							</tr>
 						</tfoot>
 					</table>
+                    </div>
 						<div class="row">
 							<div class="col-lg-6">
                                 <h3>@lang('order.cp_header')</h3>

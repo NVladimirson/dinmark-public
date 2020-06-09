@@ -133,7 +133,7 @@
 							</div>
 						</div>
 
-
+                    <div class="table-scroll-container">
 					<table class="table table-striped table-bordered table-td-valign-middle m-b-15">
 						<thead>
 							<tr>
@@ -147,6 +147,7 @@
 						<tbody>
 						</tbody>
 					</table>
+                    </div>
 						<div class="row">
 							<div class="col-lg-6">
 

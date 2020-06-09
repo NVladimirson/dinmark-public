@@ -32,19 +32,21 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
-						<thead>
-							<tr>
+                    <div class="table-scroll-container">
+                        <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+                            <thead>
+                            <tr>
                                 <th class="text-nowrap">@lang('reclamation.table_header_product')</th>
-								<th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
-								<th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
+                                <th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
+                                <th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
                                 <th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
-								<th class="text-nowrap">@lang('reclamation.table_header_author')</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+                                <th class="text-nowrap">@lang('reclamation.table_header_author')</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
 				</div>
 				<!-- end panel-body -->
 			</div>

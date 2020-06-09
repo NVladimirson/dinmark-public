@@ -31,6 +31,7 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
+                    <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
@@ -47,6 +48,7 @@
 						<tbody>
 						</tbody>
 					</table>
+                    </div>
 				</div>
 				<!-- end panel-body -->
 			</div>
