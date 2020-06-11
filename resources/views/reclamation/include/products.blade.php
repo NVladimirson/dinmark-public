@@ -4,7 +4,6 @@
         <th class="text-nowrap">@lang('reclamation.product')</th>
         <th class="text-nowrap text-center">@lang('reclamation.quantity_product')</th>
         <th class="text-nowrap text-center">@lang('reclamation.comment')</th>
-        <th class="text-nowrap text-center">@lang('reclamation.table_header_status')</th>
     </tr>
     </thead>
     <tbody>
@@ -13,7 +12,6 @@
             <td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
             <td class="text-nowrap text-center">{{$product['quantity']}}</td>
             <td class="text-nowrap text-center">{{$product['note']}}</td>
-            <td class="text-nowrap text-center">{!!  $product['status'] !!}</td>
         </tr>
     @endforeach
     </tbody>

@@ -40,6 +40,7 @@
                                 <th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
                                 <th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
                                 <th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
+                                <th class="text-nowrap text-center">@lang('reclamation.table_header_status')</th>
                                 <th class="text-nowrap">@lang('reclamation.table_header_author')</th>
                             </tr>
                             </thead>
@@ -114,19 +115,13 @@
 							className: 'text-center',
 							data: 'implementation',
 						},
-						/*{
-							data: 'product',
-						},
-						{
-							data: 'quantity',
-						},*/
 						{
 							data: 'ttn',
 						},
-						/*{
+						{
 							className: 'text-center',
 							data: 'status_html',
-						},*/
+						},
 						{
 							data: 'user',
 						},

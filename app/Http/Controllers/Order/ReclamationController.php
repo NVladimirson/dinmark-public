@@ -32,35 +32,35 @@ class ReclamationController extends Controller
 		return datatables()
 			->eloquent($reclamations)
 			->addColumn('implementation',function (Reclamation $reclamation){
-
-
 				return $reclamation->products->first()->product->implementation->public_number;
 			})
+            ->addColumn('status_html',function (Reclamation $reclamation){
+                $class = '';
+                switch ($reclamation->status){
+                    case 'wait':
+                        $class = 'label-default';
+                        break;
+                    case 'consideration':
+                        $class = 'label-yellow';
+                        break;
+                    case 'return':
+                        $class = 'label-green';
+                        break;
+                    case 'change':
+                        $class = 'label-green';
+                        break;
+                    case 'fail':
+                        $class = 'label-danger';
+                        break;
+                }
 
+               return '<span class="label '.$class.'">'.trans('reclamation.status_'.$reclamation->status).'</span>';
+
+            })
             ->addColumn('products',function (Reclamation $reclamation){
                 $products = [];
                 foreach ($reclamation->products as $reclamationProduct){
-                    $class = '';
-                    switch ($reclamationProduct->status){
-                        case 'wait':
-                            $class = 'label-default';
-                            break;
-                        case 'consideration':
-                            $class = 'label-yellow';
-                            break;
-                        case 'return':
-                            $class = 'label-green';
-                            break;
-                        case 'change':
-                            $class = 'label-green';
-                            break;
-                        case 'fail':
-                            $class = 'label-danger';
-                            break;
-                    }
-
-                    $status = '<span class="label '.$class.'">'.trans('reclamation.status_'.$reclamationProduct->status).'</span>';
-                    $name = '?';
+                   $name = '?';
                     $id = 0;
 
                     if($reclamationProduct->product){
@@ -77,29 +77,8 @@ class ReclamationController extends Controller
                         'product_id'	=> $id,
                         'name'			=> $name,
                         'quantity'		=> $reclamationProduct->quantity,
-                        'status'		=> $status,
                         'note'		=> $reclamationProduct->note,
                     ];
-
-                    /*if($reclamationProduct->product){
-                        $products[] = [
-                            'product_id'	=> $implementationProduct->orderProduct->product->id,
-                            'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
-                            'quantity'		=> $implementationProduct->quantity,
-                            'total'			=> number_format($implementationProduct->total,2,',',' '),
-                            'order'			=> $implementationProduct->orderProduct->getCart?$implementationProduct->orderProduct->getCart->id:'?',
-                            'order_number'	=> $implementationProduct->orderProduct->getCart?($implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id):'?',
-                        ];
-                    }else{
-                        $products[] = [
-                            'product_id'	=> 0,
-                            'name'			=> '?',
-                            'quantity'		=> $implementationProduct->quantity,
-                            'total'			=> number_format($implementationProduct->total,2,',',' '),
-                            'order'			=> '?',
-                            'order_number'	=> '?',
-                        ];
-                    }*/
 
                 }
                 return view('reclamation.include.products',compact(['products']))->render();
