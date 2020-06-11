@@ -96,7 +96,7 @@
 						</div>
                         <div class="col-md-9">
                             <label for="product_id">@lang('reclamation.select_product')</label>
-                            <select class="form-control m-b-5" id="product_id" required>
+                            <select class="form-control m-b-5" id="product_id">
                             </select>
                         </div>
                         <div class="col-md-3">
