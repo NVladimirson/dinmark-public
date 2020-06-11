@@ -10,6 +10,7 @@ namespace App\Services\News;
 
 use App\Models\Content;
 use App\Models\WlImage;
+use App\User;
 use LaravelLocalization;
 
 class NewsServices
@@ -50,6 +51,30 @@ class NewsServices
 
 		return $content;
 	}
+
+
+    public static function sendNotification($queue)
+    {
+        $users = User::where([
+            ['id','>',$queue->position],
+            ['id','<=',$queue->position+$queue->step],
+            ['s_newsletter',1],
+        ])->orderBy('id')->get();
+        foreach ($users as $user){
+
+        }
+        $user = User::where([
+            ['id','>',$queue->position+$queue->step],
+            ['id','<=',$queue->position+$queue->step+$queue->step],
+            ['s_newsletter',1],
+        ])->orderBy('id')->first();
+
+        if($user){
+            $queue->position +=  $queue->step;
+            $queue->save();
+        }
+    }
+
 	private static $instance;
 	public static function getInstance()
 	{

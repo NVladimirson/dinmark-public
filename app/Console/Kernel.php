@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\Queue;
+use App\Services\News\NewsServices;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +26,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            $queue = Queue::first();
+            if($queue){
+                switch ($queue->name){
+                    case 'new_news':
+                        NewsServices::sendNotification($queue);
+                        break;
+                }
+            }
+        })->everyMinute();
     }
 
     /**
