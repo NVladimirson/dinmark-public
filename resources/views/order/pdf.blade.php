@@ -88,9 +88,8 @@
         <td class="f-u f8-5 td-v-b">Постачальник:</td>
         <td class="f8">
             <div class="f-b f8-5">
-                @if($client)
-                    {{$client->company->name}}
-                @endif
+
+                    {{$company->name}}
 
                {{--@if($order->sender_id != 0) {{$order->sender->getCompany->name}} @else Товариство з обмеженою відповідальністю "Леомарк" @endif--}}
             </div>
@@ -109,15 +108,11 @@
                 @endif--}}
             </div>
         </td>
-        @if($client)
-            @if($client->company->full_logo)
-                <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$client->company->full_logo}}" width="200"></td>
+            @if($company->full_logo)
+                <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$company->full_logo}}" width="200"></td>
                 @else
                 <td rowspan="2" width="200"><span width="200" style="display: inline-block;">&nbsp;</span></td>
             @endif
-        @else
-            <td rowspan="2" width="200"><span width="200" style="display: inline-block;">&nbsp;</span></td>
-        @endif
         {{--
         @if($order->sender_id != 0)
             @if($order->sender->getCompany->full_logo)

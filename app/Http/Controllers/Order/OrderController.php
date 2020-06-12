@@ -346,7 +346,7 @@ class OrderController extends Controller
 			$companyPrice = CompanyPrice::find($request->has('cp_price_id')?$request->cp_price_id:0);
 			$orderTotal = 0;
 			$client = Client::find($request->cp_client_id);
-
+            $company = Company::where('id',session('current_company_id'))->first();
 			foreach($order->products as $orderProduct){
 				//$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * (($companyPrice)?$companyPrice->koef:1);
 				$price = $orderProduct->price/120 * 100;
@@ -374,7 +374,8 @@ class OrderController extends Controller
 				'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
 				'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
 				'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
-				'client'	=> $client
+				'client'	=> $client,
+				'company'	=> $company,
 			]);
 			$pdf->setOption('enable-smart-shrinking', true);
 			$pdf->setOption('no-stop-slow-scripts', true);
