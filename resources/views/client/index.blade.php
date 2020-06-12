@@ -113,6 +113,7 @@
 						{
 							className: 'text-center',
 							data: 'id',
+							"visible": false,
 						},
 						{
 							data: 'name',
