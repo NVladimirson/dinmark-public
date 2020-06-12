@@ -18,6 +18,7 @@ return [
 
     'page_list' => 'Заказы',
     'all_tab_name' 	=> 'Список Заказов',
+    'show_tab_name' 	=> 'Заказ',
     'select_status' 	=> 'Выберите статус',
 
     'table_header_number' 			=> 'Номер',

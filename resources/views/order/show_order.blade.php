@@ -23,7 +23,7 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('order.all_tab_name')</h4>
+					<h4 class="panel-title">@lang('order.show_tab_name')</h4>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -37,13 +37,8 @@
 
 						<input type="hidden" id="order_id" name="order_id" value="{{$order->id}}">
 					<div class="row m-b-15">
-						<div class="col-lg-3">
-							<h3 class="m-b-5">
-								@lang('order.page_update'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}}
-							</h3>
-						</div>
 
-						<div class="col-lg-9">
+						<div class="col-lg-12">
 							<div class="pull-right">
 								@if($order->status == 1)
 								<a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>

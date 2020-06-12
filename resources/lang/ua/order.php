@@ -18,6 +18,7 @@ return [
 
 	'page_list' => 'Замовлення',
 	'all_tab_name' 	=> 'Список Замовлень',
+    'show_tab_name' 	=> 'Замовлення',
 	'select_status' 	=> 'Оберіть статус',
 
 	'table_header_number' 			=> 'Номер',
