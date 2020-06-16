@@ -9,8 +9,11 @@
 namespace App\Services\News;
 
 use App\Models\Content;
+use App\Models\News\News;
 use App\Models\WlImage;
+use App\Notifications\NewNews;
 use App\User;
+use Illuminate\Support\Facades\App;
 use LaravelLocalization;
 
 class NewsServices
@@ -55,23 +58,26 @@ class NewsServices
 
     public static function sendNotification($queue)
     {
+        $instance =  static::getInstance();
+        App::setLocale('ua');
         $users = User::where([
             ['id','>',$queue->position],
             ['id','<=',$queue->position+$queue->step],
-            ['s_newsletter',1],
         ])->orderBy('id')->get();
+        $news = News::find($queue->entity_id);
+        $content = $instance->getContent($news,'uk');
         foreach ($users as $user){
-
+            $user->notify(new NewNews($news,$content));
         }
         $user = User::where([
             ['id','>',$queue->position+$queue->step],
-            ['id','<=',$queue->position+$queue->step+$queue->step],
-            ['s_newsletter',1],
         ])->orderBy('id')->first();
 
         if($user){
             $queue->position +=  $queue->step;
             $queue->save();
+        }else{
+            $queue->delete();
         }
     }
 
