@@ -11,7 +11,7 @@
         @endif
 
         @if(array_key_exists('icon',$notification->data))
-        <i class="{{$notification->data['icon']}} @if(array_key_exists('user', $notification->data)) media-object-icon @else media-object bg-silver-darker @endif"></i>
+        <i class="{{$notification->data['icon']}} @if(array_key_exists('user', $notification->data)) media-object-icon @else media-object @endif"></i>
         @endif
     </div>
     <div class="media-body">

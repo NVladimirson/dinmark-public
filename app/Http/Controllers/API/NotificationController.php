@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\News\News;
+use App\Models\Order\Order;
 use App\Models\Queue;
 use App\Models\Ticket\TicketMessage;
 use App\Notifications\NewMessage;
+use App\Notifications\OrderNotification;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class NotificationController extends Controller
 {
@@ -80,4 +83,33 @@ class NotificationController extends Controller
 			'status' => 'success',
 		]);
 	}
+
+    public function order(Request $request){
+
+        if($request->has('order_id')){
+            $order = Order::find($request->order_id);
+            if(empty($order)){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Order not found'
+                ]);
+            }
+            $users = $order->getUser->getCompany->users;
+            App::setLocale('ua');
+            foreach ($users as $user){
+                $user->notify(new OrderNotification($order));
+            }
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'order_id required parameter'
+            ]);
+        }
+
+
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
 }

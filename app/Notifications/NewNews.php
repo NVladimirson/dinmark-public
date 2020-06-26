@@ -48,13 +48,11 @@ class NewNews extends Notification
      */
     public function toMail($notifiable)
     {
-
             return (new MailMessage)
                 ->subject($this->content->name)
                 ->greeting($this->content->name)
                 ->line($this->content->list)
                 ->action(trans('global.detail'), route('news.show',[$this->news->id]));
-
     }
 
     /**

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 Route::get('ticket','API\NotificationController@ticket');
 Route::get('news','API\NotificationController@news');
+Route::get('order','API\NotificationController@order');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

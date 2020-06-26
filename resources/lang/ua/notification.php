@@ -24,4 +24,9 @@ return [
 	'change_data_success' => 'Запит на зміну даних Схвалено',
 	'change_data_rejected' => 'Запит на зміну даних Відмовлено',
 
+    'email_order_status_subject' => 'Статус замовлення змінений',
+    'email_order_status_text' => 'Статус замовлення :order_number змінений на',
+
+    'notify_order_status_subject' => 'Замовлення: ',
+    'notify_order_status_text' => 'Статус змінено на ',
 ];
