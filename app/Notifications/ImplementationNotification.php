@@ -63,7 +63,7 @@ class ImplementationNotification extends Notification
         return [
             'name' => trans('notification.implementation_subject').$this->implementation->public_number,
             'text' => trans('notification.implementation_text').$this->implementation->ttn,
-            'icon' => 'fas fa-shopping-cart text-green',
+            'icon' => 'fas fa-truck text-green',
             'link' => route('implementations'),
         ];
     }
