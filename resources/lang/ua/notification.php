@@ -32,4 +32,10 @@ return [
 
     'implementation_subject' => 'Нове відправлення: ',
     'implementation_text' => 'Номер ТТН відправлення: ',
+
+    'email_reclamation_status_subject' => 'Статус повернення змінений',
+    'email_reclamation_status_text' => 'Статус повернення :reclamation_number змінений на ',
+
+    'notify_reclamation_status_subject' => 'Повернення: ',
+    'notify_reclamation_status_text' => 'Статус змінено на ',
 ];

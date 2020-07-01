@@ -7,10 +7,12 @@ use App\Models\News\News;
 use App\Models\Order\Implementation;
 use App\Models\Order\Order;
 use App\Models\Queue;
+use App\Models\Reclamation\Reclamation;
 use App\Models\Ticket\TicketMessage;
 use App\Notifications\ImplementationNotification;
 use App\Notifications\NewMessage;
 use App\Notifications\OrderNotification;
+use App\Notifications\ReclamationNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -131,6 +133,32 @@ class NotificationController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'implementation_id required parameter'
+            ]);
+        }
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function reclamation(Request $request){
+
+        if($request->has('reclamation_id')){
+            $reclamation = Reclamation::find($request->reclamation_id);
+            if(empty($reclamation)){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Reclamation not found'
+                ]);
+            }
+            $users = $reclamation->user->getCompany->users;
+            App::setLocale('ua');
+            foreach ($users as $user){
+                $user->notify(new ReclamationNotification($reclamation));
+            }
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'reclamation_id required parameter'
             ]);
         }
         return response()->json([

@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderNotification extends Notification
+class ReclamationNotification extends Notification
 {
     use Queueable;
-    protected $order;
+    protected $reclamation;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($reclamation)
     {
-        $this->order = $order;
+        $this->reclamation = $reclamation;
     }
 
     /**
@@ -42,10 +42,10 @@ class OrderNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(trans('notification.email_order_status_subject'))
-            ->greeting(trans('notification.email_order_status_subject'))
-            ->line(trans('notification.email_order_status_text',['order_number'=>$this->order->id.' / '.(($this->order->public_number)?$this->order->public_number:'-')]).$this->order->getStatus->name)
-            ->action(trans('global.detail'), route('orders.show',[$this->order->id]));
+            ->subject(trans('notification.email_reclamation_status_subject'))
+            ->greeting(trans('notification.email_reclamation_status_subject'))
+            ->line(trans('notification.email_reclamation_status_text',['reclamation_number'=>$this->reclamation->id]).trans('reclamation.status_'.$this->reclamation->status))
+            ->action(trans('global.detail'), route('reclamations'));
     }
 
     /**
@@ -57,10 +57,10 @@ class OrderNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => trans('notification.notify_order_status_subject').$this->order->id.' / '.(($this->order->public_number)?$this->order->public_number:'-'),
-            'text' => trans('notification.notify_order_status_text').$this->order->getStatus->name,
-            'icon' => 'fas fa-shopping-cart text-green',
-            'link' => route('orders.show',[$this->order->id]),
+            'name' => trans('notification.notify_reclamation_status_subject').$this->reclamation->id,
+            'text' => trans('notification.notify_reclamation_status_text').trans('reclamation.status_'.$this->reclamation->status),
+            'icon' => 'fas fa-exchange-alt text-blue',
+            'link' => route('reclamations'),
         ];
     }
 }
