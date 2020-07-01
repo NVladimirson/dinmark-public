@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\News\News;
+use App\Models\Order\Implementation;
 use App\Models\Order\Order;
 use App\Models\Queue;
 use App\Models\Ticket\TicketMessage;
+use App\Notifications\ImplementationNotification;
 use App\Notifications\NewMessage;
 use App\Notifications\OrderNotification;
 use App\User;
@@ -105,9 +107,32 @@ class NotificationController extends Controller
                 'message' => 'order_id required parameter'
             ]);
         }
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
 
+    public function implementation(Request $request){
 
-
+        if($request->has('implementation_id')){
+            $implementation = Implementation::find($request->implementation_id);
+            if(empty($implementation)){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Implementation not found'
+                ]);
+            }
+            $users = $implementation->customer->getCompany->users;
+            App::setLocale('ua');
+            foreach ($users as $user){
+                $user->notify(new ImplementationNotification($implementation));
+            }
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'implementation_id required parameter'
+            ]);
+        }
         return response()->json([
             'status' => 'success',
         ]);

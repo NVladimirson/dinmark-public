@@ -29,4 +29,7 @@ return [
 
     'notify_order_status_subject' => 'Замовлення: ',
     'notify_order_status_text' => 'Статус змінено на ',
+
+    'implementation_subject' => 'Нове відправлення: ',
+    'implementation_text' => 'Номер ТТН відправлення: ',
 ];
