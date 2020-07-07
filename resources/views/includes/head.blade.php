@@ -11,6 +11,32 @@
 <link href="/assets/css/default/theme/blue.min.css" rel="stylesheet" id="theme-css-link">
 <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 <style>
+    .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link{
+        color: #fff;
+    }
+
+    .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link:focus,
+    .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link:hover {
+        color: #eee;
+    }
+
+    .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active{
+        color: #2d353c;
+    }
+
+    .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:focus,
+    .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:hover{
+        color: #48596a;
+    }
+
+    .order-status{
+        display: none;
+    }
+
+    .order-status.order-status-tab_active{
+        display: block;
+    }
+
     .widget-list .widget-list-item.widget-list-item_transparent{
         background: transparent;
     }

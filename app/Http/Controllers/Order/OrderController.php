@@ -113,6 +113,21 @@ class OrderController extends Controller
 							$users->where('company',auth()->user()->company);
 						});
 
+		if($request->has('tab')){
+		    if($request->tab == 'order'){
+                $orders->where('status','<=',5);
+            }
+		    if($request->tab == 'archive'){
+                $orders->where([
+                    ['status','>=',6],
+                    ['status','<=',7],
+                ]);
+            }
+		    if($request->tab == 'request'){
+                $orders->where('status',8);
+            }
+		}
+
 		if($request->has('status_id')){
 			$orders->where('status',$request->status_id);
 		}

@@ -26,7 +26,24 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('order.all_tab_name')</h4>
+                    <ul id="order_tab" class="nav nav-tabs nav-tabs-panel panel-title">
+                        <li class="nav-item">
+                            <a href="#" data-toggle="tab" id="tab_order" class="nav-link active">
+                                <span>@lang('order.tab_name_order')</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" data-toggle="tab" id="tab_request" class="nav-link">
+                                <span>@lang('order.tab_name_request')</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" data-toggle="tab" id="tab_archive" class="nav-link">
+                                <span>@lang('order.tab_name_archive')</span>
+                            </a>
+                        </li>
+                    </ul>
+					{{--<h4 class="panel-title">@lang('order.all_tab_name')</h4>--}}
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -40,7 +57,7 @@
 								<select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
 									<option value="" selected>@lang('order.select_status')</option>
 									@foreach($statuses as $status)
-										<option value="{{$status->id}}">{{$status->name}}</option>
+										<option value="{{$status->id}}" class="order-status order-status-tab-{{(($status->id<=5)?'order order-status-tab_active':(($status->id<=7)?'archive':'request'))}}">{{$status->name}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -129,11 +146,29 @@
 			"use strict";
 			$(document).ready(function() {
 				var ajaxRouteBase = "{!! route('orders.all_ajax') !!}";
+				var ajaxRouteTab = "{!! route('orders.all_ajax') !!}?tab=order";
 
 				$('#status').change(function () {
-					var ajaxRoute = ajaxRouteBase+'?status_id='+$(this).val();
+					var ajaxRoute = ajaxRouteTab;
+					if($(this).val() !== ''){
+						 ajaxRoute += '&status_id='+$(this).val();
+                    }
+
 					window.table.ajax.url( ajaxRoute ).load();
 				});
+
+				$('#order_tab a').click(function (e) {
+                    e.preventDefault();
+                    var tab = this.id.replace('tab_','');
+
+					ajaxRouteTab = ajaxRouteBase+"?tab="+tab;
+
+                    $('#status option').removeClass('order-status-tab_active');
+                    $('#status option.order-status-tab-'+tab).addClass('order-status-tab_active');
+                    $('#status option:first-child').prop('selected', 'selected');
+                    $('#status').change();
+					$('#status').selectpicker('refresh');
+				})
 
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {

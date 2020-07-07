@@ -21,6 +21,10 @@ return [
     'show_tab_name' 	=> 'Замовлення',
 	'select_status' 	=> 'Оберіть статус',
 
+    'tab_name_order'        => 'Замовлення',
+    'tab_name_request'      => 'Заявки',
+    'tab_name_archive'      => 'Архів',
+
 	'table_header_number' 			=> 'Номер',
 	'table_header_date' 			=> 'Дата',
 	'table_header_status' 			=> 'Статус',
