@@ -26,4 +26,12 @@ return [
 
 	'dialog' => 'Тикет',
 
+	'table_header_subject'               => 'Тема',
+	'table_header_status'                => 'Статус',
+	'table_header_user'                  => 'Пользователь',
+	'table_header_manager'               => 'Менеджер',
+	'table_header_message_count'         => 'Количество сообщений',
+	'table_header_new_message_count'     => 'Количество не прочитанных сообщений',
+	'table_header_time'                  => 'Время последнего сообщения',
+
 ];

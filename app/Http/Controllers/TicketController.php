@@ -28,6 +28,68 @@ class TicketController extends Controller
     	return view('ticket.index',compact('tickets'));
 	}
 
+    public function ajax(Request $request){
+        $tickets = Ticket::with(['messages'])
+            ->where(function($q){
+                $q->where('user_id',auth()->user()->id)
+                    ->orWhere('manager_id',auth()->user()->id);
+            })
+            ->withCount(['messages as messages_count','messages as new_messages_count' => function($q){
+                $q->where([
+                    ['is_new',1],
+                    ['user_id','<>',auth()->user()->id],
+                ]);
+            }]);
+
+        return datatables()
+            ->eloquent($tickets)
+            ->addColumn('subject_html',function (Ticket $ticket){
+                return '<a href="'.route('ticket.show',[$ticket->id]).'">'.$ticket->subject.'</a>';
+            })
+            ->addColumn('user_html',function (Ticket $ticket){
+                return view('ticket.include.user',['user'=>$ticket->user])->render();
+            })
+            ->addColumn('manager_html',function (Ticket $ticket){
+                return view('ticket.include.user',['user'=>$ticket->manager])->render();
+            })
+            ->addColumn('manager_html',function (Ticket $ticket){
+                return view('ticket.include.user',['user'=>$ticket->manager])->render();
+            })
+            ->addColumn('message_count_html',function (Ticket $ticket){
+                return $ticket->messages_count;
+            })
+            ->addColumn('new_messages_count_html',function (Ticket $ticket){
+                return $ticket->new_messages_count;
+            })
+            ->addColumn('created_at_html',function (Ticket $ticket){
+                return Carbon::parse($ticket->created_at)->format('d.m.Y h:i');
+            })
+            ->orderColumn('created_at_html', function ($ticket, $order){
+                $ticket
+                    ->orderBy('status','ASC')
+                    ->orderBy('created_at', $order);
+            })
+            ->filterColumn('subject_html', function($ticket, $keyword) {
+                $ticket
+                    ->whereHas('messages', function ($q) use ($keyword){
+                        $q->where('text', 'like',["%{$keyword}%"]);
+                    })
+                    ->orWhere('subject', 'like',["%{$keyword}%"]);
+
+            })
+           ->filter(function ($ticket) use ($request) {
+                if(request()->has('subject_html')){
+                    $ticket->whereHas('messages', function ($q){
+                        $q->where('text', 'like',"%" . request('subject_html') . "%");
+                    })
+                        ->orWhere()
+                        ->whereHas('subject', 'like',"%" . request('subject_html') . "%");
+                }
+            }, true)
+            ->rawColumns(['subject_html','user_html','manager_html','created_at_html','message_count_html'])
+            ->toJson();
+    }
+
 	public function create(){
 		SEOTools::setTitle(trans('ticket.create_page_name'));
 		return view('ticket.create');

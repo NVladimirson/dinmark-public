@@ -11,6 +11,9 @@
 <link href="/assets/css/default/theme/blue.min.css" rel="stylesheet" id="theme-css-link">
 <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 <style>
+    .widget-list .widget-list-item.widget-list-item_transparent{
+        background: transparent;
+    }
     #ui-datepicker-div{
         z-index: 5!important;
     }

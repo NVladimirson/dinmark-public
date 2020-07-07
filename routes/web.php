@@ -88,6 +88,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/faq','FAQController@index')->name('faq');
 
 		Route::get('/tickets','TicketController@index')->name('ticket');
+		Route::get('/tickets/ajax','TicketController@ajax')->name('ticket.ajax');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
 		Route::post('/tickets/create','TicketController@store')->name('ticket.store');
 		Route::get('/tickets/{id}','TicketController@show')->name('ticket.show');

@@ -25,4 +25,12 @@ return [
 	'button_send' => 'Надіслати повідомлення',
 
 	'dialog' => 'Тікет',
+
+    'table_header_subject'               => 'Тема',
+    'table_header_status'                => 'Статус',
+    'table_header_user'                  => 'Користувач',
+    'table_header_manager'               => 'Менеджер',
+    'table_header_message_count'         => 'Кількість повідомлень',
+    'table_header_new_message_count'     => 'Кількість не прочитаних повідомлень',
+    'table_header_time'                  => 'Час останнього повідомлення',
 ];
