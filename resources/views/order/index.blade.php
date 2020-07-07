@@ -178,7 +178,7 @@
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
-					"ajax": "{!! route('orders.all_ajax') !!}",
+					"ajax": ajaxRouteTab,
 					"order": [[ 0, "desc" ]],
 					//"ordering": false,
 					//"searching": true,
