@@ -87,6 +87,7 @@ class Product
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
 		$company = $instance->company;
 		$price = $product->price;
+		$price *= 0.98; //Знижка 2% на ціни кабінету
 		if($currency){
 			$price *= $currency->currency;
 		}
@@ -122,6 +123,7 @@ class Product
 		$currency = $instance->currencies->firstWhere('code',$product->currency);
 		$company = $instance->company;
 		$price = $product->price;
+        $price *= 0.98; //Знижка 2% на ціни кабінету
 		if($currency){
 			$price *= $currency->currency;
 		}
