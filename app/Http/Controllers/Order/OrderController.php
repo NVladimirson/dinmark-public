@@ -141,7 +141,7 @@ class OrderController extends Controller
 				}else{
 					$number .= ' / -';
 				}
-				return $number;
+				return '<a href="'.route('orders.show',[$order->id]).'">'.$number.'</a>';
 			})
 			->addColumn('date_html', function (Order $order) {
 				$date = Carbon::parse($order->date_add)->format('d.m.Y h:i');
@@ -187,7 +187,7 @@ class OrderController extends Controller
 					$order->whereHas('id', 'like',"%" . request('number_html') . "%")->orWhere()->whereHas('public_number', 'like',"%" . request('number_html') . "%");
 				}
 			}, true)
-			->rawColumns(['name_html','article_show_html','image_html','author','customer','check_html','actions','article_holding'])
+			->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding'])
 			->toJson();
 	}
 
@@ -592,4 +592,33 @@ class OrderController extends Controller
 
 	}
 
+    public function toOrder($id)
+    {
+        $order = Order::find($id);
+        if(empty($order)){
+            abort(404);
+        }
+
+        if($order->status >= 7){
+            $order->status = 1;
+            $order->save();
+        }
+
+        return redirect()->route('orders.show',['id'=>$id]);
+	}
+
+    public function toCancel($id)
+    {
+        $order = Order::find($id);
+        if(empty($order)){
+            abort(404);
+        }
+
+        if($order->status == 1){
+            $order->status = 7;
+            $order->save();
+        }
+
+        return redirect()->route('orders.show',['id'=>$id]);
+	}
 }

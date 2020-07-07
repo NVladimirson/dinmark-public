@@ -1,1 +1,2 @@
-<a href="{{route('orders.show',[$order->id])}}" class="btn btn-sm btn-primary m-r-5"><i class="fas fa-eye"></i></a>
+@if($order->status >= 7)<a href="{{route('orders.to_order',['id'=>$order->id])}}" class="btn btn-sm btn-green m-r-5" title="@lang('order.btn_new_order')"><i class="fas fa-clipboard-check"></i></a>@endif
+@if($order->status == 1)<a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-r-5" title="@lang('order.btn_pdf_bill')"><i class="fas fa-file-invoice-dollar"></i></a><a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger" title="@lang('order.btn_cancel_order')"><i class="fas fa-times"></i></a>@endif
