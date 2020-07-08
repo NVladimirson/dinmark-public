@@ -39,6 +39,7 @@ return [
 	'from'						=> 'от',
 	'btn_new_request'			=> 'Сохранить Заявку',
 	'btn_new_order'				=> 'Оформить Заказ',
+	'btn_open_order'			=> 'Возобновить',
 	'btn_cancel_order'			=> 'Отменить',
 	'btn_cancel_close'			=> 'Закрыть',
 	'select_sender'				=> 'Отправитель',
