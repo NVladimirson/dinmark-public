@@ -53,6 +53,9 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row m-b-15">
+                        <div class="col-lg-1">
+                            <a href="{{route('orders.create')}}" class="btn btn-sm btn-green m-t-5 m-b-5 btn-block" title="@lang('order.btn_add_order')"><i class="fas fa-plus-circle"></i></a>
+                        </div>
 							<div class="col-lg-3">
 								<select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
 									<option value="" selected>@lang('order.select_status')</option>
@@ -61,7 +64,7 @@
 									@endforeach
 								</select>
 							</div>
-						<div class="col-lg-7 offset-lg-2">
+						<div class="col-lg-6 offset-lg-2">
 							<form action="{{ route('orders.act_pdf') }}" enctype="multipart/form-data" method="get">
 								@csrf
 								<div class="row">

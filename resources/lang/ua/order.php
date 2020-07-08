@@ -25,6 +25,7 @@ return [
     'tab_name_request'      => 'Заявки',
     'tab_name_archive'      => 'Архів',
 
+    'btn_add_order'                 => 'Створити заявку',
 	'table_header_number' 			=> 'Номер',
 	'table_header_date' 			=> 'Дата',
 	'table_header_status' 			=> 'Статус',

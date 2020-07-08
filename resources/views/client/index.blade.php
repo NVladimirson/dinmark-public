@@ -31,6 +31,11 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
+                    <div class="row m-b-15">
+                        <div class="col-lg-1">
+                            <a href="{{route('clients.create')}}" class="btn btn-sm btn-green m-t-5 m-b-5 btn-block" title="@lang('client.btn_new_client')"><i class="fas fa-plus-circle"></i></a>
+                        </div>
+                    </div>
                     <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>

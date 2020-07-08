@@ -19,7 +19,7 @@ return [
     'page_create'		=> 'Новый клиент',
     'create_tab_name'	=> 'Информация о клиенте',
 
-
+    'btn_new_client'        => 'Создать клиента',
     'table_header_id'		=> 'id',
     'table_header_name'		=> 'ФИО',
     'table_header_phone'	=> 'Телефон',

@@ -19,6 +19,7 @@ return [
     'all_tab_name' 	=> 'Список Рекламацій',
 	'create_tab_name' 	=> 'Інформація про Рекламацію',
 
+    'btn_new_reclamation'               => 'Створити повернення',
     'table_header_number' 				=> 'Номер',
     'table_header_realisation_number' 	=> 'Реалізація',
     'table_header_product' 				=> 'Товари',
