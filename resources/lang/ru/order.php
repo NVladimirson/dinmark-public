@@ -40,6 +40,7 @@ return [
 	'btn_new_request'			=> 'Сохранить Заявку',
 	'btn_new_order'				=> 'Оформить Заказ',
 	'btn_cancel_order'			=> 'Отменить',
+	'btn_cancel_close'			=> 'Закрыть',
 	'select_sender'				=> 'Отправитель',
 	'sender_dinmark'			=> 'Dinmark',
 	'select_customer'			=> 'Получатель',

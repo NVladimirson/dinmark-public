@@ -41,7 +41,8 @@
 							<div class="pull-right">
 								<button type="submit" name="submit" value="save" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_new_request')</button>
 								<button type="submit" name="submit" value="order" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_new_order')</button>
-								<a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5">@lang('order.btn_cancel_order')</a>
+								<a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
+								<a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
 							</div>
 						</div>
 					</div>

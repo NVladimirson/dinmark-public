@@ -43,6 +43,10 @@
 								@if($order->status == 1)
 								<a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
 								@endif
+                                <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
+                                @if($order->status == 1)
+                                    <a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
+                                @endif
 							</div>
 						</div>
 					</div>
