@@ -69,21 +69,15 @@ class ProductController extends Controller
 				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
 			})
 			->addColumn('user_price', function (Product $product) {
-                if($product->storages){
-                    $storage = $product->storages->firstWhere('is_main',1);
-                    if($storage){
-                        return \App\Services\Product\Product::getPrice($product);
-                    }
+                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    return \App\Services\Product\Product::getPrice($product);
                 }
                 return number_format(0,2,'.',' ');
 			})
 			->addColumn('html_limit_1', function (Product $product) {
 				if($product->limit_1 > 0){
-                    if($product->storages){
-                        $storage = $product->storages->firstWhere('is_main',1);
-                        if($storage){
-                            return \App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
-                        }
+                    if(\App\Services\Product\Product::hasAmount($product->storages)){
+                        return \App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
                     }
 				}
 
@@ -91,11 +85,8 @@ class ProductController extends Controller
 			})
 			->addColumn('html_limit_2', function (Product $product) {
 				if($product->limit_2 > 0){
-                    if($product->storages){
-                        $storage = $product->storages->firstWhere('is_main',1);
-                        if($storage){
-                            return \App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2]);
-                        }
+                    if(\App\Services\Product\Product::hasAmount($product->storages)){
+                        return \App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2]);
                     }
 				}
 
@@ -114,7 +105,8 @@ class ProductController extends Controller
 
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
-				return view('product.include.action_buttons',compact('product','storage'));
+				$hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
+				return view('product.include.action_buttons',compact('product','storage', 'hasStorage'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')

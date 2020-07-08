@@ -157,11 +157,9 @@ class CatalogController extends Controller
 				return view('product.include.holding_article', compact('product','article'));
 			})
 			->addColumn('user_price', function (Product $product) {
-                if($product->storages){
-                    $storage = $product->storages->firstWhere('is_main',1);
-                    if($storage){
-                        return \App\Services\Product\Product::getPrice($product);
-                    }
+                if(\App\Services\Product\Product::hasAmount($product->storages))
+                {
+                    return \App\Services\Product\Product::getPrice($product);
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -170,11 +168,8 @@ class CatalogController extends Controller
 				if($group->price){
 					$coef = $group->price->koef;
 				}
-                if($product->storages){
-                    $storage = $product->storages->firstWhere('is_main',1);
-                    if($storage){
-                        return \App\Services\Product\Product::getPriceWithCoef($product,$coef);
-                    }
+                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    return \App\Services\Product\Product::getPriceWithCoef($product,$coef);
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -191,7 +186,8 @@ class CatalogController extends Controller
 
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
-				return view('product.include.wishlist_action_buttons',compact('product','storage'));
+                $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
+				return view('product.include.wishlist_action_buttons',compact('product','storage', 'hasStorage'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')

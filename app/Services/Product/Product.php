@@ -163,6 +163,25 @@ class Product
 		return number_format($price * $coef,2,'.',' ');
 	}
 
+    public static function hasAmount($storages, $storage_id = null)
+    {
+        if($storages){
+            $storage = null;
+            if($storage_id){
+                $storage = $storages->firstWhere('storage_id',$storage_id);
+            }else{
+                $storage = $storages->firstWhere('is_main',1);
+            }
+
+            if($storage){
+                if($storage->amount > 0){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+	}
 
 
 	public static function getStringPrice($num){
