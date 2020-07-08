@@ -57,6 +57,12 @@
     .news-content table{
         width: 100%!important;
     }
+    .table-scroll-container{
+        width: 100%!important;
+    }
+    .table-scroll-container table{
+        min-width: 100%;
+    }
     @media screen and (max-width: 1280px){
 
         .table-scroll-container{

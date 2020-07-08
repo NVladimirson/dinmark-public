@@ -123,8 +123,12 @@
 										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" max="{{$storage->amount}}"/>
 									</td>
 									<td>
+                                        @if($storage->amount > 0)
 										<a href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount}}" ><i class="fas fa-cart-plus"></i></a>
-									</td>
+									    @else
+                                            <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-product_id="{{$product->id}}" ><i class="fas fa-question-circle"></i></a>
+                                        @endif
+                                    </td>
 								</tr>
 								@empty
 								<tr>
@@ -144,6 +148,8 @@
 	<!-- end row -->
 	@include('product.include.modal_wishlist')
 	@include('product.include.modal_order')
+    @include('product.include.modal_get_price')
+
 @endsection
 
 @push('scripts')
@@ -159,6 +165,12 @@
 					var button = $(event.relatedTarget);
 					var modal = $(this);
 					modal.find('.product_id').val(button.data('product'));
+				})
+
+				$('#modal-get_price').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product_id'));
 				})
 
 				$('#modal-order').on('show.bs.modal', function (event) {
@@ -218,7 +230,7 @@
 					});
 
 					return false;
-				})
+				});
 
 				$('#form_add_order').submit(function (e) {
 					e.preventDefault();
@@ -248,6 +260,39 @@
 								if(order_id == 0){
 									document.location.reload(true);
 								}
+							}
+						},
+						error:  function(xhr, str){
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				});
+
+				$('#form_get_price').submit(function (e) {
+					e.preventDefault();
+					$('#modal-get_price').modal('hide');
+					var product_id = $('#get_price_product_id').val();
+					var form = $(this);
+
+					var route = '{{route('products')}}/'+product_id+'/get-price/';
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function(resp)
+						{
+							if(resp == "ok"){
+								$.gritter.add({
+									title: '@lang('product.get_price_success')',
+								});
 							}
 						},
 						error:  function(xhr, str){

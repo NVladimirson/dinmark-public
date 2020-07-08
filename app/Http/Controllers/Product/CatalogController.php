@@ -157,15 +157,26 @@ class CatalogController extends Controller
 				return view('product.include.holding_article', compact('product','article'));
 			})
 			->addColumn('user_price', function (Product $product) {
-				return \App\Services\Product\Product::getPrice($product);
+                if($product->storages){
+                    $storage = $product->storages->firstWhere('is_main',1);
+                    if($storage){
+                        return \App\Services\Product\Product::getPrice($product);
+                    }
+                }
+                return number_format(0,2,'.',' ');
 			})
 			->addColumn('catalog_price', function (Product $product) use($group){
 				$coef = 1;
 				if($group->price){
 					$coef = $group->price->koef;
 				}
-
-				return \App\Services\Product\Product::getPriceWithCoef($product,$coef);
+                if($product->storages){
+                    $storage = $product->storages->firstWhere('is_main',1);
+                    if($storage){
+                        return \App\Services\Product\Product::getPriceWithCoef($product,$coef);
+                    }
+                }
+                return number_format(0,2,'.',' ');
 			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');

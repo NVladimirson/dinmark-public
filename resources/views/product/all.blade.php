@@ -79,6 +79,7 @@
 
 	@include('product.include.modal_wishlist')
 	@include('product.include.modal_order')
+	@include('product.include.modal_get_price')
 @endsection
 
 @push('scripts')
@@ -162,6 +163,12 @@
 					],
 				} );
 
+				$('#modal-get_price').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product_id'));
+				})
+
 				$('#modal-wishlist').on('show.bs.modal', function (event) {
 					var button = $(event.relatedTarget);
 					var modal = $(this);
@@ -242,6 +249,38 @@
 									document.location.reload(true);
 								}
 								window.table.ajax.reload();
+							}
+						},
+						error:  function(xhr, str){
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				});
+				$('#form_get_price').submit(function (e) {
+					e.preventDefault();
+					$('#modal-get_price').modal('hide');
+					var product_id = $('#get_price_product_id').val();
+					var form = $(this);
+
+					var route = '{{route('products')}}/'+product_id+'/get-price/';
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function(resp)
+						{
+							if(resp == "ok"){
+								$.gritter.add({
+									title: '@lang('product.get_price_success')',
+								});
 							}
 						},
 						error:  function(xhr, str){

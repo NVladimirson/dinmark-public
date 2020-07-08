@@ -55,4 +55,12 @@ return [
 	'select_order' => 'Выберите заказ',
 	'new_order' => 'Новый заказ',
 	'quantity_order' => 'Количество',
+
+	'get_price_success' => 'Запрос успешно отправлен',
+    'modal_get_price_header' => 'Запрос цены',
+    'name_get_price' => 'Ваше имя',
+    'phone_get_price' => 'Ваш телефон',
+    'quantity_get_price' => 'Желаемое количетсво',
+    'get_price_comment' => 'Ваш комментарий',
+    'modal_get_price_submit' => 'Отправить запрос'
 ];

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
 use App\Services\Order\OrderServices;
 use App\Services\Product\CategoryServices;
 use App\Services\Product\CatalogServices;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
@@ -67,21 +69,37 @@ class ProductController extends Controller
 				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
 			})
 			->addColumn('user_price', function (Product $product) {
-				return \App\Services\Product\Product::getPrice($product);
+                if($product->storages){
+                    $storage = $product->storages->firstWhere('is_main',1);
+                    if($storage){
+                        return \App\Services\Product\Product::getPrice($product);
+                    }
+                }
+                return number_format(0,2,'.',' ');
 			})
 			->addColumn('html_limit_1', function (Product $product) {
 				if($product->limit_1 > 0){
-					return \App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
-				}else{
-					return '-';
+                    if($product->storages){
+                        $storage = $product->storages->firstWhere('is_main',1);
+                        if($storage){
+                            return \App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
+                        }
+                    }
 				}
+
+                return '-';
 			})
 			->addColumn('html_limit_2', function (Product $product) {
 				if($product->limit_2 > 0){
-					return \App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2]);
-				}else{
-					return '-';
+                    if($product->storages){
+                        $storage = $product->storages->firstWhere('is_main',1);
+                        if($storage){
+                            return \App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2]);
+                        }
+                    }
 				}
+
+                return '-';
 			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
@@ -221,4 +239,21 @@ class ProductController extends Controller
 
 		return view('product.search',compact('formatted_data'));
 	}
+
+	public function getPrice($id, Request $request)
+    {
+        $product = Product::find($id);
+        GetPrice::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'product' => $product->article_show.' '.\App\Services\Product\Product::getName($product),
+            'amount' => $request->name,
+            'comment' => $request->comment,
+            'date_add' =>Carbon::now()->timestamp,
+            'language' =>LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale(),
+            'new' => 1,
+        ]);
+
+        return 'ok';
+    }
 }
