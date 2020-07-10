@@ -54,7 +54,12 @@ return [
 	'modal_order_header' => 'Добавление товара в заказ',
 	'select_order' => 'Выберите заказ',
 	'new_order' => 'Новый заказ',
-	'quantity_order' => 'Количество',
+    'modal_order_warning_1' => 'Внимание! В наличии на складе ',
+    'modal_order_warning_2' => ' шт. Можно сформировать уточняющий запрос в наш отдел поставок на дополнительное количество.',
+	'quantity_order' => 'Количество (шт)',
+	'quantity_order_request' => 'Уточнить дополнительное количество (шт)',
+	'btn_order_request' => 'Добавить и уточнить',
+	'btn_order' => 'Добавить',
 
 	'get_price_success' => 'Запрос успешно отправлен',
     'modal_get_price_header' => 'Запрос цены',

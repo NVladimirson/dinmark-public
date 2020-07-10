@@ -106,7 +106,8 @@ class ProductController extends Controller
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
 				$hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-				return view('product.include.action_buttons',compact('product','storage', 'hasStorage'));
+                $name = \App\Services\Product\Product::getName($product);
+				return view('product.include.action_buttons',compact('product', 'name', 'storage', 'hasStorage'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')
@@ -234,17 +235,12 @@ class ProductController extends Controller
 
 	public function getPrice($id, Request $request)
     {
-        $product = Product::find($id);
-        GetPrice::create([
+        $data = [
             'name' => $request->name,
             'phone' => $request->phone,
-            'product' => $product->article_show.' '.\App\Services\Product\Product::getName($product),
-            'amount' => $request->name,
             'comment' => $request->comment,
-            'date_add' =>Carbon::now()->timestamp,
-            'language' =>LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale(),
-            'new' => 1,
-        ]);
+        ];
+        \App\Services\Product\Product::getPriceRequest($id, $request->quantity, $data);
 
         return 'ok';
     }

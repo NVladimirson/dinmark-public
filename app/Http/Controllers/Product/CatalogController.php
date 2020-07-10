@@ -187,7 +187,9 @@ class CatalogController extends Controller
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
                 $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-				return view('product.include.wishlist_action_buttons',compact('product','storage', 'hasStorage'));
+                $name = \App\Services\Product\Product::getName($product);
+
+                return view('product.include.wishlist_action_buttons',compact('product','storage', 'name', 'hasStorage'));
 			})
 			->orderColumn('storage_html','storage_1 $1')
 			->orderColumn('article_show_html','article_show $1')

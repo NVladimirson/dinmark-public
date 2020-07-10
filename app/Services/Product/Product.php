@@ -12,7 +12,9 @@ namespace App\Services\Product;
 use App\Models\Content;
 use App\Models\Product\Currency;
 use App\Models\Company\Company;
+use App\Models\Product\GetPrice;
 use App\Models\WlImage;
+use Carbon\Carbon;
 use LaravelLocalization;
 
 class Product
@@ -181,6 +183,28 @@ class Product
         }
 
         return false;
+	}
+
+    public static function getPriceRequest($id, $amount, $data = null)
+    {
+        $instance =  static::getInstance();
+        $product = \App\Models\Product\Product::find($id);
+        if(empty($data)){
+            $data = [
+                'name' => auth()->user()->name,
+                'phone' => (auth()->user()->info->firstWhere('field','phone'))? auth()->user()->info->firstWhere('field','phone')->value : auth()->user()->email,
+                'comment' => '',
+            ];
+        }
+        $data = array_merge($data,[
+            'product' => $product->article_show.' '.$instance->getName($product),
+            'amount' => $amount,
+            'date_add' =>Carbon::now()->timestamp,
+            'language' =>LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale(),
+            'new' => 1,
+
+        ]);
+        GetPrice::create($data);
 	}
 
 

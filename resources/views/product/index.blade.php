@@ -120,11 +120,11 @@
 									<td>{{ $storage->limit_2 }}</td>
 									<td>{{ $storage->storage->term }}</td>
 									<td>
-										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" max="{{$storage->amount}}"/>
+										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" max="{{$storage->amount-($storage->amount%$storage->package)}}"/>
 									</td>
 									<td>
                                         @if($storage->amount > 0)
-										<a href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount}}" ><i class="fas fa-cart-plus"></i></a>
+										<a href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}" data-product_name="{{$productName}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}"><i class="fas fa-cart-plus"></i></a>
 									    @else
                                             <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-product_id="{{$product->id}}" ><i class="fas fa-question-circle"></i></a>
                                         @endif
@@ -177,6 +177,7 @@
 					var button = $(event.relatedTarget);
 					var modal = $(this);
 					var quntity_el = button.parent().prev().find('input[name="quantity"');
+					modal.find('.product-name').text(button.data('product_name'));
 					modal.find('.product_id').val(button.data('product'));
 					modal.find('.storage_id').val(button.data('storage'));
 
@@ -197,6 +198,21 @@
 					modalQuantity.attr('step',quntity_el.attr('step'));
 					modalQuantity.attr('max',quntity_el.attr('max'));
 					modalQuantity.parent().hide(0);
+
+					var quantity_request = modal.find('input[name="quantity_request"]');
+					quantity_request.val(0);
+					quantity_request.attr('min',0);
+					quantity_request.attr('step',button.data('storage_min'));
+					quantity_request.attr('max',button.data('storage_max'));
+				})
+
+				$('input[name="quantity_request"]').change(function (e) {
+					e.preventDefault();
+					if($(this).val() > 0){
+						$('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
+					}else{
+						$('.btn-add-order').text($('.btn-add-order').data('btn_order'));
+					}
 				})
 
 				$('#form_add_catalog').submit(function (e) {

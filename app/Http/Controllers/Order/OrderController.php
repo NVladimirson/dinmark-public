@@ -70,8 +70,13 @@ class OrderController extends Controller
 				'quantity_wont' => $request->quantity,
 				'date' => Carbon::now()->timestamp,
 			]);
-		}
 
+
+
+		}
+        if($request->quantity_request > 0){
+            \App\Services\Product\Product::getPriceRequest($request->product_id, $request->quantity_request);
+        }
 
 		return 'ok';
 	}
