@@ -48,6 +48,7 @@ return [
 	'storage_limit_1' => 'Ліміт 1',
 	'storage_limit_2' => 'Ліміт 2',
 	'storage_term' => 'Термін доставки',
+    'storage_quantity' => 'Кількість',
 
 	'modal_wishlist_header' => 'Оберіть список',
 	'modal_order_header' => 'Додавання товару до замовлення',
