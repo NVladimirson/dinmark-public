@@ -80,40 +80,11 @@ class Product
 
 	public static function getPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product,$storage_id = null);
+		$price = $instance->calcPrice($product,$storage_id );
 		return number_format($price,2,'.',' ');
 	}
 	public static function calcPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
-
-        $company = $instance->company;
-
-        $storage = null;
-        if($storage_id){
-            $storage = $product->storages->firstWhere('id',$storage_id);
-        }else{
-            $storage = $product->storages->firstWhere('is_main',1);
-        }
-
-        $price = 0;
-        if($storage){
-            $currency = $instance->currencies->firstWhere('code',$storage->currency);
-            $price = $product->price;
-
-            if($currency){
-                $price *= $currency->currency;
-            }
-        }
-
-
-        $price *= 0.98; //Знижка 2% на ціни кабінету
-		$priceCoef = auth()->user()->price->price;
-		if($company){
-			$priceCoef = $company->getPrice->price;
-		}
-		if($priceCoef > 0){
-			$price *= $priceCoef;
-		}
 
 		$price = $instance->calcPriceWithoutPDV($product,$storage_id) * 1.2;
 
@@ -138,7 +109,7 @@ class Product
         $company = $instance->company;
 
         $storage = null;
-        if($storage_id){
+        if(isset($storage_id)){
             $storage = $product->storages->firstWhere('id',$storage_id);
         }else{
             $storage = $product->storages->firstWhere('is_main',1);
@@ -147,7 +118,7 @@ class Product
         $price = 0;
         if($storage){
             $currency = $instance->currencies->firstWhere('code',$storage->currency);
-            $price = $product->price;
+            $price = $storage->price;
 
             if($currency){
                 $price *= $currency->currency;

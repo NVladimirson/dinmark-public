@@ -158,9 +158,14 @@ class ProductController extends Controller
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
 
+		$storage_prices = [];
+
+		foreach ($product->storages as $storage){
+            $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($product,$storage->id);
+        }
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices'));
 	}
 
 	public function search(Request $request){

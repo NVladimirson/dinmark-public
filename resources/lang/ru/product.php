@@ -45,6 +45,7 @@ return [
 	'storage_name' => 'Склад',
 	'storage_amount' => 'Остаток',
 	'storage_package' => 'Упаковка (шт)',
+    'storage_price' => 'Цена (100шт)',
 	'storage_limit_1' => 'Лимит 1',
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
