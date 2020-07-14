@@ -78,22 +78,35 @@ class Product
 		return number_format($price,2,'.',' ');
 	}
 
-	public static function getPrice($product){
+	public static function getPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product);
+		$price = $instance->calcPrice($product,$storage_id = null);
 		return number_format($price,2,'.',' ');
 	}
-	public static function calcPrice($product){
+	public static function calcPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
 
-		$currency = $instance->currencies->firstWhere('code',$product->currency);
-		$company = $instance->company;
-		$price = $product->price;
-		$price *= 0.98; //Знижка 2% на ціни кабінету
-		if($currency){
-			$price *= $currency->currency;
-		}
+        $company = $instance->company;
 
+        $storage = null;
+        if($storage_id){
+            $storage = $product->storages->firstWhere('id',$storage_id);
+        }else{
+            $storage = $product->storages->firstWhere('is_main',1);
+        }
+
+        $price = 0;
+        if($storage){
+            $currency = $instance->currencies->firstWhere('code',$storage->currency);
+            $price = $product->price;
+
+            if($currency){
+                $price *= $currency->currency;
+            }
+        }
+
+
+        $price *= 0.98; //Знижка 2% на ціни кабінету
 		$priceCoef = auth()->user()->price->price;
 		if($company){
 			$priceCoef = $company->getPrice->price;
@@ -102,7 +115,7 @@ class Product
 			$price *= $priceCoef;
 		}
 
-		$price = $instance->calcPriceWithoutPDV($product) * 1.2;
+		$price = $instance->calcPriceWithoutPDV($product,$storage_id) * 1.2;
 
 		return $price;
 	}
@@ -119,17 +132,29 @@ class Product
 		return $price;
 	}
 
-	public static function calcPriceWithoutPDV($product){
+	public static function calcPriceWithoutPDV($product,$storage_id = null){
 		$instance =  static::getInstance();
 
-		$currency = $instance->currencies->firstWhere('code',$product->currency);
-		$company = $instance->company;
-		$price = $product->price;
-        $price *= 0.98; //Знижка 2% на ціни кабінету
-		if($currency){
-			$price *= $currency->currency;
-		}
+        $company = $instance->company;
 
+        $storage = null;
+        if($storage_id){
+            $storage = $product->storages->firstWhere('id',$storage_id);
+        }else{
+            $storage = $product->storages->firstWhere('is_main',1);
+        }
+
+        $price = 0;
+        if($storage){
+            $currency = $instance->currencies->firstWhere('code',$storage->currency);
+            $price = $product->price;
+
+            if($currency){
+                $price *= $currency->currency;
+            }
+        }
+
+        $price *= 0.98; //Знижка 2% на ціни кабінету
 		$priceCoef = auth()->user()->price->price;
 		if($company){
 			$priceCoef = $company->getPrice->price;
