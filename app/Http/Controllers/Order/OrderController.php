@@ -41,7 +41,7 @@ class OrderController extends Controller
 				$koef = 0.97;
 			}
 
-			$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100) * $koef;
+			$price = abs(\App\Services\Product\Product::calcPrice($product,$storage->id)/(float)100) * $koef;
 			$total = round($price * $request->quantity,2);
 			if($id == 0){
 				$order = Order::create([
@@ -70,9 +70,6 @@ class OrderController extends Controller
 				'quantity_wont' => $request->quantity,
 				'date' => Carbon::now()->timestamp,
 			]);
-
-
-
 		}
         if($request->quantity_request > 0){
             \App\Services\Product\Product::getPriceRequest($request->product_id, $request->quantity_request);
