@@ -13,6 +13,7 @@ use App\Models\Order\OrderProduct;
 use App\Models\Order\OrderStatus;
 use App\Models\Order\Payment;
 use App\Models\Product\Product;
+use App\Services\Order\OrderServices;
 use App\Services\TimeServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,45 +33,35 @@ class OrderController extends Controller
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 
-		$storage = $product->storages->firstWhere('storage_id',$request->storage_id);
-		if($storage){
-			$koef = 1;
-			if($storage->limit_2 > 0 && $request->quantity >= $storage->limit_2 ){
-				$koef = 0.93;
-			}elseif($storage->limit_1 > 0 && $request->quantity >= $storage->limit_1 ){
-				$koef = 0.97;
-			}
+        if($id == 0){
+            $order = Order::create([
+                'user' => auth()->user()->id,
+                'customer_id' => auth()->user()->id,
+                'status' => 8,
+                'total' => 0,
+                'source' => 'b2b',
+            ]);
+        }else{
+            $order = Order::find($id);
+            $order->save();
+        }
 
-			$price = abs(\App\Services\Product\Product::calcPrice($product,$storage->id)/(float)100) * $koef;
-			$total = round($price * $request->quantity,2);
-			if($id == 0){
-				$order = Order::create([
-					'user' => auth()->user()->id,
-					'customer_id' => auth()->user()->id,
-					'status' => 8,
-					'total' => $total,
-					'source' => 'b2b',
-				]);
-			}else{
-				$order = Order::find($id);
-				$order->total += $total;
-				$order->save();
-			}
+        OrderProduct::create([
+            'cart' => $order->id,
+            'user' => auth()->user()->id,
+            'active' => 1,
+            'product_alias' => $product->wl_alias,
+            'product_id' => $product->id,
+            'storage_alias' => $request->storage_id,
+            'price' => 0,
+            'price_in' => $product->price,
+            'quantity' => $request->quantity,
+            'quantity_wont' => $request->quantity,
+            'date' => Carbon::now()->timestamp,
+        ]);
 
-			OrderProduct::create([
-				'cart' => $order->id,
-				'user' => auth()->user()->id,
-				'active' => 1,
-				'product_alias' => $product->wl_alias,
-				'product_id' => $product->id,
-				'storage_alias' => $request->storage_id,
-				'price' => $price,
-				'price_in' => $product->price,
-				'quantity' => $request->quantity,
-				'quantity_wont' => $request->quantity,
-				'date' => Carbon::now()->timestamp,
-			]);
-		}
+        OrderServices::calcTotal($order);
+
         if($request->quantity_request > 0){
             \App\Services\Product\Product::getPriceRequest($request->product_id, $request->quantity_request);
         }
@@ -80,32 +71,18 @@ class OrderController extends Controller
 
 	protected function changeQuantity($id, $quantity, $order){
 		$orderProduct = OrderProduct::find($id);
-		$total  = round($orderProduct->price*$orderProduct->quantity, 2);
-		$order->total -= $total;
 		$orderProduct->quantity = $quantity;
 		$orderProduct->save();
 
-		$koef = 1;
-		if($orderProduct->product->storages){
-			$storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
-			if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
-				$koef = 0.93;
-			}elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
-				$koef = 0.97;
-			}
-		}
-		$orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product)/(float)100) * $koef;
-		$orderProduct->save();
-		$order->total += round($orderProduct->price*$orderProduct->quantity, 2);
-		$order->save();
+		OrderServices::calcTotal($order);
 	}
 
 	public function removeOfOrder($id){
 		$orderProduct = OrderProduct::with(['getCart'])->find($id);
-
-		$orderProduct->getCart->total -= round($orderProduct->price*$orderProduct->quantity, 2);
-		$orderProduct->getCart->save();
+        $order = $orderProduct->getCart;
 		$orderProduct->delete();
+
+        OrderServices::calcTotal($order);
 
 		return 'ok';
 	}
