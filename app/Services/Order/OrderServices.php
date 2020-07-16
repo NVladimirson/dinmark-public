@@ -36,6 +36,7 @@ class OrderServices
                     $koef = 0.97;
                 }
                 $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,$storage->id)/(float)100) * $koef;
+                $orderProduct->price_in = $storage->price;
                 $orderProduct->save();
                 $total += round($orderProduct->price*$orderProduct->quantity, 2);
             }

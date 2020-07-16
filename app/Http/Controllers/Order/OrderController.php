@@ -54,7 +54,7 @@ class OrderController extends Controller
             'product_id' => $product->id,
             'storage_alias' => $request->storage_id,
             'price' => 0,
-            'price_in' => $product->price,
+            'price_in' => 0,
             'quantity' => $request->quantity,
             'quantity_wont' => $request->quantity,
             'date' => Carbon::now()->timestamp,
