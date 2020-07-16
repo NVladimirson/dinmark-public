@@ -275,6 +275,7 @@ class OrderController extends Controller
 				$order->user = $request->sender_id;
 			}else{
 				$client = Client::find(-$request->customer_id);
+				OrderServices::setClientInfo($order,$client);
 				$user = $client->company->users->first();
 				if($user){
 					$order->user = $user->id;
@@ -282,6 +283,8 @@ class OrderController extends Controller
 					$order->user = auth()->user()->id;
 				}
 			}
+
+            OrderServices::setClientInfo($order,-$request->customer_id);
 		}else{
 			$newClient = Client::create([
 				'name' => $request->client_name,
@@ -293,6 +296,7 @@ class OrderController extends Controller
 				'company_id'  => auth()->user()->company,
 			]);
 			$order->customer_id = -$newClient->id;
+            OrderServices::setClientInfo($order,$newClient);
 
 			if($request->sender_id > 0){
 				$order->user = $request->sender_id;
@@ -300,6 +304,8 @@ class OrderController extends Controller
 				$order->user = auth()->user()->id;
 			}
 		}
+
+
 
 		$order->comment = $request->comment;
 		if($request->has('product_quantity')){

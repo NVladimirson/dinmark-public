@@ -8,6 +8,7 @@
 
 namespace App\Services\Order;
 
+use App\Models\Company\Client;
 use App\Models\Order\Order;
 
 class OrderServices
@@ -42,6 +43,13 @@ class OrderServices
             }
         }
         $order->total = $total;
+        $order->save();
+    }
+
+    public static function setClientInfo($order,$client_id)
+    {
+        $client = Client::find($client_id);
+        $order->shipping_info = $client->name.','.$client->company_name.','.$client->phone.','.$client->address;
         $order->save();
     }
 
