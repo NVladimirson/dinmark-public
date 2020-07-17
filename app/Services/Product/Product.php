@@ -67,12 +67,18 @@ class Product
 
 	public static function getBasePrice($product){
 		$instance =  static::getInstance();
-		$currency = $instance->currencies->firstWhere('code',$product->currency);
 
-		$price = $product->price;
-		if($currency){
-			$price *= $currency->currency;
-		}
+        $storage = $product->storages->firstWhere('is_main',1);
+
+        $price = 0;
+        if($storage){
+            $currency = $instance->currencies->firstWhere('code',$storage->currency);
+            $price = $storage->price;
+
+            if($currency){
+                $price *= $currency->currency;
+            }
+        }
 		$price *= 1.2 * 2;
 
 		return number_format($price,2,'.',' ');
