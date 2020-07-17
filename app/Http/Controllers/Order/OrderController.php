@@ -15,6 +15,7 @@ use App\Models\Order\Payment;
 use App\Models\Product\Product;
 use App\Services\Order\OrderServices;
 use App\Services\TimeServices;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -26,7 +27,32 @@ class OrderController extends Controller
 	public function index(){
 		SEOTools::setTitle(trans('order.page_list'));
 		$statuses = OrderStatus::all();
-		return view('order.index',compact('statuses'));
+
+        $sendersId =  Order::whereHas('getUser', function ($users){
+                $users->where('company',auth()->user()->company);
+            })
+            ->groupBy('sender_id')
+            ->pluck('sender_id');
+        $senders = User::whereIn('id',$sendersId)->pluck('id','name')->toArray();
+        if($sendersId->has(0)){
+            $senders = array_merge(['Dinmark'=>0],$senders);
+        }
+        $customersId =  Order::whereHas('getUser', function ($users){
+                $users->where('company',auth()->user()->company);
+            })
+            ->groupBy('customer_id')
+            ->pluck('customer_id');
+        $customers = User::whereIn('id',$customersId)->pluck('id','name')->toArray();
+        foreach ($customersId as $id){
+            if($id < 0){
+                $client = Client::find(-$id);
+                if($client){
+                    $customers[$client->name] = $id;
+                }
+            }
+        }
+
+		return view('order.index',compact('statuses', 'senders','customers'));
 	}
 
 	public function addToOrder($id, Request $request){
@@ -107,8 +133,25 @@ class OrderController extends Controller
             }
 		}
 
-		if($request->has('status_id')){
+		if($request->has('date_from')){
+			$orders->where('date_add','>=',$request->date_from);
+		}
+
+
+		if($request->has('date_to')){
+			$orders->where('date_add','<=',$request->date_to);
+		}
+
+		if($request->has('status')){
 			$orders->where('status',$request->status_id);
+		}
+
+		if($request->has('sender_id')){
+			$orders->where('sender_id',$request->sender_id);
+		}
+
+		if($request->has('customer_id')){
+			$orders->where('customer_id',$request->customer_id);
 		}
 
 		return datatables()

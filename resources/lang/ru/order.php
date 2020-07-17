@@ -20,6 +20,8 @@ return [
     'all_tab_name' 	=> 'Список Заказов',
     'show_tab_name' 	=> 'Заказ',
     'select_status' 	=> 'Выберите статус',
+    'select_sender' 	=> 'Выберите отправителя',
+    'select_customer' 	=> 'Выберите получателя',
 
     'tab_name_order'        => 'Заказы',
     'tab_name_request'      => 'Заявки',

@@ -57,12 +57,12 @@
                             <a href="{{route('orders.create')}}" class="btn btn-sm btn-green m-t-5 m-b-5 btn-block" title="@lang('order.btn_add_order')"><i class="fas fa-plus-circle"></i></a>
                         </div>
 							<div class="col-lg-3">
-								<select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
+								{{--<select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
 									<option value="" selected>@lang('order.select_status')</option>
 									@foreach($statuses as $status)
 										<option value="{{$status->id}}" class="order-status order-status-tab-{{(($status->id<=5)?'order order-status-tab_active':(($status->id<=7)?'archive':'request'))}}">{{$status->name}}</option>
 									@endforeach
-								</select>
+								</select>--}}
 							</div>
 						<div class="col-lg-6 offset-lg-2">
 							<form action="{{ route('orders.act_pdf') }}" enctype="multipart/form-data" method="get">
@@ -91,12 +91,39 @@
 							<tr>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
-								<th class="text-nowrap">@lang('order.table_header_date')</th>
-								<th class="text-nowrap">@lang('order.table_header_status')</th>
+								<th class="text-nowrap">@lang('order.table_header_date')
+                                    <div class="row row-space-10">
+                                        <div class="col-xs-6 mb-2 mb-sm-0">
+                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.act_date_from')" required>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <input type="text" name="act_date_to" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required>
+                                        </div>
+                                    </div></th>
+								<th class="text-nowrap">@lang('order.table_header_status')
+                                    <div><select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
+                                        <option value="" selected>@lang('order.select_status')</option>
+                                        @foreach($statuses as $status)
+                                            <option value="{{$status->id}}" class="order-status order-status-tab-{{(($status->id<=5)?'order order-status-tab_active':(($status->id<=7)?'archive':'request'))}}">{{$status->name}}</option>
+                                        @endforeach
+                                    </select></div></th>
 								<th class="text-nowrap">@lang('order.table_header_status_payment')</th>
 								<th class="text-nowrap">@lang('order.table_header_total')</th>
-								<th class="text-nowrap">@lang('order.table_header_customer')</th>
-								<th class="text-nowrap">@lang('order.table_header_user')</th>
+								<th class="text-nowrap">@lang('order.table_header_customer')
+                                    <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
+                                            <option value="" selected>@lang('order.select_sender')</option>
+                                            @foreach($senders as $name => $id)
+                                                <option value="{{$id}}" >{{$name}}</option>
+                                            @endforeach
+                                        </select></div>
+                                </th>
+								<th class="text-nowrap">@lang('order.table_header_user')
+                                    <div><select class="form-control selectpicker" id="customer" data-size="10" data-live-search="true" data-style="btn-white">
+                                            <option value="" selected>@lang('order.select_customer')</option>
+                                            @foreach($customers as $name => $id)
+                                                <option value="{{$id}}" >{{$name}}</option>
+                                            @endforeach
+                                        </select></div></th>
 								<th width="100"></th>
 							</tr>
 						</thead>
@@ -150,15 +177,42 @@
 			$(document).ready(function() {
 				var ajaxRouteBase = "{!! route('orders.all_ajax') !!}";
 				var ajaxRouteTab = "{!! route('orders.all_ajax') !!}?tab=order";
+				var status = '';
+				var sender = '';
+				var customer = '';
+				var date = '';
 
 				$('#status').change(function () {
-					var ajaxRoute = ajaxRouteTab;
 					if($(this).val() !== ''){
-						 ajaxRoute += '&status_id='+$(this).val();
+						status = '&status_id='+$(this).val();
+                    }else{
+						status = '';
                     }
-
-					window.table.ajax.url( ajaxRoute ).load();
+					updateAjax();
 				});
+
+				$('#sender').change(function () {
+					if($(this).val() !== ''){
+						sender = '&sender_id='+$(this).val();
+                    }else{
+						sender = '';
+                    }
+					updateAjax();
+				});
+
+				$('#customer').change(function () {
+					if($(this).val() !== ''){
+						customer = '&customer_id='+$(this).val();
+                    }else{
+						customer = '';
+                    }
+					updateAjax();
+				});
+
+				function updateAjax(){
+					var ajaxRoute = ajaxRouteTab + status + sender + customer + date;
+					window.table.ajax.url( ajaxRoute ).load();
+                }
 
 				$('#order_tab a').click(function (e) {
                     e.preventDefault();
@@ -237,6 +291,38 @@
 				});
 				$("#datetimepicker4").on("dp.change", function (e) {
 					$('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
+				});
+
+				$('#datetimepicker5').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+				$('#datetimepicker6').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+
+				function changeDate(){
+					if($("#datetimepicker5").val() !== ''){
+						date = '&date_from='+$("#datetimepicker5").data("DateTimePicker").date()/1000;
+					}else{
+						date = '';
+					}
+
+					if($("#datetimepicker6").val() !== ''){
+						date += '&date_to='+$("#datetimepicker6").data("DateTimePicker").date()/1000;
+					}else {
+						date += '';
+					}
+					updateAjax();
+                }
+
+				$("#datetimepicker5").on("dp.change", function (e) {
+					$('#datetimepicker6').data("DateTimePicker").minDate(e.date);
+					changeDate();
+
+				});
+				$("#datetimepicker6").on("dp.change", function (e) {
+					$('#datetimepicker5').data("DateTimePicker").maxDate(e.date);
+					changeDate();
 				});
 			});
 		})(jQuery);
