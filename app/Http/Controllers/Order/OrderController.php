@@ -142,7 +142,7 @@ class OrderController extends Controller
 			$orders->where('date_add','<=',$request->date_to);
 		}
 
-		if($request->has('status')){
+		if($request->has('status_id')){
 			$orders->where('status',$request->status_id);
 		}
 
