@@ -355,7 +355,7 @@ class OrderController extends Controller
 				$order->user = $request->sender_id;
 			}else{
 				$client = Client::find(-$request->customer_id);
-				OrderServices::setClientInfo($order,$client);
+				OrderServices::setClientInfo($order,$client->id);
 				$user = $client->company->users->first();
 				if($user){
 					$order->user = $user->id;
