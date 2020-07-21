@@ -37,8 +37,9 @@ return [
 	'table_header_user' 			=> 'Отримувач',
 
 	'page_create' 				=> 'Нове замовлення',
-	'page_update' 				=> 'Замовлення №',
+	'page_update' 				=> 'Замовлення ',
 	'order_number'				=> 'Заявка №',
+	'implementation_number'		=> 'Отправление',
 	'from'						=> 'від',
 	'btn_new_request'			=> 'Зберегти Заявку',
 	'btn_new_order'				=> 'Оформити Замовлення',

@@ -14,7 +14,7 @@
 @section('content')
 	{{ Breadcrumbs::render('order.show',$order) }}
 
-	<h1 class="page-header">@lang('order.page_update'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}} @lang('order.from') {{Carbon\Carbon::parse($order->date_add)->format('d.m.Y')}}</h1>
+	<h1 class="page-header">@lang('order.page_update')№{{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}} @lang('order.from') {{Carbon\Carbon::parse($order->date_add)->format('d.m.Y')}}</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -23,7 +23,21 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('order.show_tab_name')</h4>
+
+                    <ul id="order_tab" class="nav nav-tabs nav-tabs-panel panel-title">
+                        <li class="nav-item">
+                            <a href="#order-tab" data-toggle="tab" class="nav-link active">
+                                <span>@lang('order.page_update')<br>{{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}}</span>
+                            </a>
+                        </li>
+                        @foreach($implementationsData as $implementation)
+                        <li class="nav-item">
+                            <a href="#implementation-tab-{{$implementation['id']}}" data-toggle="tab" class="nav-link">
+                                <span>@lang('order.implementation_number')<br>{{$implementation['public_number']}}</span>
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -32,97 +46,151 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<form action="{{route('orders.update', [$order->id])}}" enctype="multipart/form-data" method="post">
-						@csrf
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="order-tab">
+                            <form action="{{route('orders.update', [$order->id])}}" enctype="multipart/form-data" method="post">
+                                @csrf
 
-						<input type="hidden" id="order_id" name="order_id" value="{{$order->id}}">
-					<div class="row m-b-15">
+                                <input type="hidden" id="order_id" name="order_id" value="{{$order->id}}">
+                                <div class="row m-b-15">
 
-						<div class="col-lg-12">
-							<div class="pull-right">
-								@if($order->status == 1)
-								<a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
-								@endif
-								@if($order->status == 7)
-								<a href="{{ route('orders.to_order',[$order->id]) }}" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_open_order')</a>
-								@endif
-                                <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
-                                @if($order->status == 1)
-                                    <a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
-                                @endif
-							</div>
-						</div>
-					</div>
-					<div class="row m-b-15">
-						<div class="col-md-6">
-							<label>@lang('order.select_sender')</label>
-							<select class="form-control selectpicker" id="sender_id" name="sender_id" data-live-search="true" data-style="btn-white" disabled>
-								<option value="0" @if($order->sender_id == 0) selected="selected" @endif>@lang('order.sender_dinmark')</option>
-								@foreach($companies as $company)
-									<option value="{{$company->id}}" @if($company->id == $order->sender_id) selected="selected" @endif>{{$company->name}}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="col-md-6">
-							<label>@lang('order.select_customer')</label>
-							<select class="form-control selectpicker" id="customer_id" name="customer_id" data-live-search="true" data-style="btn-white" disabled>
-								<optgroup label="@lang('order.select_customer_user')">
-									@foreach($companies as $company)
-										@foreach($company->users as $user)
-											<option value="{{$user->id}}" @if(($order->customer_id == $user->id) || ( !$order->customer_id && $user->id == $order->user)) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
-										@endforeach
-									@endforeach
-								</optgroup>
-								<optgroup label="@lang('order.select_customer_client')">
-									@foreach($clients as $client)
-										<option value="{{-$client->id}}" @if($client->id == -$order->customer_id) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
-									@endforeach
-								</optgroup>
-							</select>
-						</div>
-					</div>
+                                    <div class="col-lg-12">
+                                        <div class="pull-right">
+                                            @if($order->status == 1)
+                                                <a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
+                                            @endif
+                                            @if($order->status == 7)
+                                                <a href="{{ route('orders.to_order',[$order->id]) }}" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_open_order')</a>
+                                            @endif
+                                            <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
+                                            @if($order->status == 1)
+                                                <a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m-b-15">
+                                    <div class="col-md-6">
+                                        <label>@lang('order.select_sender')</label>
+                                        <select class="form-control selectpicker" id="sender_id" name="sender_id" data-live-search="true" data-style="btn-white" disabled>
+                                            <option value="0" @if($order->sender_id == 0) selected="selected" @endif>@lang('order.sender_dinmark')</option>
+                                            @foreach($companies as $company)
+                                                <option value="{{$company->id}}" @if($company->id == $order->sender_id) selected="selected" @endif>{{$company->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>@lang('order.select_customer')</label>
+                                        <select class="form-control selectpicker" id="customer_id" name="customer_id" data-live-search="true" data-style="btn-white" disabled>
+                                            <optgroup label="@lang('order.select_customer_user')">
+                                                @foreach($companies as $company)
+                                                    @foreach($company->users as $user)
+                                                        <option value="{{$user->id}}" @if(($order->customer_id == $user->id) || ( !$order->customer_id && $user->id == $order->user)) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
+                                                    @endforeach
+                                                @endforeach
+                                            </optgroup>
+                                            <optgroup label="@lang('order.select_customer_client')">
+                                                @foreach($clients as $client)
+                                                    <option value="{{-$client->id}}" @if($client->id == -$order->customer_id) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
+                                                @endforeach
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
 
-                    <div class="table-scroll-container">
-					<table class="table table-striped table-bordered table-td-valign-middle m-b-15">
-						<thead>
-							<tr>
-								<th class="text-nowrap">@lang('order.table_new_prodct')</th>
-								<th class="text-nowrap text-center">@lang('order.table_new_quantity')</th>
-								<th class="text-nowrap text-center">@lang('order.table_new_price')</th>
-								<th class="text-nowrap text-center">@lang('order.table_new_total')</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($products as $product)
-								<tr>
-									<td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
-									<td class="text-nowrap text-center">{{$product['quantity']}}</td>
-									<td class="text-nowrap text-center">{{$product['price']}}</td>
-									<td class="text-nowrap text-center">{{$product['total']}}</td>
-								</tr>
-							@endforeach
-						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="3"></td>
-								<th class="text-nowrap text-center">{{number_format($order->total*$koef,2,'.',' ')}}</th>
-							</tr>
-						</tfoot>
-					</table>
+                                <div class="table-scroll-container">
+                                    <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-nowrap">@lang('order.table_new_prodct')</th>
+                                            <th class="text-nowrap text-center">@lang('order.table_new_quantity')</th>
+                                            <th class="text-nowrap text-center">@lang('order.table_new_price')</th>
+                                            <th class="text-nowrap text-center">@lang('order.table_new_total')</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($products as $product)
+                                            <tr>
+                                                <td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
+                                                <td class="text-nowrap text-center">{{$product['quantity']}}</td>
+                                                <td class="text-nowrap text-center">{{$product['price']}}</td>
+                                                <td class="text-nowrap text-center">{{$product['total']}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="3"></td>
+                                            <th class="text-nowrap text-center">{{number_format($order->total*$koef,2,'.',' ')}}</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group m-b-15">
+                                            <label>@lang('order.form_comment')</label>
+                                            <textarea name="comment" id="comment" cols="30" rows="5" class="form-control m-b-5" readonly>{{$order->comment}}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        @foreach($implementationsData as $implementation)
+                        <div class="tab-pane fade" id="implementation-tab-{{$implementation['id']}}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                        <tbody>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_data')</th>
+                                                <td>{{$implementation['date']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_sender')</th>
+                                                <td>{{$implementation['sender']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_customer')</th>
+                                                <td>{{$implementation['customer'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_ttn')</th>
+                                                <td>{{$implementation['ttn'] }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-nowrap">@lang('implementation.table_product_name')</th>
+                                            <th class="text-nowrap text-center">@lang('implementation.table_product_quantity')</th>
+                                            <th class="text-nowrap text-center">@lang('implementation.table_product_total')</th>
+                                            <th class="text-nowrap text-center">@lang('implementation.table_product_order')</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($implementation['products'] as $product)
+                                            <tr>
+                                                <td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
+                                                <td class="text-nowrap text-center">{{$product['quantity']}}</td>
+                                                <td class="text-nowrap text-center">{{$product['total']}}</td>
+                                                <td class="text-nowrap text-center"><a href="{{route('orders.show',[$product['order']])}}" target="_blank">{{$product['order_number']}}</a></td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
-						<div class="row">
-							<div class="col-lg-6">
-
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group m-b-15">
-									<label>@lang('order.form_comment')</label>
-									<textarea name="comment" id="comment" cols="30" rows="5" class="form-control m-b-5" readonly>{{$order->comment}}</textarea>
-								</div>
-							</div>
-						</div>
-
-					</form>
 				</div>
 				<!-- end panel-body -->
 			</div>

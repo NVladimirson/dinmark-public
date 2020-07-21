@@ -95,7 +95,6 @@ class ImplementationController extends Controller
                             'order_number'	=> '?',
                         ];
                     }
-
 				}
 				return view('order.include.implementation_products',compact(['products']))->render();
 			})

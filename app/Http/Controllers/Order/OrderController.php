@@ -296,7 +296,44 @@ class OrderController extends Controller
 		if($order->status == 8){
 			return view('order.show',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients'));
 		}else{
-			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients'));
+            $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
+                ->whereHas('products',function ($products) use ($order){
+                    $products->whereHas('orderProduct',function ($orderProduct) use ($order){
+                        $orderProduct->where('cart',$order->id);
+                    });
+                })->get();
+            $implementationsData = [];
+            foreach ($implementations as $implementation){
+                $implProducts = [];
+                foreach ($implementation->products as $implementationProduct){
+                    if($implementationProduct->orderProduct){
+                        if($implementationProduct->orderProduct->cart == $order->id)
+                        {
+                            $implProducts[] = [
+                                'product_id' => $implementationProduct->orderProduct->product->id,
+                                'name' => \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
+                                'quantity' => $implementationProduct->quantity,
+                                'total' => number_format($implementationProduct->total, 2, ',', ' '),
+                                'order' => $implementationProduct->orderProduct->getCart ? $implementationProduct->orderProduct->getCart->id : '?',
+                                'order_number' => $implementationProduct->orderProduct->getCart ? ($implementationProduct->orderProduct->getCart->public_number ?? $implementationProduct->orderProduct->getCart->id) : '?',
+                            ];
+                        }
+                    }
+                }
+
+
+                $implementationsData[] = [
+                    'id' =>   $implementation->id,
+                    'public_number' =>   $implementation->public_number,
+                    'date' =>   Carbon::parse($implementation->date_add)->format('d.m.Y'),
+                    'sender' =>   $implementation->sender_id == 0? 'Dinmark':$implementation->sender->name,
+                    'customer' =>  $implementation->customer_id < 0? 'Клиент':$implementation->customer->name,
+                    'ttn' =>  $implementation->ttn,
+                    'products' => $implProducts
+                ];
+            }
+
+			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients','implementationsData'));
 		}
 
 	}
