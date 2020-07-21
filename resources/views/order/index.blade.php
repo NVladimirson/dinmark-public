@@ -57,12 +57,6 @@
                             <a href="{{route('orders.create')}}" class="btn btn-sm btn-green m-t-5 m-b-5 btn-block" title="@lang('order.btn_add_order')"><i class="fas fa-plus-circle"></i></a>
                         </div>
 							<div class="col-lg-3">
-								{{--<select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
-									<option value="" selected>@lang('order.select_status')</option>
-									@foreach($statuses as $status)
-										<option value="{{$status->id}}" class="order-status order-status-tab-{{(($status->id<=5)?'order order-status-tab_active':(($status->id<=7)?'archive':'request'))}}">{{$status->name}}</option>
-									@endforeach
-								</select>--}}
 							</div>
 						<div class="col-lg-6 offset-lg-2">
 							<form action="{{ route('orders.act_pdf') }}" enctype="multipart/form-data" method="get">
@@ -71,10 +65,10 @@
 									<div class="col-lg-9">
 										<div class="row row-space-10">
 											<div class="col-xs-6 mb-2 mb-sm-0">
-												<input type="text" name="act_date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
+												<input type="hidden" name="act_date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
 											</div>
 											<div class="col-xs-6">
-												<input type="text" name="act_date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
+												<input type="hidden" name="act_date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
 											</div>
 										</div>
 									</div>
@@ -91,13 +85,13 @@
 							<tr>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
-								<th class="text-nowrap">@lang('order.table_header_date')
+								<th class="text-nowrap" width="120">@lang('order.table_header_date')
                                     <div class="row row-space-10">
-                                        <div class="col-xs-6 mb-2 mb-sm-0">
+                                        <div class="col-xs-12 mb-2 m-b-5">
                                             <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.act_date_from')" required>
                                         </div>
-                                        <div class="col-xs-6">
-                                            <input type="text" name="act_date_to" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required>
+                                        <div class="col-xs-12" >
+                                            <input type="text" name="act_date_to" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
                                         </div>
                                     </div></th>
 								<th class="text-nowrap">@lang('order.table_header_status')
@@ -306,16 +300,18 @@
 					}else{
 						date = '';
 					}
-
+					$('#datetimepicker3').val($("#datetimepicker5").val());
 					if($("#datetimepicker6").val() !== ''){
 						date += '&date_to='+$("#datetimepicker6").data("DateTimePicker").date()/1000;
 					}else {
 						date += '';
 					}
+					$('#datetimepicker4').val($("#datetimepicker6").val());
 					updateAjax();
                 }
 
 				$("#datetimepicker5").on("dp.change", function (e) {
+					$('#datetimepicker6').show();
 					$('#datetimepicker6').data("DateTimePicker").minDate(e.date);
 					changeDate();
 
