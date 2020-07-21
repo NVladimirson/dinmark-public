@@ -246,7 +246,7 @@ class OrderController extends Controller
 		session()->forget('not_founds');
 		session()->forget('not_available');
 
-		$order = Order::with(['products.product.content','products.storage'])->find($id);
+		$order = Order::with(['products.product.content','products.storage','payments'])->find($id);
 		SEOTools::setTitle(trans('order.page_update').$order->id);
 		$companies = Company::with(['users'])
 			->where([
@@ -332,6 +332,7 @@ class OrderController extends Controller
                     'products' => $implProducts
                 ];
             }
+
 
 			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients','implementationsData'));
 		}

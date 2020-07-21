@@ -37,6 +37,13 @@
                             </a>
                         </li>
                         @endforeach
+                        @foreach($order->payments as $payment)
+                        <li class="nav-item">
+                            <a href="#payment-tab-{{$payment->id}}" data-toggle="tab" class="nav-link">
+                                <span>@lang('order.payment_number')<br>{{$payment->public_number}}</span>
+                            </a>
+                        </li>
+                        @endforeach
                     </ul>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
@@ -190,6 +197,27 @@
                             </div>
                         </div>
                         @endforeach
+                        @foreach($order->payments as $payment)
+                            <div class="tab-pane fade" id="payment-tab-{{$payment->id}}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                            <tbody>
+                                            <tr>
+                                                <th>@lang('order.table_payment_date')</th>
+                                                <td>{{Carbon\Carbon::parse($payment->date_add)->format('d.m.Y i:h')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('order.table_payment_date')</th>
+                                                <td>{{number_format($payment->payed,2,'.',' ')}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
                     </div>
 				</div>
 				<!-- end panel-body -->

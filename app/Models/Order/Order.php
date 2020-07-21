@@ -44,6 +44,10 @@ class Order extends Model
 		return $this->hasMany('App\Models\Order\OrderProduct','cart');
 	}
 
+	public function payments(){
+		return $this->hasMany('App\Models\Order\Payment','cart_id');
+	}
+
 	public function sender(){
 		return $this->hasOne('App\User','id', 'sender_id');
 	}
