@@ -101,7 +101,13 @@
                                             <option value="{{$status->id}}" class="order-status order-status-tab-{{(($status->id<=5)?'order order-status-tab_active':(($status->id<=7)?'archive':'request'))}}">{{$status->name}}</option>
                                         @endforeach
                                     </select></div></th>
-								<th class="text-nowrap">@lang('order.table_header_status_payment')</th>
+								<th class="text-nowrap">@lang('order.table_header_status_payment')
+                                    <div><select class="form-control selectpicker" id="payment" data-size="10" data-live-search="true" data-style="btn-white">
+                                            <option value="" selected>@lang('order.select_status_payment')</option>
+                                            <option value="none">@lang('order.payment_status_none')</option>
+                                            <option value="partial">@lang('order.payment_status_partial')</option>
+                                            <option value="success">@lang('order.payment_status_success')</option>
+                                        </select></div></th>
 								<th class="text-nowrap">@lang('order.table_header_total')</th>
 								<th class="text-nowrap">@lang('order.table_header_customer')
                                     <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
@@ -172,6 +178,7 @@
 				var ajaxRouteBase = "{!! route('orders.all_ajax') !!}";
 				var ajaxRouteTab = "{!! route('orders.all_ajax') !!}?tab=order";
 				var status = '';
+				var payment = '';
 				var sender = '';
 				var customer = '';
 				var date = '';
@@ -181,6 +188,15 @@
 						status = '&status_id='+$(this).val();
                     }else{
 						status = '';
+                    }
+					updateAjax();
+				});
+
+				$('#payment').change(function () {
+					if($(this).val() !== ''){
+						payment = '&payment='+$(this).val();
+                    }else{
+						payment = '';
                     }
 					updateAjax();
 				});
@@ -204,7 +220,7 @@
 				});
 
 				function updateAjax(){
-					var ajaxRoute = ajaxRouteTab + status + sender + customer + date;
+					var ajaxRoute = ajaxRouteTab + status + payment + sender + customer + date;
 					window.table.ajax.url( ajaxRoute ).load();
                 }
 
@@ -219,7 +235,7 @@
                     $('#status option:first-child').prop('selected', 'selected');
                     $('#status').change();
 					$('#status').selectpicker('refresh');
-				})
+				});
 
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {
@@ -253,7 +269,7 @@
 						},
 						{
 							data: 'payment_html',
-							"visible": false,
+							"orderable":      false,
 						},
 						{
 							data: 'total_html',

@@ -23,6 +23,11 @@ return [
     'select_sender' 	=> 'Выберите отправителя',
     'select_customer' 	=> 'Выберите получателя',
 
+    'select_status_payment'     => 'Выберите статус оплаты',
+    'payment_status_none'       => 'Не оплачено',
+    'payment_status_partial'    => 'Частично оплачено',
+    'payment_status_success'    => 'Полностью оплачено',
+
     'tab_name_order'        => 'Заказы',
     'tab_name_request'      => 'Заявки',
     'tab_name_archive'      => 'Архив',
@@ -31,7 +36,7 @@ return [
     'table_header_number' 			=> 'Номер',
     'table_header_date' 			=> 'Дата',
     'table_header_status' 			=> 'Статус',
-    'table_header_status_payment' 	=> 'Статус Опл.',
+    'table_header_status_payment' 	=> 'Статус Оплаты',
     'table_header_total' 			=> 'Сумма',
     'table_header_customer' 		=> 'Отправитель',
     'table_header_user' 			=> 'Получатель',

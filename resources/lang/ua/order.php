@@ -23,6 +23,11 @@ return [
     'select_sender' 	=> 'Оберіть відправника',
     'select_customer' 	=> 'Оберіть отримувача',
 
+    'select_status_payment'     => 'Оберіть статус оплати',
+    'payment_status_none'       => 'Не оплачено',
+    'payment_status_partial'    => 'Часткова оплата',
+    'payment_status_success'    => 'Оплачено повністю',
+
     'tab_name_order'        => 'Замовлення',
     'tab_name_request'      => 'Заявки',
     'tab_name_archive'      => 'Архів',
@@ -31,7 +36,7 @@ return [
 	'table_header_number' 			=> 'Номер',
 	'table_header_date' 			=> 'Дата',
 	'table_header_status' 			=> 'Статус',
-	'table_header_status_payment' 	=> 'Статус Опл.',
+	'table_header_status_payment' 	=> 'Статус Оплати',
 	'table_header_total' 			=> 'Сума',
 	'table_header_customer' 		=> 'Відправник',
 	'table_header_user' 			=> 'Отримувач',

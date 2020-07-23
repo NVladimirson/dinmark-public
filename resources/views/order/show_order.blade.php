@@ -59,9 +59,31 @@
                                 @csrf
 
                                 <input type="hidden" id="order_id" name="order_id" value="{{$order->id}}">
-                                <div class="row m-b-15">
 
-                                    <div class="col-lg-12">
+                                <div class="row m-b-15">
+                                    <div class="col-md-6">
+                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                            <tbody>
+                                            <tr>
+                                                <th>@lang('order.table_header_status')</th>
+                                                <td>{{$order->getStatus->name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('order.table_header_status_payment')</th>
+                                                @if($order->payments->count() > 0)
+                                                    @if($order->payments->sum('payed') < $order->total)
+                                                        <td>@lang('order.payment_status_partial')</td>
+                                                    @else
+                                                        <td>@lang('order.payment_status_success')</td>
+                                                    @endif
+                                                @else
+                                                    <td>@lang('order.payment_status_none')</td>
+                                                @endif
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="pull-right">
                                             @if($order->status == 1)
                                                 <a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>

@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Excel;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class OrderController extends Controller
@@ -114,7 +115,7 @@ class OrderController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		$orders = Order::whereHas('getUser', function ($users){
+		$orders = Order::with(['payments'])->whereHas('getUser', function ($users){
 							$users->where('company',auth()->user()->company);
 						});
 
@@ -146,6 +147,24 @@ class OrderController extends Controller
 			$orders->where('status',$request->status_id);
 		}
 
+		if($request->has('payment')){
+		    if($request->payment == 'none'){
+                $orders->doesntHave('payments');
+            }elseif ($request->payment == 'partial'){
+                $orders->has('payments')
+                    ->whereRaw(' s_cart.total > ( 
+                              SELECT SUM( b2b_payments.payed ) 
+                              FROM b2b_payments
+                              WHERE b2b_payments.cart_id = s_cart.id )');
+            }elseif ($request->payment == 'success'){
+                $orders->has('payments')
+                    ->whereRaw(' s_cart.total <= ( 
+                              SELECT SUM( b2b_payments.payed ) 
+                              FROM b2b_payments
+                              WHERE b2b_payments.cart_id = s_cart.id )');
+		    }
+		}
+
 		if($request->has('sender_id')){
 			$orders->where('sender_id',$request->sender_id);
 		}
@@ -173,7 +192,15 @@ class OrderController extends Controller
 				return $order->getStatus->name;
 			})
 			->addColumn('payment_html', function (Order $order) {
-				return $order->getStatus->name;
+                if($order->payments->count() > 0){
+                    if($order->payments->sum('payed') < $order->total){
+                        return trans('order.payment_status_partial');
+                    }else{
+                        return trans('order.payment_status_success');
+                    }
+                }else{
+                    return trans('order.payment_status_none');
+                }
 			})
 			->addColumn('total_html', function (Order $order) {
 				return number_format($order->total,2,'.',' ');
