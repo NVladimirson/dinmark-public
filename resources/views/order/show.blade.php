@@ -85,7 +85,7 @@
                             </div>
 						</div>
 					</div>
-                        <div class="row m-b-15">
+                        {{--<div class="row m-b-15">
                             <div class="col-md-6">
                                 <label>@lang('order.select_payment')</label>
                                 <select class="form-control selectpicker" id="payment_id" name="payment_id" data-live-search="false" data-style="btn-white">
@@ -113,17 +113,9 @@
                                         <select class="form-control" id="city_np" name="city">
                                         </select>
                                     </div>
-                                    {{--
-                                    <input class="form-control m-t-15 m-b-5 client-required" type="text" id="client_name" name="client_name" placeholder="@lang('client.table_header_name')">
-                                    <input class="form-control m-b-5 client-required" type="tel" id="client_phone" name="client_phone" placeholder="@lang('client.table_header_phone')">
-                                    <input class="form-control m-b-5 client-required" type="email" id="client_email" name="client_email" placeholder="@lang('client.table_header_email')">
-                                    <input class="form-control m-b-5" type="text" id="client_company" name="client_company" placeholder="@lang('client.table_header_company')">
-                                    <input class="form-control m-b-5" type="text" id="client_edrpo" name="client_edrpo" placeholder="@lang('client.table_header_edrpo')">
-                                    <textarea class="form-control m-b-5 client-required" name="client_address" id="client_address" cols="30" rows="10" placeholder="@lang('client.table_header_address')"></textarea>
-                                    --}}
                                 </div>
                             </div>
-                        </div>
+                        </div>--}}
 
                         <div class="row">
                             <div class="col-lg-6">
@@ -455,11 +447,8 @@
 						url: 'https://api.novaposhta.ua/v2.0/json/',
 						dataType: 'json',
 						type: 'POST',
-                        params: {
-							contentType: "application/json; charset=utf-8",
-                        },
 						data: function (params) {
-							return {
+							var query = {
 								"modelName": "Address",
 								"calledMethod": "searchSettlements",
 								"methodProperties": {
@@ -468,6 +457,7 @@
 								},
 								"apiKey": "f50ab08faaad28c3a612bf9e97fb1c8a"
 							};
+							return JSON.stringify(query);
 						},
 						processResults: function (data) {
 							return {
