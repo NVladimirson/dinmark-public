@@ -85,6 +85,46 @@
                             </div>
 						</div>
 					</div>
+                        <div class="row m-b-15">
+                            <div class="col-md-6">
+                                <label>@lang('order.select_payment')</label>
+                                <select class="form-control selectpicker" id="payment_id" name="payment_id" data-live-search="false" data-style="btn-white">
+                                    <option value="2" selected="selected">@lang('order.select_payment_cashless')</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>@lang('order.select_address')</label>
+                                <select class="form-control selectpicker" id="address_id" name="address_id" data-live-search="false" data-style="btn-white">
+                                    <option value="0" selected="selected">@lang('order.select_address_new')</option>
+                                </select>
+                                <div class="form-group" id="shipping_data" style="/*display: none*/">
+                                    <label>@lang('order.select_shipping')</label>
+                                    <select class="form-control selectpicker" id="shipping_id" name="shipping_id" data-live-search="false" data-style="btn-white">
+                                        @foreach($shippings as $shipping)
+                                            @if($shipping->id == 4)
+                                                <option value="{{$shipping->id}}" selected="selected">@lang('order.select_shipping_nova_poshta')</option>
+                                            @else
+                                                <option value="{{$shipping->id}}">{{unserialize($shipping->name)[LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale()]}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <div class="shipping-data" id="nova_poshta">
+                                        <label>@lang('order.select_city')</label>
+                                        <select class="form-control" id="city_np" name="city">
+                                        </select>
+                                    </div>
+                                    {{--
+                                    <input class="form-control m-t-15 m-b-5 client-required" type="text" id="client_name" name="client_name" placeholder="@lang('client.table_header_name')">
+                                    <input class="form-control m-b-5 client-required" type="tel" id="client_phone" name="client_phone" placeholder="@lang('client.table_header_phone')">
+                                    <input class="form-control m-b-5 client-required" type="email" id="client_email" name="client_email" placeholder="@lang('client.table_header_email')">
+                                    <input class="form-control m-b-5" type="text" id="client_company" name="client_company" placeholder="@lang('client.table_header_company')">
+                                    <input class="form-control m-b-5" type="text" id="client_edrpo" name="client_edrpo" placeholder="@lang('client.table_header_edrpo')">
+                                    <textarea class="form-control m-b-5 client-required" name="client_address" id="client_address" cols="30" rows="10" placeholder="@lang('client.table_header_address')"></textarea>
+                                    --}}
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="m-b-15">
@@ -407,6 +447,39 @@
                     total = total + differencePrice;
 					$('.order-total').data('price',total);
 					$('.order-total').text(numberStringFormat(total));
+				});
+				$('#city_np').select2({
+					placeholder: "@lang('order.select_city_input')",
+					minimumInputLength: 3,
+					ajax: {
+						url: function () {
+							return 'https://api.novaposhta.ua/v2.0/json/'
+						},
+						dataType: 'json',
+						data: function (params) {
+							return {
+								"modelName": "Address",
+								"calledMethod": "searchSettlements",
+								"methodProperties": {
+									"CityName":  params.term,
+									"Limit": 10
+								},
+								"apiKey": "f50ab08faaad28c3a612bf9e97fb1c8a"
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: data
+							};
+						},
+						cache: false
+					},
+					/*templateSelection: function(container) {
+						$(container.element).attr("data-min", container.min);
+						$(container.element).attr("data-max", container.max);
+						$(container.element).attr("data-storage_id", container.storage_id);
+						return container.text;
+					}*/
 				});
 
 			});

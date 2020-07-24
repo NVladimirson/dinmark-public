@@ -12,6 +12,7 @@ use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Order\OrderStatus;
 use App\Models\Order\Payment;
+use App\Models\Order\Shipping;
 use App\Models\Product\Product;
 use App\Services\Order\OrderServices;
 use App\Services\TimeServices;
@@ -320,8 +321,12 @@ class OrderController extends Controller
 				]);
 			})->get();
 
+		$shippings = Shipping::where('active',1)
+            ->orderBy('position','ASC')
+            ->get();
+
 		if($order->status == 8){
-			return view('order.show',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients'));
+			return view('order.show',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients', 'shippings'));
 		}else{
             $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
                 ->whereHas('products',function ($products) use ($order){
