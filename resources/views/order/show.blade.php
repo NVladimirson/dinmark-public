@@ -452,16 +452,14 @@
 					placeholder: "@lang('order.select_city_input')",
 					minimumInputLength: 3,
 					ajax: {
-						url: function () {
-							return 'https://api.novaposhta.ua/v2.0/json/'
-						},
+						url: 'https://api.novaposhta.ua/v2.0/{format}/Address/searchSettlements/',
 						dataType: 'json',
 						data: function (params) {
 							return {
 								"modelName": "Address",
 								"calledMethod": "searchSettlements",
 								"methodProperties": {
-									"CityName":  params.term,
+									"CityName":params.term,
 									"Limit": 10
 								},
 								"apiKey": "f50ab08faaad28c3a612bf9e97fb1c8a"
