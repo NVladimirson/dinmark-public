@@ -426,7 +426,7 @@ class OrderController extends Controller
 				$this->changeQuantity($key, $quantity, $order);
 			}
 		}
-
+        OrderServices::setAddressInfo($order,$request);
 		$order->save();
 
 		if($request->submit == 'add_product'){

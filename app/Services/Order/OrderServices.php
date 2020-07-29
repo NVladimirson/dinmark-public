@@ -53,6 +53,46 @@ class OrderServices
         $order->save();
     }
 
+    public static function setAddressInfo($order,$request)
+    {
+        $instance =  static::getInstance();
+
+        $order->shipping_id     = $request->shipping_id;
+        $order->payment_alias   = $request->payment_id;
+        $order->payment_id      = $request->payment_id;
+        $order->shipping_info   = $instance->getSippingInfo($request);
+        $order->save();
+    }
+
+    public static function getSippingInfo($request)
+    {
+        switch($request->shipping_id){
+            case 1:
+            case 3:
+                return null;
+            case 2:
+                return serialize([
+                    'city' => $request->city_me,
+                    'address' => $request->adress_me,
+                ]);
+            case 4:
+                if($request->np_wherhouse_curier == "#wherhouse-tab"){
+                    return serialize([
+                        'method' => 'warehouse',
+                        'city' => $request->city_np,
+                        'warehouse' => $request->warehous_np,
+                    ]);
+                }else{
+                    return serialize([
+                        'method' => 'courier',
+                        'city' => $request->city_np_curier,
+                        'address' => $request->adress_np_curier,
+                        'house_float' => $request->house_float_np_curier,
+                    ]);
+                }
+        }
+    }
+
 
 	private static $instance;
 	public static function getInstance()

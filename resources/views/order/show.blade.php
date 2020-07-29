@@ -9,6 +9,12 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <style>
+        #warehouse-info{
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -85,7 +91,7 @@
                             </div>
 						</div>
 					</div>
-                        {{--<div class="row m-b-15">
+                        <div class="row m-b-15">
                             <div class="col-md-6">
                                 <label>@lang('order.select_payment')</label>
                                 <select class="form-control selectpicker" id="payment_id" name="payment_id" data-live-search="false" data-style="btn-white">
@@ -93,29 +99,222 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label>@lang('order.select_address')</label>
-                                <select class="form-control selectpicker" id="address_id" name="address_id" data-live-search="false" data-style="btn-white">
+                                <label class="m-b-0">@lang('order.select_address')</label>
+                                <select class="form-control selectpicker m-b-5" id="address_id" name="address_id" data-live-search="false" data-style="btn-white">
                                     <option value="0" selected="selected">@lang('order.select_address_new')</option>
                                 </select>
                                 <div class="form-group" id="shipping_data" style="/*display: none*/">
-                                    <label>@lang('order.select_shipping')</label>
-                                    <select class="form-control selectpicker" id="shipping_id" name="shipping_id" data-live-search="false" data-style="btn-white">
+                                    <label class="m-b-0">@lang('order.select_shipping')</label>
+                                    <select class="form-control selectpicker m-b-5" id="shipping_id" name="shipping_id" data-live-search="false" data-style="btn-white">
                                         @foreach($shippings as $shipping)
                                             @if($shipping->id == 4)
-                                                <option value="{{$shipping->id}}" selected="selected">@lang('order.select_shipping_nova_poshta')</option>
+                                                <option value="{{$shipping->id}}" @if(empty($order->shipping_id) || $order->shipping_id==4) selected="selected" @endif>@lang('order.select_shipping_nova_poshta')</option>
                                             @else
-                                                <option value="{{$shipping->id}}">{{unserialize($shipping->name)[LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale()]}}</option>
+                                                <option value="{{$shipping->id}}" @if($order->shipping_id == $shipping->id) selected="selected" @endif>{{unserialize($shipping->name)[LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale()]}}</option>
                                             @endif
                                         @endforeach
                                     </select>
-                                    <div class="shipping-data" id="nova_poshta">
-                                        <label>@lang('order.select_city')</label>
-                                        <select class="form-control" id="city_np" name="city">
-                                        </select>
+                                    @php
+                                        $shipping_info = null;
+                                        if($order->shipping_info){
+                                            if(@unserialize($order->shipping_info) !== false){
+                                                $shipping_info = unserialize($order->shipping_info);
+                                            }
+                                        }
+                                    @endphp
+                                    <div class="shipping-data " id="nova_poshta" @if(!(empty($order->shipping_id) || $order->shipping_id==4)) style="display: none"  @endif>
+                                        @if( $order->shipping_id==4 && $shipping_info)
+
+                                            <ul id="nova_poshta_tab" class="nav nav-pills">
+                                                <li class="nav-item col p-0 text-center">
+                                                    <a href="#wherhouse-tab" data-toggle="tab" class="nav-link @if($shipping_info['method'] == 'warehouse') active @endif">
+                                                        <span>@lang('order.select_shipping_np_wherhouse')</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item col p-0 text-center">
+                                                    <a href="#curier-tab" data-toggle="tab" class="nav-link @if($shipping_info['method'] == 'courier') active @endif">
+                                                        <span>@lang('order.select_shipping_np_curier')</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <input type="hidden" name="np_wherhouse_curier" value="#wherhouse-tab">
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade @if($shipping_info['method'] == 'warehouse') active @endif show" id="wherhouse-tab">
+                                                    <div class="m-b-5">
+                                                        <input type="hidden" name="city_np"  @if($shipping_info['method'] == 'warehouse') value="{{$shipping_info['city']}}" @endif>
+                                                        <label class="m-b-0">@lang('order.select_city')</label>
+                                                        <select class="form-control m-b-5" id="city_np" >
+                                                            @if($shipping_info['method'] == 'warehouse')<option value="{{$shipping_info['city']}}">{{$shipping_info['city']}}</option>@endif
+                                                        </select>
+                                                    </div>
+                                                    <div class="m-b-0">
+                                                        <label class="m-b-0">@lang('order.select_warehous')</label>
+                                                        <select class="form-control " id="city_np_warehouses" name="warehous_np" style="width: 100%">
+                                                            @if($shipping_info['method'] == 'warehouse')<option  value="{{$shipping_info['warehouse']}}">{{$shipping_info['warehouse']}}</option>@endif
+                                                        </select>
+                                                        <div id="warehouse-info" style="display: none">
+                                                            <div class="row ">
+                                                                <div class="col-md-6">
+                                                                    <strong>@lang('order.warehouse_grafic')</strong>
+                                                                    <table class="table table-striped table-bordered table-td-valign-middle">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_monday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-monday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_tuesday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-tuesday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_wednesday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-wednesday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_thursday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-thursday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_friday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-friday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_saturday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-saturday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_sunday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-sunday"></td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <strong>@lang('order.warehouse_max_weight')</strong>
+                                                                    <p><span id="warehouse_max_weight"></span> @lang('order.warehouse_weight_kg')</p>
+                                                                    <p><strong><i class="fas fa-phone-alt"></i></strong> <sapn id="warehouse_phone"></sapn></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade @if($shipping_info['method'] == 'courier') active @endif show" id="curier-tab">
+                                                    <div class="m-b-5">
+                                                        <label class="m-b-0">@lang('order.select_city_input')</label>
+                                                        <input type="text" class="form-control m-b-5" name="city_np_curier" @if($shipping_info['method'] == 'courier') value="{{$shipping_info['city']}}" @endif placeholder="@lang('order.select_city_input')">
+                                                    </div>
+                                                    <div class="m-b-5">
+                                                        <label class="m-b-0">@lang('order.select_adress_input')</label>
+                                                        <input type="text" class="form-control m-b-5" name="adress_np_curier" @if($shipping_info['method'] == 'courier') value="{{$shipping_info['address']}}" @endif placeholder="@lang('order.select_adress_input')">
+                                                    </div>
+                                                    <div class="m-b-5">
+                                                        <label class="m-b-0">@lang('order.select_house_float_input')</label>
+                                                        <input type="text" class="form-control m-b-5" name="house_float_np_curier"  @if($shipping_info['method'] == 'courier') value="{{$shipping_info['house_float']}}" @endif placeholder="@lang('order.select_house_float_input')">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @else
+                                        <ul id="nova_poshta_tab" class="nav nav-pills">
+                                            <li class="nav-item col p-0 text-center">
+                                                <a href="#wherhouse-tab" data-toggle="tab" class="nav-link active">
+                                                    <span>@lang('order.select_shipping_np_wherhouse')</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item col p-0 text-center">
+                                                <a href="#curier-tab" data-toggle="tab" class="nav-link">
+                                                    <span>@lang('order.select_shipping_np_curier')</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <input type="hidden" name="np_wherhouse_curier" value="#wherhouse-tab">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show" id="wherhouse-tab">
+                                                <div class="m-b-5">
+                                                    <input type="hidden" name="city_np">
+                                                    <label class="m-b-0">@lang('order.select_city')</label>
+                                                    <select class="form-control m-b-5" id="city_np" >
+                                                    </select>
+                                                </div>
+                                                <div class="m-b-0">
+                                                    <label class="m-b-0">@lang('order.select_warehous')</label>
+                                                    <select class="form-control " id="city_np_warehouses" name="warehous_np" style="width: 100%">
+                                                    </select>
+                                                    <div id="warehouse-info" style="display: none">
+                                                        <div class="row ">
+                                                            <div class="col-md-6">
+                                                                <strong>@lang('order.warehouse_grafic')</strong>
+                                                                <table class="table table-striped table-bordered table-td-valign-middle">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_monday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-monday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_tuesday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-tuesday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_wednesday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-wednesday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_thursday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-thursday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_friday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-friday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_saturday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-saturday"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@lang('order.date_sunday')</td>
+                                                                            <td class="text-nowrap text-center" id="warehouse-sunday"></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <strong>@lang('order.warehouse_max_weight')</strong>
+                                                                <p><span id="warehouse_max_weight"></span> @lang('order.warehouse_weight_kg')</p>
+                                                                <p><strong><i class="fas fa-phone-alt"></i></strong> <sapn id="warehouse_phone"></sapn></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade show" id="curier-tab">
+                                                <div class="m-b-5">
+                                                    <label class="m-b-0">@lang('order.select_city_input')</label>
+                                                    <input type="text" class="form-control m-b-5" name="city_np_curier" placeholder="@lang('order.select_city_input')">
+                                                </div>
+                                                <div class="m-b-5">
+                                                    <label class="m-b-0">@lang('order.select_adress_input')</label>
+                                                    <input type="text" class="form-control m-b-5" name="adress_np_curier" placeholder="@lang('order.select_adress_input')">
+                                                </div>
+                                                <div class="m-b-5">
+                                                    <label class="m-b-0">@lang('order.select_house_float_input')</label>
+                                                    <input type="text" class="form-control m-b-5" name="house_float_np_curier" placeholder="@lang('order.select_house_float_input')">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="shipping-data " id="mist_express" @if($order->shipping_id!=2) style="display: none" @endif>
+                                        <div class="m-b-5">
+                                            <label class="m-b-0">@lang('order.select_city_input')</label>
+                                            <input type="text" class="form-control m-b-5" name="city_me" placeholder="@lang('order.select_city_input')">
+                                        </div>
+                                        <div class="m-b-5">
+                                            <label class="m-b-0">@lang('order.select_adress_me_input')</label>
+                                            <input type="text" class="form-control m-b-5" name="adress_me" placeholder="@lang('order.select_adress_me_input')">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>--}}
+                        </div>
 
                         <div class="row">
                             <div class="col-lg-6">
@@ -239,11 +438,6 @@
 										@foreach($clients as $client)
 											<option value="{{$client->id}}" @if($client->id == -$order->user) selected="selected" @endif>{{$client->name}} ({{$client->company_name}})</option>
 										@endforeach
-                                        {{--@foreach($companies as $company)
-                                            @foreach($company->users as $user)
-                                                <option value="{{$user->id}}" @if($user->id == $order->user) selected="selected" @endif>{{$user->name}} ({{$company->name}})</option>
-                                            @endforeach
-                                        @endforeach--}}
                                     </select>
                                 </div>
                                 <button type="submit" name="submit" value="cp_generate" class="btn btn-lg btn-primary">@lang('order.cp_btn')</button>
@@ -440,6 +634,7 @@
 					$('.order-total').data('price',total);
 					$('.order-total').text(numberStringFormat(total));
 				});
+
 				$('#city_np').select2({
 					placeholder: "@lang('order.select_city_input')",
 					minimumInputLength: 3,
@@ -459,22 +654,107 @@
 							};
 							return JSON.stringify(query);
 						},
+
 						processResults: function (data) {
+							var items = [];
+							if(data.success){
+								var cities = data.data[0].Addresses;
+								cities.forEach(function (e) {
+									items.push({'id':e.DeliveryCity,'text':e.Present});
+								})
+                            }
 							return {
-								results: data
+								results: items,
 							};
 						},
 						cache: false
 					},
-					/*templateSelection: function(container) {
-						$(container.element).attr("data-min", container.min);
-						$(container.element).attr("data-max", container.max);
-						$(container.element).attr("data-storage_id", container.storage_id);
-						return container.text;
-					}*/
 				});
 
 			});
+
+			$('#city_np').change(function(e){
+				var curOption = $("#city_np option:selected");
+				$('input[name="city_np"]').val(curOption.text());
+
+				var query = {
+					"modelName": "AddressGeneral",
+					"calledMethod": "getWarehouses",
+					"methodProperties": {
+						"CityRef": $(this).val(),
+						"Language": "{{LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale()}}"
+					},
+					"apiKey": "f50ab08faaad28c3a612bf9e97fb1c8a"
+				};
+				var data =  JSON.stringify(query);
+
+				$.ajax({
+					method: "POST",
+					url: "https://api.novaposhta.ua/v2.0/json/",
+                    data: data,
+					dataType: 'json',
+					success: function(resp)
+					{
+						$('#city_np_warehouses').html('');
+						$('#warehouse-info').hide();
+
+						if(resp.success){
+							resp.data.forEach(function(e){
+								$('#city_np_warehouses').append('<option val="'+e.Description+'" ' +
+                                    'data-monday="'+e.Schedule.Monday+'"' +
+                                    'data-tuesday="'+e.Schedule.Tuesday+'"' +
+                                    'data-wednesday="'+e.Schedule.Wednesday+'"' +
+                                    'data-thursday="'+e.Schedule.Thursday+'"' +
+                                    'data-friday="'+e.Schedule.Friday+'"' +
+                                    'data-saturday="'+e.Schedule.Saturday+'"' +
+                                    'data-sunday="'+e.Schedule.Sunday+'"' +
+                                    'data-weight="'+(e.PlaceMaxWeightAllowed>e.TotalMaxWeightAllowed?e.PlaceMaxWeightAllowed:e.TotalMaxWeightAllowed)+'"' +
+                                    'data-phone="'+e.Phone+'"' +
+                                    '>'+e.Description+'</option>');
+                            });
+							$('#city_np_warehouses').change();
+						}
+					},
+					error:  function(xhr, str){
+						console.log(xhr);
+					}
+				});
+            });
+
+			$('#city_np_warehouses').select2();
+
+			$('#city_np_warehouses').change(function (e) {
+
+				var curOption = $("#city_np_warehouses option:selected");
+				$('#warehouse-info').show();
+				$('#warehouse-monday').text(curOption.data('monday'));
+				$('#warehouse-tuesday').text(curOption.data('tuesday'));
+				$('#warehouse-wednesday').text(curOption.data('wednesday'));
+				$('#warehouse-thursday').text(curOption.data('thursday'));
+				$('#warehouse-friday').text(curOption.data('friday'));
+				$('#warehouse-saturday').text(curOption.data('saturday'));
+				$('#warehouse-sunday').text(curOption.data('sunday'));
+				$('#warehouse_max_weight').text(curOption.data('weight'));
+				$('#warehouse_phone').text(curOption.data('phone'));
+
+			});
+
+			$('#nova_poshta_tab a').click(function(e){
+				$('input[name="np_wherhouse_curier"]').val($(this).attr('href'));
+            });
+
+			$('#shipping_id').change(function(e){
+				$('.shipping-data').hide();
+				switch ($(this).val()) {
+                    case "4":
+                    	$('#nova_poshta').show();
+                    	break;
+
+                    case "2":
+                    	$('#mist_express').show();
+						break;
+				}
+            });
 		})(jQuery);
 	</script>
 @endpush
