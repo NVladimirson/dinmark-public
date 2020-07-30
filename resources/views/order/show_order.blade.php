@@ -194,6 +194,11 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="pull-right">
+                                        <a href="{{route('implementations.pdf',[$implementation['id']])}}" class="btn btn-sm btn-primary">{{trans('implementation.btn_generate_pdf')}}</a>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
                                         <thead>
