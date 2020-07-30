@@ -235,7 +235,7 @@
                                                 <td>{{Carbon\Carbon::parse($payment->date_add)->format('d.m.Y i:h')}}</td>
                                             </tr>
                                             <tr>
-                                                <th>@lang('order.table_payment_date')</th>
+                                                <th>@lang('order.table_payment_total')</th>
                                                 <td>{{number_format($payment->payed,2,'.',' ')}}</td>
                                             </tr>
                                             </tbody>
