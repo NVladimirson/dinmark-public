@@ -85,7 +85,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="pull-right">
-                                            @if($order->status == 1)
+                                            @if($order->status == 1 || $order->status == 2)
                                                 <a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
                                             @endif
                                             @if($order->status == 7)
