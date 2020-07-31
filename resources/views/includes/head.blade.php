@@ -11,6 +11,9 @@
 <link href="/assets/css/default/theme/blue.min.css" rel="stylesheet" id="theme-css-link">
 <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 <style>
+    .nav.nav-tabs.nav-tabs-panel{
+        margin-bottom: -10px;
+    }
     .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link{
         color: #fff;
     }
