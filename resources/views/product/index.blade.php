@@ -122,7 +122,7 @@
 									<td>{{ $storage->limit_2 }}</td>
 									<td>{{ $storage->storage->term }}</td>
 									<td>
-										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" max="{{$storage->amount-($storage->amount%$storage->package)}}"/>
+										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" data-max="{{$storage->amount-($storage->amount%$storage->package)}}"/>
 									</td>
 									<td>
                                         @if($storage->amount > 0)
@@ -185,27 +185,43 @@
 
 					var modalQuantity = modal.find('input[name="quantity"');
 					var quantity = +quntity_el.val();
-					if((quantity % quntity_el.attr('step')) != 0){
-						if(quantity > quntity_el.attr('max')){
-							quntity_el.val(quntity_el.attr('max'));
-						}else if(quantity < quntity_el.attr('min')){
-							quntity_el.val(quntity_el.attr('min'));
-						}else{
-							quantity = quantity - quantity % (+quntity_el.attr('step')) + (+quntity_el.attr('step'));
-							quntity_el.val(quantity);
-						}
+					var request = 0;
+
+					if(quantity > quntity_el.data('max')){
+						quntity_el.val(quntity_el.data('max'));
+						request = quantity - (+quntity_el.data('max'));
+						quantity = +quntity_el.data('max');
+					}else if(quantity < quntity_el.attr('min')){
+						quntity_el.val(quntity_el.attr('min'));
+						quantity = +quntity_el.data('min');
 					}
+
+					if((quantity % quntity_el.attr('step')) != 0){
+                        quantity = quantity - quantity % (+quntity_el.attr('step')) + (+quntity_el.attr('step'));
+                        quntity_el.val(quantity);
+					}
+
 					modalQuantity.val(quntity_el.val());
 					modalQuantity.attr('min',quntity_el.attr('min'));
 					modalQuantity.attr('step',quntity_el.attr('step'));
-					modalQuantity.attr('max',quntity_el.attr('max'));
+					modalQuantity.data('max',quntity_el.data('max'));
 					modalQuantity.parent().hide(0);
 
 					var quantity_request = modal.find('input[name="quantity_request"]');
-					quantity_request.val(0);
+					quantity_request.val(request);
 					quantity_request.attr('min',0);
 					quantity_request.attr('step',button.data('storage_min'));
 					quantity_request.attr('max',button.data('storage_max'));
+
+					$('.order-storage-amount').text(button.data('storage_max'));
+                    if(request > 0){
+                    	$('.storage-limit-info').show();
+                    	$('.storage-limit-request').show();
+                    }else{
+						$('.storage-limit-info').hide();
+						$('.storage-limit-request').hide();
+                    }
+					$('input[name="quantity_request"]').change();
 				})
 
 				$('input[name="quantity_request"]').change(function (e) {

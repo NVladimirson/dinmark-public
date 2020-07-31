@@ -300,27 +300,33 @@
 					modal.find('.product_id').val(button.data('product'));
 					modal.find('.storage_id').val(button.data('storage'));
 					modal.find('.order-storage-amount').text(button.data('storage_max'));
-					var quantity = modal.find('input[name="quantity"');
+					var quantity = modal.find('input[name="quantity"]');
 					quantity.val(button.data('storage_min'));
 					quantity.attr('min',button.data('storage_min'));
 					quantity.attr('step',button.data('storage_min'));
-					quantity.attr('max',button.data('storage_max'));
+					quantity.attr('data-max',button.data('storage_max'));
 
 					var quantity_request = modal.find('input[name="quantity_request"]');
 					quantity_request.val(0);
 					quantity_request.attr('min',0);
 					quantity_request.attr('step',button.data('storage_min'));
-					quantity_request.attr('max',button.data('storage_max'));
-				})
 
-				$('input[name="quantity_request"]').change(function (e) {
+					$('.storage-limit-info').hide();
+					$('.storage-limit-request').hide();
+					$('input[name="quantity_request"]').change();
+				});
+
+				$('input[name="quantity"]').change(function (e) {
 					e.preventDefault();
-					if($(this).val() > 0){
-						$('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
-					}else{
-						$('.btn-add-order').text($('.btn-add-order').data('btn_order'));
+					if($(this).val() > $(this).data('max')){
+						var request =  $(this).val() - $(this).data('max');
+						$(this).val($(this).data('max'));
+						$('input[name="quantity_request"]').val(request);
+						$('.storage-limit-info').show();
+						$('.storage-limit-request').show();
+						$('input[name="quantity_request"]').change();
 					}
-				})
+				});
 
 				$('#modal-get_price').on('show.bs.modal', function (event) {
 					var button = $(event.relatedTarget);

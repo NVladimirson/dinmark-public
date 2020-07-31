@@ -18,14 +18,14 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group m-b-15">
+                    <div class="form-group m-b-15 storage-limit-info">
                         <strong>@lang('product.modal_order_warning_1')<span class="order-storage-amount"></span>@lang('product.modal_order_warning_2')</strong>
                     </div>
                     <div class="form-group m-b-15">
                         <label>@lang('product.quantity_order')</label>
-                        <input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="100" min="100" step="100" max="1000"/>
+                        <input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="100" min="100" step="100" data-max="1000"/>
                     </div>
-                    <div class="form-group m-b-15">
+                    <div class="form-group m-b-15 storage-limit-request">
                         <label>@lang('product.quantity_order_request')</label>
                         <input type="number" name="quantity_request" class="form-control m-b-5" placeholder="@lang('product.quantity_order_request')" value="0" min="0" step="100" max="1000"/>
                     </div>
