@@ -91,7 +91,8 @@
                                             @if($order->status == 7)
                                                 <a href="{{ route('orders.to_order',[$order->id]) }}" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_open_order')</a>
                                             @endif
-                                            <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
+                                                <a href="{{route('orders.copy',['id'=>$order->id])}}" class="btn btn-sm btn-primary m-b-5 m-r-5" title="@lang('order.btn_copy')"><i class="far fa-copy"></i></a>
+                                                <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
                                             @if($order->status == 1)
                                                 <a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
                                             @endif

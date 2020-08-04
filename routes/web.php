@@ -62,6 +62,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/orders/act-pdf','Order\OrderController@PDFAct')->name('orders.act_pdf');
 		Route::get('/orders/{id}','Order\OrderController@show')->name('orders.show');
 		Route::post('/orders/{id}','Order\OrderController@update')->name('orders.update');
+        Route::get('/orders/{id}/copy','Order\OrderController@copy')->name('orders.copy');
 		Route::get('/orders/{id}/bill','Order\OrderController@PDFBill')->name('orders.pdf_bill');
 		Route::get('/orders/{id}/to-order','Order\OrderController@toOrder')->name('orders.to_order');
 		Route::get('/orders/{id}/to-cancel','Order\OrderController@toCancel')->name('orders.to_cancel');

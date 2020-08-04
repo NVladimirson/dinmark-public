@@ -268,6 +268,45 @@ class OrderController extends Controller
 		return view('order.create',compact('order', 'companies', 'clients'));
 	}
 
+    public function copy($id)
+    {
+        $order = Order::find($id);
+
+        $newOrder = Order::create([
+            'user' => $order->user,
+            'sender_id' => $order->sender_id,
+            'customer_id' => $order->customer_id,
+            'status' => 8,
+            'shipping_id' => $order->shipping_id,
+            'shipping_info' => $order->shipping_info,
+            'payment_alias' => $order->payment_alias,
+            'payment_id' => $order->payment_id,
+            'total' => $order->total,
+            'comment' => $order->comment,
+            'source' => 'b2b',
+        ]);
+
+        foreach ($order->products as $orderProduct){
+            OrderProduct::create([
+                'cart' => $newOrder->id,
+                'user' => $orderProduct->user,
+                'active' => 1,
+                'product_alias' => $orderProduct->product_alias,
+                'product_id' => $orderProduct->product_id,
+                'storage_alias' => $orderProduct->storage_alias,
+                'price' => $orderProduct->price,
+                'price_in' => $orderProduct->price_in,
+                'quantity' => $orderProduct->quantity,
+                'quantity_wont' => $orderProduct->quantity_wont,
+                'date' => Carbon::now()->timestamp,
+            ]);
+        }
+
+        OrderServices::calcTotal($newOrder);
+
+        return redirect()->route('orders.show',[$newOrder->id]);
+	}
+
 	public function show($id){
 		session()->forget('not_founds');
 		session()->forget('not_available');

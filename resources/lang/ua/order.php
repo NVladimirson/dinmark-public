@@ -20,8 +20,8 @@ return [
 	'all_tab_name' 	=> 'Список Замовлень',
     'show_tab_name' 	=> 'Замовлення',
 	'select_status' 	=> 'Оберіть статус',
-    'select_sender' 	=> 'Оберіть відправника',
-    'select_customer' 	=> 'Оберіть отримувача',
+    'filter_select_sender' 	=> 'Оберіть відправника',
+    'filter_select_customer' 	=> 'Оберіть отримувача',
 
     'select_status_payment'     => 'Оберіть статус оплати',
     'payment_status_none'       => 'Не оплачено',
@@ -52,6 +52,7 @@ return [
 	'btn_new_request'			=> 'Зберегти Заявку',
 	'btn_new_order'				=> 'Оформити Замовлення',
     'btn_open_order'			=> 'Відновити',
+    'btn_copy'			        => 'Повторити',
 	'btn_cancel_order'			=> 'Скасувати',
     'btn_cancel_close'			=> 'Закрити',
 	'select_sender'				=> 'Відправник',

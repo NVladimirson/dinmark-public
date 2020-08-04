@@ -20,8 +20,8 @@ return [
     'all_tab_name' 	=> 'Список Заказов',
     'show_tab_name' 	=> 'Заказ',
     'select_status' 	=> 'Выберите статус',
-    'select_sender' 	=> 'Выберите отправителя',
-    'select_customer' 	=> 'Выберите получателя',
+    'filter_select_sender' 	=> 'Выберите отправителя',
+    'filter_select_customer' 	=> 'Выберите получателя',
 
     'select_status_payment'     => 'Выберите статус оплаты',
     'payment_status_none'       => 'Не оплачено',
@@ -52,6 +52,7 @@ return [
 	'btn_new_request'			=> 'Сохранить Заявку',
 	'btn_new_order'				=> 'Оформить Заказ',
 	'btn_open_order'			=> 'Возобновить',
+	'btn_copy'			        => 'Повторить',
 	'btn_cancel_order'			=> 'Отменить',
 	'btn_cancel_close'			=> 'Закрыть',
 	'select_sender'				=> 'Отправитель',

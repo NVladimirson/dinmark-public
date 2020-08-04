@@ -111,7 +111,7 @@
 								<th class="text-nowrap">@lang('order.table_header_total')</th>
 								<th class="text-nowrap">@lang('order.table_header_customer')
                                     <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.select_sender')</option>
+                                            <option value="" selected>@lang('order.filter_select_sender')</option>
                                             @foreach($senders as $name => $id)
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
@@ -119,12 +119,12 @@
                                 </th>
 								<th class="text-nowrap">@lang('order.table_header_user')
                                     <div><select class="form-control selectpicker" id="customer" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.select_customer')</option>
+                                            <option value="" selected>@lang('order.filter_select_customer')</option>
                                             @foreach($customers as $name => $id)
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
                                         </select></div></th>
-								<th width="100"></th>
+								<th width="120"></th>
 							</tr>
 						</thead>
 						<tbody>
