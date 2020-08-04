@@ -101,8 +101,6 @@ class OrderController extends Controller
 		$orderProduct = OrderProduct::find($id);
 		$orderProduct->quantity = $quantity;
 		$orderProduct->save();
-
-		OrderServices::calcTotal($order);
 	}
 
 	public function removeOfOrder($id){
@@ -297,6 +295,11 @@ class OrderController extends Controller
 				}
 			}
 
+            $storage_prices = [];
+            foreach ($orderProduct->product->storages as $storage){
+                $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($orderProduct->product,$storage->id);
+            }
+
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
@@ -306,6 +309,9 @@ class OrderController extends Controller
 				'max' => ($storageProduct)?$storageProduct->amount:0,
 				'price' => number_format($price*100,2,'.', ' '),
 				'price_raw' => $price,
+                'storages'  => $orderProduct->product->storages,
+                'storage_prices' => $storage_prices,
+                'storage_id' => $orderProduct->storage_alias,
 				'total' => number_format($total,2,'.', ' '),
 				'total_raw' => $total,
 			];
@@ -418,14 +424,21 @@ class OrderController extends Controller
 			}
 		}
 
-
-
 		$order->comment = $request->comment;
-		if($request->has('product_quantity')){
-			foreach ($request->product_quantity as $key => $quantity){
-				$this->changeQuantity($key, $quantity, $order);
-			}
-		}
+
+        foreach ($order->products as $orderProduct){
+            if($request->has('product_storage')){
+
+                $orderProduct->storage_alias = $request->product_storage[$orderProduct->id];
+            }
+            if($request->has('product_quantity')){
+                $orderProduct->quantity = $request->product_quantity[$orderProduct->id];
+            }
+            $orderProduct->save();
+        }
+
+        OrderServices::calcTotal($order);
+
         OrderServices::setAddressInfo($order,$request);
 		$order->save();
 

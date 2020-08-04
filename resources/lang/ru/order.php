@@ -93,6 +93,7 @@ return [
 
 	'table_new_prodct'		=> 'Товар',
 	'table_new_quantity'	=> 'Количество',
+	'table_new_storage'     => 'Склад/Остаток',
 	'table_new_price'		=> 'Цена',
 	'table_new_total'		=> 'Сумма',
 

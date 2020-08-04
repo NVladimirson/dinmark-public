@@ -395,17 +395,25 @@
 						<thead>
 							<tr>
 								<th class="text-nowrap">@lang('order.table_new_prodct')</th>
-								<th class="text-nowrap text-center">@lang('order.table_new_quantity')</th>
-								<th class="text-nowrap text-center">@lang('order.table_new_price')</th>
-								<th class="text-nowrap text-center">@lang('order.table_new_total')</th>
+								<th class="text-nowrap text-center" width="100">@lang('order.table_new_quantity')</th>
+								<th class="text-nowrap text-center" width="200">@lang('order.table_new_storage')</th>
+								<th class="text-nowrap text-center" width="100">@lang('order.table_new_price')</th>
+								<th class="text-nowrap text-center" width="100">@lang('order.table_new_total')</th>
 								<th width="20"></th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($products as $product)
-								<tr>
+								<tr class="product-row">
 									<td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
-									<td class="text-nowrap text-center"><input class="order-product-counter" type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}" data-old-quantity="{{$product['quantity']}}"></td>
+									<td class="text-nowrap text-center"><input class="form-control order-product-counter" type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}" data-old-quantity="{{$product['quantity']}}"></td>
+									<td class="text-nowrap text-center order-product-storage">
+                                        <select class="form-control selectpicker m-b-5" name="product_storage[{{$product['id']}}]" data-live-search="false" data-style="btn-white">
+                                        @foreach($product['storages'] as $storage)
+                                                <option value="{{$storage->storage_id}}" @if($storage->storage_id == $product['storage_id']) selected="selected" @endif data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}" data-storage-price="{{$product['storage_prices'][$storage->id]}}" data-storage_limit_1="{{$storage->limit_1}}" data-storage_limit_2="{{$storage->limit_2}}">{{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}}</option>
+                                        @endforeach
+                                        </select>
+                                    </td>
 									<td class="text-nowrap text-center order-product-price" data-price="{{$product['price_raw']}}">{{$product['price']}}</td>
 									<td class="text-nowrap text-center order-product-total" data-price="{{$product['total_raw']}}">{{$product['total']}}</td>
 									<td><a href="#" data-id="{{$product['id']}}"  class="btn btn-sm btn-danger delete-product"><i class="fas fa-times"></i></a></td>
@@ -414,7 +422,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="3"></td>
+								<td colspan="4"></td>
 								<th class="text-nowrap text-center order-total" data-price="{{$order->total*$koef}}">{{number_format($order->total*$koef,2,'.',' ')}}</th>
 								<td></td>
 							</tr>
@@ -621,19 +629,46 @@
 					}
 					return x1 + x2;
 				}
+
 				$('.order-product-counter').on('input change',function () {
-                    var oldQuantity = $(this).data('old-quantity');
-                    var newQuantity = $(this).val();
-                    var differenceQuantity = newQuantity - oldQuantity;
-					$(this).data('old-quantity',newQuantity);
-					var price = $(this).parent().parent().find('.order-product-price').data('price');
-					var differencePrice = differenceQuantity * price;
-                    $(this).parent().parent().find('.order-product-total').text(numberStringFormat(price*newQuantity));
-                    var total = $('.order-total').data('price');
-                    total = total + differencePrice;
+					calcTotalPrice();
+				});
+
+				function calcTotalPrice(){
+					var total = 0
+                    $('.product-row').each(function(row){
+                    	var count = +$(this).find('.order-product-counter').val();
+                    	var price = +$(this).find('.order-product-price').data('price');
+                    	if(count >= $(this).find('.order-product-storage select option:selected').data('storage_limit_2')){
+							price *= 0.93;
+                        }else if(count >= $(this).find('.order-product-storage select option:selected').data('storage_limit_1')){
+							price *= 0.97;
+                        }
+
+                    	$(this).find('.order-product-total').text(numberStringFormat(price*count));
+						total += (price*count);
+                    });
 					$('.order-total').data('price',total);
 					$('.order-total').text(numberStringFormat(total));
-				});
+                }
+
+				$('.order-product-storage select').change(function(e){
+                    var row = $(this).parent().parent().parent();
+					var selectedStorage = $(this).find("option:selected");
+					var min = +selectedStorage.data('storage_min');
+					var max = +selectedStorage.data('storage_max');
+                    row.find('.order-product-price').data('price',selectedStorage.data('storage-price')/100);
+                    row.find('.order-product-price').text(numberStringFormat(selectedStorage.data('storage-price')));
+					var count = row.find('.order-product-counter').val();
+					count = (count%min == 0)?count:(count - count%min + min);
+					count = count <= max? count : max;
+					row.find('.order-product-counter').val(count);
+					row.find('.order-product-counter').attr('min',min);
+					row.find('.order-product-counter').attr('step',min);
+					row.find('.order-product-counter').attr('max',max);
+					calcTotalPrice();
+                });
+
 
 				$('#city_np').select2({
 					placeholder: "@lang('order.select_city_input')",
@@ -755,6 +790,7 @@
 						break;
 				}
             });
+
 		})(jQuery);
 	</script>
 @endpush
