@@ -395,9 +395,11 @@
 						<thead>
 							<tr>
 								<th class="text-nowrap">@lang('order.table_new_prodct')</th>
+                                <th class="text-nowrap text-center" width="100">@lang('order.table_new_price')</th>
 								<th class="text-nowrap text-center" width="100">@lang('order.table_new_quantity')</th>
-								<th class="text-nowrap text-center" width="200">@lang('order.table_new_storage')</th>
-								<th class="text-nowrap text-center" width="100">@lang('order.table_new_price')</th>
+								<th class="text-nowrap text-center" width="250">@lang('order.table_new_storage')</th>
+								<th class="text-nowrap text-center" width="100">@lang('order.table_new_package')</th>
+								<th class="text-nowrap text-center" width="100">@lang('order.table_new_weight')</th>
 								<th class="text-nowrap text-center" width="100">@lang('order.table_new_total')</th>
 								<th width="20"></th>
 							</tr>
@@ -406,7 +408,8 @@
 							@foreach($products as $product)
 								<tr class="product-row">
 									<td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
-									<td class="text-nowrap text-center"><input class="form-control order-product-counter" type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}" data-old-quantity="{{$product['quantity']}}"></td>
+                                    <td class="text-nowrap text-center order-product-price" data-price="{{$product['price_raw']}}">{{$product['price']}}</td>
+                                    <td class="text-nowrap text-center"><input class="form-control order-product-counter" type="number" name="product_quantity[{{$product['id']}}]" step="{{$product['min']}}" min="{{$product['min']}}" max="{{$product['max']}}" value="{{$product['quantity']}}" data-old-quantity="{{$product['quantity']}}"></td>
 									<td class="text-nowrap text-center order-product-storage">
                                         <select class="form-control selectpicker m-b-5" name="product_storage[{{$product['id']}}]" data-live-search="false" data-style="btn-white">
                                         @foreach($product['storages'] as $storage)
@@ -414,15 +417,16 @@
                                         @endforeach
                                         </select>
                                     </td>
-									<td class="text-nowrap text-center order-product-price" data-price="{{$product['price_raw']}}">{{$product['price']}}</td>
-									<td class="text-nowrap text-center order-product-total" data-price="{{$product['total_raw']}}">{{$product['total']}}</td>
+                                    <td class="text-nowrap text-center order-product-package">{{$product['package']}}*{{$product['min']}} @lang('global.pieces')</td>
+                                    <td class="text-nowrap text-center order-product-weight" data-weight="{{$product['weight']}}">{{$product['weight']*($product['quantity']/100)}} @lang('global.kg')</td>
+                                    <td class="text-nowrap text-center order-product-total" data-price="{{$product['total_raw']}}">{{$product['total']}}</td>
 									<td><a href="#" data-id="{{$product['id']}}"  class="btn btn-sm btn-danger delete-product"><i class="fas fa-times"></i></a></td>
 								</tr>
 							@endforeach
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="4"></td>
+								<td colspan="6"></td>
 								<th class="text-nowrap text-center order-total" data-price="{{$order->total*$koef}}">{{number_format($order->total*$koef,2,'.',' ')}}</th>
 								<td></td>
 							</tr>
@@ -631,6 +635,13 @@
 				}
 
 				$('.order-product-counter').on('input change',function () {
+					var row = $(this).parent().parent();
+					var count = $(this).val();
+					var pack = $(this).attr('min');
+					var weight = +$(row).find('.order-product-weight').data('weight');
+					$(row).find('.order-product-package').text(count/pack + '*' + pack + ' @lang("global.pieces")');
+					$(row).find('.order-product-weight').text((weight*count/100).toFixed(2) + ' @lang("global.kg")');
+
 					calcTotalPrice();
 				});
 
@@ -666,7 +677,8 @@
 					row.find('.order-product-counter').attr('min',min);
 					row.find('.order-product-counter').attr('step',min);
 					row.find('.order-product-counter').attr('max',max);
-					calcTotalPrice();
+
+					row.find('.order-product-counter').change();
                 });
 
 

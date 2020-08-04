@@ -92,6 +92,8 @@ return [
 	'table_new_prodct'		=> 'Товар',
 	'table_new_quantity'	=> 'Кількість',
     'table_new_storage'     => 'Склад/Залишок',
+    'table_new_package'     => 'Упаковка',
+    'table_new_weight'      => 'Вага',
 	'table_new_price'		=> 'Ціна',
 	'table_new_total'		=> 'Сума',
 

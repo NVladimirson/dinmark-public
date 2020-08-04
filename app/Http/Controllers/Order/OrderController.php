@@ -307,6 +307,8 @@ class OrderController extends Controller
 				'quantity' => $orderProduct->quantity,
 				'min' => ($storageProduct)?$storageProduct->package:0,
 				'max' => ($storageProduct)?$storageProduct->amount:0,
+				'package' => ($storageProduct)?$orderProduct->quantity/$storageProduct->package:0,
+				'weight' => $orderProduct->product->weight,
 				'price' => number_format($price*100,2,'.', ' '),
 				'price_raw' => $price,
                 'storages'  => $orderProduct->product->storages,

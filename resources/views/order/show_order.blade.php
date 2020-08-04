@@ -132,9 +132,11 @@
                                         <thead>
                                         <tr>
                                             <th class="text-nowrap">@lang('order.table_new_prodct')</th>
+                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_price')</th>
                                             <th class="text-nowrap text-center" width="100">@lang('order.table_new_quantity')</th>
                                             <th class="text-nowrap text-center" width="200">@lang('order.table_new_storage')</th>
-                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_price')</th>
+                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_package')</th>
+                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_weight')</th>
                                             <th class="text-nowrap text-center" width="100">@lang('order.table_new_total')</th>
                                         </tr>
                                         </thead>
@@ -142,6 +144,7 @@
                                         @foreach($products as $product)
                                             <tr>
                                                 <td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
+                                                <td class="text-nowrap text-center">{{$product['price']}}</td>
                                                 <td class="text-nowrap text-center">{{$product['quantity']}}</td>
                                                 <td class="text-nowrap text-center order-product-storage">
                                                     @foreach($product['storages'] as $storage)
@@ -150,14 +153,15 @@
                                                         @endif
                                                     @endforeach
                                                 </td>
-                                                <td class="text-nowrap text-center">{{$product['price']}}</td>
+                                                <td class="text-nowrap text-center order-product-package">{{$product['package']}}*{{$product['min']}} @lang('global.pieces')</td>
+                                                <td class="text-nowrap text-center order-product-weight">{{$product['weight']*($product['quantity']/100)}} @lang('global.kg')</td>
                                                 <td class="text-nowrap text-center">{{$product['total']}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <td colspan="4"></td>
+                                            <td colspan="6"></td>
                                             <th class="text-nowrap text-center">{{number_format($order->total*$koef,2,'.',' ')}}</th>
                                         </tr>
                                         </tfoot>
