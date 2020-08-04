@@ -132,9 +132,10 @@
                                         <thead>
                                         <tr>
                                             <th class="text-nowrap">@lang('order.table_new_prodct')</th>
-                                            <th class="text-nowrap text-center">@lang('order.table_new_quantity')</th>
-                                            <th class="text-nowrap text-center">@lang('order.table_new_price')</th>
-                                            <th class="text-nowrap text-center">@lang('order.table_new_total')</th>
+                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_quantity')</th>
+                                            <th class="text-nowrap text-center" width="200">@lang('order.table_new_storage')</th>
+                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_price')</th>
+                                            <th class="text-nowrap text-center" width="100">@lang('order.table_new_total')</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -142,6 +143,13 @@
                                             <tr>
                                                 <td><a href="{{route('products.show',[$product['product_id']])}}">{{$product['name']}}</a></td>
                                                 <td class="text-nowrap text-center">{{$product['quantity']}}</td>
+                                                <td class="text-nowrap text-center order-product-storage">
+                                                    @foreach($product['storages'] as $storage)
+                                                        @if($storage->storage_id == $product['storage_id'])
+                                                            {{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}}
+                                                        @endif
+                                                    @endforeach
+                                                </td>
                                                 <td class="text-nowrap text-center">{{$product['price']}}</td>
                                                 <td class="text-nowrap text-center">{{$product['total']}}</td>
                                             </tr>
@@ -149,7 +157,7 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <td colspan="3"></td>
+                                            <td colspan="4"></td>
                                             <th class="text-nowrap text-center">{{number_format($order->total*$koef,2,'.',' ')}}</th>
                                         </tr>
                                         </tfoot>
