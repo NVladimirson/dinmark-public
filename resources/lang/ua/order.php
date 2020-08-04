@@ -71,6 +71,8 @@ return [
     'select_address_new'        => 'Нова адреса',
     'select_shipping'           => 'Оберіть метод доставки',
     'select_shipping_nova_poshta' => 'Нова пошта',
+    'select_shipping_np_wherhouse' => 'На відділення',
+    'select_shipping_np_curier' => 'Кур\'єром',
     'select_city'               => 'Оберіть населений пункт',
     'select_city_input'         => 'Введіть населений пункт',
     'select_warehous'           => 'Оберіть відділення',
