@@ -427,7 +427,8 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="6"></td>
+								<td colspan="5"></td>
+                                <th class="text-nowrap text-center order-weight">{{$weight}} @lang('global.kg')</th>
 								<th class="text-nowrap text-center order-total" data-price="{{$order->total*$koef}}">{{number_format($order->total*$koef,2,'.',' ')}}</th>
 								<td></td>
 							</tr>
@@ -641,10 +642,22 @@
 					var pack = $(this).attr('min');
 					var weight = +$(row).find('.order-product-weight').data('weight');
 					$(row).find('.order-product-package').text(count/pack + '*' + pack + ' @lang("global.pieces")');
-					$(row).find('.order-product-weight').text((weight*count/100).toFixed(2) + ' @lang("global.kg")');
+					$(row).find('.order-product-weight').text((weight*count/100).toFixed(3) + ' @lang("global.kg")');
 
 					calcTotalPrice();
+					calcTotalWeight();
 				});
+
+				function calcTotalWeight(){
+					var totalWeight = 0;
+					$('.order-product-counter').each(function (e) {
+						var row = $(this).parent().parent();
+						var count = $(this).val();
+						var weight = +$(row).find('.order-product-weight').data('weight');
+						totalWeight += (weight*count/100);
+					});
+					$('.order-weight').text(totalWeight.toFixed(3) + ' @lang("global.kg")');
+                }
 
 				function calcTotalPrice(){
 					var total = 0

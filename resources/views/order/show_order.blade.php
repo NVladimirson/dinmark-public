@@ -162,7 +162,8 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <td colspan="6"></td>
+                                            <td colspan="5"></td>
+                                            <th class="text-nowrap text-center order-weight">{{$weight}} @lang('global.kg')</th>
                                             <th class="text-nowrap text-center">{{number_format($order->total*$koef,2,'.',' ')}}</th>
                                         </tr>
                                         </tfoot>

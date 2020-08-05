@@ -321,6 +321,7 @@ class OrderController extends Controller
 		$curent_company = Company::find(session('current_company_id'));
 		$products = [];
 		$koef = $order->is_pdv?1.2:1;
+		$weight = 0;
 
 		foreach($order->products as $orderProduct){
 			$price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
@@ -338,7 +339,7 @@ class OrderController extends Controller
             foreach ($orderProduct->product->storages as $storage){
                 $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($orderProduct->product,$storage->id);
             }
-
+            $weight += $orderProduct->product->weight * $orderProduct->quantity/100;
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
@@ -373,7 +374,7 @@ class OrderController extends Controller
             ->get();
 
 		if($order->status == 8){
-			return view('order.show',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients', 'shippings'));
+			return view('order.show',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients', 'shippings', 'weight'));
 		}else{
             $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
                 ->whereHas('products',function ($products) use ($order){
@@ -413,7 +414,7 @@ class OrderController extends Controller
             }
 
 
-			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'clients','implementationsData'));
+			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'weight', 'clients','implementationsData'));
 		}
 
 	}
