@@ -41,6 +41,19 @@ return [
 	'table_header_customer' 		=> 'Відправник',
 	'table_header_user' 			=> 'Отримувач',
 
+    'table_header_date_create'      => 'Дата створення',
+    'table_header_date_update'      => 'Дата останньої зміни',
+    'table_header_shipping_method'  => 'Спосіб доставки',
+    'table_header_client'           => 'Клієнт',
+    'table_header_manager'          => 'Менеджер',
+
+    'table_shipping_method'         => 'Метод доставки',
+    'table_shipping_city'           => 'Населений пункт',
+    'table_shipping_warehouse'      => 'Відділення',
+    'table_shipping_address'        => 'Адреса',
+    'table_shipping_house_float'    => 'Номер будинку / і квартири',
+    'table_shipping_address_me'     => 'Номер / адреса відділення',
+
 	'page_create' 				=> 'Нове замовлення',
 	'page_update' 				=> 'Замовлення ',
 	'order_number'				=> 'Заявка №',

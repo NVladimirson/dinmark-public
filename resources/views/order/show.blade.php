@@ -100,7 +100,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="m-b-0">@lang('order.select_address')</label>
+                                <label>@lang('order.select_address')</label>
                                 <select class="form-control selectpicker m-b-5" id="address_id" name="address_id" data-live-search="false" data-style="btn-white">
                                     <option value="0" selected="selected">@lang('order.select_address_new')</option>
                                 </select>
@@ -306,11 +306,11 @@
                                     <div class="shipping-data " id="mist_express" @if($order->shipping_id!=2) style="display: none" @endif>
                                         <div class="m-b-5">
                                             <label class="m-b-0">@lang('order.select_city_input')</label>
-                                            <input type="text" class="form-control m-b-5" name="city_me" placeholder="@lang('order.select_city_input')">
+                                            <input type="text" class="form-control m-b-5" name="city_me" placeholder="@lang('order.select_city_input')" @if(isset($shipping_info['city'])) value="{{$shipping_info['city']}}" @endif>
                                         </div>
                                         <div class="m-b-5">
                                             <label class="m-b-0">@lang('order.select_adress_me_input')</label>
-                                            <input type="text" class="form-control m-b-5" name="adress_me" placeholder="@lang('order.select_adress_me_input')">
+                                            <input type="text" class="form-control m-b-5" name="adress_me" placeholder="@lang('order.select_adress_me_input')" @if(isset($shipping_info['address'])) value="{{$shipping_info['address']}}" @endif>
                                         </div>
                                     </div>
                                 </div>

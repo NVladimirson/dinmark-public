@@ -61,12 +61,34 @@
                                 <input type="hidden" id="order_id" name="order_id" value="{{$order->id}}">
 
                                 <div class="row m-b-15">
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
                                             <tbody>
                                             <tr>
+                                                <th>@lang('order.table_header_date_create')</th>
+                                                <td>{{\Carbon\Carbon::parse($order->date_add)->format('d.m.Y h:i')}}</td>
+                                                <th>@lang('order.table_header_shipping_method')</th>
+                                                <td>
+                                                    @if($order->shipping_id != 4)
+                                                        @if($shippings->firstWhere('id',$order->shipping_id))
+                                                            {{unserialize($shippings->firstWhere('id',$order->shipping_id)->name)[LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale()]}}
+                                                        @endif
+                                                    @else
+                                                        @lang('order.select_shipping_nova_poshta')
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('order.table_header_date_update')</th>
+                                                <td>{{\Carbon\Carbon::parse($order->date_edit)->format('d.m.Y h:i')}}</td>
+                                                <th>@lang('order.table_header_client')</th>
+                                                <td>{{$order->getUser->getCompany->name}}</td>
+                                            </tr>
+                                            <tr>
                                                 <th>@lang('order.table_header_status')</th>
                                                 <td>{{$order->getStatus->name}}</td>
+                                                <th>@lang('order.table_header_manager')</th>
+                                                <td>@if($order->getManager) {{$order->getManager->name}} @endif</td>
                                             </tr>
                                             <tr>
                                                 <th>@lang('order.table_header_status_payment')</th>
@@ -79,11 +101,13 @@
                                                 @else
                                                     <td>@lang('order.payment_status_none')</td>
                                                 @endif
+                                                <th>@lang('order.table_new_weight')</th>
+                                                <td>{{$weight}} @lang('global.kg')</td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="pull-right">
                                             @if($order->status == 1 || $order->status == 2)
                                                 <a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
@@ -126,6 +150,59 @@
                                             </optgroup>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="row m-b-15">
+                                    <div class="col-md-6">
+                                        <label>@lang('order.select_payment')</label>
+                                        <select class="form-control selectpicker" disabled="disabled" id="payment_id" name="payment_id" data-live-search="false" data-style="btn-white">
+                                            <option value="2" selected="selected">@lang('order.select_payment_cashless')</option>
+                                        </select>
+                                    </div>
+                                    @php
+                                        $shipping_info = null;
+                                        if($order->shipping_info){
+                                            if(@unserialize($order->shipping_info) !== false){
+                                                $shipping_info = unserialize($order->shipping_info);
+                                            }
+                                        }
+                                    @endphp
+                                    @if($shipping_info)
+                                    <div class="col-md-6">
+                                        <label>@lang('order.select_address')</label>
+                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                            @if(isset($shipping_info['city']))
+                                            <tr>
+                                                <th>@lang('order.table_shipping_city')</th>
+                                                <td>{{$shipping_info['city']}}</td>
+                                            </tr>
+                                            @endif
+                                            @if(isset($shipping_info['warehouse']))
+                                            <tr>
+                                                <th>@lang('order.table_shipping_warehouse')</th>
+                                                <td>{{$shipping_info['warehouse']}}</td>
+                                            </tr>
+                                            @endif
+                                            @if(isset($shipping_info['address']) && $order->shipping_id == 4)
+                                            <tr>
+                                                <th>@lang('order.table_shipping_address')</th>
+                                                <td>{{$shipping_info['address']}}</td>
+                                            </tr>
+                                            @endif
+                                            @if(isset($shipping_info['address']) && $order->shipping_id != 4)
+                                            <tr>
+                                                <th>@lang('order.table_shipping_address_me')</th>
+                                                <td>{{$shipping_info['address']}}</td>
+                                            </tr>
+                                            @endif
+                                            @if(isset($shipping_info['house_float']))
+                                            <tr>
+                                                <th>@lang('order.table_shipping_house_float')</th>
+                                                <td>{{$shipping_info['house_float']}}</td>
+                                            </tr>
+                                            @endif
+                                        </table>
+                                    </div>
+                                    @endif
                                 </div>
 
                                 <div class="table-scroll-container">

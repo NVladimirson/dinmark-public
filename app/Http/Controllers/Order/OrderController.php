@@ -414,7 +414,7 @@ class OrderController extends Controller
             }
 
 
-			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'weight', 'clients','implementationsData'));
+			return view('order.show_order',compact('order', 'companies', 'curent_company', 'products', 'koef', 'weight', 'clients', 'shippings','implementationsData'));
 		}
 
 	}

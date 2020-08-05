@@ -41,6 +41,19 @@ return [
     'table_header_customer' 		=> 'Отправитель',
     'table_header_user' 			=> 'Получатель',
 
+    'table_header_date_create'      => 'Дата создания',
+    'table_header_date_update'      => 'Дата последнего изменения',
+    'table_header_shipping_method'  => 'Способ доставки',
+    'table_header_client'           => 'Клиент',
+    'table_header_manager'          => 'Менеджер',
+
+    'table_shipping_method'         => 'Способ доставки',
+    'table_shipping_city'           => 'Населенный пункт',
+    'table_shipping_warehouse'      => 'Отделение',
+    'table_shipping_address'        => 'Адрес',
+    'table_shipping_house_float'    => 'Номер дома / и квартиры',
+    'table_shipping_address_me'      => 'Номер / адрес отделения',
+
 	'page_create' 				=> 'Новый заказ',
 	'page_update' 				=> 'Заказ ',
 	'order_number'				=> 'Заявка №',
