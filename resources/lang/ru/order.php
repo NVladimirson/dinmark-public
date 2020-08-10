@@ -41,6 +41,12 @@ return [
     'table_header_customer' 		=> 'Отправитель',
     'table_header_user' 			=> 'Получатель',
 
+    'table_footer_pc'               => 'Кл-во:',
+    'table_footer_total'            => 'Сумма:',
+    'table_footer_discount'         => 'Скидки:',
+    'table_footer_payed'            => 'Оплачено:',
+    'table_footer_not_payed'        => 'Не оплачено:',
+
     'table_header_date_create'      => 'Дата создания',
     'table_header_date_update'      => 'Дата последнего изменения',
     'table_header_shipping_method'  => 'Способ доставки',

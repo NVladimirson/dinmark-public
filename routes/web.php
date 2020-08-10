@@ -57,6 +57,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/orders','Order\OrderController@index')->name('orders');
 		Route::get('/orders/create','Order\OrderController@create')->name('orders.create');
 		Route::get('/orders/all-ajax/','Order\OrderController@allAjax')->name('orders.all_ajax');
+		Route::get('/orders/total-data-ajax/','Order\OrderController@totalDataAjax')->name('orders.total_data_ajax');
 		Route::post('/orders/add-to-order/{id}','Order\OrderController@addToOrder')->name('orders.add_to_order');
 		Route::post('/orders/remove-of-order/{id}','Order\OrderController@removeOfOrder')->name('orders.remove_of_order');
 		Route::get('/orders/act-pdf','Order\OrderController@PDFAct')->name('orders.act_pdf');

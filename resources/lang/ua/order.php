@@ -54,6 +54,12 @@ return [
     'table_shipping_house_float'    => 'Номер будинку / і квартири',
     'table_shipping_address_me'     => 'Номер / адреса відділення',
 
+    'table_footer_pc'               => 'К-сть:',
+    'table_footer_total'            => 'Сума:',
+    'table_footer_discount'         => 'Знижки:',
+    'table_footer_payed'            => 'Оплачені:',
+    'table_footer_not_payed'        => 'Не оплачені:',
+
 	'page_create' 				=> 'Нове замовлення',
 	'page_update' 				=> 'Замовлення ',
 	'order_number'				=> 'Заявка №',

@@ -93,8 +93,69 @@ class OrderServices
         }
     }
 
+    public static function getFilteredData($request){
+        $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
+            $users->where('company',auth()->user()->company);
+        });
 
-	private static $instance;
+        if($request->has('tab')){
+            if($request->tab == 'order'){
+                $orders->where('status','<=',5);
+            }
+            if($request->tab == 'archive'){
+                $orders->where([
+                    ['status','>=',6],
+                    ['status','<=',7],
+                ]);
+            }
+            if($request->tab == 'request'){
+                $orders->where('status',8);
+            }
+        }
+
+        if($request->has('date_from')){
+            $orders->where('date_add','>=',$request->date_from);
+        }
+
+
+        if($request->has('date_to')){
+            $orders->where('date_add','<=',$request->date_to);
+        }
+
+        if($request->has('status_id')){
+            $orders->where('status',$request->status_id);
+        }
+
+        if($request->has('payment')){
+            if($request->payment == 'none'){
+                $orders->doesntHave('payments');
+            }elseif ($request->payment == 'partial'){
+                $orders->has('payments')
+                    ->whereRaw(' s_cart.total > ( 
+                              SELECT SUM( b2b_payments.payed ) 
+                              FROM b2b_payments
+                              WHERE b2b_payments.cart_id = s_cart.id )');
+            }elseif ($request->payment == 'success'){
+                $orders->has('payments')
+                    ->whereRaw(' s_cart.total <= ( 
+                              SELECT SUM( b2b_payments.payed ) 
+                              FROM b2b_payments
+                              WHERE b2b_payments.cart_id = s_cart.id )');
+            }
+        }
+
+        if($request->has('sender_id')){
+            $orders->where('sender_id',$request->sender_id);
+        }
+
+        if($request->has('customer_id')){
+            $orders->where('customer_id',$request->customer_id);
+        }
+
+        return $orders;
+    }
+
+    private static $instance;
 	public static function getInstance()
 	{
 		if (null === static::$instance) {

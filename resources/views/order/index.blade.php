@@ -129,6 +129,25 @@
 						</thead>
 						<tbody>
 						</tbody>
+                        <tfoot>
+                            <td colspan="9" class="text-nowrap text-left">
+                                <span class="m-r-15">
+                                    <strong>@lang('order.table_footer_pc')</strong> <span id="footer_pc">1</span>
+                                </span>
+                                <span class="m-r-15">
+                                    <strong>@lang('order.table_footer_total')</strong> <span id="footer_total">1</span> @lang('global.grn')
+                                </span>
+                                <span class="m-r-15">
+                                    <strong>@lang('order.table_footer_discount')</strong> <span id="footer_discount">1</span> @lang('global.grn')
+                                </span>
+                                <span class="m-r-15">
+                                    <strong>@lang('order.table_footer_payed')</strong> <span id="footer_payed">1</span> @lang('global.grn')
+                                </span>
+                                <span class="m-r-15">
+                                    <strong>@lang('order.table_footer_not_payed')</strong> <span id="footer_not_payed">1</span> @lang('global.grn')
+                                </span>
+                            </td>
+                        </tfoot>
 					</table>
                     </div>
 				</div>
@@ -176,7 +195,8 @@
 			"use strict";
 			$(document).ready(function() {
 				var ajaxRouteBase = "{!! route('orders.all_ajax') !!}";
-				var ajaxRouteTab = "{!! route('orders.all_ajax') !!}?tab=order";
+				var tableDataRoute = "{!! route('orders.total_data_ajax') !!}";
+				var ajaxRouteTab = "?tab=order";
 				var status = '';
 				var payment = '';
 				var sender = '';
@@ -220,15 +240,43 @@
 				});
 
 				function updateAjax(){
-					var ajaxRoute = ajaxRouteTab + status + payment + sender + customer + date;
+					var ajaxRoute = ajaxRouteBase + ajaxRouteTab + status + payment + sender + customer + date;
 					window.table.ajax.url( ajaxRoute ).load();
+					updateTableData();
+                }
+
+                function updateTableData(){
+					var route = tableDataRoute + ajaxRouteTab + status + payment + sender + customer + date;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						success: function (resp) {
+							if (resp.status == "success") {
+								Object.entries(resp).forEach(function (el) {
+									if(el[0] != "status"){
+										$("#footer_"+el[0]).text(el[1]);
+                                    }
+								});
+
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
                 }
 
 				$('#order_tab a').click(function (e) {
                     e.preventDefault();
                     var tab = this.id.replace('tab_','');
 
-					ajaxRouteTab = ajaxRouteBase+"?tab="+tab;
+					ajaxRouteTab = "?tab="+tab;
 
                     $('#status option').removeClass('order-status-tab_active');
                     $('#status option.order-status-tab-'+tab).addClass('order-status-tab_active');
@@ -236,7 +284,6 @@
                     $('#status').change();
 					$('#status').selectpicker('refresh');
 				});
-
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {
 						"url": "@lang('table.localization_link')",
@@ -245,10 +292,14 @@
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
-					"ajax": ajaxRouteTab,
+					"ajax": ajaxRouteBase+ajaxRouteTab,
 					"order": [[ 0, "desc" ]],
 					//"ordering": false,
 					//"searching": true,
+					fixedHeader: {
+						header: true,
+						footer: true
+					},
 					"columns": [
 						{
 							data: 'id',
@@ -289,6 +340,7 @@
 						},
 					],
 				} );
+				updateTableData();
 
 				$('#datetimepicker3').datetimepicker({
 					format: 'DD.MM.YYYY'

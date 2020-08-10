@@ -114,63 +114,7 @@ class OrderController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		$orders = Order::with(['payments'])->whereHas('getUser', function ($users){
-							$users->where('company',auth()->user()->company);
-						});
-
-		if($request->has('tab')){
-		    if($request->tab == 'order'){
-                $orders->where('status','<=',5);
-            }
-		    if($request->tab == 'archive'){
-                $orders->where([
-                    ['status','>=',6],
-                    ['status','<=',7],
-                ]);
-            }
-		    if($request->tab == 'request'){
-                $orders->where('status',8);
-            }
-		}
-
-		if($request->has('date_from')){
-			$orders->where('date_add','>=',$request->date_from);
-		}
-
-
-		if($request->has('date_to')){
-			$orders->where('date_add','<=',$request->date_to);
-		}
-
-		if($request->has('status_id')){
-			$orders->where('status',$request->status_id);
-		}
-
-		if($request->has('payment')){
-		    if($request->payment == 'none'){
-                $orders->doesntHave('payments');
-            }elseif ($request->payment == 'partial'){
-                $orders->has('payments')
-                    ->whereRaw(' s_cart.total > ( 
-                              SELECT SUM( b2b_payments.payed ) 
-                              FROM b2b_payments
-                              WHERE b2b_payments.cart_id = s_cart.id )');
-            }elseif ($request->payment == 'success'){
-                $orders->has('payments')
-                    ->whereRaw(' s_cart.total <= ( 
-                              SELECT SUM( b2b_payments.payed ) 
-                              FROM b2b_payments
-                              WHERE b2b_payments.cart_id = s_cart.id )');
-		    }
-		}
-
-		if($request->has('sender_id')){
-			$orders->where('sender_id',$request->sender_id);
-		}
-
-		if($request->has('customer_id')){
-			$orders->where('customer_id',$request->customer_id);
-		}
+        $orders = OrderServices::getFilteredData($request);
 
 		return datatables()
 			->eloquent($orders)
@@ -237,6 +181,25 @@ class OrderController extends Controller
 			}, true)
 			->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding'])
 			->toJson();
+	}
+
+    public function totalDataAjax(Request $request)
+    {
+        $orders = OrderServices::getFilteredData($request);
+        $orders = $orders->get();
+        $payed = 0;
+        foreach ($orders as $order){
+            $payed += $order->payments->sum('payed');
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'pc'        => $orders->count(),
+            'total'     => number_format($orders->sum('total'),2,'.',' '),
+            'discount'  => number_format($orders->sum('discount'),2,'.',' '),
+            'payed'     => number_format($payed,2,'.',' '),
+            'not_payed'     => number_format($orders->sum('total') - $payed,2,'.',' '),
+        ]);
 	}
 
 	public function create(){
