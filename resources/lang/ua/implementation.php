@@ -24,6 +24,10 @@ return [
 	'table_header_ttn' 			=> 'Номер ТТН',
 	'table_header_total' 		=> 'Сума',
 
+    'table_footer_pc'           => 'К-сть:',
+    'table_footer_total'        => 'Сума:',
+    'table_footer_weight'       => 'Вага:',
+
 	'table_product_name' 		=> 'Товар',
 	'table_product_quantity' 	=> 'Кількість одиниць',
 	'table_product_total' 		=> 'Сума',

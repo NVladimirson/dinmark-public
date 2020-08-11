@@ -70,6 +70,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/implementations','Order\ImplementationController@index')->name('implementations');
 		Route::get('/implementations/ajax','Order\ImplementationController@ajax')->name('implementations.ajax');
+        Route::get('/implementations/total-data-ajax/','Order\ImplementationController@totalDataAjax')->name('implementations.total_data_ajax');
 		Route::get('/implementations/find','Order\ImplementationController@find')->name('implementations.find');
 		Route::get('/implementations/products/{id}','Order\ImplementationController@getProductsAjax')->name('implementations.products');
 		Route::get('/implementations/pdf/{id}','Order\ImplementationController@generatePDF')->name('implementations.pdf');

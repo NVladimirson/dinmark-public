@@ -7,6 +7,7 @@ use App\Models\Company\Client;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
 use App\Models\Product\Product;
+use App\Services\Order\ImplementationServices;
 use App\Services\TimeServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -22,27 +23,7 @@ class ImplementationController extends Controller
 
 	public function ajax(Request $request)
 	{
-		$implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
-			->whereHas('sender',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['holding', auth()->user()->getCompany->holding],
-						['holding', '<>', 0],
-					])->orWhere([
-						['id', auth()->user()->getCompany->id],
-					]);
-				});
-			})
-			->orWhereHas('customer',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['holding', auth()->user()->getCompany->holding],
-						['holding', '<>', 0],
-					])->orWhere([
-						['id', auth()->user()->getCompany->id],
-					]);
-				});
-			})
+		$implementations = ImplementationServices::getFilteredData($request)
 			->orderBy('id','desc');
 
 		return datatables()
@@ -101,6 +82,33 @@ class ImplementationController extends Controller
 			->rawColumns(['products','btn_pdf'])
 			->toJson();
 	}
+
+    public function totalDataAjax(Request $request)
+    {
+        $implementations = ImplementationServices::getFilteredData($request);
+        $implementations = $implementations->get();
+
+        $total = 0;
+        $weight = 0;
+
+        foreach ($implementations as $implementation){
+            $total += $implementation->products->sum('total');
+            foreach ($implementation->products as $implementationProduct)
+            {
+                if ($implementationProduct->orderProduct)
+                {
+                    $weight +=  $implementationProduct->orderProduct->product->weight * $implementationProduct->quantity/100;
+                }
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'pc'        => $implementations->count(),
+            'total'     => number_format($total,2,'.',' '),
+            'weight'  => number_format($weight,2,'.',' '),
+        ]);
+    }
 
 	public function find(Request $request)
 	{
