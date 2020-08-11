@@ -88,7 +88,7 @@
                                                 <th>@lang('order.table_header_status')</th>
                                                 <td>{{$order->getStatus->name}}</td>
                                                 <th>@lang('order.table_header_manager')</th>
-                                                <td>@if($order->getManager) {{$order->getManager->name}} @endif</td>
+                                                <td>@if($order->getUser) {{$order->getUser->name}} @endif</td>
                                             </tr>
                                             <tr>
                                                 <th>@lang('order.table_header_status_payment')</th>
