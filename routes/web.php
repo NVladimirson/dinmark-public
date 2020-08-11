@@ -77,6 +77,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/reclamations','Order\ReclamationController@index')->name('reclamations');
 		Route::get('/reclamations/ajax','Order\ReclamationController@ajax')->name('reclamations.ajax');
+        Route::get('/reclamations/total-data-ajax/','Order\ReclamationController@totalDataAjax')->name('reclamations.total_data_ajax');
 		Route::get('/reclamations/create','Order\ReclamationController@create')->name('reclamations.create');
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
 

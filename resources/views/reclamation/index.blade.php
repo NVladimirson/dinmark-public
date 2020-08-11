@@ -51,6 +51,19 @@
                             </thead>
                             <tbody>
                             </tbody>
+                            <tfoot>
+                            <td colspan="6" class="text-nowrap text-left">
+                            <span class="m-r-15">
+                                <strong>@lang('reclamation.table_footer_pc')</strong> <span id="footer_pc">1</span>
+                            </span>
+                                <span class="m-r-15">
+                                <strong>@lang('reclamation.table_footer_total')</strong> <span id="footer_total">1</span> @lang('global.grn')
+                            </span>
+                                <span class="m-r-15">
+                                <strong>@lang('reclamation.table_footer_weight')</strong> <span id="footer_weight">1</span> @lang('global.kg')
+                            </span>
+                            </td>
+                            </tfoot>
                         </table>
                     </div>
 				</div>
@@ -88,6 +101,34 @@
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
+				var tableDataRoute = "{!! route('reclamations.total_data_ajax') !!}";
+
+				function updateTableData(){
+					var route = tableDataRoute;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						success: function (resp) {
+							if (resp.status == "success") {
+								Object.entries(resp).forEach(function (el) {
+									if(el[0] != "status"){
+										$("#footer_"+el[0]).text(el[1]);
+									}
+								});
+
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+				}
 
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {
@@ -132,6 +173,8 @@
 						},
 					],
 				} );
+
+				updateTableData();
 
 				function format_implementation_products(data) {
 					return data.products;

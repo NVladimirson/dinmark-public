@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Reclamation\Reclamation;
 use App\Models\Reclamation\ReclamationProduct;
+use App\Services\Order\ReclamationServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -16,17 +17,7 @@ class ReclamationController extends Controller
 	}
 
 	public function ajax(Request $request){
-		$reclamations = Reclamation::with(['user','products.product.orderProduct.product'])
-			->whereHas('user',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['holding', auth()->user()->getCompany->holding],
-						['holding', '<>', 0],
-					])->orWhere([
-						['id', auth()->user()->getCompany->id],
-					]);
-				});
-			})
+		$reclamations = ReclamationServices::getFilteredData($request)
 			->orderBy('id','desc');
 
 		return datatables()
@@ -89,6 +80,35 @@ class ReclamationController extends Controller
 			->rawColumns(['products','status_html'])
 			->toJson();
 	}
+
+    public function totalDataAjax(Request $request)
+    {
+        $reclamations = ReclamationServices::getFilteredData($request);
+        $reclamations = $reclamations->get();
+
+        $total = 0;
+        $weight = 0;
+
+        foreach ($reclamations as $reclamation){
+            foreach ($reclamation->products as $reclamationProduct){
+                if($reclamationProduct->product){
+                    $total += $reclamationProduct->product->total/$reclamationProduct->product->quantity * $reclamationProduct->quantity;
+                    if($reclamationProduct->product->orderProduct){
+                        if($reclamationProduct->product->orderProduct->product){
+                            $weight += $reclamationProduct->product->orderProduct->product->weight * $reclamationProduct->quantity/100;
+                        }
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'pc'        => $reclamations->count(),
+            'total'     => number_format($total,2,'.',' '),
+            'weight'  => number_format($weight,2,'.',' '),
+        ]);
+    }
 
 	public function create(){
 		SEOTools::setTitle(trans('reclamation.page_create'));

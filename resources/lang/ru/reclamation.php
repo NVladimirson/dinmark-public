@@ -28,6 +28,10 @@ return [
     'table_header_status' 				=> 'Статус',
     'table_header_author' 				=> 'Автор',
 
+    'table_footer_pc'           => 'Кл-во:',
+    'table_footer_total'        => 'Сумма:',
+    'table_footer_weight'       => 'Вес:',
+
 	'status_wait'			=> 'Ожидает расмотрения',
 	'status_consideration'	=> 'Расматривается',
 	'status_return'			=> 'Возврат денег',
