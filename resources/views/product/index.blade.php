@@ -403,12 +403,12 @@
 					var discount = 0;
 					var procent = '0%';
 
-					if(quantity >= limit_2){
+					if(quantity >= limit_2 && limit_2 > 0){
 						total_els.addClass('product-total-limit_2');
 						discount = total - total * 0.93;
 						total = total * 0.93;
 						procent = '7%';
-					}else if(quantity >= limit_1){
+					}else if(quantity >= limit_1 && limit_2 > 0){
 						total_els.addClass('product-total-limit_1');
 						discount = total - total * 0.97;
 						total = total * 0.97;
