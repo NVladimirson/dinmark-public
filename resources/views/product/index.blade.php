@@ -110,6 +110,7 @@
 									<th>@lang('product.storage_limit_2')</th>
 									<th>@lang('product.storage_term')</th>
 									<th>@lang('product.storage_quantity')</th>
+									<th width="150">@lang('product.storage_total')</th>
 									<th></th>
 								</tr>
 								@forelse($product->storages as $storage)
@@ -122,8 +123,37 @@
 									<td>{{ $storage->limit_2 }}</td>
 									<td>{{ $storage->storage->term }}</td>
 									<td>
-										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="{{$storage->package}}" min="{{$storage->package}}" step="{{$storage->package}}" data-max="{{$storage->amount-($storage->amount%$storage->package)}}"/>
+                                        @if($storage->amount > 0)
+										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')"
+                                               value="{{$storage->package}}"
+                                               min="{{$storage->package}}"
+                                               step="{{$storage->package}}"
+                                               data-max="{{$storage->amount-($storage->amount%$storage->package)}}"
+                                               data-price="{{$storage_raw_prices[$storage->id]}}"
+                                               data-limit_1="{{$storage->limit_1}}"
+                                               data-limit_2="{{$storage->limit_2}}"
+                                        />
+                                        @endif
 									</td>
+                                    <td>
+                                        @if($storage->amount > 0)
+                                        <div class="p-r-5 p-l-5 m-b-5">
+                                            <div class="product-total product-total-price">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="d-inline-block float-left w-40 p-5">
+                                            <div class="product-total product-total-procent">
+                                                0%
+                                            </div>
+                                        </div>
+                                        <div class="d-inline-block float-right w-60 p-5">
+                                            <div class="product-total product-total-discount">
+                                                0
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </td>
 									<td>
                                         @if($storage->amount > 0)
 										<a href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}" data-product_name="{{$productName}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}"><i class="fas fa-cart-plus"></i></a>
@@ -335,7 +365,60 @@
 					});
 
 					return false;
-				})
+				});
+
+				function numberStringFormat(nStr)
+				{
+					nStr = nStr.toFixed(2);
+					nStr += '';
+					var x = nStr.split('.');
+					var x1 = x[0];
+					var x2 = x.length > 1 ? '.' + x[1] : '';
+					var rgx = /(\d+)(\d{3})/;
+					while (rgx.test(x1)) {
+						x1 = x1.replace(rgx, '$1' + ' ' + '$2');
+					}
+					return x1 + x2;
+				}
+
+				$('input[name="quantity"]').change(calcTotal);
+				$('input[name="quantity"]').each(calcTotal);
+
+				function calcTotal(){
+
+					var quantity = +$(this).val();
+					var price = +$(this).data('price');
+					var limit_1 = +$(this).data('limit_1');
+					var limit_2 = +$(this).data('limit_2');
+
+					var total_price_el = $(this).parent().parent().find('.product-total-price');
+					var total_els = $(this).parent().parent().find('.product-total');
+					var total_price_procent = $(this).parent().parent().find('.product-total-procent');
+					var total_price_discount = $(this).parent().parent().find('.product-total-discount');
+
+					total_els.removeClass('product-total-limit_1');
+					total_els.removeClass('product-total-limit_2');
+
+					var total = price/100 * quantity;
+					var discount = 0;
+					var procent = '0%';
+
+					if(quantity >= limit_2){
+						total_els.addClass('product-total-limit_2');
+						discount = total - total * 0.93;
+						total = total * 0.93;
+						procent = '7%';
+					}else if(quantity >= limit_1){
+						total_els.addClass('product-total-limit_1');
+						discount = total - total * 0.97;
+						total = total * 0.97;
+						procent = '3%';
+					}
+
+					total_price_el.text(numberStringFormat(total));
+					total_price_procent.text(procent);
+					total_price_discount.text(numberStringFormat(discount));
+                }
 			});
 		})(jQuery);
 	</script>

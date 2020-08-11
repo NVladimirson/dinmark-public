@@ -50,6 +50,7 @@ return [
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
 	'storage_quantity' => 'Количество',
+	'storage_total'     => 'Сумма с ПДВ',
 
 	'modal_wishlist_header' => 'Выберите список',
 	'modal_order_header' => 'Добавление товара в заказ',

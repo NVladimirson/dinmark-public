@@ -66,6 +66,28 @@
     .table-scroll-container table{
         min-width: 100%;
     }
+    .w-40{
+        width: 40%;
+    }
+    .w-60{
+        width: 60%;
+    }
+    .product-total{
+        padding: 5px;
+        text-align: right;
+        font-weight: 700;
+        background-color: #f0f0f0;
+    }
+    .product-total-limit_1{
+        background-color: #FCAA3F;
+        color: #ffffff;
+    }
+
+    .product-total-limit_2{
+        background-color: #74C186;
+        color: #ffffff;
+    }
+
     @media screen and (max-width: 1280px){
 
         .table-scroll-container{
