@@ -7,6 +7,8 @@
             </div>
             <form id="form_add_catalog">
                 <input type="hidden" class="product_id" name="product_id">
+                <input type="hidden" class="old_catalog_id" name="old_catalog_id">
+
                 <div class="modal-body">
                     <p>
                         <select class="form-control selectpicker" id="wishlist" data-live-search="true" data-style="btn-white">

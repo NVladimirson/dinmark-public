@@ -47,6 +47,21 @@ class CatalogController extends Controller
     	return 'ok';
 	}
 
+    public function changeCatalog($id, Request $request){
+		$group = LikeGroup::find($id);
+		$oldGroup = LikeGroup::find($request->old_catalog_id);
+
+		$likeProduct = Like::where([
+		    ['content' ,$request->product_id],
+		    ['group_id' ,$oldGroup->group_id],
+        ])->first();
+
+        $likeProduct->group_id = $group->group_id;
+        $likeProduct->save();
+
+    	return 'ok';
+	}
+
     public function removeToCatalog($id, Request $request){
 		$group = LikeGroup::find($id);
 		Like::where([

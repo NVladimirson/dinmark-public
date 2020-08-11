@@ -47,6 +47,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/catalogs/','Product\CatalogController@store')->name('catalogs.store');
 		Route::post('/catalogs/import','Product\CatalogController@import')->name('catalogs.import');
 		Route::get('/catalogs/add-to-catalog/{id}','Product\CatalogController@addToCatalog')->name('catalogs.add_to_catalog');
+		Route::get('/catalogs/change-catalog/{id}','Product\CatalogController@changeCatalog')->name('catalogs.change_catalog');
 		Route::post('/catalogs/remove-to-catalog/{id}','Product\CatalogController@removeToCatalog')->name('catalogs.remove_to_catalog');
 		Route::get('/catalogs/all-ajax/','Product\CatalogController@allAjax')->name('catalogs.all_ajax');
 		Route::post('/catalogs/{id}','Product\CatalogController@update')->name('catalogs.update');

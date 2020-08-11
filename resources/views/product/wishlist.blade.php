@@ -141,6 +141,7 @@
 	</div>
 	<!-- end row -->
 
+    @include('product.include.modal_wishlist')
 	@include('product.include.modal_wishlist_new')
 	@include('product.include.modal_wishlist_rename')
 	@include('product.include.modal_wishlist_price')
@@ -291,6 +292,51 @@
 						});
 					}
 				} );
+
+
+
+				$('#modal-wishlist').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product'));
+					modal.find('.old_catalog_id').val({{session('current_catalog')}});
+				});
+
+				$('#form_add_catalog').submit(function (e) {
+					e.preventDefault();
+
+					$('#modal-wishlist').modal('hide');
+
+					var form = $(this);
+					let list_id = $('#wishlist').val();
+					var route = '{{route('catalogs')}}/change-catalog/'+list_id;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function(resp)
+						{
+							if(resp == "ok"){
+								$.gritter.add({
+									title: '@lang('wishlist.modal_change_success')',
+								});
+								window.table.ajax.reload();
+							}
+						},
+						error:  function(xhr, str){
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				})
+
 
 
 				$('#modal-order').on('show.bs.modal', function (event) {
