@@ -683,7 +683,7 @@
 					var min = +selectedStorage.data('storage_min');
 					var max = +selectedStorage.data('storage_max');
                     row.find('.order-product-price').data('price',selectedStorage.data('storage-price')/100);
-                    row.find('.order-product-price').text(numberStringFormat(selectedStorage.data('storage-price')));
+                    row.find('.order-product-price').text(numberStringFormat(+selectedStorage.data('storage-price')));
 					var count = row.find('.order-product-counter').val();
 					count = (count%min == 0)?count:(count - count%min + min);
 					count = count <= max? count : max;
