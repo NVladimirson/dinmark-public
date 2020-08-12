@@ -14,6 +14,8 @@ return [
     */
 
     'all_page_name' => 'Все товары',
+    'in_stock_button_name' => 'Отобразить товары в наличии',
+    'all_products_button_name' => 'Отобразить все товары',
     'search_page_name' => 'Результаты поиска',
     'all_tab_name' => 'Список товаров',
     'search_tab_name' => 'Список товаров',
@@ -50,7 +52,6 @@ return [
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
 	'storage_quantity' => 'Количество',
-	'storage_total'     => 'Сумма с ПДВ',
 
 	'modal_wishlist_header' => 'Выберите список',
 	'modal_order_header' => 'Добавление товара в заказ',
