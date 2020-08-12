@@ -135,7 +135,7 @@ class CatalogController extends Controller
 	public function downloadPrice($id){
         $group = LikeGroup::find($id);
         $excel = new CatalogExport($group);
-        return $excel->download($group->name.'_'.time().'.xlsx');
+        return $excel->download('price_'.time().'.xlsx');
     }
 
 	public function changeArticle($id, Request $request){
