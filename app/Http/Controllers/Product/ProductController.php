@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -21,6 +22,7 @@ class ProductController extends Controller
 		$categories = CategoryServices::getNames(0);
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
+
 
     	return view('product.all',compact('categories','wishlists', 'orders'));
 	}
@@ -38,8 +40,17 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		$products = Product::with(['storages','content']);
 
+		if(Str::contains(url()->previous(), 'instock'))
+		{
+			$products = Product::whereHas('storages', function($q){
+          $q->where('amount', '>', '0');
+          $q->where('is_main', '!=', '0');
+      });
+		}
+		else{
+			$products = Product::with(['storages','content']);
+		}
 		$ids = null;
 		if($request->has('category_id')){
 			$products->whereIn('group',CategoryServices::getAllChildrenCategoriesID($request->category_id));
@@ -141,7 +152,7 @@ class ProductController extends Controller
 					$product->whereIn('id',$ids);
 				}
 			}, true)
-			->rawColumns(['name_html','article_show_html','image_html','check_html','actions'])
+			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch'])
 			->toJson();
 	}
 
@@ -159,15 +170,13 @@ class ProductController extends Controller
 		$orders = OrderServices::getByCompany();
 
 		$storage_prices = [];
-		$storage_raw_prices = [];
 
 		foreach ($product->storages as $storage){
             $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($product,$storage->id);
-            $storage_raw_prices[$storage->id] = \App\Services\Product\Product::calcPrice($product,$storage->id);
         }
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices', 'storage_raw_prices'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices'));
 	}
 
 	public function search(Request $request){

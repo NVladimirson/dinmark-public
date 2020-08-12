@@ -13,7 +13,9 @@ return [
     |
     */
 
-    'all_page_name' => 'Усі товари',
+  'all_page_name' => 'Усі товари',
+  'in_stock_button_name' => 'Відобразити товари у залишку',
+  'all_products_button_name' => 'Відобразити усі товари',
 	'search_page_name' => 'Результати пошуку',
 	'all_tab_name' => 'Список товарів',
 	'search_tab_name' => 'Список товарів',
@@ -50,7 +52,6 @@ return [
 	'storage_limit_2' => 'Ліміт 2',
 	'storage_term' => 'Термін доставки',
     'storage_quantity' => 'Кількість',
-    'storage_total'     => 'Сума з ПДВ',
 
 	'modal_wishlist_header' => 'Оберіть список',
 	'modal_order_header' => 'Додавання товару до замовлення',
