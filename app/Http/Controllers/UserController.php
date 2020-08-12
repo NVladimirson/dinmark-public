@@ -206,6 +206,6 @@ class UserController extends Controller
         $user->key_b2b = $key;
         $user->save();
 
-        return redirect(env('DINMARK_URL').'login/as_b2b_user?key='.$key);
+        return redirect(env('DINMARK_URL').'login/as_b2b_user?key='.$key,303);
     }
 }
