@@ -33,7 +33,7 @@ class CatalogExport implements  WithTitle, FromQuery, WithMapping,WithHeadings
 
     public function title(): string
     {
-        return $this->group->name;
+        return 'Price';
     }
 
 
