@@ -34,7 +34,21 @@ class CatalogController extends Controller
 	}
 
     public function addToCatalog($id, Request $request){
+
 		$group = LikeGroup::find($id);
+		if($id == 0){
+            $last = LikeGroup::whereHas('user',function ($users){
+                $users->where('company',auth()->user()->company);
+            })->orderBy('id','desc')->first();
+
+            $group = LikeGroup::create([
+                'name' => $request->new_wishlist_name,
+                'is_main' => 0,
+                'user_id' => auth()->user()->id,
+                'group_id' => $last->id+1
+            ]);
+        }
+
     	Like::updateOrCreate([
 			'user' => $group->user_id,
 			'alias' => 8,
@@ -49,6 +63,19 @@ class CatalogController extends Controller
 
     public function changeCatalog($id, Request $request){
 		$group = LikeGroup::find($id);
+        if($id == 0){
+            $last = LikeGroup::whereHas('user',function ($users){
+                $users->where('company',auth()->user()->company);
+            })->orderBy('id','desc')->first();
+
+            $group = LikeGroup::create([
+                'name' => $request->new_wishlist_name,
+                'is_main' => 0,
+                'user_id' => auth()->user()->id,
+                'group_id' => $last->id+1
+            ]);
+        }
+
 		$oldGroup = LikeGroup::find($request->old_catalog_id);
 
 		$likeProduct = Like::where([

@@ -15,7 +15,12 @@
                             @foreach($wishlists as $wishlist)
                                 <option value="{{$wishlist->id}}">{{$wishlist->name}}</option>
                             @endforeach
+                                <option value="0">@lang('wishlist.new_wishlist')</option>
                         </select>
+                    </p>
+                    <p style="display:none;">
+                        <label for="new_wishlist_name">@lang('wishlist.new_wishlist')</label>
+                        <input type="text" class="form-control" id="new_wishlist_name" name="new_wishlist_name" placeholder="@lang("wishlist.new_wishlist_placeholder")">
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -26,4 +31,5 @@
         </div>
     </div>
 </div>
+
 

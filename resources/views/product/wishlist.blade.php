@@ -301,6 +301,15 @@
 					modal.find('.product_id').val(button.data('product'));
 					modal.find('.old_catalog_id').val({{session('current_catalog')}});
 				});
+				$('#wishlist').change(function (e) {
+					if($(this).val() == 0){
+						$('#new_wishlist_name').parent().show();
+						$('#new_wishlist_name').attr('required','required');
+					}else{
+						$('#new_wishlist_name').parent().hide();
+						$('#new_wishlist_name').removeAttr('required');
+					}
+				});
 
 				$('#form_add_catalog').submit(function (e) {
 					e.preventDefault();
@@ -323,6 +332,8 @@
 						success: function(resp)
 						{
 							if(resp == "ok"){
+
+								$('#new_wishlist_name').val('');
 								$.gritter.add({
 									title: '@lang('wishlist.modal_change_success')',
 								});
