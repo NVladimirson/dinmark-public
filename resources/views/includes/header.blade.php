@@ -111,6 +111,8 @@
 				<a href="{{route('user.profile')}}" class="dropdown-item">@lang('user.edit_link')</a>
 				<a href="{{route('user.log')}}" class="dropdown-item">@lang('user.log_link')</a>
 				<div class="dropdown-divider"></div>
+                <a href="{{route('auth.login_to_site')}}" class="dropdown-item"><img src="{{asset('assets/img/dinmark.png')}}" alt="Dinmark" style="width: 16px; height: 16px; margin: 0; float: none"> @lang('user.dinmark_link')</a>
+				<div class="dropdown-divider"></div>
 				<form method="POST" action="{{ route('logout') }}">
 					@csrf
 					<button type="submit" class="dropdown-item" class="btn btn-link">@lang('user.logout')</button>

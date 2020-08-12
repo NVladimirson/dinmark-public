@@ -15,6 +15,7 @@ return [
 
     'edit_link' => 'Редактирование профиля',
     'log_link' => 'Лог действий',
+    'dinmark_link' => 'dinmark.com.ua',
 	'logout' => 'Выход',
 
     'edit_page_name'			=> 'Редактирование профиля',

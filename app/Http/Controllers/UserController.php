@@ -198,4 +198,14 @@ class UserController extends Controller
 		SEOTools::setTitle(trans('user.log_page_name'));
 		return view('user.log',compact('logs'));
 	}
+
+	public function loginToSite()
+    {
+        $user = auth()->user();
+        $key = md5('b2b login/as_user'.time());
+        $user->key_b2b = $key;
+        $user->save();
+
+        return redirect(env('DINMARK_URL').'login/as_b2b_user?key='.$key);
+    }
 }

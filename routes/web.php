@@ -26,6 +26,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/profile/change-request','UserController@chageRequest')->name('user.profile.change_request');
 		Route::get('/profile/change-company/{id}','UserController@changeCompany')->name('user.change_company');
 		Route::get('/log','UserController@log')->name('user.log');
+		Route::get('/login/to_site','UserController@loginToSite')->name('auth.login_to_site');
 
 		Route::get('company','CompanyController@index')->name('company');
 		Route::post('/company/data','CompanyController@updateData')->name('company.update_data');
