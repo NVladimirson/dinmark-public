@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'modal_description' => '<p style="color: #f0ad4e; font-size: 24px">Опис каталога</p>',
 
     'new_wishlist' => 'Новий каталог',
     'new_wishlist_placeholder' => 'Введіть назву каталогу',

@@ -300,6 +300,7 @@
 					var modal = $(this);
 					modal.find('.product_id').val(button.data('product'));
 					modal.find('.old_catalog_id').val({{session('current_catalog')}});
+					modal.find('.wishlist-description').hide();
 				});
 				$('#wishlist').change(function (e) {
 					if($(this).val() == 0){

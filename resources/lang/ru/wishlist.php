@@ -13,6 +13,8 @@ return [
     |
     */
 
+    'modal_description' => '<p style="color: #f0ad4e; font-size: 24px">Описание каталога</p>',
+
     'new_wishlist' => 'Новый каталог',
     'new_wishlist_placeholder' => 'Введите название каталога',
     'button_add_to_catalog' => 'Добавить в каталог',

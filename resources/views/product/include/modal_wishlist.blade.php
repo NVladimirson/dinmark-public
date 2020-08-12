@@ -10,6 +10,9 @@
                 <input type="hidden" class="old_catalog_id" name="old_catalog_id">
 
                 <div class="modal-body">
+                    <div class="wishlist-description">
+                        @lang("wishlist.modal_description")
+                    </div>
                     <p>
                         <select class="form-control selectpicker" id="wishlist" data-live-search="true" data-style="btn-white">
                             @foreach($wishlists as $wishlist)
