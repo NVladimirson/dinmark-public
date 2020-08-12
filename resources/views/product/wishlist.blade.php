@@ -31,7 +31,7 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<div class="row m-b-15">
+					<div class="row m-b-5">
 						<div class="col-lg-3">
 							<select class="form-control selectpicker m-b-5" id="change_wishlist" data-size="10" data-live-search="true" data-style="btn-white">
 								@foreach($wishlists as $wishlist)
@@ -52,6 +52,12 @@
 							<a href="#modal-wishlist_delete" id="delete_wishlist_btn" class="btn btn-sm btn-danger btn-block m-b-5" data-toggle="modal">@lang('wishlist.btn_delete')</a>
 						</div>
 					</div>
+                    <div class="row">
+                        <div class="col-lg-10"></div>
+                        <div class="col-lg-2">
+                            <a href="{{route('catalogs.download_price',session('current_catalog'))}}" id="download_price" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.btn_price_excel')</a>
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<!-- begin panel -->
@@ -173,6 +179,7 @@
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
+				var catalogPath = "{{route('catalogs')}}";
 				var ajaxRouteBase = "{!! route('catalogs.all_ajax') !!}"
 				var ajaxRoute = "{!! route('catalogs.all_ajax') !!}?group={{session('current_catalog')}}"
 
@@ -473,6 +480,8 @@
 				});
 
 				function setList() {
+					$('#download_price').attr('href',catalogPath+'/download-price/'+$('#change_wishlist').val());
+
 					var new_form = $('#wishlist_new_form');
 
 					var list_name = $("#change_wishlist option:selected").text();

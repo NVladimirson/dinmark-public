@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Exports\CatalogExport;
 use App\Http\Controllers\Controller;
 use App\Imports\CatalogImport;
 use App\Models\Product\CompanyProductArticle;
@@ -130,6 +131,12 @@ class CatalogController extends Controller
 		})->count() - $count;
 		return redirect()->back()->with('status', $count.trans('wishlist.import_success'));
 	}
+
+	public function downloadPrice($id){
+        $group = LikeGroup::find($id);
+        $excel = new CatalogExport($group);
+        return $excel->download($group->name.'_'.time().'.xlsx');
+    }
 
 	public function changeArticle($id, Request $request){
 		$holdingId = auth()->user()->getCompany->holding;

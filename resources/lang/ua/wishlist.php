@@ -28,6 +28,7 @@ return [
 	'btn_rename'	=> 'Перейменувати каталог',
 	'btn_price'		=> 'Встановити ціну',
 	'btn_delete'	=> 'Видалети каталог',
+    'btn_price_excel'  => 'Скачати прайс',
 
 	'add_product'		=> 'Додати товар',
 	'select_product'	=> 'Оберіть товар',
