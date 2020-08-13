@@ -63,4 +63,11 @@ return [
 	'document_send_success'			=> 'Тикет на добавление документа успешно создан. Ваш менеджер свяжется с вами в ближайшее время.',
 
 	'document_request_subject'		=> 'Запрос на добавление документа',
+
+	'users_block'		            => 'Пользователи',
+	'users_block_name'		        => 'Имя',
+	'users_block_email'		        => 'Email',
+	'users_block_status'            => 'Статус',
+	'users_block_registered_time'   => 'Дата регистрации',
+	'users_block_last_login'        => 'Последний вход',
 ];

@@ -244,6 +244,35 @@
                 </div>
             </div>
 
+            <div class="panel panel-primary" data-sortable-id="form-stuff-8">
+                <!-- begin panel-heading -->
+                <div class="panel-heading">
+                    <h4 class="panel-title">@lang('company.users_block')</h4>
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                </div>
+                <!-- end panel-heading -->
+                <!-- begin panel-body -->
+                <div class="panel-body">
+                    <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>@lang('company.users_block_name')</th>
+                                <th>@lang('company.users_block_email')</th>
+                                <th>@lang('company.users_block_status')</th>
+                                <th>@lang('company.users_block_registered_time')</th>
+                                <th>@lang('company.users_block_last_login')</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
 
             <!-- end panel -->
         </div>

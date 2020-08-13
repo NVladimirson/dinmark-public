@@ -64,4 +64,11 @@ return [
 
 	'document_request_subject'		=> 'Запит на додавання документа',
 
+    'users_block'		            => 'Користувачі',
+    'users_block_name'		        => 'Ім\'я',
+    'users_block_email'		        => 'Email',
+    'users_block_status'            => 'Статус',
+    'users_block_registered_time'   => 'Дата реєстрації',
+    'users_block_last_login'        => 'Останній вхід',
+
 ];
