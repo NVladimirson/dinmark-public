@@ -63,7 +63,7 @@ class ProductController extends Controller
 			->eloquent($products)
 			->addColumn('check_html', function (Product $product) {
 				return '<div class="checkbox checkbox-css">
-						  <input type="checkbox" id="product-'.$product->id.'"  />
+						  <input type="checkbox" id="product-'.$product->id.'" class="intable" />
 						  <label for="product-'.$product->id.'"> </label>
 						</div>';
 			})
