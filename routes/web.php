@@ -30,6 +30,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('company','CompanyController@index')->name('company');
 		Route::post('/company/data','CompanyController@updateData')->name('company.update_data');
+		Route::post('/company/payment-data','CompanyController@updatePaymentData')->name('company.update_payment_data');
 		Route::post('/company/add-price','CompanyController@addPrice')->name('company.add_price');
 		Route::post('/company/destroy-price/{id}','CompanyController@destroyPrice')->name('company.destroy_price');
 		Route::post('/company/add-document','CompanyController@addDocument')->name('company.add_document');
@@ -44,13 +45,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');
 		Route::get('/products/{id}/get-price','Product\ProductController@getPrice')->name('products.get_price');
 
-		Route::get('/catalogs','Product\CatalogController@index')->name('catalogs');
+		Route::get('/catalogs/','Product\CatalogController@index')->name('catalogs');
 		Route::post('/catalogs/','Product\CatalogController@store')->name('catalogs.store');
 		Route::post('/catalogs/import','Product\CatalogController@import')->name('catalogs.import');
 		Route::get('/catalogs/add-to-catalog/{id}','Product\CatalogController@addToCatalog')->name('catalogs.add_to_catalog');
 		Route::get('/catalogs/change-catalog/{id}','Product\CatalogController@changeCatalog')->name('catalogs.change_catalog');
 		Route::post('/catalogs/remove-to-catalog/{id}','Product\CatalogController@removeToCatalog')->name('catalogs.remove_to_catalog');
 		Route::get('/catalogs/all-ajax/','Product\CatalogController@allAjax')->name('catalogs.all_ajax');
+		Route::get('/catalogs/download-price/{id}','Product\CatalogController@downloadPrice')->name('catalogs.download_price');
 		Route::post('/catalogs/{id}','Product\CatalogController@update')->name('catalogs.update');
 		Route::post('/catalogs/destroy/{id}','Product\CatalogController@destroy')->name('catalogs.destroy');
 		Route::post('/catalogs/change-article/{id}','Product\CatalogController@changeArticle')->name('catalogs.change_article');

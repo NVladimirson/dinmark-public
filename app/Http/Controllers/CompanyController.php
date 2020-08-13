@@ -64,6 +64,36 @@ class CompanyController extends Controller
 		return redirect()->back()->with('status', trans('company.edit_personal_data_success'));
 	}
 
+	public function updatePaymentData(Request $request){
+		$validatedData = $request->validate([
+			'address'		=> 'required|max:255',
+			'edrpo'	=> 'nullable|max:255',
+			'inn'	=> 'nullable|max:255',
+			'bank'	=> 'nullable|max:255',
+			'mfo'	=> 'nullable|max:255',
+			'pp'	=> 'required|max:255',
+		]);
+
+		if(!is_array($validatedData) ){
+			if($validatedData->fails()) {
+				return Redirect::back()->withErrors($validatedData);
+			}
+		}
+
+		$company = auth()->user()->getCompany;
+		$company->address = $validatedData['address'];
+		$company->edrpo = $validatedData['edrpo'];
+		$company->inn = $validatedData['inn'];
+		$company->bank = $validatedData['bank'];
+		$company->mfo = $validatedData['mfo'];
+		$company->pp = $validatedData['pp'];
+
+
+		$company->save();
+
+		return redirect()->back()->with('status', trans('company.edit_personal_data_success'));
+	}
+
 	public function addPrice(Request $request)
 	{
 		$validatedData = $request->validate([

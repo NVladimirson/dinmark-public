@@ -170,13 +170,15 @@ class ProductController extends Controller
 		$orders = OrderServices::getByCompany();
 
 		$storage_prices = [];
+		$storage_raw_prices = [];
 
 		foreach ($product->storages as $storage){
             $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($product,$storage->id);
+            $storage_raw_prices[$storage->id] = \App\Services\Product\Product::calcPrice($product,$storage->id);
         }
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices','storage_raw_prices'));
 	}
 
 	public function search(Request $request){

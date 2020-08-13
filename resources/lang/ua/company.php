@@ -23,6 +23,14 @@ return [
 	'edit_save'						=> 'Зберегти',
 	'edit_personal_data_success'	=> 'Дані успішно оновлені',
 
+    'edit_payment_data'			    => 'Реквізити компанії',
+    'edit_address'		    	    => 'Юридична адреса',
+    'edit_edrpo'		    	    => 'ЄДРПОУ',
+    'edit_inn'		          	    => 'ІПН',
+    'edit_bank'		          	    => 'Банк',
+    'edit_mfo'		          	    => 'МФО',
+    'edit_pp'		          	    => 'p/p',
+
 	'prices_block'					=> 'Коефіцієнти цін для комерційних пропозицій',
 	'prices_form_block'				=> 'Додавання нового коефіцієнта',
 	'price_name'					=> 'Назва ціни',
@@ -55,5 +63,12 @@ return [
 	'document_send_success'			=> 'Тікет на додавання документа успішно створений. Ваш менеджер зв\'яжеться з вами найближчим часом.',
 
 	'document_request_subject'		=> 'Запит на додавання документа',
+
+    'users_block'		            => 'Користувачі',
+    'users_block_name'		        => 'Ім\'я',
+    'users_block_email'		        => 'Email',
+    'users_block_status'            => 'Статус',
+    'users_block_registered_time'   => 'Дата реєстрації',
+    'users_block_last_login'        => 'Останній вхід',
 
 ];
