@@ -14,8 +14,7 @@ return [
     */
 
     'all_page_name' => 'Все товары',
-    'in_stock_button_name' => 'Отобразить товары в наличии',
-    'all_products_button_name' => 'Отобразить все товары',
+    'in_stock_button_name' => 'Только в наличии',
     'search_page_name' => 'Результаты поиска',
     'all_tab_name' => 'Список товаров',
     'search_tab_name' => 'Список товаров',

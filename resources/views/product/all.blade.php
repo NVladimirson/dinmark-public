@@ -18,7 +18,7 @@
 		{{ Breadcrumbs::render('product.all') }}
 	@endif
 
-	<h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name')@endif</h1>
+	<h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -47,13 +47,32 @@
 							</select>
 						</div>
 						@endif
+
+						@if(Request::get('instock'))
+						<div class="custom-control custom-switch">
+							<input type="checkbox" class="custom-control-input" id="instockToggler" checked>
+							<label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
+						</div>
+						@else
+						<div class="custom-control custom-switch">
+							<input type="checkbox" class="custom-control-input" id="instockToggler">
+							  <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
+						</div>
+					 @endif
 					</div>
-                    <div class="table-scroll-container">
+
+
+        <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
 								<th></th>
-								<th width="30"></th>
+								<th width="30">
+									<div class="checkbox checkbox-css">
+												<input type="checkbox" id="select_all_products" class="intable">
+												<label for="select_all_products"> </label>
+											</div>
+					</th>
 								<th width="1%" data-orderable="false"></th>
 								<th class="text-nowrap">@lang('product.table_header_name')</th>
 								<th class="text-nowrap">@lang('product.table_header_article')</th>
@@ -102,7 +121,6 @@
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
 	<script>
-
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
@@ -112,34 +130,13 @@
 					}
 				});
 
-				window.table = $('#data-table-buttons').DataTable( {
+				window.table =
+				$('#data-table-buttons').DataTable( {
 					"language": {
 						"url": "@lang('table.localization_link')",
 					},
 					//"scrollX": true,
-					dom: 'lBfrtip',
-					@if(Request::get('instock'))
-					buttons: [
-            {
-                text: "@lang('product.all_products_button_name')",
-								className:'databtn btn btn-success',
-                action: function ( e, dt, node, config ) {
-								window.location.href = $(location).attr('href').substr(0,($(location).attr('href')).indexOf('?instock=on'));
-                }
-            }
-        	],
-					@else
-					buttons: [
-						{
-								text: "@lang('product.in_stock_button_name')",
-								className:'databtn btn btn-warning',
-								action: function ( e, dt, node, config ) {
-									window.location.href = $(location).attr('href')+'?instock=on';
-								}
-						}
-					],
-					@endif
-					"pageLength": 10,
+					"pageLength": 25,
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
@@ -183,36 +180,14 @@
 						{
 							data: 'actions',
 						},
-
 					],
-				});
+					"preUpload": function(settings, json) {
+						alert('asds');
+							$('#select_all_products').prop('checked', false);
+						}
+				} );
+				//alert($('button:contains(<span>"Initialisation..."</span>)').attr('class'));
 
- 			//y$("div.toolbar").a('<button class="btn btn-secondary" tabindex="0" aria-controls="data-table-buttons" type="button"><span>My button</span></button>');
-					@if(Request::get('instock'))
-					$( ".dropdown bootstrap-select form-control" ).append( `<div class="custom-control custom-switch">
-						<input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-						  <label class="custom-control-label" for="customSwitch1">	@if(isset($page_name)) {{$page_name}} @else @lang('product.in_stock_page_name') @endif</label>
-						</div>` );
-					@else
-					$( ".dropdown bootstrap-select form-control" ).append( `<div class="custom-control custom-switch">
-						<input type="checkbox" class="custom-control-input" id="customSwitch1">
-						  <label class="custom-control-label" for="customSwitch1">	@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</label>
-						</div>` );
-					@endif
-
-				$('#customSwitch1').click(function() {
-						@if(Request::get('instock') == 'on')
-						window.location.href = $(location).attr('href').substr(0,($(location).attr('href')).indexOf('?instock=on'));
-						@else
-						window.location.href = $(location).attr('href')+'?instock='+$(this).val();
-						@endif
-				});
-
-				$('#modal-get_price').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product_id').val(button.data('product_id'));
-				})
 
 				$('#modal-get_price').on('show.bs.modal', function (event) {
 					var button = $(event.relatedTarget);
@@ -224,7 +199,16 @@
 					var button = $(event.relatedTarget);
 					var modal = $(this);
 					modal.find('.product_id').val(button.data('product'));
-				})
+				});
+				$('#wishlist').change(function (e) {
+                   if($(this).val() == 0){
+                       $('#new_wishlist_name').parent().show();
+                       $('#new_wishlist_name').attr('required','required');
+                   }else{
+					   $('#new_wishlist_name').parent().hide();
+					   $('#new_wishlist_name').removeAttr('required');
+                   }
+				});
 
 				$('#modal-order').on('show.bs.modal', function (event) {
 					var button = $(event.relatedTarget);
@@ -270,7 +254,6 @@
                     }
 				});
 
-				console.log(" {!! Request::get('instock') !!} ");
 
 				$('#form_add_catalog').submit(function (e) {
 					e.preventDefault();
@@ -293,6 +276,9 @@
 						success: function(resp)
 						{
 							if(resp == "ok"){
+
+								$('#new_wishlist_name').val('');
+
 								$.gritter.add({
 									title: '@lang('wishlist.modal_success')',
 								});
@@ -378,12 +364,44 @@
 			});
 		})(jQuery);
 
+		$('#instockToggler').click(function() {
+				@if(Request::get('instock') == 'on')
+				window.location.href = $(location).attr('href').substr(0,($(location).attr('href')).indexOf('?instock=on'));
+				@else
+				window.location.href = $(location).attr('href')+'?instock='+$(this).val();
+				@endif
+		});
+
+		$('#select_all_products').change(function() {
+			if($('#select_all_products').prop('checked')){
+				$(".intable").each(function(){
+					$(this).prop('checked', true);
+				});
+			}
+			else{
+				$(".intable").each(function(){
+					$(this).prop('checked', false);
+				});
+			}
+		});
+
+		$('#data-table-buttons').on( 'draw.dt', function () {
+  			$('#select_all_products').prop('checked', false);
+			} );
+
 	</script>
 	<style>
-	.databtn {
-	  margin:0px;
-	}
+		.checkbox.checkbox-css label{
+			padding:8px;
+			margin-left:6px;
+
+		}
+
+		.custom-control-label {
+				margin-top:10px;
+				margin-left:12px;
+				font-size: 1rem;
+				line-height: 1.0;
+		}
 	</style>
-
-
 @endpush
