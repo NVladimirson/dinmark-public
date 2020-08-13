@@ -30,6 +30,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('company','CompanyController@index')->name('company');
 		Route::post('/company/data','CompanyController@updateData')->name('company.update_data');
+		Route::post('/company/payment-data','CompanyController@updatePaymentData')->name('company.update_payment_data');
 		Route::post('/company/add-price','CompanyController@addPrice')->name('company.add_price');
 		Route::post('/company/destroy-price/{id}','CompanyController@destroyPrice')->name('company.destroy_price');
 		Route::post('/company/add-document','CompanyController@addDocument')->name('company.add_document');

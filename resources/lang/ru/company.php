@@ -23,6 +23,14 @@ return [
 	'edit_save'						=> 'Сохранить',
 	'edit_personal_data_success'	=> 'Данные успешно обновлены',
 
+    'edit_payment_data'			    => 'Реквизиты компании',
+    'edit_address'		    	    => 'Юредический адрес',
+    'edit_edrpo'		    	    => 'ЕГРПОУ',
+    'edit_inn'		          	    => 'ИНН',
+    'edit_bank'		          	    => 'Банк',
+    'edit_mfo'		          	    => 'МФО',
+    'edit_pp'		          	    => 'p/p',
+
 	'prices_block'					=> 'Коэффициенты цен для комерческих предложений',
 	'prices_form_block'				=> 'Добавление нового коэффициента',
 	'price_name'					=> 'Название цены',

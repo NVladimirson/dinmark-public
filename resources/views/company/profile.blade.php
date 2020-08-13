@@ -158,6 +158,92 @@
                 </div>
             </div>
 
+            <div class="panel panel-primary" data-sortable-id="form-stuff-7">
+                <!-- begin panel-heading -->
+                <div class="panel-heading">
+                    <h4 class="panel-title">@lang('company.edit_payment_data')</h4>
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                </div>
+                <!-- end panel-heading -->
+                <!-- begin panel-body -->
+                <div class="panel-body">
+                    <form action="{{route('company.update_payment_data')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row m-b-15">
+                            <label class="col-form-label col-md-3">@lang('company.edit_address')</label>
+                            <div class="col-md-9">
+                                <input type="text" name="address" class="form-control m-b-5 @error('address') is-invalid @enderror" placeholder="@lang('company.edit_address')" value="{{$company->address}}"/>
+                                @error('address')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label class="col-form-label col-md-3">@lang('company.edit_edrpo')</label>
+                            <div class="col-md-9">
+                                <input type="text" name="edrpo" class="form-control m-b-5 @error('edrpo') is-invalid @enderror" placeholder="@lang('company.edit_edrpo')" value="{{$company->edrpo}}"/>
+                                @error('edrpo')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label class="col-form-label col-md-3">@lang('company.edit_inn')</label>
+                            <div class="col-md-9">
+                                <input type="text" name="inn" class="form-control m-b-5 @error('inn') is-invalid @enderror" placeholder="@lang('company.edit_inn')" value="{{$company->inn}}"/>
+                                @error('inn')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label class="col-form-label col-md-3">@lang('company.edit_bank')</label>
+                            <div class="col-md-9">
+                                <input type="text" name="bank" class="form-control m-b-5 @error('bank') is-invalid @enderror" placeholder="@lang('company.edit_bank')" value="{{$company->bank}}"/>
+                                @error('bank')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label class="col-form-label col-md-3">@lang('company.edit_mfo')</label>
+                            <div class="col-md-9">
+                                <input type="text" name="mfo" class="form-control m-b-5 @error('mfo') is-invalid @enderror" placeholder="@lang('company.edit_mfo')" value="{{$company->mfo}}"/>
+                                @error('mfo')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label class="col-form-label col-md-3">@lang('company.edit_pp')</label>
+                            <div class="col-md-9">
+                                <input type="text" name="pp" class="form-control m-b-5 @error('pp') is-invalid @enderror" placeholder="@lang('company.edit_pp')" value="{{$company->pp}}"/>
+                                @error('pp')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@lang('company.edit_save')</button>
+                    </form>
+                </div>
+            </div>
+
 
             <!-- end panel -->
         </div>

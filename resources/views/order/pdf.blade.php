@@ -94,17 +94,18 @@
                {{--@if($order->sender_id != 0) {{$order->sender->getCompany->name}} @else Товариство з обмеженою відповідальністю "Леомарк" @endif--}}
             </div>
             <div style="margin-left: 15px; margin-bottom: 20px">
+                @if($company->pp)
+                П/р {{$company->pp}}, @endif @if($company->bank)Банк {{$company->bank}}, @endif<br>
+                    @if($company->mfo)МФО {{$company->mfo}}  <br>@endif
+                    @if($company->address){{$company->address}}<br>@endif
+                    @if($company->edrpo)код за ЄДРПОУ {{$company->edrpo}}, @endif @if($company->inn) ІПН {{$company->inn}}@endif
                 @if($client)
                     {{--$client->company--}}
                 @endif
                 {{--@if($order->sender_id != 0)
 
                 @else
-                П/р UA883253650000002600501445973, Банк Банк ПАТ КРЕДОБАНК,<br>
-                МФО 325365<br>
-                81032, Львівська обл., Яворівський р-н, с.Наконечне Перше, М.Лисенка,<br>
-                будинок № 17,<br>
-                код за ЄДРПОУ 23266835, ІПН 232668313332
+
                 @endif--}}
             </div>
         </td>
