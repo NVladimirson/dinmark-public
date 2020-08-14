@@ -115,7 +115,7 @@
 								</tr>
 								@forelse($product->storages as $storage)
 								<tr>
-									<td>@lang('product.storage_name') {{ $storage->storage->id }}</td>
+									<td>@lang('product.storage_name') {{ $storage->storage->term }} @lang('product.storage_term_measure_shortly')</td>
 									<td>{{ $storage->amount }}</td>
 									<td>{{ $storage->package }}</td>
 									<td>{{ $storage_prices[$storage->id] }}</td>
