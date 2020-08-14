@@ -71,4 +71,13 @@ return [
 	'users_block_registered_time'   => 'Дата регистрации',
 	'users_block_last_login'        => 'Последний вход',
 	'users_block_login_as_user'     => 'Войти как пользователь',
+	'users_block_btn_add'           => 'Добавить пользователя',
+
+    'modal_add_user_header'           => 'Добавление пользователя',
+    'modal_add_user_name'             => 'Имя',
+    'modal_add_user_last_name'        => 'Фамилия',
+    'modal_add_user_email'            => 'Email',
+    'modal_add_user_password'         => 'Пароль',
+    'modal_add_user_repassword'       => 'Повторите пароль',
+    'modal_add_user_success'          => 'Пользователь успешно добавлен',
 ];

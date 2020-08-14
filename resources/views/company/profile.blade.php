@@ -276,6 +276,7 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                    <a href="#modal-add_user" class="btn btn-sm btn-primary" data-toggle="modal">@lang('company.users_block_btn_add')</a>
                 </div>
             </div>
 
@@ -435,7 +436,77 @@
     </div>
     <!-- end row -->
 
-    @endsection
+    <div class="modal fade" id="modal-add_user" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@lang('company.modal_add_user_header')</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <form id="form_add_user" method="post" action="{{route('company.users_add')}}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group m-b-15">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>@lang('company.modal_add_user_name')</label>
+                                    <input type="text" name="user_name" class="form-control m-b-5 @error('user_name') is-invalid @enderror" placeholder="@lang('company.modal_add_user_name')" required value="{{old('user_name')}}"/>
+                                    @error('user_name')
+                                    <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>@lang('company.modal_add_user_last_name')</label>
+                                    <input type="text" name="user_last_name" class="form-control m-b-5 @error('user_last_name') is-invalid @enderror" placeholder="@lang('company.modal_add_user_last_name')" required value="{{old('user_last_name')}}"/>
+                                    @error('user_last_name')
+                                    <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group m-b-15">
+                            <label>@lang('company.modal_add_user_email')</label>
+                            <input type="text" name="user_email" class="form-control m-b-5 @error('user_email') is-invalid @enderror" placeholder="@lang('company.modal_add_user_email')" required value="{{old('user_email')}}"/>
+                            @error('user_email')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="form-group m-b-15">
+                            <label>@lang('company.modal_add_user_password')</label>
+                            <input type="password" name="user_password" class="form-control m-b-5 @error('user_password') is-invalid @enderror" placeholder="@lang('company.modal_add_user_password')" required/>
+                            @error('user_name')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="form-group m-b-15">
+                            <label>@lang('company.modal_add_user_repassword')</label>
+                            <input type="password" name="user_password_confirmation" class="form-control m-b-5 @error('user_password_confirmation') is-invalid @enderror" placeholder="@lang('company.modal_add_user_repassword')" required/>
+                            @error('user_password_confirmation')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal">@lang('global.cancel')</a>
+                        <button type="submit" class="btn btn-primary btn-add-order">@lang('global.add')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+@endsection
 
 @push('scripts')
     <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -448,6 +519,39 @@
     <script>
 
 			$(document).ready(function () {
+                @php
+                    $error = false;
+                @endphp
+                @error('user_name')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_last_name')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_email')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_password')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_password_confirmation')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+
+                @if($error)
+                    $('#modal-add_user').modal('show');
+                @enderror
+
 				$('#datepicker-default').datepicker({
 					todayHighlight: true
 				});

@@ -37,6 +37,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/company/destroy-document/{id}','CompanyController@destroyDocument')->name('company.destroy_document');
 		Route::post('/company/document-request','CompanyController@requestDocument')->name('company.request_document');
         Route::get('/company/users/ajax','CompanyController@usersAjax')->name('company.users_ajax');
+        Route::post('/company/users/add','CompanyController@addUser')->name('company.users_add');
         Route::get('/company/login-as-user/{id}','CompanyController@loginAsUser')->name('company.login_as_user');
 
 		Route::get('/products','Product\ProductController@index')->name('products');
