@@ -45,7 +45,6 @@ class ProductController extends Controller
 		{
 			$products = Product::whereHas('storages', function($q){
           $q->where('amount', '>', '0');
-          $q->where('is_main', '!=', '0');
       });
 		}
 		else{
@@ -165,9 +164,10 @@ class ProductController extends Controller
 		$limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
 		$limit2 = ($product->limit_2 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
 
+		$orders = OrderServices::getByCompany();
 		$basePrice = \App\Services\Product\Product::getBasePrice($product);
 		$wishlists = CatalogServices::getByCompany();
-		$orders = OrderServices::getByCompany();
+
 
 		$storage_prices = [];
 		$storage_raw_prices = [];
