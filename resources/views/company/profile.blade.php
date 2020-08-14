@@ -2,6 +2,9 @@
 
 @section('title', 'Form Elements')
 @push('css')
+    <link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 @endpush
 
@@ -256,20 +259,23 @@
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
                 <div class="panel-body">
-                    <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>@lang('company.users_block_name')</th>
-                                <th>@lang('company.users_block_email')</th>
-                                <th>@lang('company.users_block_status')</th>
-                                <th>@lang('company.users_block_registered_time')</th>
-                                <th>@lang('company.users_block_last_login')</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-scroll-container">
+                        <table id="users-table" class="table table-striped table-bordered table-td-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>@lang('company.users_block_name')</th>
+                                    <th>@lang('company.users_block_email')</th>
+                                    <th>@lang('company.users_block_status')</th>
+                                    <th>@lang('company.users_block_registered_time')</th>
+                                    <th>@lang('company.users_block_last_login')</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -432,26 +438,81 @@
     @endsection
 
 @push('scripts')
+    <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
     <script src="/assets/plugins/highlight.js/highlight.min.js"></script>
     <script src="/assets/js/demo/render.highlight.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <script>
-		$('#datepicker-default').datepicker({
-			todayHighlight: true
-		});
 
-		document.querySelector('.custom-file-input').addEventListener('change',function(e){
-			var fileName = document.getElementById("uploadPhoto").files[0].name;
-			var nextSibling = e.target.nextElementSibling
-			nextSibling.innerText = fileName
-		})
+			$(document).ready(function () {
+				$('#datepicker-default').datepicker({
+					todayHighlight: true
+				});
 
-        @if (session('status'))
-		$.gritter.add({
-			title: '{{ session('status') }}',
-		});
+				document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+					var fileName = document.getElementById("uploadPhoto").files[0].name;
+					var nextSibling = e.target.nextElementSibling
+					nextSibling.innerText = fileName
+				})
 
-        @endif
+                @if (session('status'))
+				$.gritter.add({
+					title: '{{ session('status') }}',
+				});
+                @endif
+
+					window.table = $('#users-table').DataTable({
+					"language": {
+						"url": "@lang('table.localization_link')",
+					},
+					"pageLength": 25,
+					"autoWidth": true,
+					"processing": true,
+					"serverSide": true,
+					"ajax": "{{route('company.users_ajax')}}",
+					"order": [[0, "desc"]],
+					//"ordering": false,
+					//"searching": true,
+					fixedHeader: {
+						header: true,
+						footer: true
+					},
+					"columns": [
+						{
+							data: 'id',
+							"visible": false,
+						},
+						{
+							className: 'text-center',
+							data: 'image_html',
+							"orderable": false,
+						},
+						{
+							data: 'name',
+						},
+						{
+							data: 'email',
+						},
+						{
+							data: 'status_html',
+							"orderable": false,
+						},
+						{
+							data: 'registered_time',
+						},
+						{
+							data: 'last_login_time',
+						},
+						{
+							data: 'actions',
+							"orderable": false,
+						},
+					],
+				});
+			});
 
     </script>
 @endpush

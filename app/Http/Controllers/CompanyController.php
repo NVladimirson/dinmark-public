@@ -9,8 +9,10 @@ use App\Models\Log\LogAction;
 use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketMessage;
 use App\Notifications\NewMessage;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -207,5 +209,55 @@ class CompanyController extends Controller
 		$toUser->notify(new NewMessage($message));
 
 		return redirect()->back()->with('status', trans('company.document_send_success'));
+	}
+
+    public function usersAjax(Request $request)
+    {
+        $users = User::with(['getCompany'])
+            ->whereHas('getCompany',function ($companies){
+                $companies->where([
+                    ['holding', auth()->user()->getCompany->holding],
+                    ['holding', '<>', 0],
+                ])->orWhere([
+                    ['id', auth()->user()->getCompany->id],
+                ]);
+            });
+
+        return datatables()
+            ->eloquent($users)
+            ->addColumn('image_html', function (User $user) {
+                if($user->photo){
+                  return  '<img src="'.env('DINMARK_URL').'images/profile/'.$user->photo.'" alt="'.$user->name.'" width="60"/>';
+                }else{
+                    return  '<img src="'.env('DINMARK_URL').'empty-avatar.png" alt="'.$user->name.'"  width="60"/>';
+                }
+            })
+            ->addColumn('status_html', function (User $user) {
+                return $user->getStatus->title;
+            })
+            ->addColumn('registered_time', function (User $user) {
+                return Carbon::parse($user->registered)->format('d.m.Y h:i');
+            })
+            ->addColumn('last_login_time', function (User $user) {
+                return Carbon::parse($user->last_login)->format('d.m.Y h:i');
+            })
+            ->addColumn('actions', function (User $user) {
+                return view('company.include.user_action_buttons',compact('user'));
+            })
+            ->orderColumn('registered_time','registered $1')
+            ->orderColumn('last_login_time','last_login $1')
+            ->rawColumns(['actions','image_html'])
+            ->toJson();
+	}
+
+    public function loginAsUser($id)
+    {
+        $user = User::find($id);
+
+        Auth::logout();
+
+        Auth::login($user);
+
+        return redirect()->back();
 	}
 }

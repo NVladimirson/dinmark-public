@@ -50,6 +50,10 @@ class User extends Authenticatable
     	return $this->hasOne('App\Models\User\UserPrice','user_type', 'type');
 	}
 
+    public function getStatus(){
+    	return $this->hasOne('App\Models\User\UserStatus', 'id','status');
+	}
+
 	public function logs(){
     	return $this->hasMany('App\Models\Log\Log','user');
 	}

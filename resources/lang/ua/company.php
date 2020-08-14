@@ -70,5 +70,5 @@ return [
     'users_block_status'            => 'Статус',
     'users_block_registered_time'   => 'Дата реєстрації',
     'users_block_last_login'        => 'Останній вхід',
-
+    'users_block_login_as_user'     => 'Увійти як користувач',
 ];
