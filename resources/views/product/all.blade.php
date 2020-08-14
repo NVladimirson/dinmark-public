@@ -9,6 +9,7 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -22,7 +23,7 @@
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
-		<div class="col-xl-12">
+		<div class="col-xl-9">
 			<!-- begin panel -->
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
@@ -92,8 +93,63 @@
 			</div>
 			<!-- end panel -->
 		</div>
-		<!-- end col-10 -->
-	</div>
+<div class="col-xl-3">
+	<script src='https://code.jquery.com/jquery-latest.js'></script>
+  <script src="/assets/plugins/jstree/dist/jstree.min.js"></script>
+  <script src="/assets/plugins/jstree/dist/jstree.js"></script>
+  <script>
+              jQuery(function ($) {
+                $('#jstree-checkable').jstree({
+                    'plugins': ["wholerow", "types"],
+                    'core': {
+                        "themes": {
+                            "responsive": false
+                        },
+                        'data': [{
+                            "text": "Все товары",
+                            "children": [
+                            @foreach($categories as $key => $category)
+                            {
+                                "text": "{!! $category->name !!}",
+                                 "icon": "fa fa-file text-success fa-lg"
+                            },
+                            @endforeach
+
+                        ]},
+                        {
+                            "text": "Мои каталоги",
+                            // "state": {
+                            // 		"opened": true
+                            // },
+                            "children": [
+                              @foreach($categories as $key => $category)
+                              {
+                                  "text": "{!! $category->name !!}",
+                                   "icon": "fa fa-file text-success fa-lg"
+                              },
+                              @endforeach
+                          ]
+                        },
+                    ]},
+                    "types": {
+                        "default": {
+                            "icon": "fa fa-folder text-primary fa-lg"
+                        },
+                        "file": {
+                            "icon": "fa fa-file text-success fa-lg"
+                        }
+                    }
+                });
+              });
+  </script>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">@lang('product.all_tab_name')</h4>
+    </div>
+        <div id="jstree-checkable"></div>
+  </div>
+
+</div>
 	<!-- end row -->
 
 	@include('product.include.modal_wishlist')
