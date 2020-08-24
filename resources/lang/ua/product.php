@@ -15,9 +15,12 @@ return [
 
   'all_page_name' => 'Усі товари',
   'in_stock_button_name' => 'Лише доступні',
+  'add_to_my_list' => 'Додати в "Мій список"',
+  'add_to_order' => 'Додати в Замовлення',
 	'search_page_name' => 'Результати пошуку',
 	'all_tab_name' => 'Список товарів',
 	'search_tab_name' => 'Список товарів',
+  'all_categories_name' => 'Список категорій',
 
 	'empty'	=> 'За запитом нічого не знайдено',
 

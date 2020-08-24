@@ -113,10 +113,37 @@
 									<th width="150">@lang('product.storage_total')</th>
 									<th></th>
 								</tr>
+								@php function getAmount($amount){
+									switch ($amount){
+										case ($amount>10000):
+											echo '>10000';
+											break;
+										case ($amount>5000):
+											echo '>5000';
+											break;
+										case ($amount>1500):
+											echo '>1500';
+											break;
+										case ($amount>500):
+											echo '>500';
+											break;
+										case ($amount>150):
+											echo '>150';
+											break;
+										case ($amount>50):
+										  echo '>50';
+											break;
+										case ($amount>10):
+											echo '>10';
+											break;
+										case ($amount<10):
+											echo '<10';
+									}
+								} @endphp
 								@forelse($product->storages as $storage)
 								<tr>
 									<td>@lang('product.storage_name') {{ $storage->storage->term }} @lang('product.storage_term_measure_shortly')</td>
-									<td>{{ $storage->amount }}</td>
+									<td>@php getAmount($storage->amount) @endphp</td>
 									<td>{{ $storage->package }}</td>
 									<td>{{ $storage_prices[$storage->id] }}</td>
 									<td>{{ $storage->limit_1 }}</td>
