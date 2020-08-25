@@ -21,6 +21,7 @@ class CatalogController extends Controller
 		SEOTools::setTitle(trans('wishlist.page_list'));
 
 		$wishlists = CatalogServices::getByCompany();
+		//dd($wishlists);
 		if(!session()->has('current_catalog')){
 			$group = LikeGroup::where([
 				['user_id',auth()->user()->id],
@@ -29,8 +30,9 @@ class CatalogController extends Controller
 			session(['current_catalog' => $group->id]);
 		}
 		$orders = OrderServices::getByCompany();
+		//dd($orders);
 		$curentWishlist = LikeGroup::find(session('current_catalog'));
-
+		//dd($curentWishlist);
 		return view('product.wishlist',compact('wishlists','orders', 'curentWishlist'));
 	}
 
@@ -227,7 +229,34 @@ class CatalogController extends Controller
 				if($product->storages){
 					$storage = $product->storages->firstWhere('is_main',1);
 					if($storage){
-						$value = $storage->amount.' / '.$storage->storage->term;
+						$amount = $storage->amount;
+						switch($amount){
+							case $amount>10000:
+								$amount = '>10000';
+								break;
+							case $amount>5000:
+								$amount = '>5000';
+								break;
+							case $amount>1500:
+								$amount = '>1500';
+								break;
+							case $amount>500:
+								$amount = '>500';
+								break;
+							case $amount>150:
+								$amount = '>150';
+								break;
+							case $amount>50:
+								$amount = '>50';
+								break;
+							case $amount>10:
+							$amount = '>10';
+								break;
+							case $amount<10:
+								$amount = '<10';
+								break;
+						}
+						$value = $amount.' / '.$storage->storage->term;
 					}
 				}
 				return $value;
