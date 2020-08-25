@@ -15,9 +15,12 @@ return [
 
     'all_page_name' => 'Все товары',
     'in_stock_button_name' => 'Только в наличии',
+    'add_to_my_list' => 'Добавить в "Мой список"',
+    'add_to_order' => 'Добавить в Заказ',
     'search_page_name' => 'Результаты поиска',
     'all_tab_name' => 'Список товаров',
     'search_tab_name' => 'Список товаров',
+    'all_categories_name' => 'Список категорий',
 
 	'empty'	=> 'По запросу ничего не найдено',
 
@@ -51,6 +54,7 @@ return [
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
 	'storage_quantity' => 'Количество',
+  'storage_term_measure_shortly' => 'дн.',
 
 	'modal_wishlist_header' => 'Выберите список',
 	'modal_order_header' => 'Добавление товара в заказ',

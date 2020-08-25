@@ -9,6 +9,7 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -21,8 +22,7 @@
 	<h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
 	<!-- begin row -->
 	<div class="row">
-		<!-- begin col-10 -->
-		<div class="col-xl-12">
+		<div class="col-xl-9">
 			<!-- begin panel -->
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
@@ -36,8 +36,9 @@
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<div class="row m-b-15">
-						@if($categories->count() > 0)
+					<div class="row">
+						<div class="col-xl-3">
+						<!-- @if($categories->count() > 0)
 						<div class="col-lg-4">
 							<select class="form-control selectpicker" id="category" data-size="10" data-live-search="true" data-style="btn-white">
 								<option value="" selected>@lang('product.select_category')</option>
@@ -46,7 +47,7 @@
 								@endforeach
 							</select>
 						</div>
-						@endif
+						@endif -->
 
 						@if(Request::get('instock'))
 						<div class="custom-control custom-switch">
@@ -59,7 +60,15 @@
 							  <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
 						</div>
 					 @endif
+					 </div>
+					 <div class="col-xl-9">
+						 <div class="right-align">
+					 <button type="button" id="add_to_my_list" class="btn btn-outline-info"><i class="fa fa-filter" aria-hidden="true">@lang('product.add_to_my_list')</i></button>
+					 <button type="button" id="add_to_order" class="btn btn-outline-info"><i class="fa fa-filter" aria-hidden="true">@lang('product.add_to_order')</i></button>
+				 </div>
+					 </div>
 					</div>
+
 
 
         <div class="table-scroll-container">
@@ -69,7 +78,7 @@
 								<th></th>
 								<th width="30">
 									<div class="checkbox checkbox-css">
-												<input type="checkbox" id="select_all_products" class="intable">
+												<input type="checkbox" id="select_all_products">
 												<label for="select_all_products"> </label>
 											</div>
 					</th>
@@ -92,16 +101,10 @@
 			</div>
 			<!-- end panel -->
 		</div>
-		<!-- end col-10 -->
-	</div>
-	<!-- end row -->
-
-	@include('product.include.modal_wishlist')
-	@include('product.include.modal_order')
-	@include('product.include.modal_get_price')
-@endsection
-
-@push('scripts')
+		<div class="col-xl-3">
+	<script src='https://code.jquery.com/jquery-latest.js'></script>
+  <script src="/assets/plugins/jstree/dist/jstree.min.js"></script>
+  <script src="/assets/plugins/jstree/dist/jstree.js"></script>
 	<script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 	<script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
@@ -112,6 +115,396 @@
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script>
+	//jstree
+	jQuery(function($) {
+			var loaded = [];
+			$("#jstree").jstree({
+							"plugins": ["wholerow", "checkbox", "json_data"],
+							"core": {
+									"check_callback": true,
+									"data": {
+											url: "{!! @route('getnode', ['id' => 0]) !!}",
+											contentType: "application/json; charset=utf-8",
+											function(node) {
+													return {
+															'text': node.text,
+															'id': node.id
+													};
+											}
+									},
+							}
+					})
+					.on('create_node.jstree', function(e, data) {
+
+					}).
+			on('select_node.jstree', function(e, data) {
+					if (!loaded.includes(data.node.id)) {
+							var url = "{!! @route('getnode', ['id' => 0]) !!}";
+							url = url.substring(0, url.length - 1) + data.node.id;
+							$.ajax({
+									method: "GET",
+									url: url,
+									success: function(resp) {
+											var child = resp;
+											//var child = {"text" : "atet", "id" : 46};
+											child.forEach(function(index, item) {
+													$('#jstree').jstree().create_node(data.node.id, index, "last",
+															function() {
+
+															});
+													$('#jstree').jstree().deselect_node(index.id, true);
+											});
+									},
+									error: function(xhr, str) {
+											console.log(xhr);
+									}
+							});
+							loaded.push(data.node.id);
+					}
+			});
+
+			//datatable
+			$('#category').change(function () {
+				if($(this).val() != ''){
+					window.location.href = '{{route('products')}}/category/'+$(this).val();
+				}
+			});
+			$('#select_all_products').change(function() {
+				if($('#select_all_products').prop('checked')){
+					window.products = [];
+					$(".intable").each(function(){
+						$(this).prop('checked', true);
+						products.push($(this).prop('id').slice(8));
+						document.getElementById('selected_products').innerText = products.toString();
+					});
+				}
+				else{
+					$(".intable").each(function(){
+						$(this).prop('checked', false);
+							document.getElementById('selected_products').innerText = '';
+					});
+				}
+			});
+
+			$('#data-table-buttons').on( 'draw.dt', function () {
+					$('#select_all_products').prop('checked', false);
+				} );
+
+
+			window.table =
+			$('#data-table-buttons').DataTable( {
+				"language": {
+					"url": "@lang('table.localization_link')",
+				},
+				//"scrollX": true,
+				"pageLength": 25,
+				"autoWidth": true,
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+						"url": "{!! route('products.all_ajax') !!}",
+						// "data" : {
+						// 	"categories" : getCategoryParams()
+						// }
+						"data": {
+							"categories" : 	function ( ) {
+														var node = document.getElementById('reload');
+														textContent = node.textContent;
+														var res = textContent.split(",");
+														if(!res){
+															return [];
+														}
+														// console.log(res);
+														return res;
+							    				}
+						}
+
+				},
+				"order": [[ 0, "desc" ]],
+				"columns": [
+					{
+						data: 'id',
+						"visible": false,
+						"searchable": false
+					},
+					{
+						"orderable":      false,
+						data: 'check_html',
+					},
+					{
+						"orderable":      false,
+						data: 'image_html',
+					},
+					{
+						"orderable":      false,
+						data: 'name_html',
+					},
+					{
+						data: 'article_show_html',
+					},
+					{
+						data: 'user_price',
+					},
+					{
+						data: 'html_limit_1',
+					},
+					{
+						data: 'html_limit_2',
+					},
+					{
+						data: 'storage_html',
+						"orderable":      false,
+					},
+					{
+						data: 'actions',
+					},
+				],
+				"preUpload": function(settings, json) {
+						$('#select_all_products').prop('checked', false);
+					}
+			});
+
+			$( "#apply_filters" ).click(function() {
+				let collection = document.getElementsByClassName("jstree-node");
+				//let arr = [].slice.call(collection);
+				let loaded = [];
+					for (let i = 0; i < collection.length; i++) {
+						if(collection[i].getAttribute('aria-selected') == 'true'){
+								loaded.push(collection[i].getAttribute('id'));
+						}
+						loaded = loaded.filter(function(value,index,self){
+							return self.indexOf(value) === index;
+						});
+					}
+						var node = document.getElementById('reload');
+						node.textContent = loaded.toString();
+						window.table.ajax.reload();
+				});
+				$('.checkbox checkbox-css').click(function(){
+						alert('asd');
+				});
+				$( "#add_to_my_list" ).click(function() {
+					console.log('added_to_list');
+				});
+				$( "#add_to_order" ).click(function() {
+					console.log('added_to_order ');
+				});
+				$(".asd").click(function() {
+					console.log('added_to_order ');
+				});
+
+			// function getCategoryParams(){
+			// 	var node = document.getElementById('reload');
+			// 	textContent = node.textContent;
+			// 	var res = textContent.split(",");
+			// 	return res;
+			// }
+
+			// table.on( 'xhr', function () {
+			// 	var data = table.ajax.params();
+			// 	alert( 'Search term was: '+data.search.value );
+			// });
+
+
+			//alert($('button:contains(<span>"Initialisation..."</span>)').attr('class'));
+
+
+			$('#modal-get_price').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget);
+				var modal = $(this);
+				modal.find('.product_id').val(button.data('product_id'));
+			})
+
+			$('#modal-wishlist').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget);
+				var modal = $(this);
+				modal.find('.product_id').val(button.data('product'));
+			});
+			$('#wishlist').change(function (e) {
+				if($(this).val() == 0){
+					$('#new_wishlist_name').parent().show();
+					$('#new_wishlist_name').attr('required','required');
+				}else{
+					$('#new_wishlist_name').parent().hide();
+					$('#new_wishlist_name').removeAttr('required');
+				}
+			});
+
+			$('#modal-order').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget);
+				var modal = $(this);
+				modal.find('.product-name').text(button.data('product_name'));
+				modal.find('.product_id').val(button.data('product'));
+				modal.find('.storage_id').val(button.data('storage'));
+				modal.find('.order-storage-amount').text(button.data('storage_max'));
+				var quantity = modal.find('input[name="quantity"]');
+				quantity.val(button.data('storage_min'));
+				quantity.attr('min',button.data('storage_min'));
+				quantity.attr('step',button.data('storage_min'));
+				quantity.attr('data-max',button.data('storage_max'));
+
+				var quantity_request = modal.find('input[name="quantity_request"]');
+				quantity_request.val(0);
+				quantity_request.attr('min',0);
+				quantity_request.attr('step',button.data('storage_min'));
+
+				$('.storage-limit-info').hide();
+				$('.storage-limit-request').hide();
+				$('input[name="quantity_request"]').change();
+			});
+
+			$('input[name="quantity"]').change(function (e) {
+				e.preventDefault();
+				if($(this).val() > $(this).data('max')){
+					var request =  $(this).val() - $(this).data('max');
+					$(this).val($(this).data('max'));
+					$('input[name="quantity_request"]').val(request);
+					$('.storage-limit-info').show();
+					$('.storage-limit-request').show();
+					$('input[name="quantity_request"]').change();
+				}
+			});
+
+							$('input[name="quantity_request"]').change(function (e) {
+									e.preventDefault();
+									if($(this).val() > 0){
+					$('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
+									}else{
+					$('.btn-add-order').text($('.btn-add-order').data('btn_order'));
+									}
+			});
+
+
+			$('#form_add_catalog').submit(function (e) {
+				e.preventDefault();
+
+				$('#modal-wishlist').modal('hide');
+
+				var form = $(this);
+				let list_id = $('#wishlist').val();
+				var route = '{{route('catalogs')}}/add-to-catalog/'+list_id;
+
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+				$.ajax({
+					method: "GET",
+					url: route,
+					data: form.serialize(),
+					success: function(resp)
+					{
+						if(resp == "ok"){
+
+							$('#new_wishlist_name').val('');
+
+							$.gritter.add({
+								title: '@lang('wishlist.modal_success')',
+							});
+						}
+					},
+					error:  function(xhr, str){
+						console.log(xhr);
+					}
+				});
+
+				return false;
+			})
+			$('#form_add_order').submit(function (e) {
+				e.preventDefault();
+
+				$('#modal-order').modal('hide');
+
+				var form = $(this);
+
+				var order_id = $('#order_id').val();
+				var route = '{{route('orders')}}/add-to-order/'+order_id;
+
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+				$.ajax({
+					method: "POST",
+					url: route,
+					data: form.serialize(),
+					success: function(resp)
+					{
+						if(resp == "ok"){
+							$.gritter.add({
+								title: '@lang('order.modal_success')',
+							});
+							if(order_id == 0){
+								document.location.reload(true);
+							}
+							window.table.ajax.reload();
+						}
+					},
+					error:  function(xhr, str){
+						console.log(xhr);
+					}
+				});
+
+				return false;
+			});
+			$('#form_get_price').submit(function (e) {
+				e.preventDefault();
+				$('#modal-get_price').modal('hide');
+				var product_id = $('#get_price_product_id').val();
+				var form = $(this);
+
+				var route = '{{route('products')}}/'+product_id+'/get-price/';
+
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+				$.ajax({
+					method: "GET",
+					url: route,
+					data: form.serialize(),
+					success: function(resp)
+					{
+						if(resp == "ok"){
+							$.gritter.add({
+								title: '@lang('product.get_price_success')',
+							});
+						}
+					},
+					error:  function(xhr, str){
+						console.log(xhr);
+					}
+				});
+
+				return false;
+			});
+
+	});
+  </script>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">@lang('product.all_categories_name')</h4>
+			<button type="button" id="apply_filters" class="btn btn-outline-dark"><i class="fa fa-filter" aria-hidden="true">Применить фильтры</i></button>
+    </div>
+        <div id="jstree"></div>
+				<div id="reload" style="display:none"></div>
+				<div id="selected_products" style="display:none"></div>
+  </div>
+
+</div>
+</div>
+	<!-- end row -->
+
+	@include('product.include.modal_wishlist')
+	@include('product.include.modal_order')
+	@include('product.include.modal_get_price')
+@endsection
+
+@push('scripts')
 	<script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
 	<script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
 	<script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
@@ -121,248 +514,13 @@
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
 	<script>
-		(function ($) {
-			"use strict";
-			$(document).ready(function() {
-				$('#category').change(function () {
-					if($(this).val() != ''){
-						window.location.href = '{{route('products')}}/category/'+$(this).val();
-					}
-				});
 
-				window.table =
-				$('#data-table-buttons').DataTable( {
-					"language": {
-						"url": "@lang('table.localization_link')",
-					},
-					//"scrollX": true,
-					"pageLength": 25,
-					"autoWidth": true,
-					"processing": true,
-					"serverSide": true,
-					"ajax": "{!! route('products.all_ajax') !!}{!!  (Request::route()->getName() != 'products')?'?category_id='.$id:'' !!}",
-					"order": [[ 0, "desc" ]],
-					"columns": [
-						{
-							className: 'text-center',
-							data: 'id',
-							"visible": false,
-							"searchable": false
-						},
-						{
-							"orderable":      false,
-							data: 'check_html',
-						},
-						{
-							"orderable":      false,
-							data: 'image_html',
-						},
-						{
-							"orderable":      false,
-							data: 'name_html',
-						},
-						{
-							data: 'article_show_html',
-						},
-						{
-							data: 'user_price',
-						},
-						{
-							data: 'html_limit_1',
-						},
-						{
-							data: 'html_limit_2',
-						},
-						{
-							data: 'storage_html',
-							"orderable":      false,
-						},
-						{
-							data: 'actions',
-						},
-					],
-					"preUpload": function(settings, json) {
-						alert('asds');
-							$('#select_all_products').prop('checked', false);
-						}
-				} );
-				//alert($('button:contains(<span>"Initialisation..."</span>)').attr('class'));
-
-
-				$('#modal-get_price').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product_id').val(button.data('product_id'));
-				})
-
-				$('#modal-wishlist').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product_id').val(button.data('product'));
-				});
-				$('#wishlist').change(function (e) {
-					if($(this).val() == 0){
-						$('#new_wishlist_name').parent().show();
-						$('#new_wishlist_name').attr('required','required');
-					}else{
-						$('#new_wishlist_name').parent().hide();
-						$('#new_wishlist_name').removeAttr('required');
-					}
-				});
-
-				$('#modal-order').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product-name').text(button.data('product_name'));
-					modal.find('.product_id').val(button.data('product'));
-					modal.find('.storage_id').val(button.data('storage'));
-					modal.find('.order-storage-amount').text(button.data('storage_max'));
-					var quantity = modal.find('input[name="quantity"]');
-					quantity.val(button.data('storage_min'));
-					quantity.attr('min',button.data('storage_min'));
-					quantity.attr('step',button.data('storage_min'));
-					quantity.attr('data-max',button.data('storage_max'));
-
-					var quantity_request = modal.find('input[name="quantity_request"]');
-					quantity_request.val(0);
-					quantity_request.attr('min',0);
-					quantity_request.attr('step',button.data('storage_min'));
-
-					$('.storage-limit-info').hide();
-					$('.storage-limit-request').hide();
-					$('input[name="quantity_request"]').change();
-				});
-
-				$('input[name="quantity"]').change(function (e) {
-					e.preventDefault();
-					if($(this).val() > $(this).data('max')){
-						var request =  $(this).val() - $(this).data('max');
-						$(this).val($(this).data('max'));
-						$('input[name="quantity_request"]').val(request);
-						$('.storage-limit-info').show();
-						$('.storage-limit-request').show();
-						$('input[name="quantity_request"]').change();
-					}
-				});
-
-                $('input[name="quantity_request"]').change(function (e) {
-                    e.preventDefault();
-                    if($(this).val() > 0){
-						$('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
-                    }else{
-						$('.btn-add-order').text($('.btn-add-order').data('btn_order'));
-                    }
-				});
-
-
-				$('#form_add_catalog').submit(function (e) {
-					e.preventDefault();
-
-					$('#modal-wishlist').modal('hide');
-
-					var form = $(this);
-					let list_id = $('#wishlist').val();
-					var route = '{{route('catalogs')}}/add-to-catalog/'+list_id;
-
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "GET",
-						url: route,
-						data: form.serialize(),
-						success: function(resp)
-						{
-							if(resp == "ok"){
-
-								$('#new_wishlist_name').val('');
-
-								$.gritter.add({
-									title: '@lang('wishlist.modal_success')',
-								});
-							}
-						},
-						error:  function(xhr, str){
-							console.log(xhr);
-						}
-					});
-
-					return false;
-				})
-				$('#form_add_order').submit(function (e) {
-					e.preventDefault();
-
-					$('#modal-order').modal('hide');
-
-					var form = $(this);
-
-					var order_id = $('#order_id').val();
-					var route = '{{route('orders')}}/add-to-order/'+order_id;
-
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "POST",
-						url: route,
-						data: form.serialize(),
-						success: function(resp)
-						{
-							if(resp == "ok"){
-								$.gritter.add({
-									title: '@lang('order.modal_success')',
-								});
-								if(order_id == 0){
-									document.location.reload(true);
-								}
-								window.table.ajax.reload();
-							}
-						},
-						error:  function(xhr, str){
-							console.log(xhr);
-						}
-					});
-
-					return false;
-				});
-				$('#form_get_price').submit(function (e) {
-					e.preventDefault();
-					$('#modal-get_price').modal('hide');
-					var product_id = $('#get_price_product_id').val();
-					var form = $(this);
-
-					var route = '{{route('products')}}/'+product_id+'/get-price/';
-
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "GET",
-						url: route,
-						data: form.serialize(),
-						success: function(resp)
-						{
-							if(resp == "ok"){
-								$.gritter.add({
-									title: '@lang('product.get_price_success')',
-								});
-							}
-						},
-						error:  function(xhr, str){
-							console.log(xhr);
-						}
-					});
-
-					return false;
-				})
-			});
-		})(jQuery);
+		// jQuery(function ($) {
+		// 	"use strict";
+		// 	$(document).ready(function() {
+		//
+		// 	});
+		// });
 
 		$('#instockToggler').click(function() {
 				@if(Request::get('instock') == 'on')
@@ -371,23 +529,6 @@
 				window.location.href = $(location).attr('href')+'?instock='+$(this).val();
 				@endif
 		});
-
-		$('#select_all_products').change(function() {
-			if($('#select_all_products').prop('checked')){
-				$(".intable").each(function(){
-					$(this).prop('checked', true);
-				});
-			}
-			else{
-				$(".intable").each(function(){
-					$(this).prop('checked', false);
-				});
-			}
-		});
-
-		$('#data-table-buttons').on( 'draw.dt', function () {
-  			$('#select_all_products').prop('checked', false);
-			} );
 
 	</script>
 	<style>
@@ -402,6 +543,14 @@
 				margin-left:12px;
 				font-size: 1rem;
 				line-height: 1.0;
+		}
+
+		#add_to_my_list,#add_to_order{
+			margin-left:6px;
+		}
+
+		.right-align{
+float: right;
 		}
 	</style>
 @endpush

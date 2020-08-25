@@ -13,6 +13,7 @@ use App\Models\Product\ProductCategory;
 use App\Models\WlImage;
 use App\Models\Content;
 use LaravelLocalization;
+use Illuminate\Support\Arr;
 
 class CategoryServices
 {
@@ -63,11 +64,54 @@ class CategoryServices
 		foreach ($categories as $category){
 			$category_ids = $instance->getChildren($category_ids,$category);
 		}
-
 		return $category_ids;
 	}
 
-	public static  function getBreadcrumbs($id){
+	public static function initCategoryTree(){
+			$instance =  static::getInstance();
+			$parent_categories = CategoryServices::getChilds(0);
+			$result = array();
+			foreach ($parent_categories as $key => $value) {
+						$data = [
+							'text' => CategoryServices::getName($key),
+							'id' => $key
+						];
+						$result[$key] = $data;
+			}
+			return $result;
+	}
+
+	public static function getNodeAjax($id = 0){
+		$instance =  static::getInstance();
+		$categories = CategoryServices::getChilds($id);
+		$result = array();
+		foreach ($categories as $key => $value) {
+					$data = [
+						'text' => CategoryServices::getName($key),
+						'id' => $key
+					];
+					$result[$key] = $data;
+		}
+		//$result = CategoryServices::toJsTreeJson($result);
+		return $result;
+	}
+
+
+	private static function getChilds($id){
+	  $childs = ProductCategory::where([['parent', $id]])->get()->keyBy('id')->toArray();
+	  return $childs;
+	}
+
+	private static function toJstreeJson($node){
+		$instance =  static::getInstance();
+		$response = '';
+		foreach ($node as $key => $value) {
+				$response .= json_encode($value);
+		}
+		return $response;
+	}
+
+	public static function getBreadcrumbs($id){
 		$instance =  static::getInstance();
 		$breadcrumbs = [];
 		return static::getParent($id,$breadcrumbs);

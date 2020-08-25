@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
-use App\Services\Order\OrderServices;
 use App\Services\Product\CategoryServices;
+use Illuminate\Support\Str;
+use App\Services\Order\OrderServices;
 use App\Services\Product\CatalogServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -24,7 +24,7 @@ class ProductController extends Controller
 		$orders = OrderServices::getByCompany();
 
 
-    	return view('product.all',compact('categories','wishlists', 'orders'));
+    return view('product.all',compact('categories','wishlists', 'orders'));
 	}
 
 	public function category($id){
@@ -40,21 +40,19 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-
 		if(Str::contains(url()->previous(), 'instock'))
 		{
 			$products = Product::whereHas('storages', function($q){
-          $q->where('amount', '>', '0');
-          $q->where('is_main', '!=', '0');
-      });
+				$q->where('amount','>',0);
+			});
+			 $products = $products->whereIn('group', array_values(explode(",",$request->categories)));
 		}
 		else{
 			$products = Product::with(['storages','content']);
+			$products = $products->whereIn('group', array_values(explode(",",$request->categories)));
 		}
 		$ids = null;
-		if($request->has('category_id')){
-			$products->whereIn('group',CategoryServices::getAllChildrenCategoriesID($request->category_id));
-		}
+
 		if($request->has('search')){
 			$ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
 		}
@@ -63,7 +61,27 @@ class ProductController extends Controller
 			->eloquent($products)
 			->addColumn('check_html', function (Product $product) {
 				return '<div class="checkbox checkbox-css">
-						  <input type="checkbox" id="product-'.$product->id.'" class="intable" />
+						  <input type="checkbox" id="product-'.$product->id.'" class="intable" onclick="(function(){
+								var pid = '."$product->id".';
+								var selected_products = document.getElementById('."'selected_products'".');
+								textContent = selected_products.textContent;
+								selected_products_arr = textContent.split('."','".');
+								const index = selected_products_arr.indexOf(String(pid));
+								console.log(index);
+										if (index > -1) {
+  										selected_products_arr.splice(index, 1);
+										}
+										else{
+											if(selected_products_arr.length === 1 && selected_products_arr[0] === '."''".'){
+												selected_products_arr = [String(pid)];
+											}
+											else{
+												selected_products_arr.push(String(pid));
+											}
+										}
+										selected_products.textContent = selected_products_arr.toString();
+										 console.log(selected_products_arr);
+							})();"/>
 						  <label for="product-'.$product->id.'"> </label>
 						</div>';
 			})
@@ -105,10 +123,39 @@ class ProductController extends Controller
 			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
-				if($product->storages){
+				if(isset($product->storages)){
 					$storage = $product->storages->firstWhere('is_main',1);
-					if($storage){
-						$value = $storage->amount.' / '.$storage->storage->term;
+					if(isset($storage->amount)){
+						$amount = $storage->amount;
+						switch($amount){
+							case $amount>10000:
+								$amount = '>10000';
+								break;
+						  case $amount>5000:
+								$amount = '>5000';
+								break;
+							case $amount>1500:
+								$amount = '>1500';
+								break;
+							case $amount>500:
+								$amount = '>500';
+								break;
+							case $amount>150:
+								$amount = '>150';
+								break;
+							case $amount>50:
+								$amount = '>50';
+								break;
+							case $amount>10:
+							$amount = '>10';
+								break;
+							case $amount<10:
+								$amount = '<10';
+								break;
+						}
+						$value = $amount.' / '.$storage->storage->term;
+					}else{
+						$value = '-';
 					}
 				}
 				return $value;
@@ -156,6 +203,11 @@ class ProductController extends Controller
 			->toJson();
 	}
 
+	public function getNode(Request $request){
+		$tree = CategoryServices::getNodeAjax($request->id);
+	 return array_values($tree);
+	}
+
 	public function show($id){
 		$product = Product::find($id);
 
@@ -165,9 +217,9 @@ class ProductController extends Controller
 		$limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
 		$limit2 = ($product->limit_2 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
 
+		$orders = OrderServices::getByCompany();
 		$basePrice = \App\Services\Product\Product::getBasePrice($product);
 		$wishlists = CatalogServices::getByCompany();
-		$orders = OrderServices::getByCompany();
 
 		$storage_prices = [];
 		$storage_raw_prices = [];
@@ -178,7 +230,8 @@ class ProductController extends Controller
         }
 		SEOTools::setTitle($productName);
 
-		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice', 'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices','storage_raw_prices'));
+		return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice',
+		'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices','storage_raw_prices'));
 	}
 
 	public function search(Request $request){
