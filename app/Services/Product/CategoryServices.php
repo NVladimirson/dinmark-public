@@ -50,8 +50,25 @@ class CategoryServices
 	public static function getAllChildrenCategoriesID($parent){
 		$instance =  static::getInstance();
 		$category_ids = [];
-
 		return $instance->getChildren($category_ids,$parent);
+	}
+
+	public static function getChildrenRecursive($parent, $category_ids = []){
+		$instance =  static::getInstance();
+		$categories = ProductCategory::where([
+			['parent',$parent],
+			['active',1],
+		])->pluck('id')->toArray();
+
+		foreach ($categories as $key => $category) {
+
+		}
+
+		$category_ids = array_merge($category_ids,$categories);
+		foreach ($categories as $category){
+			$category_ids = $instance->getChildren($category_ids,$category);
+		}
+		return $category_ids;
 	}
 
 	public static function getChildren($category_ids,$parent){
@@ -67,19 +84,6 @@ class CategoryServices
 		return $category_ids;
 	}
 
-	public static function initCategoryTree(){
-			$instance =  static::getInstance();
-			$parent_categories = CategoryServices::getChilds(0);
-			$result = array();
-			foreach ($parent_categories as $key => $value) {
-						$data = [
-							'text' => CategoryServices::getName($key),
-							'id' => $key
-						];
-						$result[$key] = $data;
-			}
-			return $result;
-	}
 
 	public static function getNodeAjax($id = 0){
 		$instance =  static::getInstance();
@@ -90,16 +94,27 @@ class CategoryServices
 						'text' => CategoryServices::getName($key),
 						'id' => $key
 					];
+					if(CategoryServices::anyChilds($key)){
+						$data['children'] = ['Загрузка'];
+					}
 					$result[$key] = $data;
 		}
-		//$result = CategoryServices::toJsTreeJson($result);
 		return $result;
 	}
 
 
 	private static function getChilds($id){
-	  $childs = ProductCategory::where([['parent', $id]])->get()->keyBy('id')->toArray();
+	  $childs = ProductCategory::where([['parent', $id],['active',1]])->get()->keyBy('id')->toArray();
 	  return $childs;
+	}
+
+	private static function anyChilds($id){
+		$categories = ProductCategory::where([
+					['parent',$id],
+					['active',1],
+				])->pluck('id')->toArray();
+		$anychilds = (!empty($categories));
+		return $anychilds;
 	}
 
 	private static function toJstreeJson($node){

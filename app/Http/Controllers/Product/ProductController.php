@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
 use App\Services\Product\CategoryServices;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\Order\OrderServices;
 use App\Services\Product\CatalogServices;
@@ -45,11 +46,21 @@ class ProductController extends Controller
 			$products = Product::whereHas('storages', function($q){
 				$q->where('amount','>',0);
 			});
-			 $products = $products->whereIn('group', array_values(explode(",",$request->categories)));
 		}
 		else{
 			$products = Product::with(['storages','content']);
-			$products = $products->whereIn('group', array_values(explode(",",$request->categories)));
+		}
+		if(!empty($request->categories)){
+			$selected_items = array_values(explode(",",$request->categories));
+			$res = $selected_items;
+			foreach ($selected_items as $key => $parent) {
+				$childs = CategoryServices::getAllChildrenCategoriesID($parent);
+				// $res = Arr::crossJoin($res,$childs);
+				foreach ($childs as $key => $child) {
+					$res[] = $child;
+				}
+			}
+			$products = $products->whereIn('group', $res);
 		}
 		$ids = null;
 
