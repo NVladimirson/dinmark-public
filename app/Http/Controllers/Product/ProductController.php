@@ -40,21 +40,6 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		// if($request->categories){
-		// 	$products = Product::whereHas('storages', function($q){
-		// 		$q->where('amount','>',0);
-		// 	});
-		// 	 $products = $products->whereIn('group', array_values(explode(",",$request->categories)));
-		// }
-		// else{
-		// 		$products = Product::whereHas('storages', function($q){
-	  //         $q->where('amount', '>', '0');
-	  //     });
-		// }
-
-
-
-		//info('Прошло');
 		if(Str::contains(url()->previous(), 'instock'))
 		{
 			$products = Product::whereHas('storages', function($q){
@@ -67,18 +52,11 @@ class ProductController extends Controller
 			$products = $products->whereIn('group', array_values(explode(",",$request->categories)));
 		}
 		$ids = null;
-		// if($request->has('category_id')){
-		// 	$products->whereIn('group',CategoryServices::getAllChildrenCategoriesID($request->category_id));
-		// }
+
 		if($request->has('search')){
 			$ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
 		}
-		// var node = document.getElementById('reload');
-		// textContent = node.textContent;
-		// var res = textContent.split(",");
 
-		// var node = document.getElementById('reload');
-		// node.textContent = loaded.toString();
 		return datatables()
 			->eloquent($products)
 			->addColumn('check_html', function (Product $product) {
@@ -223,6 +201,11 @@ class ProductController extends Controller
 			}, true)
 			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch'])
 			->toJson();
+	}
+
+	public function getNode(Request $request){
+		$tree = CategoryServices::getNodeAjax($request->id);
+	 return array_values($tree);
 	}
 
 	public function show($id){

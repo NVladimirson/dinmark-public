@@ -40,6 +40,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/category/{id}','Product\ProductController@category')->name('products.category');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
+		Route::get('/get-node-ajax/{id}', 'Product\ProductController@getNode')->name('getnode');
 		Route::get('/products/search','Product\ProductController@search')->name('products.search');
 		Route::get('/products/find','Product\ProductController@find')->name('products.find');
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');
