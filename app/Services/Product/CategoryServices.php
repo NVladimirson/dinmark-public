@@ -12,6 +12,7 @@ namespace App\Services\Product;
 use App\Models\Product\ProductCategory;
 use App\Models\WlImage;
 use App\Models\Content;
+use Illuminate\Support\Str;
 use LaravelLocalization;
 use Illuminate\Support\Arr;
 
@@ -45,6 +46,74 @@ class CategoryServices
 			->where('language',$instance->lang)
 			->where('alias', 8)
 			->get();
+	}
+
+	public static function getTerms(){
+		$instance =  static::getInstance();
+		$storages = \DB::select('SELECT DISTINCT ss.term FROM s_shopstorage ss WHERE ss.term != ""');
+		if($instance->lang == 'uk'){
+			foreach ($storages as $key => $term) {
+				if(Str::length($term->term) == 1){
+						if(intval($term->term) == 1){
+							$days =  ' доба';
+						}
+						else if((intval($term->term) <= 4) && intval($term->term) >= 2){
+							$days =  ' доби';
+						}
+						else{
+							$days =  ' діб';
+						}
+				}
+				else{
+					$tens = substr($term->term,-2);
+					$ones = substr($term->term,-1);
+					if($tens == 1){
+						$days =  ' діб';
+					}
+					else{
+						if(intval($ones) == 1){
+							$days =  ' доба';
+						}
+						else if((intval($term->term) <= 4) && intval($term->term) >= 2){
+							$days =  ' доби';
+						}
+						else{
+							$days =  ' діб';
+						}
+					}
+				}
+				$terms[$term->term] = $term->term . $days;
+			}
+		}else{
+			foreach ($storages as $key => $term) {
+				if(Str::length($term->term) == 1){
+						if(intval($term->term) == 1){
+							$days =  ' сутки';
+						}
+						else{
+							$days =  ' суток';
+						}
+				}
+				else{
+					$tens = substr($term->term,-2);
+					$ones = substr($term->term,-1);
+
+					if($tens == 1){
+						$days =  ' суток';
+					}
+					else{
+						if(intval($ones) == 1){
+							$days =  ' сутки';
+						}
+						else{
+							$days =  ' суток';
+						}
+					}
+				}
+				$terms[$term->term] = $term->term . $days;
+			}
+		}
+		return $terms;
 	}
 
 	public static function getAllChildrenCategoriesID($parent){

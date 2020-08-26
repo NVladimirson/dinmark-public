@@ -24,8 +24,9 @@ class ProductController extends Controller
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
 
+		$terms = CategoryServices::getTerms();
 
-    return view('product.all',compact('categories','wishlists', 'orders'));
+    return view('product.all',compact('categories','wishlists', 'orders', 'terms'));
 	}
 
 	public function category($id){
@@ -41,7 +42,7 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		if(Str::contains(url()->previous(), 'instock'))
+		if($request->instock == 'true')
 		{
 			$products = Product::whereHas('storages', function($q){
 				$q->where('amount','>',0);
@@ -60,6 +61,9 @@ class ProductController extends Controller
 					$res[] = $child;
 				}
 			}
+			$products = $products->whereIn('group', $res);
+		}
+		if($request->term){
 			$products = $products->whereIn('group', $res);
 		}
 		$ids = null;

@@ -24,7 +24,7 @@ return [
 
 	'empty'	=> 'По запросу ничего не найдено',
 
-	'select_category' => 'Выберите категорию',
+	'select_term' => 'Выберите срок доставки',
 
     'table_header_name' => 'Название',
     'table_header_article' => 'Артикул',

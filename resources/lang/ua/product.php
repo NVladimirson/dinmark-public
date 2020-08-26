@@ -24,7 +24,7 @@ return [
 
 	'empty'	=> 'За запитом нічого не знайдено',
 
-	'select_category' => 'Оберіть категорію',
+	'select_term' => 'Оберіть термін доставки',
 
 	'table_header_name' => 'Назва',
 	'table_header_article' => 'Артикул',
