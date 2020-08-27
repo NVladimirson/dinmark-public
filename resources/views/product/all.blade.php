@@ -38,16 +38,6 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-xl-3">
-						<!-- @if($categories->count() > 0)
-						<div class="col-lg-4">
-							<select class="form-control selectpicker" id="category" data-size="10" data-live-search="true" data-style="btn-white">
-								<option value="" selected>@lang('product.select_category')</option>
-								@foreach($categories as $category)
-									<option value="{{-$category->content}}">{{$category->name}}</option>
-								@endforeach
-							</select>
-						</div>
-						@endif -->
 
 						@if(Request::get('instock'))
 						<div class="custom-control custom-switch">
@@ -61,11 +51,26 @@
 						</div>
 					 @endif
 					 </div>
-					 <div class="col-xl-9">
+
+					 <div class="col-xl-4">
+							 <!-- <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
+								 <option value="0" selcted>@lang('product.mass_actions.select')</option>
+									 <option value="1">@lang('product.mass_actions.add-to-wishlist')</option>
+									 <option value="2">@lang('product.mass_actions.add-to-order')</option>
+							 </select> -->
+					 </div>
+
+					 <div class="col-xl-5">
 						 <div class="right-align">
-					 <button type="button" id="add_to_my_list" class="btn btn-outline-info"><i class="fa fa-filter" aria-hidden="true">@lang('product.add_to_my_list')</i></button>
-					 <button type="button" id="add_to_order" class="btn btn-outline-info"><i class="fa fa-filter" aria-hidden="true">@lang('product.add_to_order')</i></button>
-				 </div>
+							 @if(isset($terms))
+								 <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
+									 <option value="">@lang('product.select_term')</option>
+									 @foreach($terms as $key => $term)
+										 <option value="{{$key}}">{!! $term !!}</option>
+									 @endforeach
+								 </select>
+							 @endif
+				 	 	</div>
 					 </div>
 					</div>
 
@@ -89,7 +94,13 @@
 								<th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
 								<th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
 								<th class="text-nowrap">@lang('product.table_header_storage')</th>
-								<th width="100"></th>
+								<th width="124">
+								<!-- <div id = "mass_actions">
+									<a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-eye"></i></a>
+									<a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-star"></i></a>
+									<a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-cart-plus"></i></a>
+								</div> -->
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -135,9 +146,11 @@
 											// }
 									},
 							}
+					}).on('deselect_node.jstree', function(e, data) {
+							jsTreetoDatatable();
 					})
-					.on('create_node.jstree', function(e, data) {
-
+					.on('select_node.jstree', function(e, data) {
+							jsTreetoDatatable();
 					}).
 			on('before_open.jstree', function(e, data) {
 					if (!loaded.includes(data.node.id)) {
@@ -169,11 +182,11 @@
 			});
 
 			//datatable
-			$('#category').change(function () {
-				if($(this).val() != ''){
-					window.location.href = '{{route('products')}}/category/'+$(this).val();
-				}
-			});
+			// $('#category').change(function () {
+			// 	if($(this).val() != ''){
+			// 		window.location.href = '{{route('products')}}/category/'+$(this).val();
+			// 	}
+			// });
 			$('#select_all_products').change(function() {
 				if($('#select_all_products').prop('checked')){
 					window.products = [];
@@ -188,8 +201,10 @@
 						$(this).prop('checked', false);
 							document.getElementById('selected_products').innerText = '';
 					});
+					window.products = [];
 				}
 			});
+
 
 			$('#data-table-buttons').on( 'draw.dt', function () {
 					$('#select_all_products').prop('checked', false);
@@ -220,7 +235,14 @@
 															return [];
 														}
 														return res;
-							    				}
+							    				},
+							"instock" : 	function ( ) {
+									return $('#instockToggler').prop('checked');
+							},
+							"term" : 	function ( ) {
+								var optionSelected = $("option:selected", $('#storages')).val();
+								return optionSelected;
+							}
 						}
 
 				},
@@ -261,6 +283,7 @@
 					},
 					{
 						data: 'actions',
+						"orderable":      false,
 					},
 				],
 				"preUpload": function(settings, json) {
@@ -268,46 +291,47 @@
 					}
 			});
 
-			$( "#apply_filters" ).click(function() {
-				let collection = document.getElementsByClassName("jstree-node");
-				//let arr = [].slice.call(collection);
-				let loaded = [];
-					for (let i = 0; i < collection.length; i++) {
-						if(collection[i].getAttribute('aria-selected') == 'true'){
-								loaded.push(collection[i].getAttribute('id'));
+
+			// $( "#apply_filters" ).click(function() {
+			//
+			// 	});
+
+				$('#storages').on('change', function (e) {
+					jsTreetoDatatable()
+					});
+
+					$('#instockToggler').click(function() {
+						jsTreetoDatatable()
+					});
+
+					$('#mass_actions').on('change', function (e) {
+						if(window.products){
+							let option = $("option:selected", $('#mass_actions')).val();
+							if(option != '0'){
+
+							}
 						}
-						loaded = loaded.filter(function(value,index,self){
-							return self.indexOf(value) === index;
+
 						});
+
+					function jsTreetoDatatable(){
+						let collection = document.getElementsByClassName("jstree-node");
+						//let arr = [].slice.call(collection);
+						let loaded = [];
+							for (let i = 0; i < collection.length; i++) {
+								if(collection[i].getAttribute('aria-selected') == 'true'){
+										loaded.push(collection[i].getAttribute('id'));
+								}
+								loaded = loaded.filter(function(value,index,self){
+									return self.indexOf(value) === index;
+								});
+							}
+								var node = document.getElementById('reload');
+								node.textContent = loaded.toString();
+								window.table.ajax.reload();
 					}
-						var node = document.getElementById('reload');
-						node.textContent = loaded.toString();
-						window.table.ajax.reload();
-				});
-				$( "#add_to_my_list" ).click(function() {
-					$('#modal-order').modal('show');
-				});
-				$( "#add_to_order" ).click(function() {
-					$('#modal-get-price').modal('show');
-				});
-				$(".asd").click(function() {
-					$('#myModal').modal('show');
-				});
-
-			// function getCategoryParams(){
-			// 	var node = document.getElementById('reload');
-			// 	textContent = node.textContent;
-			// 	var res = textContent.split(",");
-			// 	return res;
-			// }
-
-			// table.on( 'xhr', function () {
-			// 	var data = table.ajax.params();
-			// 	alert( 'Search term was: '+data.search.value );
-			// });
 
 
-			//alert($('button:contains(<span>"Initialisation..."</span>)').attr('class'));
 
 
 			$('#modal-get_price').on('show.bs.modal', function (event) {
@@ -488,7 +512,6 @@
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h4 class="panel-title">@lang('product.all_categories_name')</h4>
-			<button type="button" id="apply_filters" class="btn btn-outline-dark"><i class="fa fa-filter" aria-hidden="true">Применить фильтры</i></button>
     </div>
         <div id="jstree"></div>
 				<div id="reload" style="display:none"></div>
@@ -513,24 +536,6 @@
 	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
-	<script>
-
-		// jQuery(function ($) {
-		// 	"use strict";
-		// 	$(document).ready(function() {
-		//
-		// 	});
-		// });
-
-		$('#instockToggler').click(function() {
-				@if(Request::get('instock') == 'on')
-				window.location.href = $(location).attr('href').substr(0,($(location).attr('href')).indexOf('?instock=on'));
-				@else
-				window.location.href = $(location).attr('href')+'?instock='+$(this).val();
-				@endif
-		});
-
-	</script>
 	<style>
 		.checkbox.checkbox-css label{
 			padding:8px;
@@ -543,10 +548,6 @@
 				margin-left:12px;
 				font-size: 1rem;
 				line-height: 1.0;
-		}
-
-		#add_to_my_list,#add_to_order{
-			margin-left:6px;
 		}
 
 		.right-align{

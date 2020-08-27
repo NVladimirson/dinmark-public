@@ -8,6 +8,7 @@ use App\Imports\CatalogImport;
 use App\Models\Product\CompanyProductArticle;
 use App\Models\Product\Product;
 use App\Models\Wishlist\Like;
+use Illuminate\Support\Str;
 use App\Models\Wishlist\LikeGroup;
 use App\Services\Order\OrderServices;
 use Illuminate\Http\Request;
@@ -227,36 +228,45 @@ class CatalogController extends Controller
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
 				if($product->storages){
-					$storage = $product->storages->firstWhere('is_main',1);
-					if($storage){
-						$amount = $storage->amount;
-						switch($amount){
-							case $amount>10000:
-								$amount = '>10000';
-								break;
-							case $amount>5000:
-								$amount = '>5000';
-								break;
-							case $amount>1500:
-								$amount = '>1500';
-								break;
-							case $amount>500:
-								$amount = '>500';
-								break;
-							case $amount>150:
-								$amount = '>150';
-								break;
-							case $amount>50:
-								$amount = '>50';
-								break;
-							case $amount>10:
-							$amount = '>10';
-								break;
-							case $amount<10:
-								$amount = '<10';
-								break;
+					$storages = $product->storages;
+					if($storages){
+						$value = '';
+						//dd($storages);
+						foreach ($storages as $key => $storage) {
+							$term = $storage->storage->term;
+							if(Str::length($term) == 1){
+									if(intval($term) == 1){
+										$days =  'роб. доба';
+									}
+									else if((intval($term) <= 4) && intval($term) >= 2){
+										$days =  'роб. доби';
+									}
+									else{
+										$days =  'роб. діб';
+									}
+							}
+							else{
+								$tens = substr($term,-2);
+								$ones = substr($term,-1);
+								if($tens == 1){
+									$days =  'роб. діб';
+								}
+								else{
+									if(intval($ones) == 1){
+										$days =  'роб. доба';
+									}
+									else if((intval($term) <= 4) && intval($term) >= 2){
+										$days =  'роб. доби';
+									}
+									else{
+										$days =  'роб. діб';
+									}
+								}
+							}
+
+						 $value .= $storage->storage->name.': '.$storage->amount.' / '.$term.' '.$days."<br>";
 						}
-						$value = $amount.' / '.$storage->storage->term;
+						//$value = substr($value,0,-2);
 					}
 				}
 				return $value;
@@ -301,7 +311,7 @@ class CatalogController extends Controller
 					$product->whereIn('id',$ids);
 				}
 			}, true)
-			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','article_holding'])
+			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','article_holding','storage_html'])
 			->toJson();
 	}
 

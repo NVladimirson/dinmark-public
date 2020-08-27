@@ -48,9 +48,9 @@ class CategoryServices
 			->get();
 	}
 
-	public static function getTerms(){
+	public static function getTermsForSelect(){
 		$instance =  static::getInstance();
-		$storages = \DB::select('SELECT DISTINCT ss.term FROM s_shopstorage ss WHERE ss.term != ""');
+		$storages = \DB::select('SELECT DISTINCT ss.id,ss.term FROM s_shopstorage ss WHERE ss.term != ""');
 		if($instance->lang == 'uk'){
 			foreach ($storages as $key => $term) {
 				if(Str::length($term->term) == 1){

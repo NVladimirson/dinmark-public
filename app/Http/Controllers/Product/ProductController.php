@@ -24,7 +24,7 @@ class ProductController extends Controller
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
 
-		$terms = CategoryServices::getTerms();
+		$terms = CategoryServices::getTermsForSelect();
 
     return view('product.all',compact('categories','wishlists', 'orders', 'terms'));
 	}
@@ -42,15 +42,8 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		if($request->instock == 'true')
-		{
-			$products = Product::whereHas('storages', function($q){
-				$q->where('amount','>',0);
-			});
-		}
-		else{
-			$products = Product::with(['storages','content']);
-		}
+		$products = Product::with(['storages','content']);
+
 		if(!empty($request->categories)){
 			$selected_items = array_values(explode(",",$request->categories));
 			$res = $selected_items;
@@ -63,9 +56,23 @@ class ProductController extends Controller
 			}
 			$products = $products->whereIn('group', $res);
 		}
+
 		if($request->term){
-			$products = $products->whereIn('group', $res);
+			$term = $request->term;
+			$products = $products->whereHas('storages', function($storages) use($term){
+				$storages->whereHas('storage',function($storage) use($term){
+					$storage->where('term',$term);
+				});
+			});
 		}
+
+		if($request->instock == 'true')
+		{
+			$products = $products->whereHas('storages', function($q){
+				$q->where('amount','>',0);
+			});
+		}
+
 		$ids = null;
 
 		if($request->has('search')){
@@ -136,45 +143,52 @@ class ProductController extends Controller
 
                 return '-';
 			})
-			->addColumn('storage_html', function (Product $product) {
-				$value = trans('product.storage_empty');
-				if(isset($product->storages)){
-					$storage = $product->storages->firstWhere('is_main',1);
-					if(isset($storage->amount)){
-						$amount = $storage->amount;
-						switch($amount){
-							case $amount>10000:
-								$amount = '>10000';
-								break;
-						  case $amount>5000:
-								$amount = '>5000';
-								break;
-							case $amount>1500:
-								$amount = '>1500';
-								break;
-							case $amount>500:
-								$amount = '>500';
-								break;
-							case $amount>150:
-								$amount = '>150';
-								break;
-							case $amount>50:
-								$amount = '>50';
-								break;
-							case $amount>10:
-							$amount = '>10';
-								break;
-							case $amount<10:
-								$amount = '<10';
-								break;
+->addColumn('storage_html', function (Product $product) {
+	$value = trans('product.storage_empty');
+	if($product->storages){
+		$storages = $product->storages;
+		if($storages){
+			$value = '';
+			//dd($storages);
+			foreach ($storages as $key => $storage) {
+				$term = $storage->storage->term;
+				if(Str::length($term) == 1){
+						if(intval($term) == 1){
+							$days =  'роб. доба';
 						}
-						$value = $amount.' / '.$storage->storage->term;
-					}else{
-						$value = '-';
+						else if((intval($term) <= 4) && intval($term) >= 2){
+							$days =  'роб. доби';
+						}
+						else{
+							$days =  'роб. діб';
+						}
+				}
+				else{
+					$tens = substr($term,-2);
+					$ones = substr($term,-1);
+					if($tens == 1){
+						$days =  'роб. діб';
+					}
+					else{
+						if(intval($ones) == 1){
+							$days =  'роб. доба';
+						}
+						else if((intval($term) <= 4) && intval($term) >= 2){
+							$days =  'роб. доби';
+						}
+						else{
+							$days =  'роб. діб';
+						}
 					}
 				}
-				return $value;
-			})
+
+			 $value .= $storage->storage->name.': '.$storage->amount.' / '.$term.' '.$days."<br>";
+			}
+			//$value = substr($value,0,-2);
+		}
+	}
+	return $value;
+})
 
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
@@ -214,7 +228,7 @@ class ProductController extends Controller
 					$product->whereIn('id',$ids);
 				}
 			}, true)
-			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch'])
+			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch','storage_html'])
 			->toJson();
 	}
 
