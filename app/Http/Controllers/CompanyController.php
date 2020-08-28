@@ -284,6 +284,7 @@ class CompanyController extends Controller
             'password' => $validatedData['user_password'],
             'password' => $validatedData['user_password'],
             'company' => auth()->user()->company,
+            'status' => 4,
             'last_login' => 0,
         ]);
 
