@@ -237,10 +237,10 @@ class CompanyController extends Controller
                 return $user->getStatus->title;
             })
             ->addColumn('registered_time', function (User $user) {
-                return Carbon::parse($user->registered)->format('d.m.Y h:i');
+                return Carbon::createFromTimestamp($user->registered)->format('d.m.Y h:i');
             })
             ->addColumn('last_login_time', function (User $user) {
-                return Carbon::parse($user->last_login)->format('d.m.Y h:i');
+                return Carbon::createFromTimestamp($user->last_login)->format('d.m.Y h:i');
             })
             ->addColumn('actions', function (User $user) {
                 return view('company.include.user_action_buttons',compact('user'));
