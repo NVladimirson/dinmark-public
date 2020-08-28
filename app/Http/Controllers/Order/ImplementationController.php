@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Company\Client;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
+use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Services\Order\ImplementationServices;
 use App\Services\TimeServices;
+use App\User;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Support\Carbon;
@@ -16,9 +18,31 @@ use PDF;
 
 class ImplementationController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 		SEOTools::setTitle(trans('implementation.page_list'));
-		return view('order.implementation');
+
+        $sendersId =  ImplementationServices::getFilteredData($request)
+            ->groupBy('sender_id')
+            ->pluck('sender_id');
+        $senders = User::whereIn('id',$sendersId)->pluck('id','name')->toArray();
+        if($sendersId->has(0)){
+            $senders = array_merge(['Dinmark'=>0],$senders);
+        }
+
+        $customersId =  ImplementationServices::getFilteredData($request)
+            ->groupBy('customer_id')
+            ->pluck('customer_id');
+        $customers = User::whereIn('id',$customersId)->pluck('id','name')->toArray();
+        foreach ($customersId as $id){
+            if($id < 0){
+                $client = Client::find(-$id);
+                if($client){
+                    $customers[$client->name] = $id;
+                }
+            }
+        }
+
+		return view('order.implementation',compact('senders','customers'));
 	}
 
 	public function ajax(Request $request)
@@ -41,7 +65,12 @@ class ImplementationController extends Controller
 			})
 			->addColumn('customer',function (Implementation $implementation){
 				if($implementation->customer_id < 0){
-					return 'Клиент';
+                    $client = Client::find(-$implementation->customer_id);
+                    if($client){
+                        return '<i class="fas fa-users"></i> '.$client->name;
+                    }else{
+                        return trans('client.client_deleted');
+                    }
 				}else{
 					return $implementation->customer->name;
 				}

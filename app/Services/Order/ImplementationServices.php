@@ -15,26 +15,45 @@ class ImplementationServices
 
     public static function getFilteredData($request){
         $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
-            ->whereHas('sender',function ($users){
-                $users->whereHas('getCompany',function ($companies){
-                    $companies->where([
-                        ['holding', auth()->user()->getCompany->holding],
-                        ['holding', '<>', 0],
-                    ])->orWhere([
-                        ['id', auth()->user()->getCompany->id],
-                    ]);
-                });
-            })
-            ->orWhereHas('customer',function ($users){
-                $users->whereHas('getCompany',function ($companies){
-                    $companies->where([
-                        ['holding', auth()->user()->getCompany->holding],
-                        ['holding', '<>', 0],
-                    ])->orWhere([
-                        ['id', auth()->user()->getCompany->id],
-                    ]);
-                });
+            ->where(function ($imp){
+                $imp->whereHas('sender',function ($users){
+                    $users->whereHas('getCompany',function ($companies){
+                        $companies->where([
+                            ['holding', auth()->user()->getCompany->holding],
+                            ['holding', '<>', 0],
+                        ])->orWhere([
+                            ['id', auth()->user()->getCompany->id],
+                        ]);
+                    });
+                })
+                    ->orWhereHas('customer',function ($users){
+                        $users->whereHas('getCompany',function ($companies){
+                            $companies->where([
+                                ['holding', auth()->user()->getCompany->holding],
+                                ['holding', '<>', 0],
+                            ])->orWhere([
+                                ['id', auth()->user()->getCompany->id],
+                            ]);
+                        });
+                    });
             });
+
+        if($request->has('date_from')){
+            $implementations->where('date_add','>=',$request->date_from);
+        }
+
+
+        if($request->has('date_to')){
+            $implementations->where('date_add','<=',$request->date_to);
+        }
+
+        if($request->has('sender_id')){
+            $implementations->where('sender_id',$request->sender_id);
+        }
+
+        if($request->has('customer_id')){
+            $implementations->where('customer_id',$request->customer_id);
+        }
 
         return $implementations;
     }

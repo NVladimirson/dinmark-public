@@ -9,6 +9,8 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -38,10 +40,30 @@
 							<tr>
 								<th class="text-nowrap text-center"></th>
 								<th class="text-nowrap text-center"></th>
-								<th class="text-nowrap text-center">@lang('implementation.table_header_data')</th>
+								<th class="text-nowrap text-center">@lang('implementation.table_header_data')
+                                    <div class="row row-space-10">
+                                        <div class="col-xs-12 mb-2 m-b-5">
+                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.act_date_from')" required>
+                                        </div>
+                                        <div class="col-xs-12" >
+                                            <input type="text" name="act_date_to" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
+                                        </div>
+                                    </div></th>
 								<th class="text-nowrap text-center">@lang('implementation.table_header_number')</th>
-								<th class="text-nowrap">@lang('implementation.table_header_sender')</th>
-								<th class="text-nowrap">@lang('implementation.table_header_customer')</th>
+								<th class="text-nowrap">@lang('implementation.table_header_sender')
+                                    <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
+                                            <option value="" selected>@lang('order.filter_select_sender')</option>
+                                            @foreach($senders as $name => $id)
+                                                <option value="{{$id}}" >{{$name}}</option>
+                                            @endforeach
+                                        </select></div></th>
+								<th class="text-nowrap">@lang('implementation.table_header_customer')
+                                    <div><select class="form-control selectpicker" id="customer" data-size="10" data-live-search="true" data-style="btn-white">
+                                            <option value="" selected>@lang('order.filter_select_customer')</option>
+                                            @foreach($customers as $name => $id)
+                                                <option value="{{$id}}" >{{$name}}</option>
+                                            @endforeach
+                                        </select></div></th>
 								<th class="text-nowrap">@lang('implementation.table_header_ttn')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_total')</th>
 								<th class="text-nowrap" width="10"></th>
@@ -77,6 +99,8 @@
 @endsection
 
 @push('scripts')
+    <script src="/assets/plugins/moment/moment.js"></script>
+
 	<script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 	<script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
@@ -93,13 +117,22 @@
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
+    <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="/assets/plugins/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
-	<script>
+
+    <script>
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
 				var tableDataRoute = "{!! route('implementations.total_data_ajax') !!}";
+
+				var ajaxRouteBase = "{!! route('implementations.ajax') !!}";
+				var sender = '';
+				var customer = '';
+				var date = '';
 
 				function updateTableData(){
 					var route = tableDataRoute;
@@ -136,7 +169,7 @@
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
-					"ajax": "{!! route('implementations.ajax') !!}",
+					"ajax": ajaxRouteBase,
 					"order": [[ 0, "desc" ]],
 					"ordering": false,
 					"searching": false,
@@ -206,6 +239,78 @@
 						$(this).find('i').addClass('fa-minus');
 					}
 				} );
+
+                // filters
+
+				function updateAjax(){
+					var ajaxRoute = ajaxRouteBase + '?x=1' + sender + customer + date;
+					window.table.ajax.url( ajaxRoute ).load();
+					updateTableData();
+				}
+
+				$('#sender').change(function () {
+					if($(this).val() !== ''){
+						sender = '&sender_id='+$(this).val();
+					}else{
+						sender = '';
+					}
+					updateAjax();
+				});
+
+				$('#customer').change(function () {
+					if($(this).val() !== ''){
+						customer = '&customer_id='+$(this).val();
+					}else{
+						customer = '';
+					}
+					updateAjax();
+				});
+
+				$('#datetimepicker3').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+				$('#datetimepicker4').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+				$("#datetimepicker3").on("dp.change", function (e) {
+					$('#datetimepicker4').data("DateTimePicker").minDate(e.date);
+				});
+				$("#datetimepicker4").on("dp.change", function (e) {
+					$('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
+				});
+				$('#datetimepicker5').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+				$('#datetimepicker6').datetimepicker({
+					format: 'DD.MM.YYYY'
+				});
+
+				function changeDate(){
+					if($("#datetimepicker5").val() !== ''){
+						date = '&date_from='+$("#datetimepicker5").data("DateTimePicker").date()/1000;
+					}else{
+						date = '';
+					}
+					$('#datetimepicker3').val($("#datetimepicker5").val());
+					if($("#datetimepicker6").val() !== ''){
+						date += '&date_to='+$("#datetimepicker6").data("DateTimePicker").date()/1000;
+					}else {
+						date += '';
+					}
+					$('#datetimepicker4').val($("#datetimepicker6").val());
+					updateAjax();
+				}
+
+				$("#datetimepicker5").on("dp.change", function (e) {
+					$('#datetimepicker6').show();
+					$('#datetimepicker6').data("DateTimePicker").minDate(e.date);
+					changeDate();
+
+				});
+				$("#datetimepicker6").on("dp.change", function (e) {
+					$('#datetimepicker5').data("DateTimePicker").maxDate(e.date);
+					changeDate();
+				});
 
 			});
 		})(jQuery);
