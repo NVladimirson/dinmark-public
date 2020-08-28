@@ -79,6 +79,13 @@ class ImplementationController extends Controller
 
 				return number_format($implementation->products->sum('total'),2,',',' ');
 			})
+			->addColumn('ttn_html',function (Implementation $implementation){
+                if(strpos($implementation->ttn, '2045') === 0 || strpos($implementation->ttn, '5900') === 0){
+                    return '<a href="https://novaposhta.ua/tracking/?cargo_number='.$implementation->ttn.'" target="_blank">'.$implementation->ttn.'</a>';
+                }else{
+                    return $implementation->ttn;
+                }
+			})
 			->addColumn('btn_pdf',function (Implementation $implementation){
 
 				return '<a href="'.route('implementations.pdf',[$implementation->id]).'" class="btn btn-sm btn-primary">'.trans('implementation.btn_generate_pdf').'</a>';
@@ -108,7 +115,7 @@ class ImplementationController extends Controller
 				}
 				return view('order.include.implementation_products',compact(['products']))->render();
 			})
-			->rawColumns(['products','btn_pdf'])
+			->rawColumns(['products','btn_pdf','ttn_html'])
 			->toJson();
 	}
 

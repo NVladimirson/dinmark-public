@@ -203,7 +203,7 @@
 							data: 'customer',
 						},
 						{
-							data: 'ttn',
+							data: 'ttn_html',
 						},
 						{
 							data: 'total',
