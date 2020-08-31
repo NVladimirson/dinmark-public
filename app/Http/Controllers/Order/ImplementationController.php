@@ -90,9 +90,8 @@ class ImplementationController extends Controller
                     return $implementation->ttn;
                 }
 			})
-			->addColumn('btn_pdf',function (Implementation $implementation){
-
-				return '<a href="'.route('implementations.pdf',[$implementation->id]).'" class="btn btn-sm btn-primary">'.trans('implementation.btn_generate_pdf').'</a>';
+			->addColumn('actions_btn',function (Implementation $implementation){
+                return view('order.include.implementation_action_buttons',compact('implementation'))->render();
 			})
 			->addColumn('products',function (Implementation $implementation){
 				$products = [];
@@ -119,7 +118,7 @@ class ImplementationController extends Controller
 				}
 				return view('order.include.implementation_products',compact(['products']))->render();
 			})
-			->rawColumns(['products','btn_pdf','ttn_html'])
+			->rawColumns(['products','actions_btn','ttn_html'])
 			->toJson();
 	}
 

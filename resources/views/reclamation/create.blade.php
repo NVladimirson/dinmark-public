@@ -18,60 +18,6 @@
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
-       {{-- <div class="col-xl-8">
-            <!-- begin panel -->
-            <div class="panel panel-primary">
-                <!-- begin panel-heading -->
-                <div class="panel-heading">
-                    <h4 class="panel-title">@lang('reclamation.create_tab_name')</h4>
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                    </div>
-                </div>
-                <!-- end panel-heading -->
-                <!-- begin panel-body -->
-                <div class="panel-body">
-                    <form action="{{route('reclamations.store')}}" enctype="multipart/form-data" method="post">
-                        @csrf
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <label for="implementation_id">@lang('reclamation.select_implementation')</label>
-                                <select class="form-control m-b-5" id="implementation_id" name="implementation_id">
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="product_id">@lang('reclamation.select_product')</label>
-                                <select class="form-control m-b-5" id="product_id" name="product_id" required>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="quantity_product">@lang('reclamation.quantity_product')</label>
-                                <input class="form-control m-b-5" type="number" id="quantity_product" name="quantity_product" min="0" max="0" required>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="ttn">@lang('reclamation.ttn')</label>
-                                <input class="form-control m-b-5" type="text" id="ttn" name="ttn">
-                            </div>
-                            <div class="col-md-12">
-                                <label for="comment">@lang('reclamation.comment')</label>
-                                <textarea class="form-control m-b-5" name="comment" id="comment" cols="30" rows="10" required></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="pull-right">
-                                    <button type="submit" class="btn btn-sm btn-primary m-b-5 m-r-5" data-toggle="modal">@lang('reclamation.btn_submit')</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-                <!-- end panel-body -->
-            </div>
-            <!-- end panel -->
-        </div>--}}
 		<div class="col-xl-12">
 			<!-- begin panel -->
 			<div class="panel panel-primary">
@@ -92,6 +38,9 @@
 						<div class="col-md-12  m-b-15">
 							<label for="implementation_id">@lang('reclamation.select_implementation')</label>
 							<select class="form-control m-b-5" id="implementation_id" name="implementation_id">
+                                @if($implementation)
+                                <option value="{{$implementation->id}}" selected="selected">{{$implementation->public_number}}</option>
+                                @endif
 							</select>
 						</div>
                         <div class="col-md-9">
@@ -183,7 +132,6 @@
 						cache: true
 					},
 				});
-
 				$('#implementation_id').change(function (e) {
 					e.preventDefault();
 					var implementation_id = $(this).val();
@@ -210,6 +158,9 @@
 						}
 					});
 				});
+                @if($implementation)
+				$('#implementation_id').change();
+                @endif
 
 				$('#add_product_btn').click(function (e) {
                     e.preventDefault();

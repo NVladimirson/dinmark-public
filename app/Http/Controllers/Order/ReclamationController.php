@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order\Implementation;
 use App\Models\Reclamation\Reclamation;
 use App\Models\Reclamation\ReclamationProduct;
 use App\Services\Order\ReclamationServices;
@@ -113,6 +114,12 @@ class ReclamationController extends Controller
 	public function create(){
 		SEOTools::setTitle(trans('reclamation.page_create'));
 		return view('reclamation.create');
+	}
+
+	public function createByImplementation($implementation_id){
+	    $implementation = Implementation::find($implementation_id);
+		SEOTools::setTitle(trans('reclamation.page_create'));
+		return view('reclamation.create',compact('implementation'));
 	}
 
 	public function store(Request $request)

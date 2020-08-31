@@ -36,4 +36,5 @@ return [
 	'table_product_order' 		=> 'Замовлення',
 
 	'btn_generate_pdf' 			=> 'Видаткова накладна',
+	'btn_create_implementation' => 'Оформити повернення',
 ];

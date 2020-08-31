@@ -68,7 +68,7 @@
 								<th class="text-nowrap">@lang('implementation.table_header_ttn')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_weight')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_total')</th>
-								<th class="text-nowrap" width="10"></th>
+								<th class="text-nowrap" width="80"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -217,7 +217,7 @@
 							data: 'total',
 						},
 						{
-							data: 'btn_pdf',
+							data: 'actions_btn',
 						},
 					],
 				} );

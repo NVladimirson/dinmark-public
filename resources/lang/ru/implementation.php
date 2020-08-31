@@ -36,5 +36,6 @@ return [
     'table_product_order' 		=> 'Заказ',
 
 	'btn_generate_pdf' 			=> 'Расходная накладная',
+    'btn_create_implementation' => 'Оформить возврат',
 
 ];

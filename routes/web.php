@@ -88,6 +88,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::get('/reclamations/total-data-ajax/','Order\ReclamationController@totalDataAjax')->name('reclamations.total_data_ajax');
 		Route::get('/reclamations/create','Order\ReclamationController@create')->name('reclamations.create');
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
+		Route::get('/reclamations/create/{implementation_id}','Order\ReclamationController@createByImplementation')->name('reclamations.store_implementation');
 
 		Route::get('/clients','ClientController@index')->name('clients');
 		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');
