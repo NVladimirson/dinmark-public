@@ -64,7 +64,9 @@
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
                                         </select></div></th>
+								<th class="text-nowrap">@lang('implementation.table_header_status')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_ttn')</th>
+								<th class="text-nowrap">@lang('implementation.table_header_weight')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_total')</th>
 								<th class="text-nowrap" width="10"></th>
 							</tr>
@@ -203,7 +205,13 @@
 							data: 'customer',
 						},
 						{
+							data: 'status',
+						},
+						{
 							data: 'ttn_html',
+						},
+						{
+							data: 'weight_html',
 						},
 						{
 							data: 'total',

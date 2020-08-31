@@ -75,6 +75,10 @@ class ImplementationController extends Controller
 					return $implementation->customer->name;
 				}
 			})
+			->addColumn('weight_html',function (Implementation $implementation){
+
+				return number_format($implementation->weight/100,2,',',' ');
+			})
 			->addColumn('total',function (Implementation $implementation){
 
 				return number_format($implementation->products->sum('total'),2,',',' ');
@@ -125,17 +129,10 @@ class ImplementationController extends Controller
         $implementations = $implementations->get();
 
         $total = 0;
-        $weight = 0;
+        $weight = $implementations->sum('weight')/100;
 
         foreach ($implementations as $implementation){
             $total += $implementation->products->sum('total');
-            foreach ($implementation->products as $implementationProduct)
-            {
-                if ($implementationProduct->orderProduct)
-                {
-                    $weight +=  $implementationProduct->orderProduct->product->weight * $implementationProduct->quantity/100;
-                }
-            }
         }
 
         return response()->json([

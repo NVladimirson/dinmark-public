@@ -22,6 +22,8 @@ return [
     'table_header_sender' 		=> 'Отправитель',
     'table_header_customer' 	=> 'Получатель',
     'table_header_ttn' 			=> 'Номер ТТН',
+    'table_header_status' 		=> 'Статус',
+    'table_header_weight' 		=> 'Вес',
     'table_header_total' 		=> 'Сумма',
 
     'table_footer_pc'           => 'Кл-во:',
