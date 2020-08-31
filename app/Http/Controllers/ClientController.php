@@ -30,7 +30,10 @@ class ClientController extends Controller
 			->addColumn('actions', function (Client $client) {
 				return view('client.include.action_buttons',compact('client'));
 			})
-			->rawColumns(['actions'])
+			->addColumn('comment_html', function (Client $client) {
+				return mb_strimwidth($client->comment,0,30,'...');
+			})
+			->rawColumns(['actions','comment_html'])
 			->toJson();
 	}
 
@@ -47,6 +50,7 @@ class ClientController extends Controller
 			'phone'		=> 'required',
 			'email'		=> 'required|email',
 			'address'		=> 'required',
+			'comment'		=> 'nullable|max:255',
 		]);
 
 		if(!is_array($validatedData) ){
@@ -80,6 +84,7 @@ class ClientController extends Controller
 			'phone'  => $request->phone,
 			'address'  => $request->address,
 			'company_id'  => $company->id,
+			'comment'  => $request->comment,
 		]);
 
 		return redirect()->route('clients')->with('status', trans('client.create_success'));
@@ -94,6 +99,20 @@ class ClientController extends Controller
 
 	public function update($id, Request $request)
 	{
+        $validatedData = $request->validate([
+            'name'		=> 'required',
+            'phone'		=> 'required',
+            'email'		=> 'required|email',
+            'address'		=> 'required',
+            'comment'		=> 'nullable|max:255',
+        ]);
+
+        if(!is_array($validatedData) ){
+            if($validatedData->fails()) {
+                return Redirect::back()->withErrors($validatedData);
+            }
+        }
+
 		$client = Client::find($id);
 		$company = auth()->user()->getCompany;
 		if(Client::whereHas('company',function ($companies){
@@ -120,6 +139,7 @@ class ClientController extends Controller
 		$client->email  = $request->email;
 		$client->phone  = $request->phone;
 		$client->address  = $request->address;
+		$client->comment  = $request->comment;
 		$client->save();
 
 		return redirect()->back()->with('status', trans('client.update_success'));
