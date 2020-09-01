@@ -90,6 +90,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
 		Route::get('/reclamations/create/{implementation_id}','Order\ReclamationController@createByImplementation')->name('reclamations.store_implementation');
 
+        Route::get('/payments','Finance\PaymentController@index')->name('payments');
+        Route::get('/payments/ajax','Finance\PaymentController@ajax')->name('payments.ajax');
+
+        Route::get('/balance','Finance\BalanceController@index')->name('balance');
+
 		Route::get('/clients','ClientController@index')->name('clients');
 		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');
 		Route::get('/clients/create','ClientController@create')->name('clients.create');

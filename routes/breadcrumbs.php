@@ -102,18 +102,23 @@ Breadcrumbs::for('reclamation.create', function ($trail) {
 	$trail->push(trans('reclamation.page_create'), route('reclamations.create'));
 });
 
+Breadcrumbs::for('payments', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('finance.page_payment'), route('payments'));
+});
+
 Breadcrumbs::for('client.all', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('client.page_list'), route('clients'));
 });
 
 Breadcrumbs::for('client.create', function ($trail) {
-	$trail->parent('home');
+	$trail->parent('client.all');
 	$trail->push(trans('client.page_create'), route('clients.create'));
 });
 
 Breadcrumbs::for('client.edit', function ($trail, $client) {
-	$trail->parent('home');
+	$trail->parent('client.all');
 	$trail->push($client->name, route('clients.edit',[$client->id]));
 });
 

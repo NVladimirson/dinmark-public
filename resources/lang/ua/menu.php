@@ -27,6 +27,10 @@ return [
 	'reclamations_all'	=> 'Мої повернення',
 	'reclamations_new'	=> 'Нове повернення',
 
+    'finances'	        => 'Фінанси',
+    'finances_payments'	=> 'Платежі',
+    'finances_balance'	=> 'Баланс в системі',
+
 	'clients'		=> 'Отримувачі',
 	'clients_all'	=> 'Список отримувачів',
 	'clients_new'	=> 'Новий отримувач',
