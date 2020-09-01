@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Company\Company;
 use App\Models\Order\ImplementationProduct;
 use App\Models\Order\Payment;
 use Closure;
@@ -17,42 +18,9 @@ class HeaderDebt
      */
     public function handle($request, Closure $next)
     {
-    	$debt = 0;
-		$implementationProducts = ImplementationProduct::whereHas('implementation', function ($implementations){
-				$implementations->whereHas('sender',function ($users){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				})
-					->orWhereHas('customer',function ($users){
-						$users->whereHas('getCompany',function ($companies){
-							$companies->where([
-								['id', session('current_company_id')],
-							]);
-						});
-					});
-			})
-			->get();
+    	$company = Company::find(session('current_company_id'));
 
-		$payments = Payment::whereHas('order',function ($orders){
-			$orders->whereHas('getUser',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			})->orWhereHas('sender',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			});
-		})->get();
-
-		$debt = $implementationProducts->sum('total') - $payments->sum('payed');
+		$debt = $company->balance;
 
 		view()->share(compact('debt'));
         return $next($request);
