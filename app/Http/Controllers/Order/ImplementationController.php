@@ -77,7 +77,7 @@ class ImplementationController extends Controller
 			})
 			->addColumn('weight_html',function (Implementation $implementation){
 
-				return number_format($implementation->weight/100,2,',',' ');
+				return number_format($implementation->weight,2,',',' ');
 			})
 			->addColumn('total',function (Implementation $implementation){
 
