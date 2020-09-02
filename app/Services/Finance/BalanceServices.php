@@ -9,6 +9,7 @@
 namespace App\Services\Finance;
 
 use App\Models\Company\Client;
+use App\Models\Company\Company;
 use App\Models\Order\Implementation;
 use App\Models\Order\Order;
 use App\Models\Order\Payment;
@@ -111,7 +112,9 @@ class BalanceServices
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
-        $saldoStart = 0;
+        $company = Company::find(session('current_company_id'));
+
+        $saldoStart = 0 - $company->balance;
         $saldoEnd = 0;
         $implementations = $instance
             ->getImplementations()
