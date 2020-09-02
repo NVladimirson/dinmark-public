@@ -38,7 +38,7 @@
 						<div class="col-md-12  m-b-15">
 							<label for="implementation_id">@lang('reclamation.select_implementation')</label>
 							<select class="form-control m-b-5" id="implementation_id" name="implementation_id">
-                                @if($implementation)
+                                @if(isset($implementation))
                                 <option value="{{$implementation->id}}" selected="selected">{{$implementation->public_number}}</option>
                                 @endif
 							</select>
@@ -68,10 +68,29 @@
                             </div>
                         </div>
 
-						<div class="col-md-12">
+						<div class="col-md-12 m-b-15">
 							<label for="ttn">@lang('reclamation.ttn')</label>
 							<input class="form-control m-b-5" type="text" id="ttn" name="ttn">
 						</div>
+                        <div class="col-md-6">
+
+                            <div class="form-group ">
+                                <div class="input-group mb-3 @error('document') is-invalid @enderror">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="uploadDocumentAddon">@lang('company.document')</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" name="document" class="custom-file-input @error('document') is-invalid @enderror" id="uploadPhoto" aria-describedby="uploadDocumentAddon">
+                                        <label class="custom-file-label" for="uploadPhoto">@lang('reclamation.document_type')</label>
+                                    </div>
+                                </div>
+                                @error('document')
+                                <span class="invalid-feedback " role="alert">
+                                     <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
 					</div>
 						<div class="row">
 							<div class="col-lg-12">
@@ -158,7 +177,7 @@
 						}
 					});
 				});
-                @if($implementation)
+                @if(isset($implementation))
 				$('#implementation_id').change();
                 @endif
 

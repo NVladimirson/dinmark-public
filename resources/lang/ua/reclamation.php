@@ -45,5 +45,6 @@ return [
     'product'		        => 'Товар',
 	'ttn'					=> 'ТТН рекламації',
 	'comment'				=> 'Причина рекламації',
+    'document_type'			=> 'Тільки: jpeg,png,pdf,jpg,doc,docx,xls,xlsx',
 	'btn_submit'			=> 'Створити рекламацію',
 ];

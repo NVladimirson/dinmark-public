@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company\Company;
 use App\Models\Order\Implementation;
 use App\Models\Reclamation\Reclamation;
 use App\Models\Reclamation\ReclamationProduct;
 use App\Services\Order\ReclamationServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
 
 class ReclamationController extends Controller
 {
@@ -124,9 +128,26 @@ class ReclamationController extends Controller
 
 	public function store(Request $request)
 	{
+        $validatedData = $request->validate([
+            'document'			=> 'nullable|file|mimes:jpeg,png,pdf,jpg,doc,docx,xls,xlsx',
+        ]);
+
+        if(!is_array($validatedData) ){
+            if($validatedData->fails()) {
+                return Redirect::back()->withErrors($validatedData);
+            }
+        }
+        $document = '';
+
+        if($request->hasFile('document')){
+            $document = Uuid::uuid4().'.'.$request->file('document')->getClientOriginalExtension();
+            Storage::disk('main_site')->putFileAs('documents/'.session('current_company_id').'/different', $request->file('document'), $document);
+        }
+
 		$reclamation = Reclamation::create([
-			'ttn'						=> $request->ttn,
-			'author'					=> auth()->user()->id,
+			'ttn'		=> $request->ttn,
+			'author'	=> auth()->user()->id,
+            'file'      => env('DINMARK_URL').'documents/'.session('current_company_id').'/different/'.$document
 		]);
 
 		foreach ($request->product_id as $key => $product){
