@@ -94,6 +94,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::get('/payments/ajax','Finance\PaymentController@ajax')->name('payments.ajax');
 
         Route::get('/balance','Finance\BalanceController@index')->name('balance');
+        Route::get('/balance/ajax','Finance\BalanceController@ajax')->name('balance.ajax');
+        Route::get('/balance/ajax-total','Finance\BalanceController@totalDataAjax')->name('balance.ajax_total');
 
 		Route::get('/clients','ClientController@index')->name('clients');
 		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');

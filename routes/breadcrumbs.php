@@ -107,6 +107,11 @@ Breadcrumbs::for('payments', function ($trail) {
     $trail->push(trans('finance.page_payment'), route('payments'));
 });
 
+Breadcrumbs::for('balance', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('finance.page_balance'), route('balance'));
+});
+
 Breadcrumbs::for('client.all', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('client.page_list'), route('clients'));

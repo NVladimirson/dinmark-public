@@ -14,6 +14,7 @@ use App\Models\Order\OrderStatus;
 use App\Models\Order\Payment;
 use App\Models\Order\Shipping;
 use App\Models\Product\Product;
+use App\Services\Finance\BalanceServices;
 use App\Services\Order\OrderServices;
 use App\Services\TimeServices;
 use App\User;
@@ -559,139 +560,17 @@ class OrderController extends Controller
 		$user = auth()->user();
 		$dateFromCarbon = Carbon::parse($request->act_date_from);
 		$dateToCarbon = Carbon::parse($request->act_date_to)->addDay();
-		$dateFrom = $dateFromCarbon->timestamp;
-		$dateTo = $dateToCarbon->timestamp;
 
 		$company = Company::find(session('current_company_id'));
-		$implementations =  Implementation::where(function ($impl){
-				$impl->whereHas('sender',function ($users){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				})
-				->orWhereHas('customer',function ($users){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				});
-			})
-			->where('date_add','>=',$dateFrom)
-			->where('date_add','<=',$dateTo)
-			->get();
-		$payments = Payment::whereHas('order',function ($orders) use ($user){
-				$orders->whereHas('getUser',function ($users) use ($user){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				})->orWhereHas('sender',function ($users) use ($user){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				});
-			})
-			->where('date_add','>=',$dateFrom)
-			->where('date_add','<=',$dateTo)
-			->get();
 
+        $implementations = BalanceServices::getFilteredImplementation($request)->get();
+        $payments = BalanceServices::getFilteredPayment($request)->get();
 
 		$actData = $implementations->concat($payments)->sortBy('date_add');
 
-		$saldoStart = 0;
-		$saldoEnd = 0;
-		$implementations = Implementation::where(function ($impl){
-			$impl->whereHas('sender',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			})
-				->orWhereHas('customer',function ($users){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				});
-		})->where('date_add','<',$dateFrom)->get();
+		$saldo = BalanceServices::calcSaldo($request);
 
-		$payments = Payment::whereHas('order',function ($orders) use ($user){
-			$orders->whereHas('getUser',function ($users) use ($user){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			})->orWhereHas('sender',function ($users) use ($user){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			});
-		})
-			->where('date_add','<',$dateFrom)
-			->get();
-
-		foreach ($implementations as $implementation){
-			$saldoStart += $implementation->products->sum('total');
-		}
-		foreach ($payments as $payment){
-			$saldoStart -= $payment->payed;
-		}
-
-		$implementations = Implementation::where(function ($impl){
-			$impl->whereHas('sender',function ($users){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			})
-				->orWhereHas('customer',function ($users){
-					$users->whereHas('getCompany',function ($companies){
-						$companies->where([
-							['id', session('current_company_id')],
-						]);
-					});
-				});
-		})->where('date_add','>',$dateTo)->get();
-
-		$payments = Payment::whereHas('order',function ($orders) use ($user){
-			$orders->whereHas('getUser',function ($users) use ($user){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			})->orWhereHas('sender',function ($users) use ($user){
-				$users->whereHas('getCompany',function ($companies){
-					$companies->where([
-						['id', session('current_company_id')],
-					]);
-				});
-			});
-		})
-			->where('date_add','>',$dateTo)
-			->get();
-
-		foreach ($implementations as $implementation){
-			$saldoEnd += $implementation->products->sum('total');
-		}
-		foreach ($payments as $payment){
-			$saldoEnd -= $payment->payed;
-		}
-
-
-		$pdf = PDF::loadView('order.pdf_act', [
+		$pdf = PDF::loadView('order.pdf_act', array_merge ([
 			'user' => $user,
 			'company' => $company,
 			'actData'=> $actData,
@@ -699,9 +578,7 @@ class OrderController extends Controller
 			'payments' => $payments,
 			'dateFromCarbon' => $dateFromCarbon,
 			'dateToCarbon' => $dateToCarbon,
-			'saldoStart' => $saldoStart,
-			'saldoEnd' => $saldoEnd,
-		]);
+		],$saldo));
 		$pdf->setOption('enable-smart-shrinking', true);
 		$pdf->setOption('no-stop-slow-scripts', true);
 		return $pdf->download(($company->prefix.'_').'act'.'.pdf');
