@@ -4,14 +4,11 @@ return [
     'page_payment' => 'Платежі',
     'payment_tab_name' 	=> 'Список Платежів',
 
-    'btn_new_reclamation'               => 'Создать возврат',
-    'table_header_number' 				=> 'Номер',
-    'table_header_realisation_number' 	=> 'Реализация',
-    'table_header_product' 				=> 'Товары',
-    'table_header_quantity' 			=> 'Количество',
-    'table_header_ttn' 					=> 'Номер ТТН',
-    'table_header_status' 				=> 'Статус',
-    'table_header_author' 				=> 'Автор',
+    'payment_table_header_date' 		=> 'Дата',
+    'payment_table_header_number' 		=> 'Номер',
+    'payment_table_header_order' 		=> 'Замовлення',
+    'payment_table_header_sum' 		    => 'Сума',
+
 
     'page_balance' => 'Баланс',
     'balance_tab_name' 	=> 'Список операцій',
