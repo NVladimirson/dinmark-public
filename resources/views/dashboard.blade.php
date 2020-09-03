@@ -133,7 +133,7 @@
                         <tbody>
                             <tr>
                                 <th class="text-nowrap">@lang('dashboard.tab_last_enter')</th>
-                                <td>{{\Carbon\Carbon::parse(auth()->user()->last_login)->format('d.m.Y h:i')}}</td>
+                                <td>{{\Carbon\Carbon::createFromTimestamp(auth()->user()->last_login)->format('d.m.Y h:i')}}</td>
                             </tr>
                             <tr>
                                 <th class="text-nowrap">@lang('dashboard.tab_last_order')</th>
@@ -146,7 +146,7 @@
                             <tr>
                                 <th class="text-nowrap">@lang('dashboard.tab_last_payment')</th>
                                 @if($last_payment)
-                                    <td>{{\Carbon\Carbon::parse($last_payment->date_add)->format('d.m.Y h:i')}}</td>
+                                    <td>{{\Carbon\Carbon::createFromTimestamp($last_payment->date_add)->format('d.m.Y h:i')}}</td>
                                 @else
                                     <td></td>
                                 @endif
