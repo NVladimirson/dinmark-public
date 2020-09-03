@@ -137,7 +137,7 @@
 				var date = '';
 
 				function updateTableData(){
-					var route = tableDataRoute;
+					var route = tableDataRoute+ '?x=1' + sender + customer + date;
 
 					$.ajaxSetup({
 						headers: {
