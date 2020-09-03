@@ -120,6 +120,98 @@
 			</div>
 			<!-- end panel -->
 		</div>
+        <div class="col-lg-6">
+            <ul class="nav nav-tabs nav-tabs-inverse nav-tabs-primary nav-justified nav-justified-mobile">
+                <li class="nav-item">
+                    <a href="#latest-post" data-toggle="tab" class="nav-link active"><i class="fas fa-user-clock fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_actions')</span></a></li>
+                <li class="nav-item"><a href="#purchase" data-toggle="tab" class="nav-link"><i class="fas fa-shopping-cart fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_orders')</span></a></li>
+                <li class="nav-item"><a href="#email" data-toggle="tab" class="nav-link"><i class="fa fa-envelope fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_messages')</span></a></li>
+            </ul>
+            <div class="tab-content" >
+                <div class="tab-pane fade active show" id="latest-post">
+                    <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                        <tbody>
+                            <tr>
+                                <th class="text-nowrap">@lang('dashboard.tab_last_enter')</th>
+                                <td>{{\Carbon\Carbon::parse(auth()->user()->last_login)->format('d.m.Y h:i')}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">@lang('dashboard.tab_last_order')</th>
+                                @if($last_orders->count() > 0)
+                                    <td>{{\Carbon\Carbon::parse($last_orders->first()->date_add)->format('d.m.Y h:i')}}</td>
+                                @else
+                                    <td></td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">@lang('dashboard.tab_last_payment')</th>
+                                @if($last_payment)
+                                    <td>{{\Carbon\Carbon::parse($last_payment->date_add)->format('d.m.Y h:i')}}</td>
+                                @else
+                                    <td></td>
+                                @endif
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="purchase">
+                    <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                        <thead>
+                            <th class="text-nowrap text-center">@lang('order.table_header_number')</th>
+                            <th class="text-nowrap">@lang('order.table_header_date')</th>
+                            <th class="text-nowrap">@lang('order.table_header_status')</th>
+                            <th class="text-nowrap">@lang('order.table_header_status_payment')</th>
+                            <th class="text-nowrap text-center">@lang('order.table_header_total')</th>
+                        </thead>
+                        <tbody>
+                        @foreach($last_orders as $order)
+                        <tr>
+                            <td class="text-nowrap text-center"><a href="{{route('orders.show',[$order->id])}}">{{($order->public_number)?($order->id.' / '.$order->public_number):($order->id.' / -')}}</a></td>
+                            <td class="text-nowrap">{{\Carbon\Carbon::parse($order->date_add)->format('d.m.Y h:i')}}</td>
+                            <td class="text-nowrap">{{$order->getStatus->name}}</td>
+                            @php
+                                $status = '';
+                                    if($order->payments->count() > 0){
+                                        if($order->payments->sum('payed') < $order->total){
+                                            $status = trans('order.payment_status_partial');
+                                        }else{
+                                            $status = trans('order.payment_status_success');
+                                        }
+                                    }else{
+                                        $status = trans('order.payment_status_none');
+                                    }
+                            @endphp
+                            <td class="text-nowrap">{{$status}}</td>
+                            <td class="text-nowrap text-center">{{number_format($order->total,2,'.',' ')}}</td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="email">
+                    <ul class="media-list media-list-with-divider">
+                        @foreach($last_messages as $message)
+                        <li class="media media-sm">
+                            <a href="javascript:;" class="pull-left">
+                                @if($message->user->photo)
+                                    <img src="{{env('DINMARK_URL')}}images/profile/{{$message->user->photo}}"class="media-object rounded-corner" alt="{{$message->user->name}}" />
+                                @else
+                                    <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" class="media-object rounded-corner" alt="{{$message->user->name}}" />
+                                @endif
+                            </a>
+                            <div class="media-body">
+                                <a href="javascript:;" class="text-inverse"><h5 class="media-heading">{{$message->user->name}}</h5></a>
+                                <p class="m-b-5">
+                                    {{$message->text}}
+                                </p>
+                                <span class="text-muted f-s-11 f-w-600">{{\Carbon\Carbon::parse($message->created_at)->format('d.m.Y h:i')}}</span>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
 	</div>
 	<!-- end row -->
 @endsection

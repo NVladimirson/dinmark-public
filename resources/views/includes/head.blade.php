@@ -31,7 +31,12 @@
     .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:hover{
         color: #48596a;
     }
-
+    .nav.nav-tabs.nav-tabs-primary{
+        background-color: #1e7cd2;
+    }
+    .nav.nav-tabs.nav-tabs-primary .nav-item .nav-link {
+        color: #fff;
+    }
     .order-status{
         display: none;
     }

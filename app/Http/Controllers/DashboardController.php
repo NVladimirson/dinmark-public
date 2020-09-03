@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order\Order;
+use App\Models\Order\Payment;
+use App\Models\Ticket\TicketMessage;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,9 +53,40 @@ class DashboardController extends Controller
 				$success_weight += ($orderProduct->product->weight/100) * $orderProduct->quantity;
 			}
 		}
-		//dd($orders);
+
+		$user = auth()->user();
+		$last_orders = Order::where('user', $user->id)
+            ->orderBy('date_add','desc')
+            ->limit(5)
+            ->get();
+
+		$last_payment = Payment::whereHas('order', function ($order) use ($user){
+                $order->where('user', $user->id);
+            })
+            ->orderBy('date_add','desc')
+            ->first();
+
+		$last_messages = TicketMessage::whereHas('chat',function ($chat) use ($user){
+            $chat->where(function($q){
+                $q->where('user_id',auth()->user()->id)
+                    ->orWhere('manager_id',auth()->user()->id);
+            });
+        })
+            ->where('user_id', '<>', $user->id)
+            ->orderBy('created_at','desc')
+            ->limit(5)
+            ->get();
 
 		SEOTools::setTitle(trans('dashboard.page_name'));
-		return view('dashboard',compact('order_counts', 'success_procent', 'success_total', 'success_weight','orders'));
+		return view('dashboard',compact(
+		    'order_counts',
+            'success_procent',
+            'success_total',
+            'success_weight',
+            'orders',
+            'last_orders',
+            'last_payment',
+            'last_messages'
+        ));
     }
 }
