@@ -146,7 +146,7 @@
                             <tr>
                                 <th class="text-nowrap">@lang('dashboard.tab_last_payment')</th>
                                 @if($last_payment)
-                                    <td>{{\Carbon\Carbon::createFromTimestamp($last_payment->date_add)->format('d.m.Y h:i')}}</td>
+                                    <td>{{\Carbon\Carbon::parse($last_payment->date_add)->format('d.m.Y h:i')}}</td>
                                 @else
                                     <td></td>
                                 @endif
