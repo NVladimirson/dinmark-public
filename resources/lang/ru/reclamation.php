@@ -21,6 +21,7 @@ return [
 
     'btn_new_reclamation'               => 'Создать возврат',
     'table_header_number' 				=> 'Номер',
+    'table_header_file' 				=> 'Файл',
     'table_header_realisation_number' 	=> 'Реализация',
     'table_header_product' 				=> 'Товары',
     'table_header_quantity' 			=> 'Количество',

@@ -27,6 +27,12 @@ class ReclamationController extends Controller
 
 		return datatables()
 			->eloquent($reclamations)
+            ->addColumn('file_html', function (Reclamation $reclamation){
+                if($reclamation->file){
+                    return '<a href="'.$reclamation->file.'" target="_blank"><i class="fas fa-file"></i></a>';
+                }
+                return '';
+            })
 			->addColumn('implementation',function (Reclamation $reclamation){
 				return $reclamation->products->first()->product->implementation->public_number;
 			})
@@ -82,7 +88,7 @@ class ReclamationController extends Controller
 			->addColumn('user',function (Reclamation $reclamation){
 				return $reclamation->user->name;
 			})
-			->rawColumns(['products','status_html'])
+			->rawColumns(['products','status_html','file_html'])
 			->toJson();
 	}
 

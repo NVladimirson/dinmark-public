@@ -42,7 +42,7 @@
                             <thead>
                             <tr>
                                 <th class="text-nowrap">@lang('reclamation.table_header_product')</th>
-                                <th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
+                                <th class="text-nowrap text-center">@lang('reclamation.table_header_file')</th>
                                 <th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
                                 <th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
                                 <th class="text-nowrap text-center">@lang('reclamation.table_header_status')</th>
@@ -155,7 +155,7 @@
 						},
 						{
 							className: 'text-center',
-							data: 'id',
+							data: 'file_html',
 						},
 						{
 							className: 'text-center',
