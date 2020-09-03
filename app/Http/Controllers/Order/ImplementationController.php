@@ -128,7 +128,7 @@ class ImplementationController extends Controller
         $implementations = $implementations->get();
 
         $total = 0;
-        $weight = $implementations->sum('weight')/100;
+        $weight = $implementations->sum('weight');
 
         foreach ($implementations as $implementation){
             $total += $implementation->products->sum('total');
