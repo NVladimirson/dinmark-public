@@ -123,12 +123,12 @@
         <div class="col-lg-6">
             <ul class="nav nav-tabs nav-tabs-inverse nav-tabs-primary nav-justified nav-justified-mobile">
                 <li class="nav-item">
-                    <a href="#latest-post" data-toggle="tab" class="nav-link active"><i class="fas fa-user-clock fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_actions')</span></a></li>
-                <li class="nav-item"><a href="#purchase" data-toggle="tab" class="nav-link"><i class="fas fa-shopping-cart fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_orders')</span></a></li>
-                <li class="nav-item"><a href="#email" data-toggle="tab" class="nav-link"><i class="fa fa-envelope fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_messages')</span></a></li>
+                    <a href="#latest-actions" data-toggle="tab" class="nav-link active"><i class="fas fa-user-clock fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_actions')</span></a></li>
+                <li class="nav-item"><a href="#last_orders" data-toggle="tab" class="nav-link"><i class="fas fa-shopping-cart fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_orders')</span></a></li>
+                <li class="nav-item"><a href="#last_messages" data-toggle="tab" class="nav-link"><i class="fa fa-envelope fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_messages')</span></a></li>
             </ul>
             <div class="tab-content" >
-                <div class="tab-pane fade active show" id="latest-post">
+                <div class="tab-pane fade active show" id="latest-actions">
                     <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
                         <tbody>
                             <tr>
@@ -154,7 +154,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="purchase">
+                <div class="tab-pane fade" id="last_orders">
                     <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
                         <thead>
                             <th class="text-nowrap text-center">@lang('order.table_header_number')</th>
@@ -188,7 +188,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="email">
+                <div class="tab-pane fade" id="last_messages">
                     <ul class="media-list media-list-with-divider">
                         @foreach($last_messages as $message)
                         <li class="media media-sm">
@@ -205,6 +205,90 @@
                                     {{$message->text}}
                                 </p>
                                 <span class="text-muted f-s-11 f-w-600">{{\Carbon\Carbon::parse($message->created_at)->format('d.m.Y h:i')}}</span>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <ul class="nav nav-tabs nav-tabs-inverse nav-tabs-primary nav-justified nav-justified-mobile">
+                <li class="nav-item">
+                    <a href="#top_price_products" data-toggle="tab" class="nav-link active"><i class="fa fa-shopping-bag fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_top_price_products')</span></a></li>
+                <li class="nav-item"><a href="#top_popular_products" data-toggle="tab" class="nav-link"><i class="fa fa-shopping-bag fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_top_popular_products')</span></a></li>
+                <li class="nav-item"><a href="#last_news" data-toggle="tab" class="nav-link"><i class="far fa-newspaper fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_news')</span></a></li>
+            </ul>
+            <div class="tab-content" >
+                <div class="tab-pane fade active show" id="top_price_products">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="hidden-sm text-center">@lang('product.table_header_name')</th>
+                            <th></th>
+                            <th>@lang('product.table_header_article')</th>
+                            <th>@lang('product.table_header_price')</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($topOrderProducts as $product)
+                        <tr>
+                            <td class="hidden-sm text-center">
+                                <a href="javascript:;">
+                                    <img src="{{$product['image']}}" alt="{{$product['name']}}" width="32px">
+                                </a>
+                            </td>
+                            <td class="text-nowrap">
+                                <h6><a href="{{route('products.show',[$product['id']])}}" class="text-inverse">{{$product['name']}}</a></h6>
+                            </td>
+                            <td class="text-nowrap"><a href="javascript:;" class="text-inverse">{{$product['article']}}</a></td>
+                            <td class="text-blue f-w-600">{{$product['price']}}</td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="top_popular_products">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="hidden-sm text-center">@lang('product.table_header_name')</th>
+                            <th></th>
+                            <th>@lang('product.table_header_article')</th>
+                            <th>@lang('product.table_header_price')</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($mostPopularOrderProducts as $product)
+                            <tr>
+                                <td class="hidden-sm text-center">
+                                    <a href="javascript:;">
+                                        <img src="{{$product['image']}}" alt="{{$product['name']}}" width="32px">
+                                    </a>
+                                </td>
+                                <td class="text-nowrap">
+                                    <h6><a href="{{route('products.show',[$product['id']])}}" class="text-inverse">{{$product['name']}}</a></h6>
+                                </td>
+                                <td class="text-nowrap"><a href="javascript:;" class="text-inverse">{{$product['article']}}</a></td>
+                                <td class="text-blue f-w-600">{{$product['price']}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="last_news">
+                    <ul class="media-list media-list-with-divider">
+                        @foreach($newsData as $news)
+                        <li class="media media-sm">
+                            <a href="{{route('news.show',[$news['id']])}}" class="pull-left">
+                                <img src="{{$news['image']}}"class="media-object rounded-corner" alt="{{$news['name']}}" />
+                            </a>
+                            <div class="media-body">
+                                <a href="{{route('news.show',[$news['id']])}}" class="text-inverse"><h5 class="media-heading">{{$news['name']}}</h5></a>
+                                <p class="m-b-5">
+                                    {!! mb_strimwidth($news['text'],0,100,'...') !!}
+                                </p>
+                                <span class="text-muted f-s-11 f-w-600">{{$news['date']}}</span>
                             </div>
                         </li>
                         @endforeach

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News\News;
 use App\Models\Order\Order;
+use App\Models\Order\OrderProduct;
 use App\Models\Order\Payment;
 use App\Models\Ticket\TicketMessage;
+use App\Services\News\NewsServices;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -77,6 +80,81 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        $top_price_order_products = OrderProduct::with('product')->whereHas('getCart',function ($order){
+                $order->whereHas('getUser', function ($users){
+                    $users->where('company',auth()->user()->company);
+                });
+            })
+            ->groupBy('product_id')
+            ->selectRaw('(price*quantity) as total, product_id')
+            ->orderByRaw('price*quantity desc')
+            ->limit(5)
+            ->get();
+
+        $topOrderProducts = [];
+        foreach ($top_price_order_products as $order_product){
+            $topOrderProducts [] = [
+                'id'        => $order_product->product->id,
+                'name'      => \App\Services\Product\Product::getName($order_product->product),
+                'article'   => $order_product->product->article_show,
+                'image'     => \App\Services\Product\Product::getImagePathThumb($order_product->product),
+                'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+            ];
+        }
+
+        $most_popular_order_products = OrderProduct::with('product')->whereHas('getCart',function ($order){
+                $order->whereHas('getUser', function ($users){
+                    $users->where('company',auth()->user()->company);
+                });
+            })
+            ->groupBy('product_id')
+            ->selectRaw('count(product_id) as product_count, product_id')
+            ->orderByRaw('product_count desc')
+            ->limit(5)
+            ->get();
+
+        $mostPopularOrderProducts = [];
+        foreach ($most_popular_order_products as $order_product){
+            $mostPopularOrderProducts [] = [
+                'id'        => $order_product->product->id,
+                'name'      => \App\Services\Product\Product::getName($order_product->product),
+                'article'   => $order_product->product->article_show,
+                'image'     => \App\Services\Product\Product::getImagePathThumb($order_product->product),
+                'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+            ];
+        }
+
+        $newsData = [];
+        $news = News::with(['content'])
+            ->where([
+                ['target','<>','site'],
+                ['active',1],
+            ])
+            ->orderBy('date_add','desc')
+            ->limit(5)
+            ->get();
+
+        foreach ($news as $news_item){
+            $content = NewsServices::getContent($news_item);
+            if($content){
+                $newsData[] = [
+                    'id'	=> $news_item->id,
+                    'name'	=> $content->name,
+                    'text'	=> $content->list,
+                    'date'	=> Carbon::parse($news_item->date_add)->format('d.m.Y h:i'),
+                    'image' => NewsServices::getImagePath($news_item)
+                ];
+            }else{
+                $newsData[] = [
+                    'id'	=> $news_item->id,
+                    'name'	=> '',
+                    'text'	=> '',
+                    'date'	=> Carbon::parse($news_item->date_add)->format('d.m.Y h:i'),
+                    'image' => NewsServices::getImagePath($news_item)
+                ];
+            }
+        }
+
 		SEOTools::setTitle(trans('dashboard.page_name'));
 		return view('dashboard',compact(
 		    'order_counts',
@@ -86,7 +164,10 @@ class DashboardController extends Controller
             'orders',
             'last_orders',
             'last_payment',
-            'last_messages'
+            'last_messages',
+            'topOrderProducts',
+            'mostPopularOrderProducts',
+            'newsData'
         ));
     }
 }
