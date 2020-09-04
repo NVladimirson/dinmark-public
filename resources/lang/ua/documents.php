@@ -11,4 +11,7 @@ return [
 
     'select_order' 	    => 'Оберіть замовлення',
     'download_btn' 	    => 'Завантажити PDF',
+    'get_feeds_btn' 	=> 'Запит на файл імпорту',
+
+    'get_feeds_success' 	=> 'Запит успішно відправлено',
 ];

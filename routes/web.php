@@ -99,6 +99,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::get('/balance/ajax-total','Finance\BalanceController@totalDataAjax')->name('balance.ajax_total');
 
         Route::get('/documents','DocumentController@index')->name('documents');
+        Route::get('/documents/get-feeds','DocumentController@getFeeds')->name('documents.get_feeds');
 
 		Route::get('/clients','ClientController@index')->name('clients');
 		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');

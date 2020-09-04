@@ -11,5 +11,8 @@ return [
 
     'select_order' 	    => 'Выберите заказ',
     'download_btn' 	    => 'Скачать PDF',
+    'get_feeds_btn' 	=> 'Запрос файла импротра',
+
+    'get_feeds_success' 	=> 'Запрос успешно отправлен',
 
 ];

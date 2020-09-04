@@ -256,6 +256,34 @@
                     </div>
                 </div>
                 <div class="tab-pane fade " id="file_imports">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                                <div class="panel panel-primary" data-sortable-id="form-stuff-4">
+                                    <!-- begin panel-heading -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">@lang('user.feeds')</h4>
+                                        <div class="panel-heading-btn">
+                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                        </div>
+                                    </div>
+                                    <!-- end panel-heading -->
+                                    <!-- begin panel-body -->
+                                    <div class="panel-body">
+                                        <p>@lang('user.feed_message')</p>
+                                        @if(auth()->user()->export_key)
+                                            <p><strong>@lang('user.feed_link_ua'):</strong> <a href="https://dinmark.com.ua/shop/export_prom?userKey={{auth()->user()->export_key}}" target="_blank">https://dinmark.com.ua/shop/export_prom?userKey={{auth()->user()->export_key}}</a></p>
+                                            <p><strong>@lang('user.feed_link_ru'):</strong> <a href="https://dinmark.com.ua/ru/shop/export_prom?userKey={{auth()->user()->export_key}}" target="_blank">https://dinmark.com.ua/ru/shop/export_prom?userKey={{auth()->user()->export_key}}</a></p>
+                                        @endif
+
+                                        <form action="{{route('documents.get_feeds')}}" enctype="multipart/form-data" method="get">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-primary m-r-5">@lang('documents.get_feeds_btn')</button>
+                                        </form>
+                                    </div>
+                                </div>
+                        </div>
                 </div>
             </div>
 		</div>
@@ -288,6 +316,13 @@
 	<script>
 		(function ($) {
 			"use strict";
+
+            @if (session('status'))
+			$.gritter.add({
+				title: '{{ session('status') }}',
+			});
+            @endif
+
 			$(document).ready(function() {
 				$('#implementation_id').select2({
 					placeholder: "@lang('reclamation.select_implementation')",
