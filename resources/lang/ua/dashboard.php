@@ -37,4 +37,8 @@ return [
     'tab_last_enter'    => 'Останній вхід',
     'tab_last_order'    => 'Останнє замовлення',
     'tab_last_payment'  => 'Останній платіж',
+
+    'tab_name_top_price_products'     => 'Дорогі товари',
+    'tab_name_top_popular_products'   => 'Часто в замовленнях',
+    'tab_name_last_news'              => 'Останні новини',
 ];
