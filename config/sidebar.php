@@ -90,6 +90,10 @@ return [
 				],
 			]
 		],[
+            'icon' => 'far fa-file',
+            'title' => 'menu.documents',
+            'url' => 'documents',
+        ],[
 			'icon' => 'far fa-newspaper',
 			'title' => 'menu.news',
 			'url' => 'news'

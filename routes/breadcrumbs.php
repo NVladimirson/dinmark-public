@@ -127,6 +127,11 @@ Breadcrumbs::for('client.edit', function ($trail, $client) {
 	$trail->push($client->name, route('clients.edit',[$client->id]));
 });
 
+Breadcrumbs::for('documents', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('documents.page_name'), route('documents'));
+});
+
 Breadcrumbs::for('news', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('news.index_page_name'), route('news'));

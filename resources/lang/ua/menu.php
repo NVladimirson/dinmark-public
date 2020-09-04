@@ -31,6 +31,8 @@ return [
     'finances_payments'	=> 'Платежі',
     'finances_balance'	=> 'Баланс в системі',
 
+    'documents'	        => 'Документи',
+
 	'clients'		=> 'Отримувачі',
 	'clients_all'	=> 'Список отримувачів',
 	'clients_new'	=> 'Новий отримувач',

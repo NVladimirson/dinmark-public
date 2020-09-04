@@ -203,6 +203,47 @@ class OrderController extends Controller
         ]);
 	}
 
+    public function find(Request $request)
+    {
+        $search = $request->name;
+        $formatted_data = [];
+        $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
+                $users->whereHas('getCompany',function ($companies){
+                    $companies->where([
+                        ['holding', auth()->user()->getCompany->holding],
+                        ['holding', '<>', 0],
+                    ])->orWhere([
+                        ['id', auth()->user()->getCompany->id],
+                    ]);
+                });
+            })
+            ->where(function($orders) use ($search){
+                    $orders->where('id','like',"%".$search."%")
+                        ->orWhere('public_number','like',"%".$search."%");
+                }
+            )
+            ->where('status','<=',2)
+            ->orderBy('id','desc')
+            ->limit(10)
+            ->get();
+
+        foreach ($orders as $order) {
+            $number = $order->id;
+            if($order->public_number){
+                $number .= ' / '. $order->public_number;
+            }else{
+                $number .= ' / -';
+            }
+            $formatted_data [] = [
+                'id' => $order->id,
+                'text' => $number,
+            ];
+        }
+
+        return \Response::json($formatted_data);
+
+	}
+
 	public function create(){
 		SEOTools::setTitle(trans('order.page_create'));
 		$order = Order::firstOrCreate([

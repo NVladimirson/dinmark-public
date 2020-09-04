@@ -95,7 +95,14 @@ class OrderServices
 
     public static function getFilteredData($request){
         $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
-            $users->where('company',auth()->user()->company);
+            $users->whereHas('getCompany',function ($companies){
+                $companies->where([
+                    ['holding', auth()->user()->getCompany->holding],
+                    ['holding', '<>', 0],
+                ])->orWhere([
+                    ['id', auth()->user()->getCompany->id],
+                ]);
+            });
         });
 
         if($request->has('tab')){

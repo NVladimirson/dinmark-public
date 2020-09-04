@@ -128,8 +128,6 @@
 		(function ($) {
 			"use strict";
 			$(document).ready(function() {
-
-
 				$('#implementation_id').select2({
 					placeholder: "@lang('reclamation.select_implementation')",
 					minimumInputLength: 3,

@@ -65,6 +65,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/orders','Order\OrderController@index')->name('orders');
 		Route::get('/orders/create','Order\OrderController@create')->name('orders.create');
 		Route::get('/orders/all-ajax/','Order\OrderController@allAjax')->name('orders.all_ajax');
+		Route::get('/orders/find/','Order\OrderController@find')->name('orders.find');
 		Route::get('/orders/total-data-ajax/','Order\OrderController@totalDataAjax')->name('orders.total_data_ajax');
 		Route::post('/orders/add-to-order/{id}','Order\OrderController@addToOrder')->name('orders.add_to_order');
 		Route::post('/orders/remove-of-order/{id}','Order\OrderController@removeOfOrder')->name('orders.remove_of_order');
@@ -96,6 +97,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::get('/balance','Finance\BalanceController@index')->name('balance');
         Route::get('/balance/ajax','Finance\BalanceController@ajax')->name('balance.ajax');
         Route::get('/balance/ajax-total','Finance\BalanceController@totalDataAjax')->name('balance.ajax_total');
+
+        Route::get('/documents','DocumentController@index')->name('documents');
 
 		Route::get('/clients','ClientController@index')->name('clients');
 		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');
