@@ -281,7 +281,7 @@
                         @foreach($newsData as $news)
                         <li class="media media-sm">
                             <a href="{{route('news.show',[$news['id']])}}" class="pull-left">
-                                <img src="{{$news['image']}}"class="media-object rounded-corner" alt="{{$news['name']}}" />
+                                <img src="{{$news['image']}}"class="media-object" alt="{{$news['name']}}" />
                             </a>
                             <div class="media-body">
                                 <a href="{{route('news.show',[$news['id']])}}" class="text-inverse"><h5 class="media-heading">{{$news['name']}}</h5></a>
