@@ -38,10 +38,6 @@
                             </a>
                         </li>
                     </ul>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
 				</div>
             </div>
 
@@ -49,14 +45,11 @@
                 <div class="tab-pane fade active show" id="document_company">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="panel panel-primary" data-sortable-id="form-stuff-5">
+                            <div class="panel panel-primary">
                                 <!-- begin panel-heading -->
                                 <div class="panel-heading">
                                     <h4 class="panel-title">@lang('company.documents_load_block')</h4>
-                                    <div class="panel-heading-btn">
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    </div>
+
                                 </div>
                                 <!-- end panel-heading -->
                                 <!-- begin panel-body -->
@@ -119,14 +112,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="panel panel-primary" data-sortable-id="form-stuff-4">
+                            <div class="panel panel-primary">
                                 <!-- begin panel-heading -->
                                 <div class="panel-heading">
                                     <h4 class="panel-title">@lang('company.documents_block')</h4>
-                                    <div class="panel-heading-btn">
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    </div>
                                 </div>
                                 <!-- end panel-heading -->
                                 <!-- begin panel-body -->
@@ -165,14 +154,10 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="panel panel-primary" data-sortable-id="form-stuff-6">
+                            <div class="panel panel-primary">
                                 <!-- begin panel-heading -->
                                 <div class="panel-heading">
                                     <h4 class="panel-title">@lang('company.documents_request_block')</h4>
-                                    <div class="panel-heading-btn">
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    </div>
                                 </div>
                                 <!-- end panel-heading -->
                                 <!-- begin panel-body -->
@@ -205,10 +190,6 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">@lang('documents.tab_name_bill')</h4>
-                                    <div class="panel-heading-btn">
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    </div>
                                 </div>
                                 <!-- end panel-heading -->
                                 <!-- begin panel-body -->
@@ -231,10 +212,6 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">@lang('documents.tab_name_implementation')</h4>
-                                    <div class="panel-heading-btn">
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    </div>
                                 </div>
                                 <!-- end panel-heading -->
                                 <!-- begin panel-body -->
@@ -259,14 +236,10 @@
                     <div class="row">
                         <div class="col-md-6">
 
-                                <div class="panel panel-primary" data-sortable-id="form-stuff-4">
+                                <div class="panel panel-primary">
                                     <!-- begin panel-heading -->
                                     <div class="panel-heading">
                                         <h4 class="panel-title">@lang('user.feeds')</h4>
-                                        <div class="panel-heading-btn">
-                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                        </div>
                                     </div>
                                     <!-- end panel-heading -->
                                     <!-- begin panel-body -->
