@@ -13,6 +13,8 @@ return [
     |
     */
 
+    'url_prefix' => '/ru',
+
     'cancel' => 'Отмена',
     'add' => 'Добавить',
 	'create' => 'Создать',
