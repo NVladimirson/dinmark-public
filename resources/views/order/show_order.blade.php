@@ -62,7 +62,7 @@
 
                                 <div class="row m-b-15">
                                     <div class="col-md-8">
-                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15 table-info-column">
                                             <tbody>
                                             <tr>
                                                 <th>@lang('order.table_header_date_create')</th>

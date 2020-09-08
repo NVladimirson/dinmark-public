@@ -42,7 +42,7 @@
 			@yield('content')
 		</div>
 
-		@includeWhen($footer, 'includes.footer')
+		@include('includes.footer')
 
 		@include('includes.component.scroll-top-btn')
 

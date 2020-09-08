@@ -1,0 +1,244 @@
+
+tbody img:hover {
+    transform: scale(1.875);
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -ms-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    -webkit-transform: scale(1.875);
+    -moz-transform: scale(1.875);
+    -ms-transform: scale(1.875);
+    -o-transform: scale(1.875);
+}
+
+tbody img {
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -ms-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+}
+
+tbody tr:hover td, tbody tr:hover th {
+    background-color: grey;
+    color: #fff;
+}
+
+tbody tr:hover td .product-total{
+    /* background-color: grey; */
+    color: #000;
+}
+
+
+tbody tr td a {
+    color: #000;
+    text-decoration: underline;
+}
+
+tbody tr:hover a{
+    color: #fff;
+}
+
+.nav.nav-tabs.nav-tabs-panel{
+    margin-bottom: -10px;
+}
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link{
+    color: #fff;
+}
+
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link:focus,
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link:hover {
+    color: #eee;
+}
+
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active{
+    color: #2d353c;
+}
+
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:focus,
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:hover{
+    color: #48596a;
+}
+.nav.nav-tabs.nav-tabs-primary{
+    background-color: #1e7cd2;
+}
+.nav.nav-tabs.nav-tabs-primary .nav-item .nav-link {
+    color: #fff;
+}
+.order-status{
+    display: none;
+}
+
+.order-status.order-status-tab_active{
+    display: block;
+}
+
+.widget-list .widget-list-item.widget-list-item_transparent{
+    background: transparent;
+}
+#ui-datepicker-div{
+    z-index: 5!important;
+}
+#page-container:not(.page-sidebar-minified) .sidebar .nav-manager{
+    display: none;
+}
+.page-sidebar-minified .sidebar .nav>.nav-manager>a{
+    padding: 10px 13.5px;
+}
+.debt{
+    text-transform: uppercase;
+    font-size: 18px;
+    margin-top: 4px;
+}
+.news-content table{
+    width: 100%!important;
+}
+.table-scroll-container{
+    width: 100%!important;
+}
+.table-scroll-container table{
+    min-width: 100%;
+}
+.w-40{
+    width: 40%;
+}
+.w-60{
+    width: 60%;
+}
+.product-total{
+    padding: 5px;
+    text-align: right;
+    font-weight: 700;
+    background-color: #f0f0f0;
+}
+.product-total-limit_1{
+    background-color: #FCAA3F;
+    color: #ffffff;
+}
+
+.product-total-limit_2{
+    background-color: #74C186;
+    color: #ffffff;
+}
+
+/* social icons */
+
+section.subscribe {
+    max-width: 600px;
+    margin: 50px auto 30px;
+    color: #3c3c3a;
+}
+
+section.subscribe h3 {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 18px;
+    max-width: 185px;
+    margin: 20px auto 5px;
+}
+
+section.subscribe .flex {
+    max-width: 350px;
+    margin: auto;
+}
+
+section.subscribe .flex a {
+    display: block;
+    margin: 8px;
+}
+
+section.subscribe img {
+    width: 100%;
+}
+
+header .actions > a:hover, section.subscribe a:hover {
+    transform: scale(1.1);
+}
+
+/* footer */
+
+#footer {
+    background: #3c3c3a;
+    color: #fff;
+    margin-left: 220px;
+}
+
+#footer .container {
+    padding: 50px 0;
+}
+
+.container {
+    margin: auto;
+    width: 90%;
+    max-width: 1600px;
+}
+
+.flex {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: space-between;
+}
+
+#footer .container div {
+    width: 22%;
+}
+
+#footer .container div h4 {
+    font-size: 20px;
+    padding: 5px 0;
+    border-top: 3px solid #5e5e5e;
+    border-bottom: 1px solid #5e5e5e;
+}
+
+#footer .container div a, footer .container div p > a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+#footer .container div > a, footer .container div p {
+    display: block;
+    margin: 15px 0;
+}
+
+.copyright {
+    background: #262626;
+    text-align: center;
+    padding: 3px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.copyright span {
+    padding-left: 20px;
+    font-size: 12px;
+
+}
+
+
+@media screen and (max-width: 1280px){
+
+    .table-scroll-container{
+        display: block;
+        width: 100%!important;
+        overflow-x: scroll;
+    }
+    .news-content table{
+        overflow-x: auto!important;
+    }
+    .pagination{
+        flex-wrap: wrap;
+    }
+
+}
+
+@media screen and (max-width: 768px){
+    .debt{
+        width: 100%;
+        margin-top: 0;
+    }
+}
