@@ -88,7 +88,10 @@ class ReclamationController extends Controller
 			->addColumn('user',function (Reclamation $reclamation){
 				return $reclamation->user->name;
 			})
-			->rawColumns(['products','status_html','file_html'])
+			->addColumn('action_buttons',function (Reclamation $reclamation){
+				return view('reclamation.include.action_buttons',compact('reclamation'))->render();
+			})
+			->rawColumns(['products','status_html','file_html','action_buttons'])
 			->toJson();
 	}
 

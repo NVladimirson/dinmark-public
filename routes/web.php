@@ -118,8 +118,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/tickets/ajax','TicketController@ajax')->name('ticket.ajax');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
 		Route::post('/tickets/create','TicketController@store')->name('ticket.store');
+        Route::post('/tickets/explanation','TicketController@explanation')->name('ticket.explanation');
 		Route::get('/tickets/{id}','TicketController@show')->name('ticket.show');
 		Route::post('/tickets/{id}','TicketController@update')->name('ticket.update');
+
+
 
 		Route::get('/notifications/','NotificationController@index')->name('notification');
 		Route::get('/notifications/mark-read','NotificationController@markRead')->name('notification.mark_read');

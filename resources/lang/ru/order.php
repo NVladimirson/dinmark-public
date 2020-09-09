@@ -32,6 +32,16 @@ return [
     'tab_name_request'      => 'Заявки',
     'tab_name_archive'      => 'Архив',
 
+    'btn_explanation'       => 'Уточненения по Заказу',
+    'btn_explanation_implementation'       => 'Уточненения по Реализации',
+    'btn_explanation_reclamation'       => 'Уточненения по Возврату',
+    'explanation_message'   => 'Сообщение',
+    'explanation_submit'    => 'Отправить',
+    'explanation_subject_order'    => 'Уточнение по заказу ',
+    'explanation_subject_implementation'    => 'Уточнение по реализации ',
+    'explanation_subject_reclamation'    => 'Уточнение по возврату ',
+    'explanation_success'    => 'Запрос на уточнение успешно отправлен ',
+
     'btn_add_order'                 => 'Создать заявку',
     'table_header_number' 			=> 'Номер',
     'table_header_date' 			=> 'Дата',

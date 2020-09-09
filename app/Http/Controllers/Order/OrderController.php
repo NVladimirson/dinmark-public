@@ -169,7 +169,13 @@ class OrderController extends Controller
 				}
 			})
 			->addColumn('actions', function (Order $order) {
-				return view('order.include.action_buttons',compact('order'));
+                $number = $order->id;
+                if($order->public_number){
+                    $number .= ' / '. $order->public_number;
+                }else{
+                    $number .= ' / -';
+                }
+				return view('order.include.action_buttons',compact('order','number'));
 			})
 			->filterColumn('number_html', function($order, $keyword) {
 				$order->where('id', 'like',["%{$keyword}%"])->orWhere('public_number', 'like',["%{$keyword}%"]);

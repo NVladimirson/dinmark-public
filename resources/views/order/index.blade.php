@@ -124,7 +124,7 @@
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
                                         </select></div></th>
-								<th width="120"></th>
+								<th style="width: 150px; min-width: 150px"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -158,7 +158,7 @@
 		<!-- end col-10 -->
 	</div>
 	<!-- end row -->
-
+    @include('order.include.explanation')
 
 @endsection
 
@@ -289,7 +289,7 @@
 						"url": "@lang('table.localization_link')",
 					},
 					"pageLength": 25,
-					"autoWidth": true,
+					"autoWidth": false,
 					"processing": true,
 					"serverSide": true,
 					"ajax": ajaxRouteBase+ajaxRouteTab,
@@ -387,6 +387,43 @@
 				$("#datetimepicker6").on("dp.change", function (e) {
 					$('#datetimepicker5').data("DateTimePicker").maxDate(e.date);
 					changeDate();
+				});
+
+				$('#modal_explanation').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('input[name="explanation_subject"]').val(button.data('subject'));
+					modal.find('.modal-title').text(button.data('subject'));
+				})
+
+                $('#form_explantion').submit(function (e) {
+                    e.preventDefault();
+                    var form = $(this);
+					$('#modal_explanation').modal('hide');
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "POST",
+						url: "{{route('ticket.explanation')}}",
+                        data: form.serialize(),
+						success: function (resp) {
+							if (resp.status == "success") {
+								$('#explanation_message').val('');
+								$.gritter.add({
+									title: '@lang('order.explanation_success')',
+								});
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+
+                    return false;
 				});
 			});
 		})(jQuery);

@@ -169,4 +169,23 @@ class TicketController extends Controller
 
 		return redirect()->route('ticket.show',[$ticket->id]);
 	}
+
+    public function explanation(Request $request)
+    {
+        $ticket = Ticket::create([
+            'subject' => $request->explanation_subject,
+            'user_id' => auth()->user()->id,
+            'manager_id' => auth()->user()->getCompany->getManager->id
+        ]);
+
+        $message = TicketMessage::create([
+            'text' => $request->explanation_message,
+            'ticket_id' => $ticket->id,
+            'user_id' => auth()->user()->id
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            ]);
+	}
 }
