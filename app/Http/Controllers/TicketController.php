@@ -64,6 +64,9 @@ class TicketController extends Controller
             ->addColumn('created_at_html',function (Ticket $ticket){
                 return Carbon::parse($ticket->created_at)->format('d.m.Y h:i');
             })
+            ->addColumn('action_buttons',function (Ticket $ticket){
+                return view('ticket.include.action_buttons',compact('ticket'))->render();
+            })
             ->orderColumn('created_at_html', function ($ticket, $order){
                 $ticket
                     ->orderBy('status','ASC')
@@ -86,7 +89,7 @@ class TicketController extends Controller
                         ->whereHas('subject', 'like',"%" . request('subject_html') . "%");
                 }
             }, true)
-            ->rawColumns(['subject_html','user_html','manager_html','created_at_html','message_count_html'])
+            ->rawColumns(['subject_html','user_html','manager_html','created_at_html','message_count_html','action_buttons'])
             ->toJson();
     }
 
@@ -187,5 +190,16 @@ class TicketController extends Controller
         return response()->json([
             'status' => 'success',
             ]);
+	}
+
+    public function changeStatus($id)
+    {
+        $ticket = Ticket::find($id);
+        $ticket->status = $ticket->status == 'close'? 'open' : 'close';
+        $ticket->save();
+
+        return response()->json([
+            'status' => 'success',
+        ]);
 	}
 }

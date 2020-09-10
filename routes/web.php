@@ -121,6 +121,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::post('/tickets/explanation','TicketController@explanation')->name('ticket.explanation');
 		Route::get('/tickets/{id}','TicketController@show')->name('ticket.show');
 		Route::post('/tickets/{id}','TicketController@update')->name('ticket.update');
+		Route::post('/tickets/{id}/change-status','TicketController@changeStatus')->name('ticket.change_status');
 
 
 

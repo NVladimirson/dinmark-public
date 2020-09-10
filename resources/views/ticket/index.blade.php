@@ -47,6 +47,7 @@
                                 <th class="text-nowrap text-center">@lang('ticket.table_header_message_count')</th>
                                 <th class="text-nowrap text-center">@lang('ticket.table_header_new_message_count')</th>
                                 <th class="text-nowrap">@lang('ticket.table_header_time')</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -86,6 +87,8 @@
 			"use strict";
 			$(document).ready(function() {
 
+				var changeStatusRoute = "{{route('ticket')}}";
+
 				window.table = $('#data-table-buttons').DataTable( {
 					"language": {
 						"url": "@lang('table.localization_link')",
@@ -101,6 +104,7 @@
 					"columns": [
 						{
 							data: 'subject_html',
+							"orderable":      false,
 						},
 						{
 							className: 'text-center',
@@ -128,9 +132,39 @@
 						{
 							data: 'created_at_html',
 						},
+						{
+							data: 'action_buttons',
+							"orderable":      false,
+						},
 					],
-				} );
+					"drawCallback": function( settings ) {
+						$('.btn-change-status').click(function (e) {
+							e.preventDefault();
+							var route = changeStatusRoute + '/' + $(this).data('id') + '/change-status'
 
+
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+								}
+							});
+							$.ajax({
+								method: "POST",
+								url: route,
+								success: function (resp) {
+									if (resp.status == "success") {
+										window.table.ajax.reload();
+									}
+								},
+								error: function (xhr, str) {
+									console.log(xhr);
+								}
+							});
+
+							return false;
+						});
+					}
+				} );
 
 			});
 		})(jQuery);
