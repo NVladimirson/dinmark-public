@@ -19,9 +19,9 @@
             <a href="{{route('catalogs')}}">@lang('footer.my_account_wishlist')</a>
         </div>
         <div class="hideMobile">
-            <h4>@lang('footer.my_account_header')</h4>
+            <h4>@lang('footer.cooperation_header')</h4>
             <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/affiliate-program">@lang('footer.cooperation_affiliate_program')</a>
-            {{--<a href="#colToUs" class="to-modal" data-modal="#colToUs">@lang('footer.cooperation_contacts')</a>--}}
+            <a href="{{route('ticket.create')}}">@lang('footer.cooperation_contacts')</a>
             <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/vacancies">@lang('footer.cooperation_vacancies')</a>
         </div>
         <div class="hideMobile">
