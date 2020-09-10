@@ -55,6 +55,14 @@ class BalanceController extends Controller
             ->addColumn('currency_html',function ($data){
                 return 'UAH';
             })
+            ->addColumn('action_buttons',function ($data){
+                if($data instanceof Implementation){
+                    return '<a href="'.route('implementations.pdf',[$data->id]).'" class="btn btn-sm btn-primary" title="'.trans('implementation.btn_generate_pdf',[$data->id]).'"><i class="fas fa-file-alt"></i></a>';
+                }else{
+                    return "";
+                }
+            })
+            ->rawColumns(['action_buttons'])
             ->toJson();
     }
 

@@ -58,6 +58,7 @@
                                 <th class="text-nowrap text-right">@lang('finance.balance_table_header_debit')</th>
                                 <th class="text-nowrap text-right">@lang('finance.balance_table_header_credit')</th>
                                 <th class="text-nowrap text-center">@lang('finance.balance_table_header_currency')</th>
+                                <th style="min-width: 30px; width: 30px"></th>
                             </tr>
                             <tr>
                                 <th colspan="2">
@@ -69,6 +70,7 @@
                                 <td class="text-nowrap text-center">
                                     &nbsp;UAH
                                 </td>
+                                <td></td>
                             </tr>
                             </thead>
                             <tbody>
@@ -88,6 +90,7 @@
                                 <td class="text-nowrap text-center">
                                     &nbsp;UAH
                                 </td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <th colspan="2">
@@ -99,6 +102,7 @@
                                 <td class="text-nowrap text-center">
                                     &nbsp;UAH
                                 </td>
+                                <td></td>
                             </tr>
                             </tfoot>
                         </table>
@@ -179,7 +183,7 @@
 						"url": "@lang('table.localization_link')",
 					},
 					"pageLength": 25,
-					"autoWidth": true,
+					"autoWidth": false,
 					"processing": true,
 					"serverSide": true,
 					"ajax": ajaxRouteBase,
@@ -204,6 +208,9 @@
 						{
 							className: 'text-center',
 							data: 'currency_html',
+						},
+						{
+							data: 'action_buttons',
 						},
 					],
 				} );
