@@ -15,7 +15,7 @@
 			<span class="icon-bar"></span>
 		</button>
 		@endif
-		<a href="{{route('home')}}" class="navbar-brand"><img src="{{asset('assets/img/logo/logo.png')}}" alt="Dinmark Logo"></a>
+		<a href="{{route('home')}}" class="navbar-brand"><img src="{{asset('assets/img/logo/logo.png')}}" alt="Dinmark Logo" class="dinmark-logo"></a>
 		@if ($headerMegaMenu)
 			<button type="button" class="navbar-toggle pt-0 pb-0 mr-0" data-toggle="collapse" data-target="#top-navbar">
 				<span class="fa-stack fa-lg text-inverse">
@@ -52,81 +52,102 @@
 	@includeWhen($headerMegaMenu, 'includes.header-mega-menu')
 
 	<!-- begin header-nav -->
-	<ul class="navbar-nav navbar-right flex-wrap">
-		<li class="navbar-text debt m-b-0">
-			<span class="text-white">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
-		</li>
-		<li class="navbar-form">
-			<form action="{{route('products.find')}}" method="GET" name="search_form">
-				@csrf
-				<div class="form-group">
-					<input type="text" name="search" class="form-control" placeholder="@lang('global.header_search')" min="3" required value="{{request()->has('search')?request()->input('search'):''}}"/>
-					<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-				</div>
-			</form>
-		</li>
-		<li class="dropdown">
-			<a href="#" data-toggle="dropdown" class="dropdown-toggle f-s-14 " id="new_notifications">
-				<i class="fa fa-bell"></i>
-				@if(auth()->user()->unreadNotifications->count() > 0)
-					<input type="hidden" id="last_notification" value="{{auth()->user()->unreadNotifications->first()->created_at}}">
-					<span class="label">{{auth()->user()->unreadNotifications->count()}}</span>
-				@endif
-			</a>
-			<div class="dropdown-menu media-list dropdown-menu-right">
-				<div class="dropdown-header">@lang('notification.tab_name') ({{auth()->user()->unreadNotifications->count()}})</div>
-				@forelse(auth()->user()->unreadNotifications->take(5)->all() as $notification)
-					@include('notification.item')
-				@empty
-					<div class="alert alert-light fade show text-center">@lang('notification.empty_new')</div>
-				@endforelse
-				<div class="dropdown-footer text-center">
-					<a href="{{route('notification')}}">@lang('notification.more')</a>
-				</div>
-			</div>
-		</li>
-		<li class="dropdown navbar-language">
-			<a href="#" class="dropdown-toggle pr-1 pl-1 pr-sm-3 pl-sm-3" data-toggle="dropdown">
-				<span class="flag-icon flag-icon-{{ LaravelLocalization::getCurrentLocale() }}" title="{{ LaravelLocalization::getCurrentLocale() }}"></span>
-				<span class="name d-none d-sm-inline">{{ mb_strtoupper(LaravelLocalization::getCurrentLocale()) }}</span> <b class="caret"></b>
-			</a>
-			<div class="dropdown-menu">
-			@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-					<a rel="alternate"  hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" class="dropdown-item"><span class="flag-icon flag-icon-{{$localeCode}}" title="{{$localeCode}}"></span> {{ $properties['native'] }}</a>
-			@endforeach
-			</div>
-		</li>
-		<li class="dropdown navbar-user">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				@if(auth()->user()->photo)
-					<img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
-					@else
-					<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
-				@endif
+	<div class="navbar-nav navbar-right flex-wrap navbar-form">
 
-				<span class="d-none d-md-inline">{{auth()->user()->name}}</span> <b class="caret"></b>
-			</a>
-			<div class="dropdown-menu dropdown-menu-right">
-				<a href="{{route('user.profile')}}" class="dropdown-item">@lang('user.edit_link')</a>
-				<a href="{{route('user.log')}}" class="dropdown-item">@lang('user.log_link')</a>
-				<div class="dropdown-divider"></div>
-                <a href="{{route('auth.login_to_site')}}" class="dropdown-item"><img src="{{asset('assets/img/dinmark.png')}}" alt="Dinmark" style="width: 16px; height: 16px; margin: 0; float: none"> @lang('user.dinmark_link')</a>
-				<div class="dropdown-divider"></div>
-				<form method="POST" action="{{ route('logout') }}">
-					@csrf
-					<button type="submit" class="dropdown-item" class="btn btn-link">@lang('user.logout')</button>
-				</form>
-			</div>
-		</li>
-		@if($sidebarTwo)
-		<li class="divider d-none d-md-block"></li>
-		<li class="d-none d-md-block">
-			<a href="javascript:;" data-click="right-sidebar-toggled" class="f-s-14">
-				<i class="fa fa-th"></i>
-			</a>
-		</li>
-		@endif
+		<!-- <li class="navbar-form"> -->
+        <!-- new search -->
+        <form action="{{route('products.find')}}" method="GET" name="search_form" class="hexa">
+            @csrf
+                <input type="text" name="search" placeholder="@lang('global.header_search')" min="3"
+                required value="{{request()->has('search')?request()->input('search'):''}}">
+
+                <div class="more hexa-plus">
+                    <i class="fas fa-plus"></i>
+                </div>
+        </form>
+        </div>
+        <!-- </li> -->
+        <!-- new search -->
+
+        <!-- <li> -->
+            <div id="debt" class="hideMobile">
+            <span class="debt-text">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
+                <button class="debt-btn" >Мої фінанси</button>
+            </div>
+        <!-- </li> -->
+
 	</ul>
+    <div class="right-actions-block--wrapper">
+        <div class="right-actions-block">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle f-s-14 " id="new_notifications">
+                    <i class="fa fa-bell"></i>
+                    @if(auth()->user()->unreadNotifications->count() > 0)
+                        <input type="hidden" id="last_notification" value="{{auth()->user()->unreadNotifications->first()->created_at}}">
+                        <span class="label">{{auth()->user()->unreadNotifications->count()}}</span>
+                    @endif
+                </a>
+                <div class="dropdown-menu media-list dropdown-menu-right">
+                    <div class="dropdown-header">@lang('notification.tab_name') ({{auth()->user()->unreadNotifications->count()}})</div>
+                    @forelse(auth()->user()->unreadNotifications->take(5)->all() as $notification)
+                        @include('notification.item')
+                    @empty
+                        <div class="alert alert-light fade show text-center">@lang('notification.empty_new')</div>
+                    @endforelse
+                    <div class="dropdown-footer text-center">
+                        <a href="{{route('notification')}}">@lang('notification.more')</a>
+                    </div>
+                </div>
+            </li>
+            <li class="dropdown navbar-language">
+                <a href="#" class="dropdown-toggle pr-2 pl-2 pr-sm-4 pl-sm-4" data-toggle="dropdown">
+                    <span class="flag-icon flag-icon-{{ LaravelLocalization::getCurrentLocale() }}" title="{{ LaravelLocalization::getCurrentLocale() }}"></span>
+                    <span class="name d-none d-sm-inline">{{ mb_strtoupper(LaravelLocalization::getCurrentLocale()) }}</span> <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu">
+                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        <a rel="alternate"  hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" class="dropdown-item"><span class="flag-icon flag-icon-{{$localeCode}}" title="{{$localeCode}}"></span> {{ $properties['native'] }}</a>
+                @endforeach
+                </div>
+            </li>
+            <li class="dropdown navbar-user">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @if(auth()->user()->photo)
+                        <img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
+                        @else
+                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                    @endif
+
+                    <span class="d-none d-md-inline">{{auth()->user()->name}}</span> <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{{route('user.profile')}}" class="dropdown-item">@lang('user.edit_link')</a>
+                    <a href="{{route('user.log')}}" class="dropdown-item">@lang('user.log_link')</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{route('auth.login_to_site')}}" class="dropdown-item"><img src="{{asset('assets/img/dinmark.png')}}" alt="Dinmark" style="width: 16px; height: 16px; margin: 0; float: none"> @lang('user.dinmark_link')</a>
+                    <div class="dropdown-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item" class="btn btn-link">@lang('user.logout')</button>
+                    </form>
+                </div>
+            </li>
+            @if($sidebarTwo)
+            <li class="divider d-none d-md-block"></li>
+            <li class="d-none d-md-block">
+                <a href="javascript:;" data-click="right-sidebar-toggled" class="f-s-14">
+                    <i class="fa fa-th"></i>
+                </a>
+            </li>
+            @endif
+        </div>
+        <div class="actions flex ">
+            <a href="#" class="likes"></a>
+            <a href="#" class="comparison"></a>
+            <a href="#" class="cart"></a>
+            <div id="compareGroups"></div>
+        </div>
 	<!-- end header navigation right -->
+    </div>
 </div>
 <!-- end #header -->

@@ -1,4 +1,184 @@
+/* header */
+#header {
+    padding: 15px 0 10px;
+}
 
+#header .navbar-big img.logo {
+    max-width: 200px;
+    width: 100%;
+}
+
+#header input {
+    /* max-width: 350px; */
+    width: 250px;
+    height: 100%;
+    padding: 0 10px;
+    border: 0px solid #fff;
+    -webkit-border-radius: 0px;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+.hexa {
+    position: relative;
+    padding: 0 13px;
+    height: 25px;
+    z-index: 1;
+}
+
+.hexa:before, .hexa:after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/before-filter.svg);
+}
+
+
+
+.hexa:after {
+    content: '';
+    left: auto;
+    right: 0;
+    background-image: url(../default/images/after-filter.svg);
+}
+.more.hexa-plus i {
+    background: #fff;
+    padding: 2px 0;
+    display: block;
+}
+.more.hexa-plus {
+    padding: 0 4px;
+    height: 15px;
+    width: auto;
+    cursor: pointer;
+}
+#header i.fas {
+    font-size: 11px;
+    color: #3c3c3a;
+}
+
+#header form.hexa .more {
+    /* color: #fff; */
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
+.more.hexa-plus:before, .more.hexa-plus:after {
+    width: 5px;
+}
+
+*:before, *:after {
+    background-repeat: no-repeat;
+}
+
+#header .actions > a:hover {
+    transform: scale(1.1);
+}
+
+.more.hexa-plus:hover {
+    opacity: 0.9;
+}
+
+*:focus {
+    outline: unset !important;
+}
+
+.hexa-plus:before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/before_plus.svg);
+}
+.hexa-plus:after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: auto;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/after_plus.svg);
+}
+#header form.hexa {
+    height: 44px;
+    /* width: calc(100% - 20px); */
+    width: 100%;
+    position: relative;
+    z-index: 992;
+}
+
+#header #debt {
+    margin: 0 auto;
+    text-align: center;
+    max-width: 350px;
+}
+
+#header .debt-text {
+    color: #fff;
+    /* font-weight: bold; */
+    font-size: 14px;
+    line-height: 16px;
+}
+
+#header .debt-btn {
+    background: #fff;
+    width: 240px;
+    margin-top: 6px;
+    border-radius: 2px;
+    border: 0;
+}
+
+#header .actions {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    position: absolute;
+    right: 20px;
+    bottom: 5px;
+}
+
+#header .right-actions-block {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+#header .actions .likes {
+    background-image: url(../default/images/likes.svg);
+}
+#header .actions .comparison {
+    background-image: url(../default/images/comparison.svg);
+}
+#header .actions .cart {
+    background-image: url(../default/images/cart.svg);
+}
+#header .actions a {
+    background-repeat: no-repeat;
+}
+#header .actions > a {
+    display: block;
+    height: 46px;
+    width: 48px;
+    margin-left: 15px;
+    position: relative;
+    cursor: pointer;
+}
+
+#header .right-actions-block--wrapper {
+    width: 300px;
+}
+
+/* end header */
 tbody img:hover {
     transform: scale(1.875);
     transition: all 0.5s ease-out;
@@ -162,7 +342,7 @@ header .actions > a:hover, section.subscribe a:hover {
 #footer {
     background: #3c3c3a;
     color: #fff;
-    margin-left: 220px;
+    padding-left: 220px;
 }
 
 #footer .container {
