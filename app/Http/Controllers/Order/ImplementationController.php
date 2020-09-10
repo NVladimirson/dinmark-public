@@ -253,7 +253,6 @@ class ImplementationController extends Controller
 		]);
 		$pdf->setOption('enable-smart-shrinking', true);
 		$pdf->setOption('no-stop-slow-scripts', true);
-		//return $pdf->download(($company->prefix).'_'.$id.'.pdf');
-		return $pdf->inline();
+		return $pdf->download(($company->prefix).'_'.$id.'.pdf');
 	}
 }
