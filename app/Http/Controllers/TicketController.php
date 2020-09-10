@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketMessage;
 use App\Notifications\NewMessage;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -14,18 +15,27 @@ class TicketController extends Controller
     public function index(){
 		SEOTools::setTitle(trans('ticket.page_name'));
 
-		$tickets = Ticket::where('user_id',auth()->user()->id)
-			->orWhere('manager_id',auth()->user()->id)
-			->withCount(['messages' => function($q){
-				$q->where([
-					['is_new',1],
-					['user_id','<>',auth()->user()->id],
-				]);
-			}])
-			->orderBy('updated_at','desc')
-			->paginate(10);
+        $usersId =  Ticket::where(function($q){
+                $q->where('user_id',auth()->user()->id)
+                    ->orWhere('manager_id',auth()->user()->id);
+            })
+            ->groupBy('user_id')
+            ->pluck('user_id');
 
-    	return view('ticket.index',compact('tickets'));
+        $users = User::whereIn('id',$usersId)->get();
+
+        $managersId =  Ticket::where(function($q){
+                $q->where('user_id',auth()->user()->id)
+                    ->orWhere('manager_id',auth()->user()->id);
+            })
+            ->groupBy('manager_id')
+            ->pluck('manager_id');
+
+        $managers = User::whereIn('id',$managersId)->get();
+
+
+
+    	return view('ticket.index',compact('users','managers'));
 	}
 
     public function ajax(Request $request){
@@ -33,13 +43,57 @@ class TicketController extends Controller
             ->where(function($q){
                 $q->where('user_id',auth()->user()->id)
                     ->orWhere('manager_id',auth()->user()->id);
-            })
-            ->withCount(['messages as messages_count','messages as new_messages_count' => function($q){
+            });
+
+        if($request->has('date_from')){
+            $tickets->where('updated_at','>=',$request->date_from);
+        }
+
+
+        if($request->has('date_to')){
+            $tickets->where('updated_at','<=',$request->date_to);
+        }
+
+        if($request->has('status')){
+            $tickets->where('status',$request->status);
+        }
+
+        if($request->has('user_id')){
+            $tickets->where('user_id',$request->user_id);
+        }
+
+        if($request->has('manager_id')){
+            $tickets->where('manager_id',$request->manager_id);
+        }
+
+        if($request->has('is_new_message')){
+            if($request->is_new_message == 'new'){
+                $tickets->whereHas('messages', function ($messages){
+                    $messages->where([
+                        ['is_new',1],
+                        ['user_id','<>',auth()->user()->id],
+                    ]);
+                });
+            }else{
+                $tickets->whereHas('messages', function ($messages){
+                    $messages->where([
+                        ['is_new',0],
+                        ['user_id','<>',auth()->user()->id],
+                    ])->orWhere('user_id',auth()->user()->id);
+                });
+            }
+        }
+
+
+
+
+        $tickets->withCount(['messages as messages_count','messages as new_messages_count' => function($q){
                 $q->where([
                     ['is_new',1],
                     ['user_id','<>',auth()->user()->id],
                 ]);
             }]);
+
 
         return datatables()
             ->eloquent($tickets)
@@ -49,8 +103,8 @@ class TicketController extends Controller
             ->addColumn('user_html',function (Ticket $ticket){
                 return view('ticket.include.user',['user'=>$ticket->user])->render();
             })
-            ->addColumn('manager_html',function (Ticket $ticket){
-                return view('ticket.include.user',['user'=>$ticket->manager])->render();
+            ->addColumn('status_html',function (Ticket $ticket){
+                return trans('ticket.'.$ticket->status);
             })
             ->addColumn('manager_html',function (Ticket $ticket){
                 return view('ticket.include.user',['user'=>$ticket->manager])->render();
@@ -62,7 +116,7 @@ class TicketController extends Controller
                 return $ticket->new_messages_count;
             })
             ->addColumn('created_at_html',function (Ticket $ticket){
-                return Carbon::parse($ticket->created_at)->format('d.m.Y h:i');
+                return Carbon::parse($ticket->updated_at)->format('d.m.Y h:i');
             })
             ->addColumn('action_buttons',function (Ticket $ticket){
                 return view('ticket.include.action_buttons',compact('ticket'))->render();
@@ -70,7 +124,7 @@ class TicketController extends Controller
             ->orderColumn('created_at_html', function ($ticket, $order){
                 $ticket
                     ->orderBy('status','ASC')
-                    ->orderBy('created_at', $order);
+                    ->orderBy('updated_at', $order);
             })
             ->filterColumn('subject_html', function($ticket, $keyword) {
                 $ticket
