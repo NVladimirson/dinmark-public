@@ -28,4 +28,6 @@ return [
 
 	'header_debt'	=> 'Задолженность: :debt грн.',
 	'header_search'	=> 'Поиск номенклатур',
+
+	'btn_clear_filter'	=> 'Отменить фильтры',
 ];

@@ -36,10 +36,10 @@
                         <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
                             <tr>
-                                <th class="text-nowrap" width="25%">@lang('finance.payment_table_header_date')
+                                <th class="text-nowrap" width="25%">
                                     <div class="row row-space-10">
                                         <div class="col-xs-12 mb-2 m-b-5">
-                                            <input type="text" class="form-control" id="datetimepicker5" placeholder="@lang('order.act_date_from')" required>
+                                            <input type="text" class="form-control" id="datetimepicker5" placeholder="@lang('finance.payment_table_header_date')" required>
                                         </div>
                                         <div class="col-xs-12" >
                                             <input type="text" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
@@ -109,6 +109,20 @@
 					"order": [[ 0, "desc" ]],
 					"ordering": false,
 					"searching": false,
+					dom: 'lBfrtip',
+					buttons: [
+						{
+							text: "<i class='fas fa-times'></i> @lang('global.btn_clear_filter')",
+							className:'databtn btn btn-danger',
+							attr: {
+								id: 'clear_filter',
+								style: 'display: none'
+							},
+							action: function ( e, dt, node, config ) {
+								clearFilter();
+							}
+						}
+					],
 					"columns": [
 						{
 							data: 'date_html',
@@ -128,9 +142,19 @@
 
 				function updateAjax(){
 					var ajaxRoute = ajaxRouteBase + '?filter=1' + date;
+					if(date == ""){
+						$('#clear_filter').hide();
+					}else{
+						$('#clear_filter').show();
+					}
 					window.table.ajax.url( ajaxRoute ).load();
 				}
-
+				function clearFilter(){
+					$("#datetimepicker5").val('');
+					$("#datetimepicker6").val('');
+					$('#datetimepicker6').hide();
+					changeDate();
+				}
 				$('#datetimepicker3').datetimepicker({
 					format: 'DD.MM.YYYY'
 				});

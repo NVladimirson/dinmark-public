@@ -176,6 +176,20 @@
 					"order": [[ 0, "desc" ]],
 					"ordering": false,
 					"searching": false,
+					dom: 'lBfrtip',
+					buttons: [
+						{
+							text: "<i class='fas fa-times'></i> @lang('global.btn_clear_filter')",
+							className:'databtn btn btn-danger',
+							attr: {
+								id: 'clear_filter',
+								style: 'display: none'
+							},
+							action: function ( e, dt, node, config ) {
+								clearFilter();
+							}
+						}
+					],
 					"columns": [
 						{
 							data: 'id',
@@ -253,10 +267,24 @@
 
 				function updateAjax(){
 					var ajaxRoute = ajaxRouteBase + '?x=1' + sender + customer + date;
+					if(sender == "" && customer == "" && date == ""){
+						$('#clear_filter').hide();
+					}else{
+						$('#clear_filter').show();
+					}
 					window.table.ajax.url( ajaxRoute ).load();
 					updateTableData();
 				}
-
+				function clearFilter(){
+					$("#sender").val($("#sender option:first").val());
+					$("#sender").change();
+					$("#customer").val($("#customer option:first").val());
+					$("#customer").change();
+					$("#datetimepicker5").val('');
+					$("#datetimepicker6").val('');
+					$('#datetimepicker6').hide();
+					changeDate();
+				}
 				$('#sender').change(function () {
 					if($(this).val() !== ''){
 						sender = '&sender_id='+$(this).val();

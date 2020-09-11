@@ -29,4 +29,6 @@ return [
 
 	'header_debt'	=> 'Заборгованість: :debt грн.',
 	'header_search'	=> 'Пошук номенклатур',
+
+    'btn_clear_filter'	=> 'Скасувати фільтри',
 ];

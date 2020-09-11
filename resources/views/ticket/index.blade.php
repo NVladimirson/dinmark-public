@@ -142,6 +142,20 @@
 					"order": [[ 6, "desc" ]],
 					"ordering": true,
 					"searching": true,
+					dom: 'lBfrtip',
+					buttons: [
+						{
+							text: "<i class='fas fa-times'></i> @lang('global.btn_clear_filter')",
+							className:'databtn btn btn-danger',
+							attr: {
+								id: 'clear_filter',
+								style: 'display: none'
+							},
+							action: function ( e, dt, node, config ) {
+								clearFilter();
+							}
+						}
+					],
 					"columns": [
 						{
 							data: 'subject_html',
@@ -243,8 +257,29 @@
 					updateAjax();
 				});
 
+				function clearFilter(){
+					$("#status").val($("#status option:first").val());
+					$("#status").change();
+					$("#user").val($("#user option:first").val());
+					$("#user").change();
+					$("#manager").val($("#manager option:first").val());
+					$("#manager").change();
+					$("#is_new_message").val($("#is_new_message option:first").val());
+					$("#is_new_message").change();
+					$("#datetimepicker5").val('');
+					$("#datetimepicker6").val('');
+					$('#datetimepicker6').hide();
+					changeDate();
+				}
+
 				function updateAjax(){
 					var ajaxRoute = ajaxRouteBase + '?f=1' + status + user + manager + new_message + date;
+
+					if(status == "" && user == "" && manager == "" && new_message == "" && date == ""){
+						$('#clear_filter').hide();
+					}else{
+						$('#clear_filter').show();
+					}
 					window.table.ajax.url( ajaxRoute ).load();
 				}
 
