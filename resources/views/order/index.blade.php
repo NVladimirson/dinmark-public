@@ -16,6 +16,12 @@
         .table-scroll-container-xl{
             overflow-x: scroll;
         }
+        .badge-status{
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            padding: 5px 7px;
+        }
     </style>
 
 @endpush
@@ -114,7 +120,7 @@
                                             <option value="partial">@lang('order.payment_status_partial')</option>
                                             <option value="success">@lang('order.payment_status_success')</option>
                                         </select></div></th>
-								<th class="text-nowrap">@lang('order.table_header_total')</th>
+								<th class="text-nowrap" style="width: 80px; min-width: 80px">@lang('order.table_header_total')</th>
 								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
                                             <option value="" selected>@lang('order.table_header_customer')</option>

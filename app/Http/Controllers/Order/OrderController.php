@@ -133,17 +133,17 @@ class OrderController extends Controller
 				return $date;
 			})
 			->addColumn('status_html', function (Order $order) {
-				return $order->getStatus->name;
+			    return '<div class="badge badge-'.OrderServices::getStatusClass($order->getStatus->id).' badge-status">'.$order->getStatus->name.'</div>';
 			})
 			->addColumn('payment_html', function (Order $order) {
                 if($order->payments->count() > 0){
                     if($order->payments->sum('payed') < $order->total){
-                        return trans('order.payment_status_partial');
+                        return '<div class="badge badge-'.OrderServices::getStatusClass(1).' badge-status">'.trans('order.payment_status_partial').'</div>';
                     }else{
-                        return trans('order.payment_status_success');
+                        return '<div class="badge badge-'.OrderServices::getStatusClass(2).' badge-status">'.trans('order.payment_status_success').'</div>';
                     }
                 }else{
-                    return trans('order.payment_status_none');
+                    return '<div class="badge badge-'.OrderServices::getStatusClass(7).' badge-status">'.trans('order.payment_status_none').'</div>';
                 }
 			})
 			->addColumn('total_html', function (Order $order) {
@@ -186,7 +186,7 @@ class OrderController extends Controller
 					$order->whereHas('id', 'like',"%" . request('number_html') . "%")->orWhere()->whereHas('public_number', 'like',"%" . request('number_html') . "%");
 				}
 			}, true)
-			->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding'])
+			->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding','status_html','payment_html'])
 			->toJson();
 	}
 
