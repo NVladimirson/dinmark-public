@@ -12,6 +12,12 @@
 	<link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 
+    <style>
+        .table-scroll-container-xl{
+            overflow-x: scroll;
+        }
+    </style>
+
 @endpush
 
 @section('content')
@@ -62,7 +68,7 @@
 							<form action="{{ route('orders.act_pdf') }}" enctype="multipart/form-data" method="get">
 								@csrf
 								<div class="row">
-									<div class="col-lg-9">
+									<div class="col-lg-8">
 										<div class="row row-space-10">
 											<div class="col-xs-6 mb-2 mb-sm-0">
 												<input type="hidden" name="act_date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
@@ -72,54 +78,54 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-lg-3">
+									<div class="col-lg-4">
 										<button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block">@lang('order.btn_act_pdf')</button>
 									</div>
 								</div>
 							</form>
 						</div>
 					</div>
-                    <div class="table-scroll-container">
+                    <div class="table-scroll-container table-scroll-container-xl">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
 							<tr>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
 								<th class="text-nowrap text-center">@lang('order.table_header_number')</th>
-								<th class="text-nowrap" width="120">@lang('order.table_header_date')
+								<th class="text-nowrap" width="120">
                                     <div class="row row-space-10">
-                                        <div class="col-xs-12 mb-2 m-b-5">
-                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.act_date_from')" required>
+                                        <div class="col-xs-12 ">
+                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.table_header_date')" required>
                                         </div>
                                         <div class="col-xs-12" >
-                                            <input type="text" name="act_date_to" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
+                                            <input type="text" name="act_date_to" class="form-control m-е-5" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
                                         </div>
                                     </div></th>
-								<th class="text-nowrap">@lang('order.table_header_status')
+								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="status" data-size="10" data-live-search="true" data-style="btn-white">
-                                        <option value="" selected>@lang('order.select_status')</option>
+                                        <option value="" selected>@lang('order.table_header_status')</option>
                                         @foreach($statuses as $status)
                                             <option value="{{$status->id}}" class="order-status order-status-tab-{{(($status->id<=5)?'order order-status-tab_active':(($status->id<=7)?'archive':'request'))}}">{{$status->name}}</option>
                                         @endforeach
                                     </select></div></th>
-								<th class="text-nowrap">@lang('order.table_header_status_payment')
+								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="payment" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.select_status_payment')</option>
+                                            <option value="" selected>@lang('order.table_header_status_payment')</option>
                                             <option value="none">@lang('order.payment_status_none')</option>
                                             <option value="partial">@lang('order.payment_status_partial')</option>
                                             <option value="success">@lang('order.payment_status_success')</option>
                                         </select></div></th>
 								<th class="text-nowrap">@lang('order.table_header_total')</th>
-								<th class="text-nowrap">@lang('order.table_header_customer')
+								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.filter_select_sender')</option>
+                                            <option value="" selected>@lang('order.table_header_customer')</option>
                                             @foreach($senders as $name => $id)
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
                                         </select></div>
                                 </th>
-								<th class="text-nowrap">@lang('order.table_header_user')
+								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="customer" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.filter_select_customer')</option>
+                                            <option value="" selected>@lang('order.table_header_user')</option>
                                             @foreach($customers as $name => $id)
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
@@ -337,9 +343,11 @@
 						{
 							data: 'actions',
 							"orderable":      false,
+                            width: '150px',
 						},
 					],
 				} );
+
 				updateTableData();
 
 				$('#datetimepicker3').datetimepicker({
