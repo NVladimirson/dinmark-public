@@ -40,26 +40,26 @@
 							<tr>
 								<th class="text-nowrap text-center"></th>
 								<th class="text-nowrap text-center"></th>
-								<th class="text-nowrap text-center">@lang('implementation.table_header_data')
+								<th class="text-nowrap text-center">
                                     <div class="row row-space-10">
                                         <div class="col-xs-12 mb-2 m-b-5">
-                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.act_date_from')" required>
+                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('implementation.table_header_data')" required>
                                         </div>
                                         <div class="col-xs-12" >
                                             <input type="text" name="act_date_to" class="form-control" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
                                         </div>
                                     </div></th>
 								<th class="text-nowrap text-center">@lang('implementation.table_header_number')</th>
-								<th class="text-nowrap">@lang('implementation.table_header_sender')
+								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="sender" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.filter_select_sender')</option>
+                                            <option value="" selected>@lang('implementation.table_header_sender')</option>
                                             @foreach($senders as $name => $id)
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
                                         </select></div></th>
-								<th class="text-nowrap">@lang('implementation.table_header_customer')
+								<th class="text-nowrap">
                                     <div><select class="form-control selectpicker" id="customer" data-size="10" data-live-search="true" data-style="btn-white">
-                                            <option value="" selected>@lang('order.filter_select_customer')</option>
+                                            <option value="" selected>@lang('implementation.table_header_customer')</option>
                                             @foreach($customers as $name => $id)
                                                 <option value="{{$id}}" >{{$name}}</option>
                                             @endforeach
@@ -67,7 +67,7 @@
 								<th class="text-nowrap">@lang('implementation.table_header_status')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_ttn')</th>
 								<th class="text-nowrap">@lang('implementation.table_header_weight')</th>
-								<th class="text-nowrap">@lang('implementation.table_header_total')</th>
+								<th class="text-nowrap" style="width: 80px; min-width: 80px">@lang('implementation.table_header_total')</th>
 								<th class="text-nowrap"  style="width: 120px; min-width: 120px"></th>
 							</tr>
 						</thead>
