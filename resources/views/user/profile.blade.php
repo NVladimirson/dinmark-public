@@ -1,16 +1,44 @@
-@extends('layouts.default')
+@extends('layouts.default', ['contentFullWidth' => true])
 
 @section('title', 'Form Elements')
 @push('css')
+    <link href="/assets/plugins/superbox/superbox.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/lity/dist/lity.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
-    {{ Breadcrumbs::render('user.profile') }}
+    <div class="profile" style="margin-top: -1px">
+        <div class="profile-header">
+            <!-- BEGIN profile-header-cover -->
+            <div class="profile-header-cover"></div>
+            <!-- END profile-header-cover -->
+            <!-- BEGIN profile-header-content -->
+            <div class="profile-header-content">
+                <!-- BEGIN profile-header-img -->
+                <div class="profile-header-img">
+                    @if(auth()->user()->photo)
+                        <img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
+                    @else
+                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                    @endif
+                </div>
+
+                <!-- END profile-header-img -->
+                <!-- BEGIN profile-header-info -->
+                <div class="profile-header-info">
+                    <h4 class="mt-0 mb-1">{{auth()->user()->name}}</h4>
+                    <p class="mb-2">{{auth()->user()->getCompany->name}}</p>
+                    <p class="mb-0"><strong>@lang('sidebar.manager'):</strong> {{auth()->user()->getCompany->getManager->name}}</p>
+                </div>
+                <!-- END profile-header-info -->
+            </div>
+        </div>
+    </div>
 
     <h1 class="page-header">@lang('user.edit_page_name')</h1>
-
+    <div class="profile-content p-t-0">
     <!-- begin row -->
-    <div class="row">
+        <div class="row">
         <!-- begin col-6 -->
         <div class="col-xl-6">
             <!-- begin panel -->
@@ -182,7 +210,7 @@
         <!-- end col-6 -->
     </div>
     <!-- end row -->
-
+    </div>
     @endsection
 
 @push('scripts')

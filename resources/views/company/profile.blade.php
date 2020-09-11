@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.default', ['contentFullWidth' => true])
 
 @section('title', 'Form Elements')
 @push('css')
@@ -9,10 +9,36 @@
 @endpush
 
 @section('content')
-    {{ Breadcrumbs::render('company') }}
+    <div class="profile" style="margin-top: -1px">
+        <div class="profile-header">
+            <!-- BEGIN profile-header-cover -->
+            <div class="profile-header-cover"></div>
+            <!-- END profile-header-cover -->
+            <!-- BEGIN profile-header-content -->
+            <div class="profile-header-content">
+                <!-- BEGIN profile-header-img -->
+                <div class="profile-header-img">
+                    @if(auth()->user()->getCompany->logo)
+                        <img src="{{env('DINMARK_URL')}}images/company/{{auth()->user()->getCompany->logo}}" alt="{{auth()->user()->name}}" />
+                    @else
+                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                    @endif
+                </div>
+
+                <!-- END profile-header-img -->
+                <!-- BEGIN profile-header-info -->
+                <div class="profile-header-info">
+                    <h4 class="mt-0 mb-1">{{auth()->user()->getCompany->name}}</h4>
+                    <p class="mb-2">{{auth()->user()->name}}</p>
+                    <p class="mb-0"><strong>@lang('sidebar.manager'):</strong> {{auth()->user()->getCompany->getManager->name}}</p>
+                </div>
+                <!-- END profile-header-info -->
+            </div>
+        </div>
+    </div>
 
     <h1 class="page-header">@lang('company.edit_page_name')</h1>
-
+    <div class="profile-content p-t-0">
     <!-- begin row -->
     <div class="row">
         <!-- begin col-6 -->
@@ -435,7 +461,7 @@
         <!-- end col-6 -->
     </div>
     <!-- end row -->
-
+    </div>
     <div class="modal fade" id="modal-add_user" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
