@@ -102,7 +102,7 @@ class OrderServices
         }
     }
 
-    public static function getFilteredData($request){
+    public static function getFilteredData($request = null){
         $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
             $users->whereHas('getCompany',function ($companies){
                 $companies->where([

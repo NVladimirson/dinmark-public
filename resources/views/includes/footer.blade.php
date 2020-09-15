@@ -1,6 +1,6 @@
 <!-- begin #footer -->
 <section class="subscribe">
-    <h3>@lang('footer.social_block_header')</h3>
+    <h3>Залишайтесь на зв'язку</h3>
     <div class="flex">
         <a href="https://www.facebook.com/DINMARKUA/" target="_blank"><img src="https://dinmark.com.ua/images/facebook.svg" alt="facebook.svg"></a>
         <a href="https://www.youtube.com/channel/UCaW1nX048qzfDJx6qe-5CgA" target="_blank"><img src="https://dinmark.com.ua/images/youtube.svg" alt="youtube.svg"></a>
@@ -12,34 +12,34 @@
 <!--  -->
 <footer id="footer">
     <div class="container flex">
-        <div class="hideTablet">
-            <h4>@lang('footer.my_account_header')</h4>
-            <a href="{{route('orders')}}">@lang('footer.my_account_orders')</a>
-            <a href="https://novaposhta.ua/tracking" target="_blank">@lang('footer.my_account_np')</a>
-            <a href="{{route('catalogs')}}">@lang('footer.my_account_wishlist')</a>
+        <div class="hideMobile">
+            <h4>Мій акаунт</h4>
+            <a href="https://b2b-dinmark.test/orders">Мої замовлення</a>                        <!-- need refs -->
+            <a href="https://novaposhta.ua/tracking" target="_blank">Відстежити замовлення</a>
+            <a href="https://dinmark.com.ua/likes">Улюблені товари</a>                          <!-- need refs -->
         </div>
-        <div class="hideTablet">
-            <h4>@lang('footer.cooperation_header')</h4>
-            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/affiliate-program">@lang('footer.cooperation_affiliate_program')</a>
-            <a href="{{route('ticket.create')}}">@lang('footer.cooperation_contacts')</a>
-            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/vacancies">@lang('footer.cooperation_vacancies')</a>
+        <div class="hideMobile">
+            <h4>Співпраця</h4>
+            <a href="https://dinmark.com.ua/affiliate-program">Партнерська програма</a>
+            <a href="#colToUs" class="to-modal" data-modal="#colToUs">Зворотній зв'язок</a>
+            <a href="https://dinmark.com.ua/vacancies">Вакансії</a>
         </div>
-        <div class="hideTablet">
-            <h4>@lang('footer.useful_information_header')</h4>
-            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/shop">@lang('footer.useful_information_catalog')</a>
-            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/technical-tables">@lang('footer.useful_information_technical_tables')</a>
-            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/din-compliance-tables">@lang('footer.useful_information_din_compliance')</a>
+        <div class="hideMobile">
+            <h4>Корисна інформація</h4>
+            <a href="https://dinmark.com.ua/shop">Каталог</a>
+            <a href="https://dinmark.com.ua/technical-tables">Технічні таблиці</a>
+            <a href="https://dinmark.com.ua/din-compliance-tables">Таблиці відповідності DIN</a>
         </div>
         <div>
-            <h4>@lang('footer.contacts_header')</h4>
-            <p>@lang('footer.contacts_address')</p>
+            <h4>Контактна інформація</h4>
+            <p>м. Львів, вул. Й. Сліпого, 7</p>
             <p><a href="mailto:info@dinmark.com.ua">info@dinmark.com.ua</a></p>
-            <p><span class="a_tel">+38 (096) 011-01-03</span></p>
-            <p>@lang('footer.contacts_working_time')</p>
+                        <p><span class="a_tel">+38 (096) 011-01-03</span></p>
+            <p>Пн-Пт: 9:00 - 18:00 <br> Сб-Нд: вихідний </p>
         </div>
     </div>
     </footer>
     <div class="copyright">
-        © Dinmark {{\Carbon\Carbon::now()->format('Y')}}  <span>@lang('footer.copyright')</span>
-    </div>
+         © Dinmark 2020 <span>Всі права захищені</span>
+</div>
 <!-- end #footer -->

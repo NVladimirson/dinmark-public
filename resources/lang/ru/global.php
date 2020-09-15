@@ -27,7 +27,16 @@ return [
     'pieces' => 'шт.',
 
 	'header_debt'	=> 'Задолженность: :debt грн.',
+	'header_debt_btn'	=> 'Мои финансы',
 	'header_search'	=> 'Поиск номенклатур',
+
+    'header_menu_catalog' => 'Каталог товаров',
+    'header_menu_about_company' => 'О компании',
+    'header_menu_affiliate' => 'Партнерская программа',
+    'header_menu_blog' => 'Блог',
+    'header_menu_tender' => 'У вас тендер?',
+    'header_menu_sale' => 'Акции',
+    'header_menu_contact' => 'Контакты',
 
 	'btn_clear_filter'	=> 'Отменить фильтры',
 ];

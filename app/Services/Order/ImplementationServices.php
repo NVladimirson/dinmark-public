@@ -12,6 +12,34 @@ use App\Models\Order\Implementation;
 
 class ImplementationServices
 {
+    public static function getByCompany()
+    {
+        $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
+            ->where(function ($imp){
+                $imp->whereHas('sender',function ($users){
+                    $users->whereHas('getCompany',function ($companies){
+                        $companies->where([
+                            ['holding', auth()->user()->getCompany->holding],
+                            ['holding', '<>', 0],
+                        ])->orWhere([
+                            ['id', auth()->user()->getCompany->id],
+                        ]);
+                    });
+                })
+                    ->orWhereHas('customer',function ($users){
+                        $users->whereHas('getCompany',function ($companies){
+                            $companies->where([
+                                ['holding', auth()->user()->getCompany->holding],
+                                ['holding', '<>', 0],
+                            ])->orWhere([
+                                ['id', auth()->user()->getCompany->id],
+                            ]);
+                        });
+                    });
+            });
+
+        return $implementations;
+    }
 
     public static function getFilteredData($request){
         $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])

@@ -72,7 +72,7 @@
         <!-- <li> -->
             <div id="debt" class="">
             <span class="debt-text">{{__('global.header_debt',['debt'=>number_format($debt,2,',',' ')])}}</span>
-                <button class="debt-btn hideTab" >Мої фінанси</button>
+                <a href="{{route('balance')}}" class="debt-btn hideTab" >@lang('global.header_debt_btn')</a>
             </div>
         <!-- </li> -->
 
@@ -143,9 +143,9 @@
             @endif
         </div>
         <div class="actions flex ">
-            <a href="#" class="likes"></a>
-            <a href="#" class="comparison"></a>
-            <a href="#" class="cart"></a>
+            <a href="#" class="likes"><i>{{$wishlists_count}}</i></a>
+            <a href="#" class="comparison"><i>{{$implementation_count}}</i></a>
+            <a href="#" class="cart">{{$orders_count}}</a>
             <div id="compareGroups"></div>
         </div>
 	<!-- end header navigation right -->
@@ -450,15 +450,15 @@ class="hide" style="display: block;">
 <div class="mobile-navbar">
     <nav class="navbar-grey">
         <div class="container flex navbar-items">
-            <a href="#" class="shop hexa">Каталог товарів <i class="fas fa-plus" id="show-catalog-menu"></i></a>
+            <a href="#" class="shop hexa">@lang('global.header_menu_catalog') <i class="fas fa-plus" id="show-catalog-menu"></i></a>
 
             <div class="flex  hideTab">
-                <a href="https://dinmark.com.ua/about" class="hexa" style="margin-left: 7px;">Про компанію</a>
-                <a href="https://dinmark.com.ua/affiliate-program" class="hexa">Партнерська програма</a>
-                <a href="https://dinmark.com.ua/blog" class="hexa">Блог</a>
-                <a href="https://dinmark.com.ua/tender" class="hexa">У вас тендер?</a>
-                <a href="https://dinmark.com.ua/promo" class="hexa">Акції</a>
-                <a href="https://dinmark.com.ua/contacts" class="hexa" style="margin-right: 8px;">Контакти</a>
+                <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/about" class="hexa" style="margin-left: 7px;">@lang('global.header_menu_about_company')</a>
+                <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/affiliate-program" class="hexa">@lang('global.header_menu_affiliate')</a>
+                <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/blog" class="hexa">@lang('global.header_menu_blog')</a>
+                <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/tender" class="hexa">@lang('global.header_menu_tender')</a>
+                <a href="#" class="hexa">@lang('global.header_menu_sale')</a>
+                <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/contacts" class="hexa" style="margin-right: 8px;">@lang('global.header_menu_contact')</a>
             </div>
 
         <nav class="mainmenu w50" style="display: none;">
