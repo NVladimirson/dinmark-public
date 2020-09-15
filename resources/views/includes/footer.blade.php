@@ -12,19 +12,19 @@
 <!--  -->
 <footer id="footer">
     <div class="container flex">
-        <div class="hideMobile">
+        <div class="hideTablet">
             <h4>@lang('footer.my_account_header')</h4>
             <a href="{{route('orders')}}">@lang('footer.my_account_orders')</a>
             <a href="https://novaposhta.ua/tracking" target="_blank">@lang('footer.my_account_np')</a>
             <a href="{{route('catalogs')}}">@lang('footer.my_account_wishlist')</a>
         </div>
-        <div class="hideMobile">
+        <div class="hideTablet">
             <h4>@lang('footer.cooperation_header')</h4>
             <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/affiliate-program">@lang('footer.cooperation_affiliate_program')</a>
             <a href="{{route('ticket.create')}}">@lang('footer.cooperation_contacts')</a>
             <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/vacancies">@lang('footer.cooperation_vacancies')</a>
         </div>
-        <div class="hideMobile">
+        <div class="hideTablet">
             <h4>@lang('footer.useful_information_header')</h4>
             <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/shop">@lang('footer.useful_information_catalog')</a>
             <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/technical-tables">@lang('footer.useful_information_technical_tables')</a>

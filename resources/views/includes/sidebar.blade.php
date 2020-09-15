@@ -167,6 +167,6 @@
 	</div>
 	<!-- end sidebar scrollbar -->
 </div>
-<div class="sidebar-bg"></div>
+<!-- <div class="sidebar-bg"></div> -->
 <!-- end #sidebar -->
 

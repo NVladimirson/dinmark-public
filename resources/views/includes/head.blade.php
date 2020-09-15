@@ -11,4 +11,6 @@
 <!-- ================== END BASE CSS STYLE ================== -->
 <link href="/assets/css/default/theme/blue.min.css" rel="stylesheet" id="theme-css-link">
 <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/assets/DINpro/stylesheet.css" rel="stylesheet" />
 @stack('css')

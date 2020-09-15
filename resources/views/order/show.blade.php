@@ -421,7 +421,7 @@
                                     <td class="text-nowrap text-center order-product-package">{{$product['package']}}*{{$product['min']}} @lang('global.pieces')</td>
                                     <td class="text-nowrap text-center order-product-weight" data-weight="{{$product['weight']}}">{{$product['weight']*($product['quantity']/100)}} @lang('global.kg')</td>
                                     <td class="text-nowrap text-center order-product-total" data-price="{{$product['total_raw']}}">{{$product['total']}}</td>
-									<td><a href="#" data-id="{{$product['id']}}"  class="btn btn-sm btn-danger delete-product"><i class="fas fa-times"></i></a></td>
+									<td><a href="#" data-id="{{$product['id']}}"  class="btn btn-sm btn-danger delete-product"><i class="far fa-trash-alt"></i></a></td>
 								</tr>
 							@endforeach
 						</tbody>
