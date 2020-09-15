@@ -45,7 +45,7 @@
 			@endif
 			<li class="nav-header">@lang('sidebar.sidebar_title')</li>
 			@php
-				$currentUrl = (Request::path() != '/') ? '/'. Request::path() : '/';
+				$currentUrl = url()->current();
 
 				function renderSubMenu($value, $currentUrl) {
 					$subMenu = '';
@@ -66,8 +66,11 @@
 							$subSubMenu .= renderSubMenu($menu['sub_menu'], $currentUrl);
 							$subSubMenu .= '</ul>';
 						}
-
-						$active = ($currentUrl == $menu['url']) ? 'active' : '';
+                        $currentMenuUrl = '';
+                        if(Route::has($menu['url'])){
+                            $currentMenuUrl = route($menu['url']);
+                        }
+						$active = ($currentUrl == $currentMenuUrl) ? 'active' : '';
 
 						if ($active) {
 							$GLOBALS['parent_active'] = true;
@@ -105,7 +108,13 @@
 						$subMenu .= renderSubMenu($menu['sub_menu'], $currentUrl);
 						$subMenu .= '</ul>';
 					}
-					$active = ($currentUrl == $menu['url']) ? 'active' : '';
+
+					$currentMenuUrl = '';
+					if(Route::has($menu['url'])){
+					    $currentMenuUrl = route($menu['url']);
+					}
+
+					$active = ($currentUrl == $currentMenuUrl) ? 'active' : '';
 					$active = (empty($active) && !empty($GLOBALS['parent_active'])) ? 'active' : $active;
 					echo '
 						<li class="'. $hasSub .' '. $active .'">
