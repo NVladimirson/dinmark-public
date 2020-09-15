@@ -98,6 +98,51 @@ class OrderController extends Controller
 		return 'ok';
 	}
 
+	public function addToOrderMultiple(Request $request){
+
+        foreach ($request->input() as $productinfo => $quantity){
+            $product_id = substr(explode(':',$productinfo)[0],3);
+            $storage_id = substr(explode(':',$productinfo)[1],10);
+            $res[] = ['product_id' => $product_id, 'storage_id' => $storage_id, 'quantity' => $quantity];
+        }
+
+        foreach ($res as $no => $data){
+            $order = null;
+            if(!$data['storage_id']){
+                $order = Order::create([
+                    'user' => auth()->user()->id,
+                    'customer_id' => auth()->user()->id,
+                    'status' => 8,
+                    'total' => 0,
+                    'source' => 'b2b',
+                ]);
+            }else{
+                $order = Order::find($data['storage_id']);
+                $order->save();
+            }
+
+            $product = Product::with(['storages'])->find($data['product_id']);
+
+            OrderProduct::create([
+                'cart' => $order->id,
+                'user' => auth()->user()->id,
+                'active' => 1,
+                'product_alias' => $product->wl_alias,
+                'product_id' => $product->id,
+                'storage_alias' => $data['storage_id'],
+                'price' => 0,
+                'price_in' => 0,
+                'quantity' => $data['quantity'],
+                'quantity_wont' => $data['quantity'],
+                'date' => Carbon::now()->timestamp,
+            ]);
+
+            OrderServices::calcTotal($order);
+        }
+
+        return 'ok';
+    }
+
 	protected function changeQuantity($id, $quantity, $order){
 		$orderProduct = OrderProduct::find($id);
 		$orderProduct->quantity = $quantity;

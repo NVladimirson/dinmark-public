@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <form id="form_add_catalog">
-                <input type="hidden" class="product_id" name="product_id">
+                <input type="hidden" class="product_id" name="product_id" id="products_wishlist">
                 <input type="hidden" class="old_catalog_id" name="old_catalog_id">
 
                 <div class="modal-body">

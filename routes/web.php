@@ -61,6 +61,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/catalogs/destroy/{id}','Product\CatalogController@destroy')->name('catalogs.destroy');
 		Route::post('/catalogs/change-article/{id}','Product\CatalogController@changeArticle')->name('catalogs.change_article');
 		Route::post('/catalogs/set-price/{id}','Product\CatalogController@setPrice')->name('catalogs.change_article');
+        Route::get('/catalogs/add-to-catalog/{ids}','Product\CatalogController@addToCatalogMultiple')->name('catalogs.add_to_catalog_multiple');
 
 		Route::get('/orders','Order\OrderController@index')->name('orders');
 		Route::get('/orders/create','Order\OrderController@create')->name('orders.create');
@@ -68,6 +69,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/orders/find/','Order\OrderController@find')->name('orders.find');
 		Route::get('/orders/total-data-ajax/','Order\OrderController@totalDataAjax')->name('orders.total_data_ajax');
 		Route::post('/orders/add-to-order/{id}','Order\OrderController@addToOrder')->name('orders.add_to_order');
+        Route::get('/orders/add-to-order-multiple','Order\OrderController@addToOrderMultiple')->name('catalogs.add_to_order_multiple');
 		Route::post('/orders/remove-of-order/{id}','Order\OrderController@removeOfOrder')->name('orders.remove_of_order');
 		Route::get('/orders/act-pdf','Order\OrderController@PDFAct')->name('orders.act_pdf');
 		Route::get('/orders/{id}','Order\OrderController@show')->name('orders.show');

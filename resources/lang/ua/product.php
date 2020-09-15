@@ -22,9 +22,16 @@ return [
 	'search_tab_name' => 'Список товарів',
   'all_categories_name' => 'Список категорій',
 
+  'mass_actions' =>
+  [
+    'select'=>'Дії з відміченими',
+    'add-to-wishlist'=>'Додати в "Мій Список"',
+    'add-to-order'=>'Додати до Замовлення',
+  ],
+
 	'empty'	=> 'За запитом нічого не знайдено',
 
-	'select_category' => 'Оберіть категорію',
+	'select_term' => 'Оберіть термін доставки',
 
 	'table_header_name' => 'Назва',
 	'table_header_article' => 'Артикул',

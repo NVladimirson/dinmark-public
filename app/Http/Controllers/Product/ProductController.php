@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Content;
+use App\Models\Order\OrderProduct;
 use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
+use App\Models\Product\ProductCategory;
 use App\Services\Product\CategoryServices;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\Order\OrderServices;
 use App\Services\Product\CatalogServices;
@@ -16,15 +20,16 @@ use LaravelLocalization;
 
 class ProductController extends Controller
 {
-	public function index(){
-		SEOTools::setTitle(trans('product.all_tab_name'));
 
+	public function index(){
+
+		SEOTools::setTitle(trans('product.all_tab_name'));
 		$categories = CategoryServices::getNames(0);
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
+		$terms = CategoryServices::getTermsForSelect();
 
-
-    return view('product.all',compact('categories','wishlists', 'orders'));
+    return view('product.all',compact('categories','wishlists', 'orders', 'terms'));
 	}
 
 	public function category($id){
@@ -40,17 +45,63 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
-		if(Str::contains(url()->previous(), 'instock'))
+
+		$products = Product::with(['storages','content']);
+
+		if(!empty($request->categories)){
+			$selected_items = array_values(explode(",",$request->categories));
+			$res = $selected_items;
+			foreach ($selected_items as $key => $parent) {
+				$childs = CategoryServices::getAllChildrenCategoriesID($parent);
+				// $res = Arr::crossJoin($res,$childs);
+				foreach ($childs as $key => $child) {
+					$res[] = $child;
+				}
+			}
+			$products = $products->whereIn('group', $res);
+		}
+
+		if($request->term){
+			$term = $request->term;
+			$products = $products->whereHas('storages', function($storages) use($term){
+				$storages->whereHas('storage',function($storage) use($term){
+					$storage->where('term',$term);
+				});
+			});
+		}
+
+		if($request->instock == 'true')
 		{
-			$products = Product::whereHas('storages', function($q){
+			$products = $products->whereHas('storages', function($q){
 				$q->where('amount','>',0);
 			});
-			 $products = $products->whereIn('group', array_values(explode(",",$request->categories)));
 		}
-		else{
-			$products = Product::with(['storages','content']);
-			$products = $products->whereIn('group', array_values(explode(",",$request->categories)));
-		}
+
+		if($request->new){
+            $order_products = \DB::select('SELECT product_id, COUNT(*)
+              FROM s_cart_products
+              GROUP BY product_id
+              HAVING COUNT(*) >= 5
+              ');
+
+            $filtered = array();
+            foreach ($order_products as $no => $order_product){
+                $filtered[] = $order_product->product_id;
+            }
+
+            $products = $products->whereIn('id', $filtered);
+
+
+        }
+
+        if($request->hits){
+            $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
+        }
+
+        if($request->discount){
+            $products = $products->where('old_price','!=',0);
+        }
+
 		$ids = null;
 
 		if($request->has('search')){
@@ -67,7 +118,8 @@ class ProductController extends Controller
 								textContent = selected_products.textContent;
 								selected_products_arr = textContent.split('."','".');
 								const index = selected_products_arr.indexOf(String(pid));
-								console.log(index);
+
+//								console.log(index);
 										if (index > -1) {
   										selected_products_arr.splice(index, 1);
 										}
@@ -80,7 +132,8 @@ class ProductController extends Controller
 											}
 										}
 										selected_products.textContent = selected_products_arr.toString();
-										 console.log(selected_products_arr);
+
+//										 console.log(selected_products_arr);
 							})();"/>
 						  <label for="product-'.$product->id.'"> </label>
 						</div>';
@@ -92,7 +145,7 @@ class ProductController extends Controller
 			})
 			->addColumn('name_html', function (Product $product){
 				$name = \App\Services\Product\Product::getName($product);
-				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
+				return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
 			})
 			->addColumn('article_show_html', function (Product $product) {
 				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
@@ -121,45 +174,53 @@ class ProductController extends Controller
 
                 return '-';
 			})
-			->addColumn('storage_html', function (Product $product) {
-				$value = trans('product.storage_empty');
-				if(isset($product->storages)){
-					$storage = $product->storages->firstWhere('is_main',1);
-					if(isset($storage->amount)){
-						$amount = $storage->amount;
-						switch($amount){
-							case $amount>10000:
-								$amount = '>10000';
-								break;
-						  case $amount>5000:
-								$amount = '>5000';
-								break;
-							case $amount>1500:
-								$amount = '>1500';
-								break;
-							case $amount>500:
-								$amount = '>500';
-								break;
-							case $amount>150:
-								$amount = '>150';
-								break;
-							case $amount>50:
-								$amount = '>50';
-								break;
-							case $amount>10:
-							$amount = '>10';
-								break;
-							case $amount<10:
-								$amount = '<10';
-								break;
+
+->addColumn('storage_html', function (Product $product) {
+	$value = trans('product.storage_empty');
+	if($product->storages){
+		$storages = $product->storages;
+		if($storages){
+			$value = '';
+			//dd($storages);
+			foreach ($storages as $key => $storage) {
+				$term = $storage->storage->term;
+				if(Str::length($term) == 1){
+						if(intval($term) == 1){
+							$days =  'роб. доба';
 						}
-						$value = $amount.' / '.$storage->storage->term;
-					}else{
-						$value = '-';
+						else if((intval($term) <= 4) && intval($term) >= 2){
+							$days =  'роб. доби';
+						}
+						else{
+							$days =  'роб. діб';
+						}
+				}
+				else{
+					$tens = substr($term,-2);
+					$ones = substr($term,-1);
+					if($tens == 1){
+						$days =  'роб. діб';
+					}
+					else{
+						if(intval($ones) == 1){
+							$days =  'роб. доба';
+						}
+						else if((intval($term) <= 4) && intval($term) >= 2){
+							$days =  'роб. доби';
+						}
+						else{
+							$days =  'роб. діб';
+						}
 					}
 				}
-				return $value;
-			})
+
+			 $value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).' / '.$term.' '.$days."<br>";
+			}
+			//$value = substr($value,0,-2);
+		}
+	}
+	return $value;
+})
 
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
@@ -199,7 +260,7 @@ class ProductController extends Controller
 					$product->whereIn('id',$ids);
 				}
 			}, true)
-			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch'])
+			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch','storage_html'])
 			->toJson();
 	}
 
