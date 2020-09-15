@@ -30,7 +30,39 @@ class CatalogServices
 		return $wishlists;
 	}
 
+    public static function dayrounder($days){
 
+        if($days) {
+            switch ($days) {
+                case $days > 10000:
+                    $days = '>10000';
+                    break;
+                case $days > 5000:
+                    $days = '>5000';
+                    break;
+                case $days > 1500:
+                    $days = '>1500';
+                    break;
+                case $days > 500:
+                    $days = '>500';
+                    break;
+                case $days > 150:
+                    $days = '>150';
+                    break;
+                case $days > 50:
+                    $days = '>50';
+                    break;
+                case $days > 10:
+                    $days = '>10';
+                    break;
+                case $days < 10:
+                    $days = '<10';
+                    break;
+            }
+        }
+        return $days;
+
+    }
 
 	private static $instance;
 	public static function getInstance()

@@ -22,6 +22,7 @@ class ProductController extends Controller
 {
 
 	public function index(){
+
 		SEOTools::setTitle(trans('product.all_tab_name'));
 		$categories = CategoryServices::getNames(0);
 		$wishlists = CatalogServices::getByCompany();
@@ -210,7 +211,7 @@ class ProductController extends Controller
 					}
 				}
 
-			 $value .= $storage->storage->name.': '.$storage->amount.' / '.$term.' '.$days."<br>";
+			 $value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).' / '.$term.' '.$days."<br>";
 			}
 			//$value = substr($value,0,-2);
 		}
