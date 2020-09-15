@@ -26,17 +26,22 @@ class OrderServices
 
 	public static function calcTotal($order){
 	    $total = 0;
-
         foreach ($order->products as $orderProduct){
             $koef = 1;
             if($orderProduct->product->storages){
                 $storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
-                if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
-                    $koef = 0.93;
-                }elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
-                    $koef = 0.97;
+                if($storage){
+                    if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
+                        $koef = 0.93;
+                    }elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
+                        $koef = 0.97;
+                    }
                 }
-                $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,$storage->id)/(float)100) * $koef;
+                else{
+                    continue;
+                }
+                $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
+                            $storage->id)/(float)100) * $koef;
                 $orderProduct->price_in = $storage->price;
                 $orderProduct->save();
                 $total += round($orderProduct->price*$orderProduct->quantity, 2);

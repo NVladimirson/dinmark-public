@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Content;
+use App\Models\Order\OrderProduct;
 use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
+use App\Models\Product\ProductCategory;
 use App\Services\Product\CategoryServices;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -17,13 +20,12 @@ use LaravelLocalization;
 
 class ProductController extends Controller
 {
+
 	public function index(){
 		SEOTools::setTitle(trans('product.all_tab_name'));
-
 		$categories = CategoryServices::getNames(0);
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
-
 		$terms = CategoryServices::getTermsForSelect();
 
     return view('product.all',compact('categories','wishlists', 'orders', 'terms'));
@@ -73,6 +75,31 @@ class ProductController extends Controller
 			});
 		}
 
+		if($request->new){
+            $order_products = \DB::select('SELECT product_id, COUNT(*)
+              FROM s_cart_products
+              GROUP BY product_id
+              HAVING COUNT(*) >= 5
+              ');
+
+            $filtered = array();
+            foreach ($order_products as $no => $order_product){
+                $filtered[] = $order_product->product_id;
+            }
+
+            $products = $products->whereIn('id', $filtered);
+
+
+        }
+
+        if($request->hits){
+            $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
+        }
+
+        if($request->discount){
+            $products = $products->where('old_price','!=',0);
+        }
+
 		$ids = null;
 
 		if($request->has('search')){
@@ -89,7 +116,7 @@ class ProductController extends Controller
 								textContent = selected_products.textContent;
 								selected_products_arr = textContent.split('."','".');
 								const index = selected_products_arr.indexOf(String(pid));
-								console.log(index);
+//								console.log(index);
 										if (index > -1) {
   										selected_products_arr.splice(index, 1);
 										}
@@ -102,7 +129,8 @@ class ProductController extends Controller
 											}
 										}
 										selected_products.textContent = selected_products_arr.toString();
-										 console.log(selected_products_arr);
+//										 console.log(selected_products_arr);
+                                        
 							})();"/>
 						  <label for="product-'.$product->id.'"> </label>
 						</div>';
@@ -114,7 +142,7 @@ class ProductController extends Controller
 			})
 			->addColumn('name_html', function (Product $product){
 				$name = \App\Services\Product\Product::getName($product);
-				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
+				return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
 			})
 			->addColumn('article_show_html', function (Product $product) {
 				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
