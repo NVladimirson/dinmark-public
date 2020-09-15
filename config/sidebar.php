@@ -62,6 +62,20 @@ return [
 				],
 			]
 		],[
+			'icon' => 'fas fa-hryvnia',
+			'title' => 'menu.finances',
+            'url' => 'javascript:;',
+            'caret' => true,
+            'sub_menu' => [
+                [
+                    'url' => 'payments',
+                    'title' => 'menu.finances_payments'
+                ],[
+                    'url' => 'balance',
+                    'title' => 'menu.finances_balance'
+                ],
+            ]
+		],[
 			'icon' => 'fas fa-users',
 			'title' => 'menu.clients',
 			'url' => 'javascript:;',
@@ -76,6 +90,10 @@ return [
 				],
 			]
 		],[
+            'icon' => 'far fa-file',
+            'title' => 'menu.documents',
+            'url' => 'documents',
+        ],[
 			'icon' => 'far fa-newspaper',
 			'title' => 'menu.news',
 			'url' => 'news'

@@ -1,15 +1,44 @@
-@extends('layouts.default')
+@extends('layouts.default', ['contentFullWidth' => true])
 
 @section('title', 'Form Elements')
 @push('css')
+    <link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 @endpush
 
 @section('content')
-    {{ Breadcrumbs::render('company') }}
+    <div class="profile" style="margin-top: -1px">
+        <div class="profile-header">
+            <!-- BEGIN profile-header-cover -->
+            <div class="profile-header-cover"></div>
+            <!-- END profile-header-cover -->
+            <!-- BEGIN profile-header-content -->
+            <div class="profile-header-content">
+                <!-- BEGIN profile-header-img -->
+                <div class="profile-header-img">
+                    @if(auth()->user()->getCompany->logo)
+                        <img src="{{env('DINMARK_URL')}}images/company/{{auth()->user()->getCompany->logo}}" alt="{{auth()->user()->name}}" />
+                    @else
+                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                    @endif
+                </div>
+
+                <!-- END profile-header-img -->
+                <!-- BEGIN profile-header-info -->
+                <div class="profile-header-info">
+                    <h4 class="mt-0 mb-1">{{auth()->user()->getCompany->name}}</h4>
+                    <p class="mb-2">{{auth()->user()->name}}</p>
+                    <p class="mb-0"><strong>@lang('sidebar.manager'):</strong> {{auth()->user()->getCompany->getManager->name}}</p>
+                </div>
+                <!-- END profile-header-info -->
+            </div>
+        </div>
+    </div>
 
     <h1 class="page-header">@lang('company.edit_page_name')</h1>
-
+    <div class="profile-content p-t-0">
     <!-- begin row -->
     <div class="row">
         <!-- begin col-6 -->
@@ -256,20 +285,24 @@
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
                 <div class="panel-body">
-                    <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>@lang('company.users_block_name')</th>
-                                <th>@lang('company.users_block_email')</th>
-                                <th>@lang('company.users_block_status')</th>
-                                <th>@lang('company.users_block_registered_time')</th>
-                                <th>@lang('company.users_block_last_login')</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-scroll-container">
+                        <table id="users-table" class="table table-striped table-bordered table-td-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>@lang('company.users_block_name')</th>
+                                    <th>@lang('company.users_block_email')</th>
+                                    <th>@lang('company.users_block_status')</th>
+                                    <th>@lang('company.users_block_registered_time')</th>
+                                    <th>@lang('company.users_block_last_login')</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <a href="#modal-add_user" class="btn btn-sm btn-primary" data-toggle="modal">@lang('company.users_block_btn_add')</a>
                 </div>
             </div>
 
@@ -428,30 +461,188 @@
         <!-- end col-6 -->
     </div>
     <!-- end row -->
+    </div>
+    <div class="modal fade" id="modal-add_user" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@lang('company.modal_add_user_header')</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <form id="form_add_user" method="post" action="{{route('company.users_add')}}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group m-b-15">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>@lang('company.modal_add_user_name')</label>
+                                    <input type="text" name="user_name" class="form-control m-b-5 @error('user_name') is-invalid @enderror" placeholder="@lang('company.modal_add_user_name')" required value="{{old('user_name')}}"/>
+                                    @error('user_name')
+                                    <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>@lang('company.modal_add_user_last_name')</label>
+                                    <input type="text" name="user_last_name" class="form-control m-b-5 @error('user_last_name') is-invalid @enderror" placeholder="@lang('company.modal_add_user_last_name')" required value="{{old('user_last_name')}}"/>
+                                    @error('user_last_name')
+                                    <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group m-b-15">
+                            <label>@lang('company.modal_add_user_email')</label>
+                            <input type="text" name="user_email" class="form-control m-b-5 @error('user_email') is-invalid @enderror" placeholder="@lang('company.modal_add_user_email')" required value="{{old('user_email')}}"/>
+                            @error('user_email')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="form-group m-b-15">
+                            <label>@lang('company.modal_add_user_password')</label>
+                            <input type="password" name="user_password" class="form-control m-b-5 @error('user_password') is-invalid @enderror" placeholder="@lang('company.modal_add_user_password')" required/>
+                            @error('user_name')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="form-group m-b-15">
+                            <label>@lang('company.modal_add_user_repassword')</label>
+                            <input type="password" name="user_password_confirmation" class="form-control m-b-5 @error('user_password_confirmation') is-invalid @enderror" placeholder="@lang('company.modal_add_user_repassword')" required/>
+                            @error('user_password_confirmation')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal">@lang('global.cancel')</a>
+                        <button type="submit" class="btn btn-primary btn-add-order">@lang('global.add')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    @endsection
+
+@endsection
 
 @push('scripts')
+    <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
     <script src="/assets/plugins/highlight.js/highlight.min.js"></script>
     <script src="/assets/js/demo/render.highlight.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <script>
-		$('#datepicker-default').datepicker({
-			todayHighlight: true
-		});
 
-		document.querySelector('.custom-file-input').addEventListener('change',function(e){
-			var fileName = document.getElementById("uploadPhoto").files[0].name;
-			var nextSibling = e.target.nextElementSibling
-			nextSibling.innerText = fileName
-		})
+			$(document).ready(function () {
+                @php
+                    $error = false;
+                @endphp
+                @error('user_name')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_last_name')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_email')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_password')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
+                @error('user_password_confirmation')
+                    @php
+                        $error = true;
+                    @endphp
+                @enderror
 
-        @if (session('status'))
-		$.gritter.add({
-			title: '{{ session('status') }}',
-		});
+                @if($error)
+                    $('#modal-add_user').modal('show');
+                @enderror
 
-        @endif
+				$('#datepicker-default').datepicker({
+					todayHighlight: true
+				});
+
+				document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+					var fileName = document.getElementById("uploadPhoto").files[0].name;
+					var nextSibling = e.target.nextElementSibling
+					nextSibling.innerText = fileName
+				})
+
+                @if (session('status'))
+				$.gritter.add({
+					title: '{{ session('status') }}',
+				});
+                @endif
+
+					window.table = $('#users-table').DataTable({
+					"language": {
+						"url": "@lang('table.localization_link')",
+					},
+					"pageLength": 25,
+					"autoWidth": true,
+					"processing": true,
+					"serverSide": true,
+					"ajax": "{{route('company.users_ajax')}}",
+					"order": [[0, "desc"]],
+					//"ordering": false,
+					//"searching": true,
+					fixedHeader: {
+						header: true,
+						footer: true
+					},
+					"columns": [
+						{
+							data: 'id',
+							"visible": false,
+						},
+						{
+							className: 'text-center',
+							data: 'image_html',
+							"orderable": false,
+						},
+						{
+							data: 'name',
+						},
+						{
+							data: 'email',
+						},
+						{
+							data: 'status_html',
+							"orderable": false,
+						},
+						{
+							data: 'registered_time',
+						},
+						{
+							data: 'last_login_time',
+						},
+						{
+							data: 'actions',
+							"orderable": false,
+						},
+					],
+				});
+			});
 
     </script>
 @endpush

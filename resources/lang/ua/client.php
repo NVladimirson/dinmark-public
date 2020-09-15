@@ -27,6 +27,7 @@ return [
     'table_header_company'	=> 'Компанія',
     'table_header_edrpo'	=> 'ЄДРПОУ',
     'table_header_address'	=> 'Адреса',
+    'table_header_comment'	=> 'Коментар',
 
     'confirm_delete_header'	=> 'Видалення клієнта',
     'confirm_delete_text'	=> 'Клієнт буде видалений назавжди. Ви не зможете його встановити.',

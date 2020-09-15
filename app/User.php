@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'last_login', 'company', 'status'
     ];
 
     /**
@@ -48,6 +48,10 @@ class User extends Authenticatable
 
     public function price(){
     	return $this->hasOne('App\Models\User\UserPrice','user_type', 'type');
+	}
+
+    public function getStatus(){
+    	return $this->hasOne('App\Models\User\UserStatus', 'id','status');
 	}
 
 	public function logs(){

@@ -137,6 +137,7 @@ class CategoryServices
 		foreach ($categories as $category){
 			$category_ids = $instance->getChildren($category_ids,$category);
 		}
+
 		return $category_ids;
 	}
 
@@ -163,6 +164,7 @@ class CategoryServices
 						'text' => CategoryServices::getName($key),
 						'id' => $key
 					];
+
 					if(CategoryServices::anyChilds($key)){
 						$data['children'] = ['Загрузка'];
 					}
@@ -173,6 +175,7 @@ class CategoryServices
 
 
 	private static function getChilds($id){
+
 	  $childs = ProductCategory::where([['parent', $id],['active',1]])->get()->keyBy('id')->toArray();
 	  return $childs;
 	}

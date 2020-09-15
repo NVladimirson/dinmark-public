@@ -47,6 +47,7 @@
 								<th class="text-nowrap">@lang('client.table_header_company')</th>
 								<th class="text-nowrap">@lang('client.table_header_edrpo')</th>
 								<th class="text-nowrap">@lang('client.table_header_address')</th>
+								<th class="text-nowrap">@lang('client.table_header_comment')</th>
 								<th class="text-nowrap text-center" width="80"></th>
 							</tr>
 						</thead>
@@ -138,6 +139,9 @@
 						},
 						{
 							data: 'address',
+						},
+						{
+							data: 'comment_html',
 						},
 						{
 							"orderable":      false,

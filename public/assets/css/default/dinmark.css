@@ -1,0 +1,1424 @@
+/* header */
+#header {
+    padding: 15px 0 10px;
+    background: #3c3c3a;
+    /* z-index: 100; */
+    /* position: relative; */
+}
+
+#header .navbar-big img.logo {
+    max-width: 200px;
+    width: 100%;
+}
+
+#header input {
+    /* max-width: 350px; */
+    width: 250px;
+    height: 100%;
+    padding: 0 10px;
+    border: 0px solid #fff;
+    -webkit-border-radius: 0px;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+.hexa {
+    position: relative;
+    padding: 0 13px;
+    height: 25px;
+    z-index: 1;
+}
+
+.hexa:before, .hexa:after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/before-filter.svg);
+}
+
+
+
+.hexa:after {
+    content: '';
+    left: auto;
+    right: 0;
+    background-image: url(../default/images/after-filter.svg);
+}
+.more.hexa-plus i {
+    background: #fff;
+    padding: 2px 0;
+    display: block;
+}
+.more.hexa-plus {
+    padding: 0 4px;
+    height: 15px;
+    width: auto;
+    cursor: pointer;
+}
+#header i.fas {
+    font-size: 11px;
+    color: #3c3c3a;
+}
+
+#header form.hexa .more {
+    /* color: #fff; */
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
+.more.hexa-plus:before, .more.hexa-plus:after {
+    width: 5px;
+}
+
+*:before, *:after {
+    background-repeat: no-repeat;
+}
+
+#header .actions > a:hover {
+    transform: scale(1.1);
+}
+
+.more.hexa-plus:hover {
+    opacity: 0.9;
+}
+
+*:focus {
+    outline: unset !important;
+}
+
+.hexa-plus:before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/before_plus.svg);
+}
+.hexa-plus:after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: auto;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/after_plus.svg);
+}
+#header form.hexa {
+    height: 44px;
+    /* width: calc(100% - 20px); */
+    width: 100%;
+    position: relative;
+    z-index: 992;
+}
+
+#header #debt {
+    margin: 0 auto;
+    text-align: center;
+    max-width: 350px;
+}
+
+#header .debt-text {
+    color: #fff;
+    /* font-weight: bold; */
+    font-size: 14px;
+    line-height: 16px;
+}
+
+#header .debt-btn {
+    background: #fff;
+    width: 240px;
+    margin-top: 6px;
+    border-radius: 2px;
+    border: 0;
+    display: inline-block;
+    padding: 1px 6px;
+    color: #000;
+    text-decoration: none;
+}
+#header .debt-btn:hover {
+    background: #e6e6e6;
+}
+
+#header .actions {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    position: absolute;
+    right: 20px;
+    bottom: 5px;
+}
+
+#header .right-actions-block {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+#header .actions .likes,
+.mobile-header .actions .likes {
+    background-image: url(../default/images/likes.svg);
+}
+#header .actions .comparison,
+.mobile-header .actions .comparison{
+    background-image: url(../default/images/comparison.svg);
+}
+#header .actions .cart,
+.mobile-header .actions .cart  {
+    background-image: url(../default/images/cart.svg);
+}
+#header .actions a,
+.mobile-header .actions a {
+    background-repeat: no-repeat;
+}
+#header .actions > a,
+.mobile-header .actions > a {
+    display: block;
+    height: 46px;
+    width: 48px;
+    margin-left: 15px;
+    position: relative;
+    cursor: pointer;
+}
+
+#header .right-actions-block--wrapper {
+    width: 300px;
+}
+
+/* after btn plus dropdown menu */
+#header form#filter,
+#header form#filter .submit,
+#mobile-filter,
+#mobile-filter .submit {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 991;
+}
+
+#header form#filter .container,
+#header form#filter .submit,
+#mobile-filter .container,
+#mobile-filter .submit {
+    padding: 10px 15px;
+    background: #a2a2a2;
+}
+
+#header form#filter .container,
+#mobile-filter .container {
+    border-radius: 5px;
+}
+
+#header form#filter .container div
+#mobile-filter .container div {
+    width: 16%;
+}
+
+#header form#filter .container *,
+#mobile-filter .container *{
+    height: auto;
+}
+
+#header form#filter .container div > p,
+#mobile-filter .container div > p{
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+}
+.select2-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    vertical-align: middle;
+}
+
+#header form#filter .submit,
+#mobile-filter .submit {
+    width: 200px;
+    left: calc(50% - 100px);
+    text-align: center;
+    padding-top: 0;
+}
+#header form#filter .submit:before,
+#header form#filter .submit:after,
+#mobile-filter .submit:before,
+#mobile-filter .submit:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -19px;
+    width: 20px;
+    height: 100%;
+    background: url(../default/images/before-triangle-filter-up.svg);
+}
+
+#header form#filter .submit button,
+#mobile-filter .submit button {
+    height: 20px;
+    background: #3c3c3a;
+    font-size: 12px;
+    color: #fff;
+}
+
+#header form#filter .submit:after,
+#mobile-filter .submit:after {
+    left: auto;
+    right: -19px;
+    background: url(../default/images/after-triangle-filter-up.svg);
+}
+#header form#filter .submit button,
+#mobile-filter .submit button {
+    border: 0;
+}
+#header form#filter .submit button:before,
+#mobile-filter .submit button:before {
+    left: -5px;
+    width: 7px;
+    background: url(../default/images/before-filter-sbt.svg);
+}
+
+.w25 {
+    width: 25%;
+}
+
+.w75 {
+    width: 75%;
+}
+.w25 + .w75 {
+    padding-left: 25px;
+}
+
+.navbar-grey a.hexa:after {
+    width: 8px;
+    right: -7px;
+}
+.navbar-grey a.hexa.shop:after {
+    background-image: url(../default/images/after-shop.svg);
+    width: 32px;
+    right: -31px;
+}
+.navbar-grey a.shop:before {
+    background-image: url(../default/images/before-shop.svg);
+}
+.navbar-grey a.shop i {
+    position: absolute;
+    right: -21px;
+    top: 7px;
+    z-index: 5;
+    color: #fff;
+}
+#header form#filter .submit button:after {
+    left: auto;
+    width: 7px;
+    right: -5px;
+    background: url(../default/images/after-filter-sbt.svg);
+}
+nav.navbar-grey {
+    background: #5A5A5A;
+    padding: 10px 0;
+    z-index: 1019;
+    position: relative;
+}
+nav.navbar-grey .container {
+    position: relative;
+    /* z-index: 1020; */
+    /* background: #5A5A5A; */
+}
+
+
+
+.navbar-grey a:hover {
+    opacity: 0.9;
+}
+nav.navbar-grey a.shop {
+    white-space: nowrap;
+    width: calc(25% - 37px);
+    margin-left: 8px;
+    text-transform: uppercase;
+    padding: 4px 8px !important;
+    background: #29ABE2;
+    color: #fff;
+}
+
+nav.navbar-grey .w75 a {
+    white-space: nowrap;
+    background: #A2A2A2;
+    color: #fff;
+    padding: 4px 18px;
+    border-radius: 2px;
+}
+nav.navbar-grey a.hexa:before {
+    width: 8px;
+    left: -7px;
+}
+nav.navbar-grey .w75 a:before {
+    background-image: url(images/before-grey.svg);
+}
+
+nav.navbar-grey .w75 a:after {
+    background-image: url(images/after-grey.svg);
+}
+
+nav.mainmenu > div:hover:after {
+    background: url(images/nav-hover.svg) no-repeat right;
+    background-size: auto 100%;
+    width: 23px;
+    height: 100%;
+    right: -23px;
+    top: 0;
+    content: '';
+    z-index: 999;
+    display: block;
+    position: absolute;
+}
+nav.mainmenu > div:hover > a, nav.mainmenu div.submenu a:hover {
+    background: #29ABE2;
+    color: #fff;
+    text-decoration: none;
+}
+nav.mainmenu > div:hover > a + div.submenu {
+    display: block;
+}
+nav.mainmenu > div > a + div.submenu {
+    display: none;
+    position: absolute;
+    width: 300px;
+    left: calc(100% + 10px);
+    top: 0;
+    color: #fff;
+    background: #5A5A5A;
+    padding: 15px;
+    z-index: 98;
+}
+.right-actions-block a {
+    /* color: #fff; */
+}
+.right-actions-block .dropdown a {
+    /* color: #000; */
+}
+.right-actions-block a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.right-actions-block .dropdown-menu{
+    z-index: 2500;
+}
+.navbar-grey a:hover {
+    text-decoration: none;
+}
+nav.mainmenu > div > a + div.submenu a {
+    display: block;
+    padding: 10px;
+
+}
+nav.mainmenu > div > a {
+    color: #000;
+}
+nav div.submenu a {
+    color: #fff;
+}
+.mainmenu {
+    position: absolute;
+    z-index: 99;
+    margin-top: 30px;
+    display: none;
+}
+.navbar-grey .container{
+    width: 100% !important;
+}
+nav.mainmenu {
+    padding: 10px !important;
+    border-radius: 5px;
+    background: #D5D5D5;
+}
+nav.mainmenu > div {
+    position: relative;
+}
+nav.mainmenu > div > a {
+    display: flex;
+    width: 100%;
+    padding: 11px;
+    font-weight: bold;
+    position: relative;
+}
+
+nav.mainmenu > div > a + div.submenu {
+    display: none;
+    position: absolute;
+    width: 300px;
+    left: calc(100% + 10px);
+    top: 0;
+    color: #fff;
+    background: #5A5A5A;
+    padding: 15px;
+    z-index: 98;
+}
+nav.mainmenu > div > a div:first-child {
+    text-align: right;
+    width: 40%;
+}
+nav.mainmenu > div > a div:last-child {
+    width: 60%;
+    padding-left: 15px;
+    font-size: 16px;
+    line-height: 1s;
+}
+nav.mainmenu > div > a img {
+    width: auto;
+    height: 15px;
+    margin-top: 3px;
+}
+#mobile-header {
+    display: none;
+}
+@media screen and (min-width: 1500px) {
+    nav.navbar-grey .w75 a {
+        padding: 4px 35px;
+    }
+
+}
+
+@media screen and (max-width: 1050px) {
+    .content {
+        margin-left: 0;
+        /* padding: 20px 30px; */
+    }
+    /* #mobile-header .mainmenu {
+        width: 50% !important;
+    } */
+    #header,
+    /* #sidebar, */
+    .hideTab {
+        display: none !important;
+    }
+    #mobile-header {
+        display: block;
+    }
+    .page-header-fixed {
+        padding-top: 0;
+    }
+    #mobile-header ul {
+        padding:0;
+        margin:0;
+        list-style-type: none;
+    }
+    .mobile-header .navbar-user-img {
+        /* float: left; */
+        width: 30px;
+        height: 30px;
+        margin: -5px 10px -5px 0;
+        -webkit-border-radius: 30px;
+        border-radius: 30px;
+    }
+    #mobile-header .top-actions-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #mobile-header .debt-text {
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    .navbar-mobile-header {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 10px 0;
+        justify-content: space-between;
+    }
+    .navbar-mobile-header .navbar-header:after,
+    .navbar-mobile-header .navbar-header:before {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .navbar-mobile-header .navbar-header {
+        width: 220px;
+    }
+    .navbar-mobile-header.navbar-inverse .navbar-toggle {
+        color: #6f8293;
+    }
+    .navbar-mobile-header .navbar-toggle {
+        position: relative;
+        padding: 10px;
+        /* margin: 0 auto; */
+        background-color: transparent;
+        background-image: none;
+        border: none;
+        outline: 0;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+    }
+    .navbar-toggle .icon-bar+.icon-bar {
+        margin-top: 4px;
+    }
+    #mobile-header .navbar-toggle .icon-bar {
+        display: block;
+        width: 22px;
+        height: 4px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        background: #fff;
+    }
+    #mobile-header .navbar-toggle {
+        color: #6f8293;
+    }
+    .dinmark-logo {
+        max-width: 170px;
+    }
+    #mobile-header.navbar-form {
+        padding: 0 15px;
+        margin: 9px 0;
+    }
+    #mobile-header .navbar-nav {
+        list-style-type: none;
+        margin: 0 auto;
+        padding: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+
+    #mobile-header input {
+        /* max-width: 350px; */
+        width: 100%;
+        height: 100%;
+        padding: 0 10px;
+        border: 0px solid #fff;
+        -webkit-border-radius: 0px;
+        -webkit-appearance: none;
+        border-radius: 0;
+    }
+    #mobile-header form.hexa .more {
+        /* color: #fff; */
+        position: absolute;
+        left: 100%;
+        top: 0;
+    }
+    #mobile-header i.fas {
+        font-size: 11px;
+        color: #3c3c3a;
+    }
+    #mobile-header form.hexa {
+        height: 44px;
+        /* width: calc(100% - 20px); */
+        width: 100%;
+        position: relative;
+        z-index: 992;
+    }
+    .mobile-navbar .navbar-grey {
+        /* margin: 10px 0; */
+        padding: 10px 50px 10px 40px;
+    }
+    .mobile-navbar a.shop {
+        width: 100% !important;
+    }
+    #mobile-header {
+        padding: 10px 0;
+        background: #3c3c3a;
+    }
+    .filter--wrapper {
+        position: relative;
+    }
+    #mobile-filter .submit button:after {
+        left: auto;
+        width: 7px;
+        right: -5px;
+        background: url(../default/images/after-filter-sbt.svg);
+    }
+    .fa-times {
+        position: absolute;
+        right: -10px !important;
+        top: 10px !important;
+        font-size: 24px !important;
+        color: #fff !important;
+    }
+    #close-burger-menu {
+        font-size: 25px;
+        right: 0;
+        top: 40px;
+        position: absolute;
+        color: #fff;
+        z-index: 99999;
+        /* display: none; */
+
+    }
+    /* .header .navbar-brand img {
+        max-width: 150px;
+    }
+    #header input {
+        width: 150px;
+    }
+    #header #debt {
+        max-width: 250px;
+    }
+    #header .debt-btn {
+        width: 150px;
+    }
+    .hideTab  {
+        display: none !important;
+    }
+    nav.navbar-grey a.shop {
+        width: 50%;
+        margin-left: 25%;
+    }
+    #header .right-actions-block--wrapper{
+        width: auto;
+    } */
+    /* #header .right-actions-block--wrapper {
+        width: 300px;
+    } */
+}
+
+
+/* end header */
+tbody img:hover {
+    transform: scale(1.875);
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -ms-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    -webkit-transform: scale(1.875);
+    -moz-transform: scale(1.875);
+    -ms-transform: scale(1.875);
+    -o-transform: scale(1.875);
+}
+
+tbody img {
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -ms-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+}
+
+tbody tr:hover td, tbody tr:hover th {
+    background-color: grey;
+    color: #fff;
+}
+
+tbody tr:hover td .product-total{
+    /* background-color: grey; */
+    color: #000;
+}
+
+
+tbody tr td a {
+    color: #000;
+    text-decoration: underline;
+}
+
+tbody tr:hover a{
+    color: #fff;
+}
+
+.nav.nav-tabs.nav-tabs-panel{
+    margin-bottom: -10px;
+}
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link{
+    color: #fff;
+}
+
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link:focus,
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link:hover {
+    color: #eee;
+}
+
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active{
+    color: #2d353c;
+}
+
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:focus,
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:hover{
+    color: #48596a;
+}
+.nav.nav-tabs.nav-tabs-primary{
+    background-color: #1e7cd2;
+}
+.nav.nav-tabs.nav-tabs-primary .nav-item .nav-link {
+    color: #fff;
+}
+.order-status{
+    display: none;
+}
+
+.order-status.order-status-tab_active{
+    display: block;
+}
+
+.widget-list .widget-list-item.widget-list-item_transparent{
+    background: transparent;
+}
+#ui-datepicker-div{
+    z-index: 5!important;
+}
+#page-container:not(.page-sidebar-minified) .sidebar .nav-manager{
+    display: none;
+}
+.page-sidebar-minified .sidebar .nav>.nav-manager>a{
+    padding: 10px 13.5px;
+}
+.debt{
+    text-transform: uppercase;
+    font-size: 18px;
+    margin-top: 4px;
+}
+.news-content table{
+    width: 100%!important;
+}
+.table-scroll-container{
+    width: 100%!important;
+}
+.table-scroll-container table{
+    min-width: 100%;
+}
+.w-40{
+    width: 40%;
+}
+.w-60{
+    width: 60%;
+}
+.product-total{
+    padding: 5px;
+    text-align: right;
+    font-weight: 700;
+    background-color: #f0f0f0;
+}
+.product-total-limit_1{
+    background-color: #FCAA3F;
+    color: #ffffff;
+}
+
+.product-total-limit_2{
+    background-color: #74C186;
+    color: #ffffff;
+}
+
+/* social icons */
+
+section.subscribe {
+    max-width: 600px;
+    margin: 50px auto 30px;
+    color: #3c3c3a;
+}
+
+section.subscribe h3 {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 18px;
+    max-width: 185px;
+    margin: 20px auto 5px;
+}
+
+section.subscribe .flex {
+    max-width: 350px;
+    margin: auto;
+}
+
+section.subscribe .flex a {
+    display: block;
+    margin: 8px;
+}
+
+section.subscribe img {
+    width: 100%;
+}
+
+header .actions > a:hover, section.subscribe a:hover {
+    transform: scale(1.1);
+}
+
+/* footer */
+
+#footer {
+    background: #3c3c3a;
+    color: #fff;
+    padding-left: 220px;
+}
+
+#footer .container {
+    padding: 50px 0;
+}
+
+.container {
+    margin: auto;
+    width: 90%;
+    max-width: 1600px;
+}
+
+.flex {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: space-between;
+}
+
+#footer .container div {
+    width: 22%;
+}
+
+#footer .container div h4 {
+    font-size: 20px;
+    padding: 5px 0;
+    border-top: 3px solid #5e5e5e;
+    border-bottom: 1px solid #5e5e5e;
+}
+
+#footer .container div a, footer .container div p > a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+#footer .container div > a, footer .container div p {
+    display: block;
+    margin: 15px 0;
+}
+
+.copyright {
+    background: #262626;
+    text-align: center;
+    padding: 3px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.copyright span {
+    padding-left: 20px;
+    font-size: 12px;
+
+}
+
+
+@media screen and (max-width: 1280px){
+
+    .table-scroll-container{
+        display: block;
+        width: 100%!important;
+        overflow-x: scroll;
+    }
+    .news-content table{
+        overflow-x: auto!important;
+    }
+    .pagination{
+        flex-wrap: wrap;
+    }
+
+}
+
+@media screen and (max-width: 768px){
+    .debt{
+        width: 100%;
+        margin-top: 0;
+    }
+    #footer {
+        padding-left: 0;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .hideMobile {
+        display: none !important;
+    }
+    footer .container div:not(.hideMobile) {
+        width: 100% !important;
+        /* text-align: center; */
+    }
+}
+
+
+/* font aweasome fix */
+
+.float-sub-menu-container .float-sub-menu li > a .caret {
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 11px;
+    margin-top: -1px;
+    border: none;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    float: right;
+}
+.gallery .image .image-info .rating span.star:before {
+    content: "\f005";
+    color: #d5dbe0;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.inbox .attached-document > li:before {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    font-size: 12px;
+    background: #d5dbe0;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.theme-panel .theme-list > li.active > a:before {
+    content: "\f00c";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.4;
+    text-align: center;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.theme-panel .theme-version a.active:after,
+.theme-panel .theme-version a:hover:after {
+    content: "\f00c";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    z-index: 10;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 10px;
+    text-align: center;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.todolist > li > a:focus .todolist-input i:before,
+.todolist > li > a:hover .todolist-input i:before {
+    content: "\f14a";
+    color: rgba(45, 53, 60, 0.4);
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.bootstrap-calendar .calendar .table.header td .icon-arrow-left,
+.bootstrap-calendar .calendar .table.header td .icon-arrow-right {
+    cursor: pointer;
+    font-size: 14px;
+    height: 100%;
+    color: #c6ced5;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body .datetimepicker .glyphicon {
+    font-size: 14px;
+    color: #2d353c;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.icon-eye-open {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.icon-eye-close {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.bootstrap-timepicker-widget table tbody tr td .glyphicon {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.combobox-container .input-group .input-group-addon .glyphicon {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body table.dataTable thead tr th.sorting:after,
+body table.dataTable thead tr th.sorting_asc:after,
+body table.dataTable thead tr th.sorting_desc:after {
+    opacity: 1;
+    color: #c6ced5;
+    bottom: 8px;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body .datepicker .datepicker-centuries table thead tr th.next,
+body .datepicker .datepicker-centuries table thead tr th.prev,
+body .datepicker .datepicker-days table thead tr th.next,
+body .datepicker .datepicker-days table thead tr th.prev,
+body .datepicker .datepicker-decades table thead tr th.next,
+body .datepicker .datepicker-decades table thead tr th.prev,
+body .datepicker .datepicker-months table thead tr th.next,
+body .datepicker .datepicker-months table thead tr th.prev,
+body .datepicker .datepicker-years table thead tr th.next,
+body .datepicker .datepicker-years table thead tr th.prev {
+    color: transparent;
+    width: 14.28%;
+    position: relative;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.dropzone .dz-preview .dz-error-mark:before {
+    content: "\f00d";
+    width: 54px;
+    height: 54px;
+    background: #c6ced5;
+    font-size: 28px;
+    color: #6f8293;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body .bootstrap-datetimepicker-widget .glyphicon {
+    font-size: 14px;
+    color: #2d353c;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.fc .fc-toolbar.fc-header-toolbar .fc-button-group .fc-button .fc-icon .fc-icon-left-single-arrow {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.fc .fc-toolbar.fc-header-toolbar .fc-button-group .fc-button .fc-icon .fc-icon-right-single-arrow {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.fc-event-list .fc-event:before {
+    content: "\f0b2";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 25px;
+    text-align: center;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    background: #f2f4f5;
+    color: #c6ced5;
+    font-size: 14px;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+.sw-main.sw-theme-default .step-anchor > li.done > a .number:before {
+    content: "\f00c";
+    background: #2d353c !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #fff;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+}
+.jstree .jstree-container-ul .jstree-node .jstree-anchor .jstree-icon.jstree-checkbox:after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 7px;
+    right: 7px;
+    bottom: 7px;
+    display: block;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body .select2-container .select2-choice .select2-search-choice-close {
+    background: #e4e7ea !important;
+    font-size: 9px;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    color: #9ba8b4;
+    top: 1px;
+    right: 20px;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+}
+body .select2-container .select2-choice .select2-arrow b {
+    background: 0 0 !important;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body .select2-container.select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin-left: 5px;
+    color: #c6ced5;
+    background: 0 0 !important;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body .select2-drop .select2-search:before {
+    content: "\f002";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    margin-top: -5px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #c6ced5;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.select2.select2-container .selection .select2-selection.select2-selection--multiple .select2-selection__arrow b,
+.select2.select2-container .selection .select2-selection.select2-selection--single .select2-selection__arrow b {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    border: none;
+    color: #2d353c;
+    width: auto;
+    height: auto;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.simplecolorpicker.fontawesome .color[data-selected]:after {
+    display: block;
+    text-align: center;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.simplecolorpicker.glyphicons .color[data-selected]:after {
+    content: "\f00c" !important;
+    margin-left: 2px !important;
+    top: 0 !important;
+    display: block;
+    text-align: center;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.tagit.ui-widget li.tagit-choice .tagit-close .ui-icon-close {
+    background: 0 0;
+    height: 24px;
+    width: 16px;
+    text-indent: 0;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+body ul.wysihtml5-toolbar .glyphicon {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.editable-container .editableform .form-group > div .editable-input .input-append.date .add-on i {
+    width: auto;
+    height: auto;
+    margin: 0;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-centuries table thead tr th.next,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-centuries table thead tr th.prev,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-days table thead tr th.next,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-days table thead tr th.prev,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-decades table thead tr th.next,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-decades table thead tr th.prev,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-hours table thead tr th.next,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-hours table thead tr th.prev,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-months table thead tr th.next,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-months table thead tr th.prev,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-years table thead tr th.next,
+.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-years table thead tr th.prev {
+    color: transparent;
+    width: 14.28%;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.editable-container .editableform .form-group > div .editable-buttons .btn .glyphicon-ok {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.editable-container .editableform .form-group > div .editable-buttons .btn .glyphicon-remove {
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.sidebar li > a .caret {
+    display: block;
+    float: right;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 11px;
+    border: none;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}
+.top-menu .nav .caret {
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 11px;
+    border: none;
+    margin-left: 5px;
+    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+}

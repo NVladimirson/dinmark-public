@@ -70,5 +70,14 @@ return [
     'users_block_status'            => 'Статус',
     'users_block_registered_time'   => 'Дата реєстрації',
     'users_block_last_login'        => 'Останній вхід',
+    'users_block_login_as_user'     => 'Увійти як користувач',
+    'users_block_btn_add'           => 'Додати киристувача',
 
+    'modal_add_user_header'           => 'Додавання користувача',
+    'modal_add_user_name'             => 'Ім\'я',
+    'modal_add_user_last_name'        => 'Прізвище',
+    'modal_add_user_email'            => 'Email',
+    'modal_add_user_password'         => 'Пароль',
+    'modal_add_user_repassword'       => 'Повторіть пароль',
+    'modal_add_user_success'          => 'Користувача успішно додано',
 ];

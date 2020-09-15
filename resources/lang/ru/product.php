@@ -22,6 +22,7 @@ return [
     'search_tab_name' => 'Список товаров',
     'all_categories_name' => 'Список категорий',
 
+
     'mass_actions' =>
     [
       'select'=>'Дії з відміченими',

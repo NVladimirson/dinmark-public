@@ -42,17 +42,18 @@
                             <thead>
                             <tr>
                                 <th class="text-nowrap">@lang('reclamation.table_header_product')</th>
-                                <th class="text-nowrap text-center">@lang('reclamation.table_header_number')</th>
+                                <th class="text-nowrap text-center">@lang('reclamation.table_header_file')</th>
                                 <th class="text-nowrap text-center">@lang('reclamation.table_header_realisation_number')</th>
                                 <th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
                                 <th class="text-nowrap text-center">@lang('reclamation.table_header_status')</th>
                                 <th class="text-nowrap">@lang('reclamation.table_header_author')</th>
+                                <th class="text-nowrap" style="width: 50px; min-width: 50px"></th>
                             </tr>
                             </thead>
                             <tbody>
                             </tbody>
                             <tfoot>
-                            <td colspan="6" class="text-nowrap text-left">
+                            <td colspan="7" class="text-nowrap text-left">
                             <span class="m-r-15">
                                 <strong>@lang('reclamation.table_footer_pc')</strong> <span id="footer_pc">1</span>
                             </span>
@@ -74,7 +75,7 @@
 		<!-- end col-10 -->
 	</div>
 	<!-- end row -->
-
+    @include('order.include.explanation')
 
 @endsection
 
@@ -135,7 +136,7 @@
 						"url": "@lang('table.localization_link')",
 					},
 					"pageLength": 25,
-					"autoWidth": true,
+					"autoWidth": false,
 					"processing": true,
 					"serverSide": true,
 					"ajax": "{!! route('reclamations.ajax') !!}",
@@ -155,7 +156,7 @@
 						},
 						{
 							className: 'text-center',
-							data: 'id',
+							data: 'file_html',
 						},
 						{
 							className: 'text-center',
@@ -170,6 +171,9 @@
 						},
 						{
 							data: 'user',
+						},
+						{
+							data: 'action_buttons',
 						},
 					],
 				} );
@@ -199,6 +203,43 @@
 						$(this).find('i').addClass('fa-minus');
 					}
 				} );
+
+				$('#modal_explanation').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('input[name="explanation_subject"]').val(button.data('subject'));
+					modal.find('.modal-title').text(button.data('subject'));
+				})
+
+				$('#form_explantion').submit(function (e) {
+					e.preventDefault();
+					var form = $(this);
+					$('#modal_explanation').modal('hide');
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "POST",
+						url: "{{route('ticket.explanation')}}",
+						data: form.serialize(),
+						success: function (resp) {
+							if (resp.status == "success") {
+								$('#explanation_message').val('');
+								$.gritter.add({
+									title: '@lang('order.explanation_success')',
+								});
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				});
 
 			});
 		})(jQuery);

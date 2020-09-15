@@ -35,7 +35,8 @@
 						<div class="col-lg-3">
 							<select class="form-control selectpicker m-b-5" id="change_wishlist" data-size="10" data-live-search="true" data-style="btn-white">
 								@foreach($wishlists as $wishlist)
-									<option value="{{$wishlist->id}}" data-main="{{$wishlist->is_main}}" data-price="{{$wishlist->price_id}}" @if(session('current_catalog') == $wishlist->id) selected="selected" @endif>{{$wishlist->name}}</option>
+									<option value="{{$wishlist->id}}" data-main="{{$wishlist->is_main}}" data-koef="{{
+				($wishlist->price)? $wishlist->price->koef : 1 }}" data-price="{{$wishlist->price_id}}" @if(session('current_catalog') == $wishlist->id) selected="selected" @endif>{{$wishlist->name}}</option>
 								@endforeach
 							</select>
 						</div>
@@ -64,7 +65,7 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.all_tab_name') - {{$curentWishlist->name}}</h4>
+					<h4 class="panel-title">@lang('product.all_tab_name') - <span class="catalog-name">{{$curentWishlist->name}}</span></h4>
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -128,7 +129,7 @@
 								<th class="text-nowrap">@lang('wishlist.table_header_article')</th>
 								<th class="text-nowrap">@lang('wishlist.table_header_holding_article')</th>
 								<th class="text-nowrap">@lang('wishlist.table_header_price')</th>
-								<th class="text-nowrap">@lang('wishlist.table_header_user_price') x {{
+								<th class="text-nowrap coef-header">@lang('wishlist.table_header_user_price') x {{
 				($curentWishlist->price)? $curentWishlist->price->koef : 1 }}</th>
 								<th class="text-nowrap">@lang('wishlist.table_header_storage')</th>
 								<th width="100"></th>
@@ -306,7 +307,7 @@
 					var button = $(event.relatedTarget);
 					var modal = $(this);
 					modal.find('.product_id').val(button.data('product'));
-					modal.find('.old_catalog_id').val({{session('current_catalog')}});
+					modal.find('.old_catalog_id').val($('#change_wishlist').val());
 					modal.find('.wishlist-description').hide();
 				});
 				$('#wishlist').change(function (e) {
@@ -484,16 +485,19 @@
 
 					var new_form = $('#wishlist_new_form');
 
-					var list_name = $("#change_wishlist option:selected").text();
-					var price = $("#change_wishlist option:selected").data('price');
+					var list_name   = $("#change_wishlist option:selected").text();
+					var price       = $("#change_wishlist option:selected").data('price');
+					var koef        = $("#change_wishlist option:selected").data('koef');
 
 					$('#wishlist_rename_form').attr('action',new_form.attr('action')+'/'+$('#change_wishlist').val());
 					$('#wishlist_delete_form').attr('action',new_form.attr('action')+'/destroy/'+$('#change_wishlist').val());
 					$('#wishlist_price_form').attr('action',new_form.attr('action')+'/set-price/'+$('#change_wishlist').val());
 					$('#wishlist_add_product_form').attr('action',new_form.attr('action')+'/add-to-catalog/'+$('#change_wishlist').val());
 					$('#wishlist_rename_form').find('input[name="rename"]').val(list_name);
+					$('.catalog-name').text(list_name);
 					$('#wishlist_price_form').find('select').val(price);
 					$('#wishlist_price_form').find('select').selectpicker('render');
+					$('.coef-header').text("@lang('wishlist.table_header_user_price') x " + koef);
 
 					if($("#change_wishlist option:selected").data('main') == 1){
 						$('#delete_wishlist_btn').hide(0);

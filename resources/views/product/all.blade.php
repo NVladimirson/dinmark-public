@@ -39,6 +39,7 @@
 					<div class="row">
 						<div class="col-xl-3">
 
+
 						@if(Request::get('instock'))
 						<div class="custom-control custom-switch">
 							<input type="checkbox" class="custom-control-input" id="instockToggler" checked>
@@ -51,6 +52,7 @@
 						</div>
 					 @endif
 					 </div>
+
 
 					 <div class="col-xl-4">
 							  <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
@@ -114,6 +116,7 @@
 		</div>
 		<div class="col-xl-3">
 
+
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h4 class="panel-title">@lang('product.all_categories_name')</h4>
@@ -164,13 +167,13 @@
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
-
 	<script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
 	<script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
 	<script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+
 
 	<script>
         //jstree
@@ -766,6 +769,7 @@
 				font-size: 1rem;
 				line-height: 1.0;
 		}
+
 
 		.right-align{
 float: right;

@@ -19,6 +19,7 @@ class Client extends Model
 			'phone',
 			'address',
 			'company_id',
+			'comment',
 		];
 
 	public function company(){

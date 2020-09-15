@@ -45,6 +45,7 @@ class ProductController extends Controller
 	}
 
 	public function allAjax(Request $request){
+
 		$products = Product::with(['storages','content']);
 
 		if(!empty($request->categories)){
@@ -117,6 +118,7 @@ class ProductController extends Controller
 								textContent = selected_products.textContent;
 								selected_products_arr = textContent.split('."','".');
 								const index = selected_products_arr.indexOf(String(pid));
+
 //								console.log(index);
 										if (index > -1) {
   										selected_products_arr.splice(index, 1);
@@ -130,8 +132,8 @@ class ProductController extends Controller
 											}
 										}
 										selected_products.textContent = selected_products_arr.toString();
+
 //										 console.log(selected_products_arr);
-                                        
 							})();"/>
 						  <label for="product-'.$product->id.'"> </label>
 						</div>';
@@ -172,6 +174,7 @@ class ProductController extends Controller
 
                 return '-';
 			})
+
 ->addColumn('storage_html', function (Product $product) {
 	$value = trans('product.storage_empty');
 	if($product->storages){
