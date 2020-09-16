@@ -1,4 +1,10 @@
 /* header */
+body {
+    font-family: "DinPRO", Arial, Helvetica, sans-serif !important;
+}
+#mobile-header .right-action-block > a {
+    color: #A2A2A2 !important;
+}
 #header {
     padding: 15px 0 10px;
     background: #3c3c3a;
@@ -20,6 +26,17 @@
     -webkit-border-radius: 0px;
     -webkit-appearance: none;
     border-radius: 0;
+}
+
+#header .right-actions-block li > a {
+    color: #A2A2A2;
+}
+
+.navbar-grey .hideTab a:first-of-type {
+    /* margin-left: 50px !important; */
+}
+.navbar-grey .hideTab a:last-of-type {
+    /* margin-right: 50px !important; */
 }
 
 .hexa {
@@ -143,7 +160,7 @@
     color: #000;
     text-decoration: none;
 }
-#header .debt-btn:hover {
+#header .debt-btn:hover{
     background: #e6e6e6;
 }
 
@@ -169,7 +186,7 @@
 }
 #header .actions .comparison,
 .mobile-header .actions .comparison{
-    background-image: url(../default/images/comparison.svg);
+    background-image: url(../default/images/comparison1.svg);
 }
 #header .actions .cart,
 .mobile-header .actions .cart  {
@@ -357,15 +374,34 @@ nav.navbar-grey .container {
 }
 nav.navbar-grey a.shop {
     white-space: nowrap;
-    width: calc(25% - 37px);
+    /* width: calc(25% - 37px); */
     margin-left: 8px;
+    margin-right: 100px;
     text-transform: uppercase;
     padding: 4px 8px !important;
     background: #29ABE2;
     color: #fff;
 }
 
-nav.navbar-grey .w75 a {
+.navbar-grey .flex .hideTab {
+    width: 100% !important;
+}
+
+.container .flex .navbar-items a:first-of-type {
+    /* margin-left: 50px !important; */
+}
+
+.navbar--wrapper {
+    display: flex;
+    margin-left: 0 !important;
+    justify-content: space-between;
+}
+
+/* nav.navbar-grey a.shop {
+    align-self: flex-start !important;
+} */
+
+nav.navbar-grey  a {
     white-space: nowrap;
     background: #A2A2A2;
     color: #fff;
@@ -376,11 +412,11 @@ nav.navbar-grey a.hexa:before {
     width: 8px;
     left: -7px;
 }
-nav.navbar-grey .w75 a:before {
+nav.navbar-grey  a:before {
     background-image: url(images/before-grey.svg);
 }
 
-nav.navbar-grey .w75 a:after {
+nav.navbar-grey  a:after {
     background-image: url(images/after-grey.svg);
 }
 
@@ -448,9 +484,9 @@ nav div.submenu a {
     margin-top: 30px;
     display: none;
 }
-.navbar-grey .container{
+/* .navbar-grey .container{
     width: 100% !important;
-}
+} */
 nav.mainmenu {
     padding: 10px !important;
     border-radius: 5px;
@@ -508,11 +544,14 @@ nav.mainmenu > div > a img {
         margin-left: 0;
         /* padding: 20px 30px; */
     }
+    #footer {
+        padding-left: 50px !important;
+    }
     /* #mobile-header .mainmenu {
         width: 50% !important;
     } */
     #header,
-    /* #sidebar, */
+        /* #sidebar, */
     .hideTab {
         display: none !important;
     }
@@ -675,6 +714,12 @@ nav.mainmenu > div > a img {
         /* display: none; */
 
     }
+    .navbar-items {
+        width: 100% !important;
+    }
+    nav.navbar-grey a.shop {
+        margin: 0 30px !important;
+    }
     /* .header .navbar-brand img {
         max-width: 150px;
     }
@@ -701,6 +746,8 @@ nav.mainmenu > div > a img {
         width: 300px;
     } */
 }
+
+
 
 
 /* end header */
@@ -875,9 +922,13 @@ header .actions > a:hover, section.subscribe a:hover {
 }
 
 .container {
-    margin: auto;
+    /* margin: auto; */
     width: 90%;
     max-width: 1600px;
+}
+
+.navbar-items {
+    margin-left: 0 !important;
 }
 
 .flex {
@@ -887,6 +938,10 @@ header .actions > a:hover, section.subscribe a:hover {
     display: -o-flex;
     display: flex;
     justify-content: space-between;
+}
+
+.hideTab {
+    justify-content: space-evenly !important;
 }
 
 #footer .container div {
@@ -947,7 +1002,13 @@ header .actions > a:hover, section.subscribe a:hover {
         margin-top: 0;
     }
     #footer {
-        padding-left: 0;
+        padding-left: 0px !important;
+    }
+    .hideTablet {
+        display: none !important;
+    }
+    #footer .container div:not(.hideTablet) {
+        width: 100%;
     }
 }
 
@@ -955,9 +1016,21 @@ header .actions > a:hover, section.subscribe a:hover {
     .hideMobile {
         display: none !important;
     }
-    footer .container div:not(.hideMobile) {
+    #mobile-header .container {
         width: 100% !important;
-        /* text-align: center; */
+    }
+    #mobile-header .debt-text {
+        font-size: 12px;
+    }
+    .mobile-navbar .navbar-grey {
+        padding: 10px 0 !important;
+    }
+    .mobile-header .navbar-user-img {
+        margin: 0 !important;
+    }
+    .fa-times {
+        right: 0px !important;
+        top: 15px !important;
     }
 }
 
@@ -1421,4 +1494,42 @@ body ul.wysihtml5-toolbar .glyphicon {
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
+}
+@font-face {
+    font-family: "Font Awesome 5 Brands";
+    font-style: normal;
+    font-weight: 400;
+    font-display: auto;
+    src: url(../webfonts/fa-brands-400.eot);
+    src: url(../webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"), url(../webfonts/fa-brands-400.woff2) format("woff2"), url(../webfonts/fa-brands-400.woff) format("woff"), url(../webfonts/fa-brands-400.ttf) format("truetype"),
+    url(../webfonts/fa-brands-400.svg#fontawesome) format("svg");
+}
+.fab {
+    font-family: "Font Awesome 5 Brands";
+}
+@font-face {
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 400;
+    font-display: auto;
+    src: url(../webfonts/fa-regular-400.eot);
+    src: url(../webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"), url(../webfonts/fa-regular-400.woff2) format("woff2"), url(../webfonts/fa-regular-400.woff) format("woff"),
+    url(../webfonts/fa-regular-400.ttf) format("truetype"), url(../webfonts/fa-regular-400.svg#fontawesome) format("svg");
+}
+.far {
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 900;
+    font-display: auto;
+    src: url(../webfonts/fa-solid-900.eot);
+    src: url(../webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"), url(../webfonts/fa-solid-900.woff2) format("woff2"), url(../webfonts/fa-solid-900.woff) format("woff"), url(../webfonts/fa-solid-900.ttf) format("truetype"),
+    url(../webfonts/fa-solid-900.svg#fontawesome) format("svg");
+}
+.fa,
+.far,
+.fas {
+    font-family: "Font Awesome 5 Free";
 }
