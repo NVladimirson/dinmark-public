@@ -2,6 +2,34 @@
 body {
     font-family: "DinPRO", Arial, Helvetica, sans-serif !important;
 }
+
+
+#mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* z-index: 1020; */
+    z-index: 1990;
+
+    /* margin-bottom: 0;
+    padding: 0;
+    -webkit-transition: box-shadow .2s linear;
+    -moz-transition: box-shadow .2s linear;
+    -ms-transition: box-shadow .2s linear;
+    -o-transition: box-shadow .2s linear;
+    transition: box-shadow .2s linear;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;  */
+}
+
+
+
+
 #mobile-header .right-action-block > a {
     color: #A2A2A2 !important;
 }
@@ -184,14 +212,43 @@ body {
 .mobile-header .actions .likes {
     background-image: url(../default/images/likes.svg);
 }
+
+#header .actions .likes-active,
+.mobile-header .actions .likes-active {
+    background-image: url(../default/images/likes-active.svg);
+}
+
 #header .actions .comparison,
 .mobile-header .actions .comparison{
     background-image: url(../default/images/comparison1.svg);
 }
+
+#header .actions .comparison-active,
+.mobile-header .actions .comparison-active{
+    background-image: url(../default/images/comparison-active.svg);
+}
+
+#header .actions .cart-active,
+.mobile-header .actions .cart-active  {
+    background-image: url(../default/images/cart-active.svg);
+}
+
 #header .actions .cart,
 .mobile-header .actions .cart  {
     background-image: url(../default/images/cart.svg);
 }
+
+#header .actions i,
+.mobile-header .actions i {
+    position: absolute;
+    right: 2px;
+    width: 12px;
+    color: #fff;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+}
+
 #header .actions a,
 .mobile-header .actions a {
     background-repeat: no-repeat;
@@ -211,7 +268,7 @@ body {
 }
 
 /* after btn plus dropdown menu */
-#header form#filter,
+/* #header form#filter,
 #header form#filter .submit,
 #mobile-filter,
 #mobile-filter .submit {
@@ -219,6 +276,33 @@ body {
     top: 100%;
     left: 0;
     width: 100%;
+    z-index: 991;
+} */
+
+#header form#filter,
+#header form#filter .submit {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1991;
+     
+        
+}
+
+#mobile-filter {
+    position: fixed;
+    top: 207px;
+    left: 0;
+    right: 0;
+    z-index: 1991;
+}
+
+#mobile-filter .submit {
+    position: fixed;
+    top: 334px;
+    left: 0;
+    right: 0;
     z-index: 991;
 }
 
@@ -228,6 +312,7 @@ body {
 #mobile-filter .submit {
     padding: 10px 15px;
     background: #a2a2a2;
+    flex-wrap: wrap;
 }
 
 #header form#filter .container,
@@ -402,12 +487,20 @@ nav.navbar-grey a.shop {
 } */
 
 nav.navbar-grey  a {
-    white-space: nowrap;
+    /* white-space: nowrap; */
     background: #A2A2A2;
     color: #fff;
     padding: 4px 18px;
     border-radius: 2px;
 }
+
+nav.mainmenu a {
+    background: #D5D5D5;
+    color: #fff;
+    padding: 4px 18px;
+    border-radius: 2px;
+}
+
 nav.navbar-grey a.hexa:before {
     width: 8px;
     left: -7px;
@@ -541,11 +634,22 @@ nav.mainmenu > div > a img {
 
 @media screen and (max-width: 1050px) {
     .content {
-        margin-left: 0;
+        /* margin-left: 0; */
         /* padding: 20px 30px; */
     }
     #footer {
         padding-left: 50px !important;
+    }
+    .mobile-navbar {
+        position: fixed;
+        top: 162px;
+        left: 0;
+        right: 0;
+        z-index: 2000;
+        /* z-index: 1020; */
+    }
+    #sidebar {
+        padding-top: 207px !important;
     }
     /* #mobile-header .mainmenu {
         width: 50% !important;
@@ -554,6 +658,9 @@ nav.mainmenu > div > a img {
         /* #sidebar, */
     .hideTab {
         display: none !important;
+    }
+    #content {
+        margin-top: 210px;
     }
     #mobile-header {
         display: block;
@@ -1034,7 +1141,17 @@ header .actions > a:hover, section.subscribe a:hover {
     }
 }
 
+@media screen and (max-width: 508px) { 
+    #mobile-filter .submit {
+        top: 389px;
+    }
+}
 
+@media screen and (max-width: 367px) { 
+    #mobile-filter .submit {
+        top: 441px;
+    }
+}
 /* font aweasome fix */
 
 .float-sub-menu-container .float-sub-menu li > a .caret {

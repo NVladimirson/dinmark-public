@@ -143,9 +143,32 @@
             @endif
         </div>
         <div class="actions flex ">
-            <a href="#" class="likes"><i>{{$wishlists_count}}</i></a>
+        @if( $wishlists_count > 0) 
+                            <a href="#" class="likes-active">
+                        @else
+                            <a href="#" class="likes">
+                        @endif
+                            <i>{{$wishlists_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $implementation_count > 0) 
+                            <a href="#" class="comparison-active">
+                        @else
+                            <a href="#" class="comparison">
+                        @endif
+                            <i>{{$implementation_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $orders_count > 0) 
+                            <a href="#" class="cart-active">
+                        @else 
+                            <a href="#" class="cart"> 
+                        @endif
+                            <i>{{$orders_count}} </i>
+                        </a>
+            <!-- <a href="#" class="likes"><i>{{$wishlists_count}}</i></a>
             <a href="#" class="comparison"><i>{{$implementation_count}}</i></a>
-            <a href="#" class="cart">{{$orders_count}}</a>
+            <a href="#" class="cart"><i>{{$orders_count}}</i></a> -->
             <div id="compareGroups"></div>
         </div>
 	<!-- end header navigation right -->
@@ -424,9 +447,31 @@ class="hide" style="display: block;">
                     @endif
                     <a href="{{route('home')}}" class="navbar-brand"><img src="{{asset('assets/img/logo/logo.png')}}" alt="Dinmark Logo" class="dinmark-logo"></a>
                     <div class="actions flex ">
-                        <a href="#" class="likes hideMobile"></a>
-                        <a href="#" class="comparison hideMobile"></a>
-                        <a href="#" class="cart"></a>
+                        <!--  -->
+                        @if( $wishlists_count > 0) 
+                            <a href="#" class="hideMobile likes-active">
+                        @else
+                            <a href="#" class="likes">
+                        @endif
+                            <i>{{$wishlists_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $implementation_count > 0) 
+                            <a href="#" class="hideMobile comparison-active">
+                        @else
+                            <a href="#" class="comparison">
+                        @endif
+                            <i>{{$implementation_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $orders_count > 0) 
+                            <a href="#" class="cart-active">
+                        @else 
+                            <a href="#" class="cart"> 
+                        @endif
+                            <i>{{$orders_count}} </i>
+                        </a>
+                        <!--  -->
                         <div id="compareGroups"></div>
                     </div>
                 </div>
