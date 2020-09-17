@@ -9,6 +9,18 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <style>
+        .panel-title-control{
+            line-height: 20px;
+            font-size: 12px;
+            margin-top: 0;
+            margin-bottom: 0;
+            color: inherit;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -19,57 +31,28 @@
 	<div class="row">
 		<!-- begin col-10 -->
 		<div class="col-xl-12">
-			<div class="panel panel-primary">
-				<!-- begin panel-heading -->
-				<div class="panel-heading">
-					<h4 class="panel-title">@lang('wishlist.list')</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
-				</div>
-				<!-- end panel-heading -->
-				<!-- begin panel-body -->
-				<div class="panel-body">
-					<div class="row m-b-5">
-						<div class="col-lg-3">
-							<select class="form-control selectpicker m-b-5" id="change_wishlist" data-size="10" data-live-search="true" data-style="btn-white">
-								@foreach($wishlists as $wishlist)
-									<option value="{{$wishlist->id}}" data-main="{{$wishlist->is_main}}" data-koef="{{
-				($wishlist->price)? $wishlist->price->koef : 1 }}" data-price="{{$wishlist->price_id}}" @if(session('current_catalog') == $wishlist->id) selected="selected" @endif>{{$wishlist->name}}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="col-lg-2 offset-lg-1">
-							<a href="#modal-wishlist_new" id="new_wishlist_btn" class="btn btn-sm btn-primary btn-block m-b-5" data-toggle="modal">@lang('wishlist.btn_new')</a>
-						</div>
-						<div class="col-lg-2">
-							<a href="#modal-wishlist_rename" class="btn btn-sm btn-primary btn-block m-b-5" data-toggle="modal">@lang('wishlist.btn_rename')</a>
-						</div>
-						<div class="col-lg-2">
-							<a href="#modal-wishlist_price" class="btn btn-sm btn-primary btn-block m-b-5" data-toggle="modal">@lang('wishlist.btn_price')</a>
-						</div>
-						<div class="col-lg-2">
-							<a href="#modal-wishlist_delete" id="delete_wishlist_btn" class="btn btn-sm btn-danger btn-block m-b-5" data-toggle="modal">@lang('wishlist.btn_delete')</a>
-						</div>
-					</div>
-                    <div class="row">
-                        <div class="col-lg-10"></div>
-                        <div class="col-lg-2">
-                            <a href="{{route('catalogs.download_price',session('current_catalog'))}}" id="download_price" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.btn_price_excel')</a>
-                        </div>
-                    </div>
-				</div>
-			</div>
 			<!-- begin panel -->
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.all_tab_name') - <span class="catalog-name">{{$curentWishlist->name}}</span></h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
+					<h4 class="panel-title-control">
+
+                                @lang('product.all_tab_name')
+                            <div class="d-inline-block m-r-5 m-l-5" style="width: 300px">
+                                <select class="form-control selectpicker m-b-5" id="change_wishlist" data-size="10" data-live-search="true" data-style="btn-white">
+                                    @foreach($wishlists as $wishlist)
+                                        <option value="{{$wishlist->id}}" data-main="{{$wishlist->is_main}}" data-koef="{{
+				($wishlist->price)? $wishlist->price->koef : 1 }}" data-price="{{$wishlist->price_id}}" @if(session('current_catalog') == $wishlist->id) selected="selected" @endif>{{$wishlist->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                                <a href="#modal-wishlist_new" id="new_wishlist_btn" class="btn btn-sm btn-green m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_new')"><i class="fas fa-plus-circle"></i></a>
+                                <a href="#modal-wishlist_rename" class="btn btn-sm btn-primary m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_rename')"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#modal-wishlist_price" class="btn  btn-sm btn-primary m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_price')"><i class="fas fa-tag"></i></a>
+                                <a href="#modal-wishlist_delete" id="delete_wishlist_btn" class="btn btn-sm btn-danger m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_delete')"><i class="fas fa-times"></i></a>
+
+
+                        </h4>
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
@@ -85,7 +68,7 @@
 										</select>
 									</div>
 									<div class="col-lg-4">
-										<button type="submit" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
+										<button type="submit" class="btn btn-green " title="@lang('wishlist.add_product_btn')"><i class="fas fa-plus-circle fa-lg"></i></button>
 									</div>
 								</div>
 							</form>
@@ -111,10 +94,14 @@
 										</div>
 									</div>
 									<div class="col-lg-4">
-										<button type="submit" class="btn btn-sm btn-primary btn-block">@lang('wishlist.import_product_btn')</button>
-									</div>
+										<button type="submit" class="btn btn-primary" title="@lang('wishlist.import_product_btn')"><i class="fas fa-cloud-download-alt fa-lg"></i></button>
+                                        <a href="{{route('catalogs.download_price',session('current_catalog'))}}" id="download_price" class="btn btn-primary " title="@lang('wishlist.btn_price_excel')"><i class="fas fa-cloud-upload-alt fa-lg"></i></a>
+                                    </div>
 								</div>
 							</form>
+
+                            <div class="col-lg-2">
+                            </div>
 							<p class="m-b-0">@lang('wishlist.import_file_note') <a href="{{asset('import/catalog_import.xlsx')}}" target="_blank">@lang('wishlist.import_file_example')</a></p>
 						</div>
 					</div>
@@ -494,19 +481,19 @@
 					$('#wishlist_price_form').attr('action',new_form.attr('action')+'/set-price/'+$('#change_wishlist').val());
 					$('#wishlist_add_product_form').attr('action',new_form.attr('action')+'/add-to-catalog/'+$('#change_wishlist').val());
 					$('#wishlist_rename_form').find('input[name="rename"]').val(list_name);
-					$('.catalog-name').text(list_name);
+					//$('.catalog-name').text(list_name);
 					$('#wishlist_price_form').find('select').val(price);
 					$('#wishlist_price_form').find('select').selectpicker('render');
 					$('.coef-header').text("@lang('wishlist.table_header_user_price') x " + koef);
 
 					if($("#change_wishlist option:selected").data('main') == 1){
 						$('#delete_wishlist_btn').hide(0);
-						$('#new_wishlist_btn').parent().addClass('offset-lg-3');
-						$('#new_wishlist_btn').parent().removeClass('offset-lg-1');
+						/*$('#new_wishlist_btn').parent().addClass('offset-lg-3');
+						$('#new_wishlist_btn').parent().removeClass('offset-lg-1');*/
 					}else{
 						$('#delete_wishlist_btn').show(0);
-						$('#new_wishlist_btn').parent().addClass('offset-lg-1');
-						$('#new_wishlist_btn').parent().removeClass('offset-lg-3');
+						/*$('#new_wishlist_btn').parent().addClass('offset-lg-1');
+						$('#new_wishlist_btn').parent().removeClass('offset-lg-3');*/
 					}
 				}
 
