@@ -286,8 +286,6 @@ body {
     left: 0;
     width: 100%;
     z-index: 1991;
-     
-        
 }
 
 #mobile-filter {
@@ -804,7 +802,7 @@ nav.mainmenu > div > a img {
         right: -5px;
         background: url(../default/images/after-filter-sbt.svg);
     }
-    .fa-times {
+    #fa-times {
         position: absolute;
         right: -10px !important;
         top: 10px !important;
@@ -1141,13 +1139,13 @@ header .actions > a:hover, section.subscribe a:hover {
     }
 }
 
-@media screen and (max-width: 508px) { 
+@media screen and (max-width: 508px) {
     #mobile-filter .submit {
         top: 389px;
     }
 }
 
-@media screen and (max-width: 367px) { 
+@media screen and (max-width: 367px) {
     #mobile-filter .submit {
         top: 441px;
     }

@@ -143,7 +143,8 @@
             @endif
         </div>
         <div class="actions flex ">
-        @if( $wishlists_count > 0) 
+
+        @if( $wishlists_count > 0)
                             <a href="#" class="likes-active">
                         @else
                             <a href="#" class="likes">
@@ -151,7 +152,7 @@
                             <i>{{$wishlists_count}}</i>
                         </a>
                         <!--  -->
-                        @if( $implementation_count > 0) 
+                        @if( $implementation_count > 0)
                             <a href="#" class="comparison-active">
                         @else
                             <a href="#" class="comparison">
@@ -159,10 +160,10 @@
                             <i>{{$implementation_count}}</i>
                         </a>
                         <!--  -->
-                        @if( $orders_count > 0) 
+                        @if( $orders_count > 0)
                             <a href="#" class="cart-active">
-                        @else 
-                            <a href="#" class="cart"> 
+                        @else
+                            <a href="#" class="cart">
                         @endif
                             <i>{{$orders_count}} </i>
                         </a>
@@ -346,7 +347,7 @@ class="hide" style="display: block;">
                 <div class="top-actions-block--wrapper">
                     <a href="javascript:;" id="close-burger-menu" class="hide"
                     data-click="sidebar-minify1">
-                        <i class="fas fa-times"></i>
+                        <i id="fa-times" class="fas fa-times"></i>
                     </a>
                     <div class="top-actions-block">
                             <div class="debt-item">
@@ -448,7 +449,7 @@ class="hide" style="display: block;">
                     <a href="{{route('home')}}" class="navbar-brand"><img src="{{asset('assets/img/logo/logo.png')}}" alt="Dinmark Logo" class="dinmark-logo"></a>
                     <div class="actions flex ">
                         <!--  -->
-                        @if( $wishlists_count > 0) 
+                        @if( $wishlists_count > 0)
                             <a href="#" class="hideMobile likes-active">
                         @else
                             <a href="#" class="likes">
@@ -456,7 +457,7 @@ class="hide" style="display: block;">
                             <i>{{$wishlists_count}}</i>
                         </a>
                         <!--  -->
-                        @if( $implementation_count > 0) 
+                        @if( $implementation_count > 0)
                             <a href="#" class="hideMobile comparison-active">
                         @else
                             <a href="#" class="comparison">
@@ -464,10 +465,11 @@ class="hide" style="display: block;">
                             <i>{{$implementation_count}}</i>
                         </a>
                         <!--  -->
-                        @if( $orders_count > 0) 
+
+                        @if( $orders_count > 0)
                             <a href="#" class="cart-active">
-                        @else 
-                            <a href="#" class="cart"> 
+                        @else
+                            <a href="#" class="cart">
                         @endif
                             <i>{{$orders_count}} </i>
                         </a>
