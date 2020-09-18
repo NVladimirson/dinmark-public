@@ -282,6 +282,14 @@
                                                 <th>@lang('implementation.table_header_ttn')</th>
                                                 <td>{{$implementation['ttn'] }}</td>
                                             </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_weight')</th>
+                                                <td>{{$implementation['weight'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_status')</th>
+                                                <td>{{$implementation['status'] }}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

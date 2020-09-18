@@ -465,6 +465,8 @@ class OrderController extends Controller
                     'sender' =>   $implementation->sender_id == 0? 'Dinmark':$implementation->sender->name,
                     'customer' =>  $implementation->customer_id < 0? 'Клиент':$implementation->customer->name,
                     'ttn' =>  $implementation->ttn,
+                    'weight' =>  number_format($implementation->weight,2,',',' '),
+                    'status' =>  $implementation->status,
                     'products' => $implProducts
                 ];
             }
