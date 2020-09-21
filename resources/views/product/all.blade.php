@@ -118,27 +118,62 @@
     <div class="panel-heading">
       <h4 class="panel-title">@lang('product.all_categories_name')</h4>
     </div>
-      <div id="jstree"></div>
-      <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
+      <div id="reload" style="display:none"></div>
+      <div id="selected_products" style="display:none"></div>
+      <div id="accordion"  class=".ui-helper-reset">
+          <p style="font-size: 12pt;">Дерево</p>
+          <div id="jstree"></div>
+
+          <p style="font-size: 12pt;">Фільтри</p>
+      <div id="filters">
+        <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
           <h5 style="text-align: center">
               <a href="#" id="new">
                   <i class="fa fa-bullhorn" aria-hidden="true"></i>  Новинки</a>
               <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
       </div>
-      <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
+        <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
           <h5 style="text-align: center"><a href="#" id="hits">
                   <i class="fa fa-thumbs-up" aria-hidden="true"></i>  Хиты продаж</a>
               <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
       </div>
-      <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
+        <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
           <h5 style="text-align: center"><a href="#" id="discount">
                   <i class="fa fa-percent" aria-hidden="true"></i>  Акционные предложения</a>
               <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
       </div>
-
-      <div id="reload" style="display:none"></div>
-      <div id="selected_products" style="display:none"></div>
       </div>
+
+
+        <p style="font-size: 12pt;">Фільтри із властивостями</p>
+        <div id="optionfilters">
+          @foreach($filters as $filtername=>$filterdata)
+              <h3 class="ui-accordion-header">{!! $filtername !!}</h3>
+              <div id="filter">
+                  @php $i=0;@endphp
+                  @foreach($filterdata as $value=>$data)
+
+                      @if($i % 3 == 0)
+                          <div class="row">
+                      @endif
+                      {{--<div class="row">--}}
+                       <div class="col-md-3">
+                          <p class="filter_with_options" option_id="{!! $data['option_id'] !!}" filter-selected="false">
+                              <i id="filter-checked_{!! $data['option_id'] !!}" class="fas fa-check-circle" aria-hidden="true" style="display: none"></i>{!! $value !!}
+                          </p>
+                       </div>
+                      {{--</div>--}}
+                      @if($i % 3 == 2)
+                            </div>
+                      @endif
+
+                      @php $i++; @endphp
+                  @endforeach
+              </div>
+          @endforeach
+      </div>
+      </div>
+  </div>
   </div>
 
 </div>
@@ -287,6 +322,17 @@
                                     return 1;
                                 }
                             },
+                            "filter_with_options":function ( ){
+                                let filter_selected_map = $("[filter-selected=true]");
+                                filter_selected_ids = Array();
+                                $.each(filter_selected_map,function (key,value) {
+                                    if(value.attributes['filter-selected'].value === 'true'){
+                                        filter_selected_ids.push(value.attributes['option_id'].value);
+                                    }
+                                });
+                                return filter_selected_ids;
+
+                            }
                         }
 
                     },
@@ -335,6 +381,18 @@
                     }
                 });
 
+            $( "#accordion" ).accordion({
+                collapsible: true,
+                active: false,
+                heightStyle: "content",
+
+            });
+
+            $( "#optionfilters" ).accordion({
+                collapsible: true,
+                active: false,
+                heightStyle: "content",
+            });
 
             $('#select_all_products').change(function() {
                 if($('#select_all_products').prop('checked')){
@@ -342,7 +400,6 @@
                     $(".intable").each(function(){
                         $(this).prop('checked', true);
                         products.push($(this).prop('id').slice(8));
-                        //document.getElementById('selected_products').innerText = products.toString();
                     });
                 }
                 else{
@@ -735,6 +792,19 @@
                         jsTreetoDatatable();
                     }
             });
+            $('.filter_with_options').click(function(){
+                if($(this).attr('filter-selected') === 'true'){
+                    $(this).attr('filter-selected', 'false');
+                    $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
+                }
+                else{
+                    $(this).attr('filter-selected', 'true');
+                    $("#filter-checked_"+$(this).attr('option_id')).css("display","");
+                }
+
+                jsTreetoDatatable();
+
+            });
         });
 	</script>
     <script>
@@ -771,7 +841,14 @@
 float: right;
 		}
 
-
+        .ui-accordion .ui-accordion-content {padding:10px }
+        .ui-accordion-header {
+            height: 60px;
+        }
+        .filter_with_options{
+            cursor: pointer;
+            padding-left: 14px;
+        }
 	</style>
 
 @endpush

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProductOptions;
 use App\Models\Content;
 use App\Models\Order\OrderProduct;
 use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
+use App\Models\Product\ProductOption;
 use App\Services\Product\CategoryServices;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Services\Order\OrderServices;
 use App\Services\Product\CatalogServices;
@@ -22,20 +26,19 @@ class ProductController extends Controller
 {
 
 	public function index(){
-
 		SEOTools::setTitle(trans('product.all_tab_name'));
 		$categories = CategoryServices::getNames(0);
 		$wishlists = CatalogServices::getByCompany();
 		$orders = OrderServices::getByCompany();
 		$terms = CategoryServices::getTermsForSelect();
-
-    return view('product.all',compact('categories','wishlists', 'orders', 'terms'));
+		$filters = CategoryServices::getFilters();
+        //dd($filters);
+    return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters'));
 	}
 
 	public function category($id){
     	$page_name = CategoryServices::getName($id);
 		SEOTools::setTitle($page_name);
-
 		$categories = CategoryServices::getNames($id);
 		$breadcrumbs = CategoryServices::getBreadcrumbs($id);
 		$wishlists = CatalogServices::getByCompany();
@@ -44,8 +47,18 @@ class ProductController extends Controller
 		return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs','wishlists', 'orders'));
 	}
 
+	public function optionFilters($id = 0){
+        //dd(Product::with(['storages','content'])->whereIn(''));
+        $option_map = [579498,540679,540708,525102,58327,143923,504056,241831,241938,355679,526815,507494,546951,56036,56801];
+        $products = Product::with(['options'])->find(289)->options()->whereIn('id',$option_map)->get();
+        dd($products);
+//        dd($correct_ids);
+//        dd(Cache::get('filters_uk'));
+    }
+
+
 	public function allAjax(Request $request){
-		$products = Product::with(['storages','content']);
+		$products = Product::with(['storages','content','options']);
 
 		if(!empty($request->categories)){
 			$selected_items = array_values(explode(",",$request->categories));
@@ -99,6 +112,20 @@ class ProductController extends Controller
 
         if($request->discount){
             $products = $products->where('old_price','!=',0);
+        }
+
+        if($request->filter_with_options){
+            //$products = $products->where('old_price','!=',0);
+            $option_map = explode(',',$request->filter_with_options);
+            info($option_map);
+            $collect = ProductOption::find($option_map);
+            foreach ($collect as $no=>$data){
+                $valid_ids[]=$data['product'];
+            }
+            info('products: ');
+            info($valid_ids);
+
+            $products = $products->whereIn('id',$valid_ids);
         }
 
 		$ids = null;

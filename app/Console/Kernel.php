@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ProductOptions;
 use App\Models\Queue;
 use App\Services\News\NewsServices;
 use Illuminate\Console\Scheduling\Schedule;
@@ -35,7 +36,10 @@ class Kernel extends ConsoleKernel
                         break;
                 }
             }
+            info('other');
         })->everyMinute();
+
+        $schedule->job(new ProductOptions())->everyMinute();
     }
 
     /**

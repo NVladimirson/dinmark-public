@@ -12,6 +12,7 @@ namespace App\Services\Product;
 use App\Models\Product\ProductCategory;
 use App\Models\WlImage;
 use App\Models\Content;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use LaravelLocalization;
 use Illuminate\Support\Arr;
@@ -47,6 +48,17 @@ class CategoryServices
 			->where('alias', 8)
 			->get();
 	}
+
+	public static function getFilters(){
+        $language =  static::getInstance()->lang;
+        if($language == 'ru'){
+            $object = Cache::get('filters_ru');
+        }
+        else{
+            $object = Cache::get('filters_uk');
+        }
+        return $object;
+    }
 
 	public static function getTermsForSelect(){
 		$instance =  static::getInstance();
