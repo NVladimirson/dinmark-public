@@ -43,14 +43,10 @@
         <div class="col-xl-6">
             <!-- begin panel -->
 
-            <div class="panel panel-primary" data-sortable-id="form-stuff-1">
+            <div class="panel panel-primary">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
                     <h4 class="panel-title">@lang('user.edit_personal_data')</h4>
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                    </div>
                 </div>
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
@@ -102,14 +98,10 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary" data-sortable-id="form-stuff-2">
+            <div class="panel panel-primary">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
                     <h4 class="panel-title">@lang('user.edit_send_request_data')</h4>
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                    </div>
                 </div>
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
@@ -150,14 +142,10 @@
         <!-- end col-6 -->
         <!-- begin col-6 -->
         <div class="col-xl-6">
-            <div class="panel panel-primary" data-sortable-id="form-stuff-3">
+            <div class="panel panel-primary">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
                     <h4 class="panel-title">@lang('user.edit_password_block')</h4>
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                    </div>
                 </div>
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
@@ -188,14 +176,10 @@
                 </div>
             </div>
             @if(auth()->user()->export_key)
-            <div class="panel panel-primary" data-sortable-id="form-stuff-4">
+            <div class="panel panel-primary">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
                     <h4 class="panel-title">@lang('user.feeds')</h4>
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                    </div>
                 </div>
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
