@@ -233,6 +233,7 @@ class CatalogController extends Controller
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
 				if($product->storages){
+
 					$storages = $product->storages;
 					if($storages){
 						$value = '';

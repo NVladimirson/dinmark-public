@@ -45,8 +45,8 @@
 			@endif
 			<li class="nav-header">@lang('sidebar.sidebar_title')</li>
 			@php
-				$currentUrl = (Request::path() != '/') ? '/'. Request::path() : '/';
-				
+				$currentUrl = url()->current();
+
 				function renderSubMenu($value, $currentUrl) {
 					$subMenu = '';
 					$GLOBALS['sub_level'] += 1 ;
@@ -54,21 +54,24 @@
 					$currentLevel = $GLOBALS['sub_level'];
 					foreach ($value as $key => $menu) {
 						$GLOBALS['subparent_level'] = '';
-						
+
 						$subSubMenu = '';
 						$hasSub = (!empty($menu['sub_menu'])) ? 'has-sub' : '';
 						$hasCaret = (!empty($menu['sub_menu'])) ? '<b class="caret pull-right"></b>' : '';
 						$hasTitle = (!empty($menu['title'])) ? trans($menu['title']) : '';
 						$hasHighlight = (!empty($menu['highlight'])) ? '<i class="fa fa-paper-plane text-theme m-l-5"></i>' : '';
-						
+
 						if (!empty($menu['sub_menu'])) {
 							$subSubMenu .= '<ul class="sub-menu">';
 							$subSubMenu .= renderSubMenu($menu['sub_menu'], $currentUrl);
 							$subSubMenu .= '</ul>';
 						}
-						
-						$active = ($currentUrl == $menu['url']) ? 'active' : '';
-						
+                        $currentMenuUrl = '';
+                        if(Route::has($menu['url'])){
+                            $currentMenuUrl = route($menu['url']);
+                        }
+						$active = ($currentUrl == $currentMenuUrl) ? 'active' : '';
+
 						if ($active) {
 							$GLOBALS['parent_active'] = true;
 							$GLOBALS['active'][$GLOBALS['sub_level'] - 1] = true;
@@ -85,10 +88,10 @@
 					}
 					return $subMenu;
 				}
-				
+
 				foreach (config('sidebar.menu') as $key => $menu) {
 					$GLOBALS['parent_active'] = '';
-					
+
 					$hasSub = (!empty($menu['sub_menu'])) ? 'has-sub' : '';
 					$hasCaret = (!empty($menu['caret'])) ? '<b class="caret"></b>' : '';
 					$hasIcon = (!empty($menu['icon'])) ? '<i class="'. $menu['icon'] .'"></i>' : '';
@@ -96,16 +99,22 @@
 					$hasLabel = (!empty($menu['label'])) ? '<span class="label label-theme m-l-5">'. $menu['label'] .'</span>' : '';
 					$hasTitle = (!empty($menu['title'])) ? '<span>'. trans($menu['title']) . $hasLabel .'</span>' : '';
 					$hasBadge = (!empty($menu['badge'])) ? '<span class="badge pull-right">'. $menu['badge'] .'</span>' : '';
-					
+
 					$subMenu = '';
-					
+
 					if (!empty($menu['sub_menu'])) {
 						$GLOBALS['sub_level'] = 0;
 						$subMenu .= '<ul class="sub-menu">';
 						$subMenu .= renderSubMenu($menu['sub_menu'], $currentUrl);
 						$subMenu .= '</ul>';
 					}
-					$active = ($currentUrl == $menu['url']) ? 'active' : '';
+
+					$currentMenuUrl = '';
+					if(Route::has($menu['url'])){
+					    $currentMenuUrl = route($menu['url']);
+					}
+
+					$active = ($currentUrl == $currentMenuUrl) ? 'active' : '';
 					$active = (empty($active) && !empty($GLOBALS['parent_active'])) ? 'active' : $active;
 					echo '
 						<li class="'. $hasSub .' '. $active .'">
@@ -141,7 +150,13 @@
 					</div>
 					<div class="media-body">
 						<h5 class="media-heading">@lang('sidebar.manager')</h5>
-						<p>{{$manager->name}}</p>
+						<p class="m-b-0">{{$manager->name}}</p>
+                        @if($manager->info->firstWhere('field','phone'))
+                            <p class="m-b-0">{{$manager->email}}</p>
+						    <p>{{ $manager->info->firstWhere('field','phone')->value}}</p>
+                        @else
+                            <p>{{$manager->email}}</p>
+                        @endif
 						<p class="mb-0">
 							<a href="{{route('ticket')}}" class="btn btn-block btn-primary">@lang('sidebar.message') <span class="badge badge-light">{{$countMessage}}</span></a>
 						</p>
@@ -161,6 +176,6 @@
 	</div>
 	<!-- end sidebar scrollbar -->
 </div>
-<div class="sidebar-bg"></div>
+<!-- <div class="sidebar-bg"></div> -->
 <!-- end #sidebar -->
 

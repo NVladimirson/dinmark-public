@@ -62,7 +62,7 @@
 
                                 <div class="row m-b-15">
                                     <div class="col-md-8">
-                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15">
+                                        <table class="table table-striped table-bordered table-td-valign-middle m-b-15 table-info-column">
                                             <tbody>
                                             <tr>
                                                 <th>@lang('order.table_header_date_create')</th>
@@ -110,7 +110,7 @@
                                     <div class="col-md-4">
                                         <div class="pull-right">
                                             @if($order->status == 1 || $order->status == 2)
-                                                <a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
+                                                <a href="#modal_explanation" class="btn btn-sm btn-green m-b-5 m-r-5" title="@lang('order.btn_explanation')" data-toggle="modal" data-subject="@lang('order.explanation_subject_order'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}}"><i class="fa fa-envelope"></i></a><a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
                                             @endif
                                             @if($order->status == 7)
                                                 <a href="{{ route('orders.to_order',[$order->id]) }}" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_open_order')</a>
@@ -287,7 +287,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="pull-right">
-                                        <a href="{{route('implementations.pdf',[$implementation['id']])}}" class="btn btn-sm btn-primary">{{trans('implementation.btn_generate_pdf')}}</a>
+                                        <a href="#modal_explanation" class="btn btn-sm btn-green m-r-5" title="@lang('order.btn_explanation_implementation')" data-toggle="modal" data-subject="@lang('order.explanation_subject_implementation'){{$implementation['public_number']}}"><i class="fa fa-envelope"></i></a><a href="{{route('implementations.pdf',[$implementation['id']])}}" class="btn btn-sm btn-primary">{{trans('implementation.btn_generate_pdf')}}</a>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -347,6 +347,7 @@
 	<!-- end row -->
 
 
+    @include('order.include.explanation')
 @endsection
 
 @push('scripts')
@@ -484,6 +485,43 @@
 
 					return false;
 				})
+
+				$('#modal_explanation').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('input[name="explanation_subject"]').val(button.data('subject'));
+					modal.find('.modal-title').text(button.data('subject'));
+				})
+
+				$('#form_explantion').submit(function (e) {
+					e.preventDefault();
+					var form = $(this);
+					$('#modal_explanation').modal('hide');
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "POST",
+						url: "{{route('ticket.explanation')}}",
+						data: form.serialize(),
+						success: function (resp) {
+							if (resp.status == "success") {
+								$('#explanation_message').val('');
+								$.gritter.add({
+									title: '@lang('order.explanation_success')',
+								});
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				});
 
 			});
 		})(jQuery);

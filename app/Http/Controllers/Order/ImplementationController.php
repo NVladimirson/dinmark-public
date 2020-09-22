@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Company\Client;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
+use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Services\Order\ImplementationServices;
 use App\Services\TimeServices;
+use App\User;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Support\Carbon;
@@ -16,9 +18,31 @@ use PDF;
 
 class ImplementationController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 		SEOTools::setTitle(trans('implementation.page_list'));
-		return view('order.implementation');
+
+        $sendersId =  ImplementationServices::getFilteredData($request)
+            ->groupBy('sender_id')
+            ->pluck('sender_id');
+        $senders = User::whereIn('id',$sendersId)->pluck('id','name')->toArray();
+        if($sendersId->has(0)){
+            $senders = array_merge(['Dinmark'=>0],$senders);
+        }
+
+        $customersId =  ImplementationServices::getFilteredData($request)
+            ->groupBy('customer_id')
+            ->pluck('customer_id');
+        $customers = User::whereIn('id',$customersId)->pluck('id','name')->toArray();
+        foreach ($customersId as $id){
+            if($id < 0){
+                $client = Client::find(-$id);
+                if($client){
+                    $customers[$client->name] = $id;
+                }
+            }
+        }
+
+		return view('order.implementation',compact('senders','customers'));
 	}
 
 	public function ajax(Request $request)
@@ -41,18 +65,33 @@ class ImplementationController extends Controller
 			})
 			->addColumn('customer',function (Implementation $implementation){
 				if($implementation->customer_id < 0){
-					return 'Клиент';
+                    $client = Client::find(-$implementation->customer_id);
+                    if($client){
+                        return '<i class="fas fa-users"></i> '.$client->name;
+                    }else{
+                        return trans('client.client_deleted');
+                    }
 				}else{
 					return $implementation->customer->name;
 				}
+			})
+			->addColumn('weight_html',function (Implementation $implementation){
+
+				return number_format($implementation->weight,2,',',' ');
 			})
 			->addColumn('total',function (Implementation $implementation){
 
 				return number_format($implementation->products->sum('total'),2,',',' ');
 			})
-			->addColumn('btn_pdf',function (Implementation $implementation){
-
-				return '<a href="'.route('implementations.pdf',[$implementation->id]).'" class="btn btn-sm btn-primary">'.trans('implementation.btn_generate_pdf').'</a>';
+			->addColumn('ttn_html',function (Implementation $implementation){
+                if(strpos($implementation->ttn, '2045') === 0 || strpos($implementation->ttn, '5900') === 0){
+                    return '<a href="https://novaposhta.ua/tracking/?cargo_number='.$implementation->ttn.'" target="_blank">'.$implementation->ttn.'</a>';
+                }else{
+                    return $implementation->ttn;
+                }
+			})
+			->addColumn('actions_btn',function (Implementation $implementation){
+                return view('order.include.implementation_action_buttons',compact('implementation'))->render();
 			})
 			->addColumn('products',function (Implementation $implementation){
 				$products = [];
@@ -79,7 +118,7 @@ class ImplementationController extends Controller
 				}
 				return view('order.include.implementation_products',compact(['products']))->render();
 			})
-			->rawColumns(['products','btn_pdf'])
+			->rawColumns(['products','actions_btn','ttn_html'])
 			->toJson();
 	}
 
@@ -89,17 +128,10 @@ class ImplementationController extends Controller
         $implementations = $implementations->get();
 
         $total = 0;
-        $weight = 0;
+        $weight = $implementations->sum('weight');
 
         foreach ($implementations as $implementation){
             $total += $implementation->products->sum('total');
-            foreach ($implementation->products as $implementationProduct)
-            {
-                if ($implementationProduct->orderProduct)
-                {
-                    $weight +=  $implementationProduct->orderProduct->product->weight * $implementationProduct->quantity/100;
-                }
-            }
         }
 
         return response()->json([

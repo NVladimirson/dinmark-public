@@ -66,6 +66,8 @@ class LoginController extends Controller
 				}
 				if($isB2BAccess){
 					Auth::login($user);
+                    $user->last_login = Carbon::now()->timestamp;
+                    $user->save();
 
 					Log::create([
 						'date' => Carbon::now()->timestamp,
@@ -98,6 +100,9 @@ class LoginController extends Controller
 
     	if($user){
 			Auth::login($user);
+            $user->last_login = Carbon::now()->timestamp;
+            $user->save();
+
 			Log::create([
 				'date' => Carbon::now()->timestamp,
 				'do' => LogAction::where('name','b2b_login_use_key')->first()->id,

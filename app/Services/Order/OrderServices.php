@@ -13,7 +13,16 @@ use App\Models\Order\Order;
 
 class OrderServices
 {
-
+    protected $status_classes = [
+        1 => 'lime',
+        2 => 'green',
+        3 => 'primary',
+        4 => 'warning',
+        5 => 'success',
+        6 => 'default',
+        7 => 'danger',
+        8 => 'yellow',
+    ];
 	public static function getByCompany(){
 		$orders = Order::whereHas('getUser', function ($users){
 				$users->where('company',auth()->user()->company);
@@ -98,9 +107,16 @@ class OrderServices
         }
     }
 
-    public static function getFilteredData($request){
+    public static function getFilteredData($request = null){
         $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
-            $users->where('company',auth()->user()->company);
+            $users->whereHas('getCompany',function ($companies){
+                $companies->where([
+                    ['holding', auth()->user()->getCompany->holding],
+                    ['holding', '<>', 0],
+                ])->orWhere([
+                    ['id', auth()->user()->getCompany->id],
+                ]);
+            });
         });
 
         if($request->has('tab')){
@@ -158,6 +174,12 @@ class OrderServices
         }
 
         return $orders;
+    }
+
+    public static function getStatusClass($status_id)
+    {
+        $instance =  static::getInstance();
+        return $instance->status_classes[$status_id];
     }
 
     private static $instance;

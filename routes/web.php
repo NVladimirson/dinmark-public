@@ -36,6 +36,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/company/add-document','CompanyController@addDocument')->name('company.add_document');
 		Route::post('/company/destroy-document/{id}','CompanyController@destroyDocument')->name('company.destroy_document');
 		Route::post('/company/document-request','CompanyController@requestDocument')->name('company.request_document');
+        Route::get('/company/users/ajax','CompanyController@usersAjax')->name('company.users_ajax');
+        Route::post('/company/users/add','CompanyController@addUser')->name('company.users_add');
+        Route::get('/company/login-as-user/{id}','CompanyController@loginAsUser')->name('company.login_as_user');
 
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/category/{id}','Product\ProductController@category')->name('products.category');
@@ -64,6 +67,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/orders','Order\OrderController@index')->name('orders');
 		Route::get('/orders/create','Order\OrderController@create')->name('orders.create');
 		Route::get('/orders/all-ajax/','Order\OrderController@allAjax')->name('orders.all_ajax');
+		Route::get('/orders/find/','Order\OrderController@find')->name('orders.find');
 		Route::get('/orders/total-data-ajax/','Order\OrderController@totalDataAjax')->name('orders.total_data_ajax');
 		Route::post('/orders/add-to-order/{id}','Order\OrderController@addToOrder')->name('orders.add_to_order');
         Route::get('/orders/add-to-order-multiple','Order\OrderController@addToOrderMultiple')->name('catalogs.add_to_order_multiple');
@@ -88,6 +92,17 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::get('/reclamations/total-data-ajax/','Order\ReclamationController@totalDataAjax')->name('reclamations.total_data_ajax');
 		Route::get('/reclamations/create','Order\ReclamationController@create')->name('reclamations.create');
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
+		Route::get('/reclamations/create/{implementation_id}','Order\ReclamationController@createByImplementation')->name('reclamations.store_implementation');
+
+        Route::get('/payments','Finance\PaymentController@index')->name('payments');
+        Route::get('/payments/ajax','Finance\PaymentController@ajax')->name('payments.ajax');
+
+        Route::get('/balance','Finance\BalanceController@index')->name('balance');
+        Route::get('/balance/ajax','Finance\BalanceController@ajax')->name('balance.ajax');
+        Route::get('/balance/ajax-total','Finance\BalanceController@totalDataAjax')->name('balance.ajax_total');
+
+        Route::get('/documents','DocumentController@index')->name('documents');
+        Route::get('/documents/get-feeds','DocumentController@getFeeds')->name('documents.get_feeds');
 
 		Route::get('/clients','ClientController@index')->name('clients');
 		Route::get('/clients/ajax','ClientController@ajax')->name('clients.ajax');
@@ -106,8 +121,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/tickets/ajax','TicketController@ajax')->name('ticket.ajax');
 		Route::get('/tickets/create','TicketController@create')->name('ticket.create');
 		Route::post('/tickets/create','TicketController@store')->name('ticket.store');
+        Route::post('/tickets/explanation','TicketController@explanation')->name('ticket.explanation');
 		Route::get('/tickets/{id}','TicketController@show')->name('ticket.show');
 		Route::post('/tickets/{id}','TicketController@update')->name('ticket.update');
+		Route::post('/tickets/{id}/change-status','TicketController@changeStatus')->name('ticket.change_status');
+
+
 
 		Route::get('/notifications/','NotificationController@index')->name('notification');
 		Route::get('/notifications/mark-read','NotificationController@markRead')->name('notification.mark_read');

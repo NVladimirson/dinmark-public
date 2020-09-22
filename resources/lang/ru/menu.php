@@ -28,6 +28,12 @@ return [
     'reclamations_all'	=> 'Мои возвраты',
     'reclamations_new'	=> 'Новый возврат',
 
+    'finances'	        => 'Финансы',
+    'finances_payments'	=> 'Платежи',
+    'finances_balance'	=> 'Баланс в системе',
+
+    'documents'	        => 'Документы',
+
     'clients'		=> 'Получатели',
     'clients_all'	=> 'Список получателей',
     'clients_new'	=> 'Новый получатель',

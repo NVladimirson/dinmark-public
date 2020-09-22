@@ -43,28 +43,67 @@
 					<div class="row m-b-15">
 						<div class="col-md-12">
 							<label for="name">@lang('client.table_header_name')</label>
-							<input class="form-control m-b-5" type="text" id="name" name="name" required value="{{old('name')}}">
-						</div>
+							<input class="form-control m-b-5 @error('name') is-invalid @enderror" type="text" id="name" name="name" required value="{{old('name')}}">
+                            @error('name')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
 						<div class="col-md-12">
 							<label for="phone">@lang('client.table_header_phone')</label>
-							<input class="form-control m-b-5" type="tel" id="phone" name="phone" required value="{{old('phone')}}">
+							<input class="form-control m-b-5 @error('phone') is-invalid @enderror" type="tel" id="phone" name="phone" required value="{{old('phone')}}">
+                            @error('phone')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
 						</div>
 						<div class="col-md-12">
 							<label for="email">@lang('client.table_header_email')</label>
-							<input class="form-control m-b-5" type="email" id="email" name="email" required value="{{old('email')}}">
+							<input class="form-control m-b-5 @error('email') is-invalid @enderror" type="email" id="email" name="email" required value="{{old('email')}}">
+                            @error('email')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
 						</div>
 						<div class="col-md-12">
 							<label for="company">@lang('client.table_header_company')</label>
-							<input class="form-control m-b-5" type="text" id="company" name="company" value="{{old('company')}}">
-						</div>
+							<input class="form-control m-b-5 @error('company') is-invalid @enderror" type="text" id="company" name="company" value="{{old('company')}}">
+                            @error('company')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
 						<div class="col-md-12">
 							<label for="edrpo">@lang('client.table_header_edrpo')</label>
-							<input class="form-control m-b-5" type="text" id="edrpo" name="edrpo" value="{{old('edrpo')}}">
-						</div>
+							<input class="form-control m-b-5 @error('edrpo') is-invalid @enderror" type="text" id="edrpo" name="edrpo" value="{{old('edrpo')}}">
+                            @error('edrpo')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
 						<div class="col-md-12">
 							<label for="address">@lang('client.table_header_address')</label>
-							<textarea class="form-control m-b-5" name="address" id="address" cols="30" rows="10" required>{{old('address')}}</textarea>
-						</div>
+							<textarea class="form-control m-b-5 @error('address') is-invalid @enderror" name="address" id="address" cols="30" rows="10" required>{{old('address')}}</textarea>
+                            @error('address')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+						<div class="col-md-12">
+							<label for="address">@lang('client.table_header_comment')</label>
+							<textarea class="form-control m-b-5 @error('comment') is-invalid @enderror" name="comment" id="comment" cols="30" rows="10" required>{{old('comment')}}</textarea>
+                            @error('comment')
+                            <span class="invalid-feedback " role="alert">
+                                         <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
 					</div>
 						<div class="row">
 							<div class="col-lg-12">

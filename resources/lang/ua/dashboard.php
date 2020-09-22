@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'page_name' => 'Dashboard',
+    'page_name' => 'Головна',
 	'chart_price_order' => 'Сума замовлень по місяцях',
 	'chart_weight_order' => 'Вага замовлень по місяцях',
 	'chart_status_order' => 'Співвідношення статусів замовлень по місяцях',
@@ -29,4 +29,16 @@ return [
 	'success_procent' => '% Підтверджених замовлень',
 	'success_total' => 'Сума підтверджених замовлень',
 	'success_weight' => 'Вага підтверджених замовлень',
+
+    'tab_name_last_actions'     => 'Остання активність',
+    'tab_name_last_orders'      => 'Останні замовленя',
+    'tab_name_last_messages'    => 'Останні повідомленя',
+
+    'tab_last_enter'    => 'Останній вхід',
+    'tab_last_order'    => 'Останнє замовлення',
+    'tab_last_payment'  => 'Останній платіж',
+
+    'tab_name_top_price_products'     => 'Дорогі товари',
+    'tab_name_top_popular_products'   => 'Часто в замовленнях',
+    'tab_name_last_news'              => 'Останні новини',
 ];

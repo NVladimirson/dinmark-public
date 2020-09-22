@@ -14,6 +14,7 @@ class Reclamation extends Model
 	protected $fillable = [
 		'ttn',
 		'author',
+		'file',
 	];
 
 	public function user(){

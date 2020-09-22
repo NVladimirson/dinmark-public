@@ -30,8 +30,17 @@ return [
 	'table_header_status'                => 'Статус',
 	'table_header_user'                  => 'Пользователь',
 	'table_header_manager'               => 'Менеджер',
-	'table_header_message_count'         => 'Количество сообщений',
-	'table_header_new_message_count'     => 'Количество не прочитанных сообщений',
-	'table_header_time'                  => 'Время последнего сообщения',
+	'table_header_message_count'         => 'Сообщения',
+	'table_header_new_message_count'     => 'Новые сообщения',
+	'table_header_time'                  => 'Последнее сообщение',
+
+	'open'                 => 'Открытый',
+	'close'                => 'Закрытый',
+	'filter_open'          => 'Открытые',
+	'filter_close'         => 'Закрытые',
+	'btn_open'             => 'Открыть',
+	'btn_close'            => 'Закрыть',
+    'filter_new'           => 'Непрочитанные',
+    'filter_old'           => 'Прочитанные',
 
 ];

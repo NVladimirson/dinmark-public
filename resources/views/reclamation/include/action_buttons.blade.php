@@ -1,0 +1,1 @@
+<a href="#modal_explanation" class="btn btn-sm btn-green" title="@lang('order.btn_explanation_reclamation')" data-toggle="modal" data-subject="@lang('order.explanation_subject_reclamation'){{$reclamation->id}}"><i class="fa fa-envelope"></i></a>
