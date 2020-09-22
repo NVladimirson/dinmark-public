@@ -20,7 +20,16 @@ return [
 	'search_page_name' => 'Результати пошуку',
 	'all_tab_name' => 'Список товарів',
 	'search_tab_name' => 'Список товарів',
+    'right_widget_name' => 'Категорії і фільтри',
   'all_categories_name' => 'Список категорій',
+    'filters' => [
+        'header' => 'Фільтри',
+        'new' => 'Нові',
+        'hits' => 'Хіти',
+        'discount' => 'Акціонні пропозиції',
+    ],
+    'filters-with-properties' => 'Фільтри з властивостями',
+
 
   'mass_actions' =>
   [

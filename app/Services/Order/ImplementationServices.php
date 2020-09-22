@@ -70,7 +70,6 @@ class ImplementationServices
             $implementations->where('date_add','>=',$request->date_from);
         }
 
-
         if($request->has('date_to')){
             $implementations->where('date_add','<=',$request->date_to);
         }
