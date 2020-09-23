@@ -38,8 +38,8 @@
                         <div class="col-md-2">
                             <form action="{{ route('orders.act_pdf') }}" enctype="multipart/form-data" method="get">
                                 @csrf
-                                <input type="hidden" name="act_date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
-                                <input type="hidden" name="act_date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
+                                <input type="hidden" name="date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
+                                <input type="hidden" name="date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
 
                                 <button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block">@lang('order.btn_act_pdf')</button>
                             </form>

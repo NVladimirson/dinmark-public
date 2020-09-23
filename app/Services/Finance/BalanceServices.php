@@ -33,7 +33,8 @@ class BalanceServices
                         ]);
                     });
                 });
-        });
+        })
+            ->where('bukh','<>',0);;
 
         return $implementations;
     }

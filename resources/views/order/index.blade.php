@@ -73,10 +73,10 @@
 									<div class="col-lg-8">
 										<div class="row row-space-10">
 											<div class="col-xs-6 mb-2 mb-sm-0">
-												<input type="hidden" name="act_date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
+												<input type="hidden" name="date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
 											</div>
 											<div class="col-xs-6">
-												<input type="hidden" name="act_date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
+												<input type="hidden" name="date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
 											</div>
 										</div>
 									</div>
