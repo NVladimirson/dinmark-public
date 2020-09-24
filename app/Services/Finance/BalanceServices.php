@@ -115,8 +115,8 @@ class BalanceServices
 
         $company = Company::find(session('current_company_id'));
 
-        $saldoStart = 0 - $company->balance;
-        $saldoEnd = 0;
+        $saldoStart = 0;
+        $saldoEnd = $company->balance;
         $implementations = $instance
             ->getImplementations()
             ->where('date_add','<',$dateFrom)
