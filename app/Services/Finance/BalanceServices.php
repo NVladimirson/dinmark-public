@@ -40,8 +40,16 @@ class BalanceServices
     }
 
     public static function getFilteredImplementation($request){
-        $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
-        $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        $dateFromCarbon = Carbon::parse(0);
+        if($request->has('date_from')){
+            $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
+        }
+
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
@@ -81,8 +89,16 @@ class BalanceServices
     }
 
     public static function getFilteredPayment($request){
-        $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
-        $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        $dateFromCarbon = Carbon::parse(0);
+        if($request->has('date_from')){
+            $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
+        }
+
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
