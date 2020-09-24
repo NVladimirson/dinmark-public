@@ -683,6 +683,7 @@ class OrderController extends Controller
 			'dateFromCarbon' => $dateFromCarbon,
 			'dateToCarbon' => $dateToCarbon,
 		],$saldo));
+
 		$pdf->setOption('enable-smart-shrinking', true);
 		$pdf->setOption('no-stop-slow-scripts', true);
 		return $pdf->download(($company->prefix.'_').'act'.'.pdf');
