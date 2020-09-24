@@ -101,7 +101,7 @@
 
 <table class="f8 border">
     <tbody>
-    <tr>
+    <tr class="f-b">
         <td colspan="4">За даними Товариство з обмеженою відповідальністю "Леомарк", грн </td>
         <td colspan="4">За даними {{$company->name}}, грн </td>
     </tr>
