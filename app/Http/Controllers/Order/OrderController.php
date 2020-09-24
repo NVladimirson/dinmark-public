@@ -652,8 +652,18 @@ class OrderController extends Controller
 	public function PDFAct(Request $request)
 	{
 		$user = auth()->user();
-		$dateFromCarbon = Carbon::parse($request->act_date_from);
-		$dateToCarbon = Carbon::parse($request->act_date_to)->addDay();
+		$dateFromCarbon = Carbon::parse(0);
+        if($request->has('date_from')){
+            $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
+        }
+
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        }
+        $dateFrom = $dateFromCarbon->timestamp;
+        $dateTo = $dateToCarbon->timestamp;
 
 		$company = Company::find(session('current_company_id'));
 
