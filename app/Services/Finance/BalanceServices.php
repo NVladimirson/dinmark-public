@@ -109,7 +109,11 @@ class BalanceServices
             $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
         }
 
-        $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
