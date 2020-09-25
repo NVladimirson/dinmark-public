@@ -660,7 +660,9 @@ class OrderController extends Controller
         $dateToCarbon = Carbon::now();
         if($request->has('date_to'))
         {
-            $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+            if($request->date_to != ''){
+                $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+            }
         }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
@@ -671,6 +673,10 @@ class OrderController extends Controller
         $payments = BalanceServices::getFilteredPayment($request)->get();
 
 		$actData = $implementations->concat($payments)->sortBy('date_add');
+		if($actData->count() > 0){
+            $dateFromCarbon = Carbon::parse($actData->first()->date_add);
+        }
+
 
 		$saldo = BalanceServices::calcSaldo($request);
 
