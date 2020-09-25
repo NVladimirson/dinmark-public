@@ -155,10 +155,10 @@ class BalanceServices
             ->get();
 
         foreach ($implementations as $implementation){
-            $saldoStart += $implementation->products->sum('total');
+            $saldoStart -= $implementation->products->sum('total');
         }
         foreach ($payments as $payment){
-            $saldoStart -= $payment->payed;
+            $saldoStart += $payment->payed;
         }
 
         $implementations = BalanceServices::getImplementations()->where('date_add','>',$dateTo)->get();
@@ -169,10 +169,10 @@ class BalanceServices
             ->get();
 
         foreach ($implementations as $implementation){
-            $saldoEnd += $implementation->products->sum('total');
+            $saldoEnd -= $implementation->products->sum('total');
         }
         foreach ($payments as $payment){
-            $saldoEnd -= $payment->payed;
+            $saldoEnd += $payment->payed;
         }
 
         return [
