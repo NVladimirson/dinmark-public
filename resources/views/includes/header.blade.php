@@ -178,7 +178,7 @@
 
 <form action="https://dinmark.com.ua/search/filter" id="filter"
 class="hide" style="display: block;">
-    <div class="container flex">
+    {{--<div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
             <select id="header_filter-64-standart" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
@@ -330,7 +330,7 @@ class="hide" style="display: block;">
                     <span class="dropdown-wrapper" aria-hidden="true"></span>
                 </span>
             </div>
-        </div>
+        </div>--}}
     <div class="submit">
         <button class="hexa">Пошук</button>
     </div>

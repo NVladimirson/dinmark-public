@@ -265,7 +265,7 @@
                 <!-- end panel-heading -->
                 <!-- begin panel-body -->
                 <div class="panel-body">
-                    <div class="table-scroll-container">
+                    <div class="table-scroll-container1">
                         <table id="users-table" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
                                 <tr>
@@ -567,11 +567,12 @@
 						"url": "@lang('table.localization_link')",
 					},
 					"pageLength": 25,
-					"autoWidth": true,
+					"autoWidth": false,
 					"processing": true,
 					"serverSide": true,
 					"ajax": "{{route('company.users_ajax')}}",
 					"order": [[0, "desc"]],
+					sScrollX: true,
 					//"ordering": false,
 					//"searching": true,
 					fixedHeader: {
@@ -609,8 +610,12 @@
 							"orderable": false,
 						},
 					],
+					"fnDrawCallback": function( oSettings ) {
+						$.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust()
+					}
 				});
-			});
 
+
+			});
     </script>
 @endpush
