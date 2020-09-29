@@ -45,10 +45,6 @@
                         </li>
                         @endforeach
                     </ul>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
@@ -281,6 +277,14 @@
                                             <tr>
                                                 <th>@lang('implementation.table_header_ttn')</th>
                                                 <td>{{$implementation['ttn'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_weight')</th>
+                                                <td>{{$implementation['weight'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>@lang('implementation.table_header_status')</th>
+                                                <td>{{$implementation['status'] }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

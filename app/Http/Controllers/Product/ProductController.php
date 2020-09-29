@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+
 use App\Jobs\ProductOptions;
 use App\Models\Content;
 use App\Models\Order\OrderProduct;
@@ -26,6 +27,7 @@ use LaravelLocalization;
 
 class ProductController extends Controller
 {
+
 
     public function index(){
         SEOTools::setTitle(trans('product.all_tab_name'));
@@ -166,6 +168,7 @@ class ProductController extends Controller
             $products = $products->where('old_price','!=',0);
         }
 
+
         if($request->filter_with_options){
             $request_options = explode(',',$request->filter_with_options);
 
@@ -252,6 +255,7 @@ class ProductController extends Controller
 											}
 										}
 										selected_products.textContent = selected_products_arr.toString();
+
 //										 console.log(selected_products_arr);
                                         
 							})();"/>

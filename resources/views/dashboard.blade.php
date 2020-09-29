@@ -77,13 +77,9 @@
 		<!-- begin col-8 -->
 		<div class="col-lg-6">
 			<!-- begin panel -->
-			<div class="panel panel-primary" data-sortable-id="index-1">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h4 class="panel-title">@lang('dashboard.chart_price_order')</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
 				</div>
 				<div class="panel-body pr-1">
 					<div id="order-sum-chart" class="height-sm"></div>
@@ -92,13 +88,9 @@
 		</div>
 		<div class="col-lg-6">
 			<!-- begin panel -->
-			<div class="panel panel-primary" data-sortable-id="index-2">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h4 class="panel-title">@lang('dashboard.chart_weight_order')</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
 				</div>
 				<div class="panel-body pr-1">
 					<div id="order-weight-chart" class="height-sm"></div>
@@ -106,13 +98,9 @@
 			</div>
 		</div>
 		<div class="col-xl-12">
-			<div class="panel panel-primary" data-sortable-id="index-3">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h4 class="panel-title">@lang('dashboard.chart_status_order')</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
 				</div>
 				<div class="panel-body pr-1">
 					<div id="order-status-chart" class="height-sm"></div>
@@ -412,7 +400,9 @@
 							$weight = 0;
 							foreach ($order as $item){
 								foreach ($item->products as $product){
-									$weight += ($product->product->weight/100) * $product->quantity ;
+                                    if($product->product){
+                                        $weight += ($product->product->weight/100) * $product->quantity ;
+                                    }
 								}
 							}
 

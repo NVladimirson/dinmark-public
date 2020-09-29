@@ -12,23 +12,23 @@
 <!--  -->
 <footer id="footer">
     <div class="container flex">
-        <div class="hideMobile">
-            <h4>Мій акаунт</h4>
-            <a href="https://b2b-dinmark.test/orders">Мої замовлення</a>                        <!-- need refs -->
-            <a href="https://novaposhta.ua/tracking" target="_blank">Відстежити замовлення</a>
-            <a href="https://dinmark.com.ua/likes">Улюблені товари</a>                          <!-- need refs -->
+        <div class="hideTablet">
+            <h4>@lang('footer.my_account_header')</h4>
+            <a href="{{route('orders')}}">@lang('footer.my_account_orders')</a>
+            <a href="https://novaposhta.ua/tracking" target="_blank">@lang('footer.my_account_np')</a>
+            <a href="{{route('catalogs')}}">@lang('footer.my_account_wishlist')</a>
         </div>
-        <div class="hideMobile">
-            <h4>Співпраця</h4>
-            <a href="https://dinmark.com.ua/affiliate-program">Партнерська програма</a>
-            <a href="#colToUs" class="to-modal" data-modal="#colToUs">Зворотній зв'язок</a>
-            <a href="https://dinmark.com.ua/vacancies">Вакансії</a>
+        <div class="hideTablet">
+            <h4>@lang('footer.cooperation_header')</h4>
+            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/affiliate-program">@lang('footer.cooperation_affiliate_program')</a>
+            <a href="{{route('ticket.create')}}">@lang('footer.cooperation_contacts')</a>
+            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/vacancies">@lang('footer.cooperation_vacancies')</a>
         </div>
-        <div class="hideMobile">
-            <h4>Корисна інформація</h4>
-            <a href="https://dinmark.com.ua/shop">Каталог</a>
-            <a href="https://dinmark.com.ua/technical-tables">Технічні таблиці</a>
-            <a href="https://dinmark.com.ua/din-compliance-tables">Таблиці відповідності DIN</a>
+        <div class="hideTablet">
+            <h4>@lang('footer.useful_information_header')</h4>
+            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/shop">@lang('footer.useful_information_catalog')</a>
+            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/technical-tables">@lang('footer.useful_information_technical_tables')</a>
+            <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/din-compliance-tables">@lang('footer.useful_information_din_compliance')</a>
         </div>
         <div>
             <h4>Контактна інформація</h4>

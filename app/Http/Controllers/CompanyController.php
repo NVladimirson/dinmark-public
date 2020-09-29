@@ -230,7 +230,7 @@ class CompanyController extends Controller
                 if($user->photo){
                   return  '<img src="'.env('DINMARK_URL').'images/profile/'.$user->photo.'" alt="'.$user->name.'" width="60"/>';
                 }else{
-                    return  '<img src="'.env('DINMARK_URL').'empty-avatar.png" alt="'.$user->name.'"  width="60"/>';
+                    return  '<img src="'.env('DINMARK_URL').'images/empty-avatar.png" alt="'.$user->name.'"  width="60"/>';
                 }
             })
             ->addColumn('status_html', function (User $user) {
