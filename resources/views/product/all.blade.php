@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="col-xl-5">
-                            <div class="right-align">
+                            <div class="right-align m-b-15">
                                 @if(isset($terms))
                                     <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
                                         <option value="">@lang('product.select_term')</option>
@@ -69,8 +69,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <div class="table-scroll-container">
                         <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
@@ -118,55 +116,60 @@
                 <div id="selected_products" style="display:none"></div>
                 <div id="accordion"  class=".ui-helper-reset">
                     <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
-                    <div id="jstree"></div>
-
-                    <p style="font-size: 12pt;">@lang('product.filters.header')</p>
-                    <div id="filters">
-                        <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
-                            <h5 style="text-align: center">
-                                <a href="#" id="new">
-                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
-                                <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                        </div>
-                        <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
-                            <h5 style="text-align: center"><a href="#" id="hits">
-                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
-                                <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                        </div>
-                        <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
-                            <h5 style="text-align: center"><a href="#" id="discount">
-                                    <i class="fa fa-percent" aria-hidden="true"></i>  @lang('product.filters.discount')</a>
-                                <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                        </div>
-                    </div>
-
+                    <div id="jstree" class="content1"></div>
 
                     <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
-                    <div id="optionfilters">
+                    <div id="optionfilters" class="content1">
                         @foreach($filters as $filtername=>$filterdata)
                             <h3 class="ui-accordion-header">{!! $filtername !!}</h3>
-                            <div id="filter">
+                            <div class="filter" id="filter">
                                 @php $i=0;@endphp
                                 @foreach($filterdata as $value=>$data)
 
-                                    {{--@if($i % 3 == 0)--}}
-                                        {{--<div class="row">--}}
-                                    {{--@endif--}}
-                                            {{--<div class="row">--}}
-                                            {{--<div class="col-md-3">--}}
-                                                <p class="filter_with_options" option_id="{!! $data['option_id'] !!}" filter-selected="false">
-                                                    <i id="filter-checked_{!! $data['option_id'] !!}" class="fas fa-check-circle" aria-hidden="true" style="display: none"></i>{!! $value !!}
+                                    @if($i % 2 == 0)
+                                        <div class="row">
+                                    @endif
+
+                                            <div class="col-md-6">
+                                                <p class="filter_with_options" option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
+                                                   option_name="{!! $value !!}" filter-selected="false" style="cursor:pointer">{!! $value !!}
+                                                    {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
+                                                       {{--aria-hidden="true" style="display: none"></i>--}}
                                                 </p>
-                                            {{--</div>--}}
-                                            {{--</div>--}}
-                                     {{--@if($i % 3 == 2)--}}
-                                        {{--</div>--}}
-                                    {{--@endif--}}
+                                            </div>
+
+                                     @if($i % 2 == 1)
+                                        </div>
+                                    @endif
 
                                     @php $i++; @endphp
                                 @endforeach
+                                @if($i % 2 != 0)
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
+                    </div>
+
+                </div>
+
+                <div id="filters">
+                    {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
+                    <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
+                        <h5 style="text-align: center">
+                            <a href="#" id="new">
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
+                            <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                    </div>
+                    <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
+                        <h5 style="text-align: center"><a href="#" id="hits">
+                                <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
+                            <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                    </div>
+                    <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
+                        <h5 style="text-align: center"><a href="#" id="discount">
+                                <i class="fa fa-percent" aria-hidden="true"></i>  @lang('product.filters.discount')</a>
+                            <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
                     </div>
                 </div>
             </div>
@@ -204,7 +207,6 @@
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 
     <script>
-        //jstree
         jQuery(function($) {
             var loaded = [];
             $("#jstree").jstree({
@@ -214,13 +216,6 @@
                     "data": {
                         url: "{!! @route('getnode', ['id' => 0]) !!}",
                         contentType: "application/json; charset=utf-8",
-                        // function(node) {
-                        // 		return {
-                        // 				'text': node.text,
-                        // 				'id': node.id,
-                        // 				'icon' : []
-                        // 		};
-                        // }
                     },
                 }
             }).on('deselect_node.jstree', function(e, data) {
@@ -323,9 +318,13 @@
                                 filter_selected_ids = Array();
                                 $.each(filter_selected_map,function (key,value) {
                                     if(value.attributes['filter-selected'].value === 'true'){
-                                        filter_selected_ids.push(value.attributes['option_id'].value);
+                                        let option_id = value.attributes['option_id'].value;
+                                        let option_name = value.attributes['option_name'].value;
+                                        filter_selected_ids.push(option_id+';'+option_name);
+                                        //filter_selected_ids.option_id = option_name;
                                     }
                                 });
+                                //console.log('filter_with_options: ' + filter_selected_ids)
                                 return filter_selected_ids;
 
                             }
@@ -381,13 +380,63 @@
                 collapsible: true,
                 active: false,
                 heightStyle: "content",
-
+                content : '.content1'
             });
+
+            function initOptionFilters(){
+                //let filters = window.optionfilterids;
+                let filter_selected_map = $("[filter-selected=true]");
+                let all_filters = $(".filter_with_options");
+                $.each(all_filters,function (key,value) {
+                    value.setAttribute("style", "cursor:not-allowed");
+                    value.setAttribute("style", "color:red");
+                });
+                filter_selected_ids = Array();
+                $.each(filter_selected_map,function (key,value) {
+                    if(value.attributes['filter-selected'].value === 'true'){
+                        let option_id = value.attributes['option_id'].value;
+                        let option_name = value.attributes['option_name'].value;
+                        filter_selected_ids.push(option_id+';'+option_name);
+                        //filter_selected_ids.option_id = option_name;
+                    }
+                });
+                console.log("REQUEST: "+filter_selected_ids);
+                let route = 'products/option-filters';
+
+                $.ajax({
+                    method: "GET",
+                    url: route,
+                    data: {
+                        filter_with_options : filter_selected_ids,
+                        language: 'ru'
+                    },
+                    success: function(resp)
+                    {
+                        //console.log("RESPONSE");
+                        $.each(resp, function( index, value ) {
+                            if(Object.keys(value).length){
+                                $.each(value, function( index, value ) {
+                                    let filter_by_id = $("[option_id="+index+"]");
+                                    //console.log(filter_by_id[0].innerText);
+                                    filter_by_id[0].setAttribute("style", "color:red");
+                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                    // filter_by_id[0].setAttribute("style", "cursor:not-allowed");
+                                });
+                            }
+                        });
+                    },
+                    error:  function(xhr, str){
+                        console.log(xhr);
+                    }
+                });
+
+            }
 
             $( "#optionfilters" ).accordion({
                 collapsible: true,
                 active: false,
                 heightStyle: "content",
+                content: '.filter'
             });
 
             $('#select_all_products').change(function() {
@@ -408,12 +457,16 @@
             });
 
             $('#storages').on('change', function (e) {
-                jsTreetoDatatable()
+
+                    jsTreetoDatatable()
+
             });
 
 
             $('#instockToggler').click(function() {
-                jsTreetoDatatable()
+
+                    jsTreetoDatatable()
+
             });
 
             $('#mass_actions').on('change', function (e) {
@@ -789,16 +842,24 @@
                 }
             });
             $('.filter_with_options').click(function(){
-                if($(this).attr('filter-selected') === 'true'){
-                    $(this).attr('filter-selected', 'false');
-                    $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
-                }
-                else{
-                    $(this).attr('filter-selected', 'true');
-                    $("#filter-checked_"+$(this).attr('option_id')).css("display","");
-                }
 
-                jsTreetoDatatable();
+                    if($(this).attr('filter-selected') === 'true'){
+                        $(this).attr('filter-selected', 'false');
+                        $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
+
+                    }
+                    else{
+                        $(this).attr('filter-selected', 'true');
+                        $("#filter-checked_"+$(this).attr('option_id')).css("display","");
+                        // if(window.optionfilterids === undefined){
+                        //     window.optionfilterids = [];
+                        // }
+                        //
+                        // window.optionfilterids.push($(this).attr('option_id'));
+                    }
+                    initOptionFilters();
+                    jsTreetoDatatable();
+
 
             });
         });
@@ -842,7 +903,6 @@
             height: 60px;
         }
         .filter_with_options{
-            cursor: pointer;
             padding-left: 14px;
         }
     </style>

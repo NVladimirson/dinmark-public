@@ -10,7 +10,9 @@ use App\Models\Product\GetPrice;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
 use App\Models\Product\ProductOption;
+use App\Models\Product\ProductOptionName;
 use App\Services\Product\CategoryServices;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -47,14 +49,62 @@ class ProductController extends Controller
         return view('product.all',compact('categories','id', 'page_name', 'breadcrumbs','wishlists', 'orders'));
     }
 
-    public function optionFilters($id = 0){
-        //$option_map = explode(',',$request->filter_with_options);
-        $option_map = [54068,14391,57949,54067];
-        $products = Product::whereIn('id',$option_map);
-        dd($products);
-//        dd($result);
+    public function optionFilters(Request $request){
+        $request_options = $request->filter_with_options;
 
-        //$products = $products->whereIn('id',$valid_ids);
+        foreach($request_options as $option){
+            $key = explode(';',$option)[0];
+            $value = explode(';',$option)[1];
+            $option_map[$key] = $value;
+        }
+
+        $language = ProductOptionName::find(array_key_first($option_map))->language;
+        $object = \Cache::get('filters_'.$language);
+
+        $filter_map = array();
+        foreach ($object as $filtername => $filtervalues){
+            foreach ($filtervalues as $valuename => $products){
+                foreach ($products as $product_id => $product_data){
+                    $filter_map[$product_id][$product_data['value_id']] = $valuename;
+                }
+            }
+        }
+        //dd($filter_map);
+        $filter_map = Arr::where($filter_map, function ($value) use ($option_map) {
+            if(count($value)>=count($option_map)){
+                return $value;
+            }
+        });//filtering
+
+        if(isset($filter_map)){
+            foreach ($filter_map as $product_id => $valuedata){
+                //dd($option_map);
+                foreach ($option_map as $value_id => $valuename){
+                    if(!in_array($value_id,array_keys($valuedata))){
+                        $contains = false;
+                        break;
+                    }
+                    $contains = true;
+                }
+                if(!$contains){
+                    unset($filter_map[$product_id]);
+                }
+            }
+        }
+
+        $valid_options = ['checked' => [],'availiable' => []];
+        if(isset($filter_map)){
+            foreach ($filter_map as $product_id => $valuedata) {
+                foreach ($valuedata as $value_id => $valuename){
+                    if(in_array($value_id,array_keys($option_map))){
+                        $valid_options['checked'][$value_id] = $valuename;
+                    }
+                    $valid_options['availiable'][$value_id] = $valuename;
+                }
+            }
+
+        }
+        return $valid_options;
 
     }
 
@@ -117,37 +167,60 @@ class ProductController extends Controller
         }
 
         if($request->filter_with_options){
-            $option_map = explode(',',$request->filter_with_options);
+            $request_options = explode(',',$request->filter_with_options);
 
-            $language = ProductOption::find($option_map[0])->language;
+            foreach($request_options as $option){
+                $key = explode(';',$option)[0];
+                $value = explode(';',$option)[1];
+                $option_map[$key] = $value;
+            }
 
+
+            $language = ProductOptionName::find(array_key_first($option_map))->language;
             $object = \Cache::get('filters_'.$language);
             if(!$object){
                 dispatch(new ProductOption($language));
             }
-            $product_filter_map = array();
-            foreach ($object as $filtername => $filtervalues){
-                foreach ($filtervalues as $valuename => $valuedata){
-                    if(in_array($valuedata['option_id'],$option_map)){
-                        if(isset($product_filter_map[$filtername])){
-                            $product_filter_map[$filtername] = array_unique(
-                                array_merge(
-                                    $product_filter_map[$filtername],
-                                    $valuedata['products'])
-                            );
-                        }else{
-                            $product_filter_map[$filtername] = $valuedata['products'];
-                        }
 
+            $filter_map = array();
+            foreach ($object as $filtername => $filtervalues){
+                foreach ($filtervalues as $valuename => $product_ids){
+                    foreach ($product_ids as $product_id => $product_data){
+                        $filter_map[$product_id][$product_data['value_id']] = $valuename;
                     }
                 }
             }
-            $valid_ids = $product_filter_map[array_key_first($product_filter_map)];
-            foreach ($product_filter_map as $filter=>$product_ids) {
-                $valid_ids = array_intersect($valid_ids, $product_ids);
+            //dd($filter_map);
+            $filter_map = Arr::where($filter_map, function ($value) use ($option_map) {
+                if(count($value)>=count($option_map)){
+                    return $value;
+                }
+            });//filtering
+
+            if(isset($filter_map)){
+                foreach ($filter_map as $product_id => $valuedata){
+                    //dd($option_map);
+                    foreach ($option_map as $value_id => $valuename){
+                        if(!in_array($value_id,array_keys($valuedata))){
+                            $contains = false;
+                            break;
+                        }
+                        $contains = true;
+                    }
+                    if(!$contains){
+                        unset($filter_map[$product_id]);
+                    }
+                }
+            }
+
+            if (isset($filter_map)){
+                $valid_ids = array_keys($filter_map);
+            }
+            else{
+                $valid_ids = [];
             }
             info($valid_ids);
-            $products = $products->whereIn('id',$valid_ids);
+            $products = $products->whereIn('id',array_values($valid_ids));
         }
 
         $ids = null;

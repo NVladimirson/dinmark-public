@@ -49,7 +49,7 @@ class CategoryServices
 			->get();
 	}
 
-	public static function getFilters(){
+	public static function getFilters($options = 0){
         $language =  static::getInstance()->lang;
         if($language == 'ru'){
             $object = Cache::get('filters_ru');
@@ -57,7 +57,11 @@ class CategoryServices
         else{
             $object = Cache::get('filters_uk');
         }
-        return $object;
+
+        if(!$options){
+            return $object;
+        }
+
     }
 
 	public static function getTermsForSelect(){
