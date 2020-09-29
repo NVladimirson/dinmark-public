@@ -3,180 +3,211 @@
 @section('title', 'Managed Tables - Buttons')
 
 @push('css')
-	<link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-	<link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
-	<link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
-	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
-	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
-	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
-	<link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
-	@if(isset($breadcrumbs))
-		{{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
-		@else
-		{{ Breadcrumbs::render('product.all') }}
-	@endif
 
-	<h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
-	<!-- begin row -->
-	<div class="row">
-		<div class="col-xl-9">
-			<!-- begin panel -->
-			<div class="panel panel-primary">
-				<!-- begin panel-heading -->
-				<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.all_tab_name')</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-					</div>
-				</div>
-				<!-- end panel-heading -->
-				<!-- begin panel-body -->
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-xl-3">
+    @if(isset($breadcrumbs))
+        {{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
+    @else
+        {{ Breadcrumbs::render('product.all') }}
+    @endif
 
+    <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
+    <!-- begin row -->
+    <div class="row">
+        <div class="col-xl-9">
+            <!-- begin panel -->
+            <div class="panel panel-primary">
+                <!-- begin panel-heading -->
+                <div class="panel-heading">
+                    <h4 class="panel-title">@lang('product.all_tab_name')</h4>
+                </div>
+                <!-- end panel-heading -->
+                <!-- begin panel-body -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xl-3">
 
-						@if(Request::get('instock'))
-						<div class="custom-control custom-switch">
-							<input type="checkbox" class="custom-control-input" id="instockToggler" checked>
-							<label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
-						</div>
-						@else
-						<div class="custom-control custom-switch">
-							<input type="checkbox" class="custom-control-input" id="instockToggler">
-							  <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
-						</div>
-					 @endif
-					 </div>
+                            @if(Request::get('instock'))
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="instockToggler" checked>
+                                    <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
+                                </div>
+                            @else
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="instockToggler">
+                                    <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
+                                </div>
+                            @endif
+                        </div>
 
+                        <div class="col-xl-4">
+                            <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
+                                <option value="0">@lang('product.mass_actions.select')</option>
+                                <option value="wishlist">@lang('product.mass_actions.add-to-wishlist')</option>
+                                <option value="order">@lang('product.mass_actions.add-to-order')</option>
+                            </select>
+                        </div>
 
-					 <div class="col-xl-4">
-							  <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
-								 <option value="0">@lang('product.mass_actions.select')</option>
-									 <option value="wishlist">@lang('product.mass_actions.add-to-wishlist')</option>
-									 <option value="order">@lang('product.mass_actions.add-to-order')</option>
-							 </select>
-					 </div>
-
-					 <div class="col-xl-5">
-						 <div class="right-align">
-							 @if(isset($terms))
-								 <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
-									 <option value="">@lang('product.select_term')</option>
-									 @foreach($terms as $key => $term)
-										 <option value="{{$key}}">{!! $term !!}</option>
-									 @endforeach
-								 </select>
-							 @endif
-				 	 	</div>
-					 </div>
-					</div>
-
-
-
-        <div class="table-scroll-container">
-					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
-						<thead>
-							<tr>
-								<th></th>
-								<th width="30">
-									<div class="checkbox checkbox-css">
-												<input type="checkbox" id="select_all_products">
-												<label for="select_all_products"> </label>
-											</div>
-					</th>
-								<th width="1%" data-orderable="false"></th>
-								<th class="text-nowrap">@lang('product.table_header_name')</th>
-								<th class="text-nowrap">@lang('product.table_header_article')</th>
-								<th class="text-nowrap">@lang('product.table_header_price')</th>
-								<th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
-								<th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
-								<th class="text-nowrap">@lang('product.table_header_storage')</th>
-								<th width="124">
-								<!-- <div id = "mass_actions">
-									<a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-eye"></i></a>
-									<a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-star"></i></a>
-									<a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-cart-plus"></i></a>
-								</div> -->
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+                        <div class="col-xl-5">
+                            <div class="right-align m-b-15">
+                                @if(isset($terms))
+                                    <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
+                                        <option value="">@lang('product.select_term')</option>
+                                        @foreach($terms as $key => $term)
+                                            <option value="{{$key}}">{!! $term !!}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                            </div>
+                        </div>
                     </div>
-				</div>
-				<!-- end panel-body -->
-			</div>
-			<!-- end panel -->
-		</div>
-		<div class="col-xl-3">
 
+                    <div class="table-scroll-container">
+                        <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th width="30">
+                                    <div class="checkbox checkbox-css">
+                                        <input type="checkbox" id="select_all_products">
+                                        <label for="select_all_products"> </label>
+                                    </div>
+                                </th>
+                                <th width="1%" data-orderable="false"></th>
+                                <th class="text-nowrap">@lang('product.table_header_name')</th>
+                                <th class="text-nowrap">@lang('product.table_header_article')</th>
+                                <th class="text-nowrap">@lang('product.table_header_price')</th>
+                                <th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
+                                <th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
+                                <th class="text-nowrap">@lang('product.table_header_storage')</th>
+                                <th width="124">
+                                    <!-- <div id = "mass_actions">
+                                        <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-star"></i></a>
+                                        <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-cart-plus"></i></a>
+                                    </div> -->
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end panel-body -->
+            </div>
+            <!-- end panel -->
+        </div>
+        <div class="col-xl-3">
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h4 class="panel-title">@lang('product.all_categories_name')</h4>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@lang('product.right_widget_name')</h4>
+                </div>
+                <div id="reload" style="display:none"></div>
+                <div id="selected_products" style="display:none"></div>
+                <div id="accordion"  class=".ui-helper-reset">
+                    <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
+                    <div id="jstree" class="content1"></div>
+
+                    <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
+                    <div id="optionfilters" class="content1">
+                        @foreach($filters as $filtername=>$filterdata)
+                            <h3 class="ui-accordion-header">{!! $filtername !!}</h3>
+                            <div class="filter" id="filter">
+                                @php $i=0;@endphp
+                                @foreach($filterdata as $value=>$data)
+
+                                    @if($i % 2 == 0)
+                                        <div class="row">
+                                    @endif
+
+                                            <div class="col-md-6">
+                                                <p class="filter_with_options" option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
+                                                   option_name="{!! $value !!}" filter-selected="false" style="cursor:pointer">{!! $value !!}
+                                                    {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
+                                                       {{--aria-hidden="true" style="display: none"></i>--}}
+                                                </p>
+                                            </div>
+
+                                     @if($i % 2 == 1)
+                                        </div>
+                                    @endif
+
+                                    @php $i++; @endphp
+                                @endforeach
+                                @if($i % 2 != 0)
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+
+                <div id="filters">
+                    {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
+                    <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
+                        <h5 style="text-align: center">
+                            <a href="#" id="new">
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
+                            <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                    </div>
+                    <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
+                        <h5 style="text-align: center"><a href="#" id="hits">
+                                <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
+                            <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                    </div>
+                    <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
+                        <h5 style="text-align: center"><a href="#" id="discount">
+                                <i class="fa fa-percent" aria-hidden="true"></i>  @lang('product.filters.discount')</a>
+                            <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-      <div id="jstree"></div>
-      <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
-          <h5 style="text-align: center">
-              <a href="#" id="new">
-                  <i class="fa fa-bullhorn" aria-hidden="true"></i>  Новинки</a>
-              <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-      </div>
-      <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
-          <h5 style="text-align: center"><a href="#" id="hits">
-                  <i class="fa fa-thumbs-up" aria-hidden="true"></i>  Хиты продаж</a>
-              <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-      </div>
-      <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
-          <h5 style="text-align: center"><a href="#" id="discount">
-                  <i class="fa fa-percent" aria-hidden="true"></i>  Акционные предложения</a>
-              <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-      </div>
+    </div>
+    <!-- end row -->
 
-      <div id="reload" style="display:none"></div>
-      <div id="selected_products" style="display:none"></div>
-      </div>
-  </div>
-
-</div>
-</div>
-	<!-- end row -->
-
-	@include('product.include.modal_wishlist')
-	@include('product.include.modal_order')
+    @include('product.include.modal_wishlist')
+    @include('product.include.modal_order')
     @include('product.include.modal_order_multiple')
-	@include('product.include.modal_get_price')
+    @include('product.include.modal_get_price')
 @endsection
 
 @push('scripts')
-	<script src="/assets/plugins/jstree/dist/jstree.min.js"></script>
-	<script src="/assets/plugins/jstree/dist/jstree.js"></script>
-	<script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-	<script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-	<script src="/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-	<script src="/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-	<script src="/assets/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-	<script src="/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-	<script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
-	<script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
-	<script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
-	<script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
-	<script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
-	<script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
-	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
-	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="/assets/plugins/jstree/dist/jstree.min.js"></script>
+    <script src="/assets/plugins/jstree/dist/jstree.js"></script>
+    <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/assets/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
 
+    <script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
+    <script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
+    <script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+    <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 
-	<script>
-        //jstree
+    <script>
         jQuery(function($) {
             var loaded = [];
             $("#jstree").jstree({
@@ -186,13 +217,6 @@
                     "data": {
                         url: "{!! @route('getnode', ['id' => 0]) !!}",
                         contentType: "application/json; charset=utf-8",
-                        // function(node) {
-                        // 		return {
-                        // 				'text': node.text,
-                        // 				'id': node.id,
-                        // 				'icon' : []
-                        // 		};
-                        // }
                     },
                 }
             }).on('deselect_node.jstree', function(e, data) {
@@ -290,6 +314,22 @@
                                     return 1;
                                 }
                             },
+
+                            "filter_with_options":function ( ){
+                                let filter_selected_map = $("[filter-selected=true]");
+                                filter_selected_ids = Array();
+                                $.each(filter_selected_map,function (key,value) {
+                                    if(value.attributes['filter-selected'].value === 'true'){
+                                        let option_id = value.attributes['option_id'].value;
+                                        let option_name = value.attributes['option_name'].value;
+                                        filter_selected_ids.push(option_id+';'+option_name);
+                                        //filter_selected_ids.option_id = option_name;
+                                    }
+                                });
+                                //console.log('filter_with_options: ' + filter_selected_ids)
+                                return filter_selected_ids;
+
+                            }
                         }
 
                     },
@@ -338,6 +378,68 @@
                     }
                 });
 
+            $( "#accordion" ).accordion({
+                collapsible: true,
+                active: false,
+                heightStyle: "content",
+                content : '.content1'
+            });
+
+            function initOptionFilters(){
+                //let filters = window.optionfilterids;
+                let filter_selected_map = $("[filter-selected=true]");
+                let all_filters = $(".filter_with_options");
+                $.each(all_filters,function (key,value) {
+                    value.setAttribute("style", "cursor:not-allowed");
+                    value.setAttribute("style", "color:red");
+                });
+                filter_selected_ids = Array();
+                $.each(filter_selected_map,function (key,value) {
+                    if(value.attributes['filter-selected'].value === 'true'){
+                        let option_id = value.attributes['option_id'].value;
+                        let option_name = value.attributes['option_name'].value;
+                        filter_selected_ids.push(option_id+';'+option_name);
+                        //filter_selected_ids.option_id = option_name;
+                    }
+                });
+                console.log("REQUEST: "+filter_selected_ids);
+                let route = 'products/option-filters';
+
+                $.ajax({
+                    method: "GET",
+                    url: route,
+                    data: {
+                        filter_with_options : filter_selected_ids,
+                        language: 'ru'
+                    },
+                    success: function(resp)
+                    {
+                        //console.log("RESPONSE");
+                        $.each(resp, function( index, value ) {
+                            if(Object.keys(value).length){
+                                $.each(value, function( index, value ) {
+                                    let filter_by_id = $("[option_id="+index+"]");
+                                    //console.log(filter_by_id[0].innerText);
+                                    filter_by_id[0].setAttribute("style", "color:red");
+                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                    // filter_by_id[0].setAttribute("style", "cursor:not-allowed");
+                                });
+                            }
+                        });
+                    },
+                    error:  function(xhr, str){
+                        console.log(xhr);
+                    }
+                });
+
+            }
+
+            $( "#optionfilters" ).accordion({
+                collapsible: true,
+                active: false,
+                heightStyle: "content",
+                content: '.filter'
+            });
 
             $('#select_all_products').change(function() {
                 if($('#select_all_products').prop('checked')){
@@ -345,7 +447,6 @@
                     $(".intable").each(function(){
                         $(this).prop('checked', true);
                         products.push($(this).prop('id').slice(8));
-                        //document.getElementById('selected_products').innerText = products.toString();
                     });
                 }
                 else{
@@ -363,7 +464,7 @@
 
 
             $('#instockToggler').click(function() {
-                jsTreetoDatatable()
+                    jsTreetoDatatable()
             });
 
             $('#mass_actions').on('change', function (e) {
@@ -466,12 +567,12 @@
             });
 
             $('#products_selector').on('change',function(){
-                    let id = this.options[this.selectedIndex].attributes['value'].value;
-                    let inputs = $('.multipleorderinput');
-            $.each(inputs,function(key, value){
+                let id = this.options[this.selectedIndex].attributes['value'].value;
+                let inputs = $('.multipleorderinput');
+                $.each(inputs,function(key, value){
                     $('#'+value.attributes['id'].value).hide();
-            });
-            $('#multiple_input_'+id).show();
+                });
+                $('#multiple_input_'+id).show();
                 // $('#multiple_input').attr('value', selector.attributes['data-storage_min'].value);
             });
 
@@ -709,37 +810,58 @@
             });
 
             $('#new').click(function(e){
-                    if($('#new-checked').css("display") === 'none'){
-                        $('#new-checked').css("display","");
-                        jsTreetoDatatable();
-                    }
-                    else{
-                        $('#new-checked').css("display","none");
-                        jsTreetoDatatable();
-                    }
+                if($('#new-checked').css("display") === 'none'){
+                    $('#new-checked').css("display","");
+                    jsTreetoDatatable();
+                }
+                else{
+                    $('#new-checked').css("display","none");
+                    jsTreetoDatatable();
+                }
             });
             $('#hits').click(function(e){
-                    if($('#hits-checked').css("display") === 'none'){
-                        $('#hits-checked').css("display","");
-                        jsTreetoDatatable();
-                    }
-                    else{
-                        $('#hits-checked').css("display","none");
-                        jsTreetoDatatable();
-                    }
+                if($('#hits-checked').css("display") === 'none'){
+                    $('#hits-checked').css("display","");
+                    jsTreetoDatatable();
+                }
+                else{
+                    $('#hits-checked').css("display","none");
+                    jsTreetoDatatable();
+                }
             });
             $('#discount').click(function(e){
-                    if($('#discount-checked').css("display") === 'none'){
-                        $('#discount-checked').css("display","");
-                        jsTreetoDatatable();
+                if($('#discount-checked').css("display") === 'none'){
+                    $('#discount-checked').css("display","");
+                    jsTreetoDatatable();
+                }
+                else{
+                    $('#discount-checked').css("display","none");
+                    jsTreetoDatatable();
+                }
+            });
+            $('.filter_with_options').click(function(){
+
+                    if($(this).attr('filter-selected') === 'true'){
+                        $(this).attr('filter-selected', 'false');
+                        $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
+
                     }
                     else{
-                        $('#discount-checked').css("display","none");
-                        jsTreetoDatatable();
+                        $(this).attr('filter-selected', 'true');
+                        $("#filter-checked_"+$(this).attr('option_id')).css("display","");
+                        // if(window.optionfilterids === undefined){
+                        //     window.optionfilterids = [];
+                        // }
+                        //
+                        // window.optionfilterids.push($(this).attr('option_id'));
                     }
+                    initOptionFilters();
+                    jsTreetoDatatable();
+
+
             });
         });
-	</script>
+    </script>
     <script>
         var acc = document.getElementsByClassName("accordion");
         var i;
@@ -756,26 +878,31 @@
             });
         }
     </script>
-	<style>
-		.checkbox.checkbox-css label{
-			padding:8px;
-			margin-left:6px;
+    <style>
+        .checkbox.checkbox-css label{
+            padding:8px;
+            margin-left:6px;
 
-		}
+        }
 
-		.custom-control-label {
-				margin-top:10px;
-				margin-left:12px;
-				font-size: 1rem;
-				line-height: 1.0;
-		}
+        .custom-control-label {
+            margin-top:10px;
+            margin-left:12px;
+            font-size: 1rem;
+            line-height: 1.0;
+        }
 
+        .right-align{
+            float: right;
+        }
 
-		.right-align{
-float: right;
-		}
-
-
-	</style>
+        .ui-accordion .ui-accordion-content {padding:10px }
+        .ui-accordion-header {
+            height: 60px;
+        }
+        .filter_with_options{
+            padding-left: 14px;
+        }
+    </style>
 
 @endpush

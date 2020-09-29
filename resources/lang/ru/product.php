@@ -20,7 +20,23 @@ return [
     'search_page_name' => 'Результаты поиска',
     'all_tab_name' => 'Список товаров',
     'search_tab_name' => 'Список товаров',
+    'right_widget_name' => 'Категории и фильтры',
     'all_categories_name' => 'Список категорий',
+    'filters' => [
+        'header' => 'Фильтры',
+        'new' => 'Новые',
+        'hits' => 'Хиты',
+        'discount' => 'Акционные предложения',
+    ],
+    'filters-with-properties' => 'Фильтры со свойствами',
+
+
+    'mass_actions' =>
+    [
+      'select'=>'Дії з відміченими',
+      'add-to-wishlist'=>'Додати в "Мій Список"',
+      'add-to-order'=>'Додати до Замовлення',
+    ],
 
 
     'mass_actions' =>

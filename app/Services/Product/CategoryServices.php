@@ -12,6 +12,7 @@ namespace App\Services\Product;
 use App\Models\Product\ProductCategory;
 use App\Models\WlImage;
 use App\Models\Content;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use LaravelLocalization;
 use Illuminate\Support\Arr;
@@ -48,6 +49,20 @@ class CategoryServices
 			->get();
 	}
 
+	public static function getFilters($options = 0){
+        $language =  static::getInstance()->lang;
+        if($language == 'ru'){
+            $object = Cache::get('filters_ru');
+        }
+        else{
+            $object = Cache::get('filters_uk');
+        }
+
+        if(!$options){
+            return $object;
+        }
+
+    }
 	public static function getTermsForSelect(){
 		$instance =  static::getInstance();
 		$storages = \DB::select('SELECT DISTINCT ss.id,ss.term FROM s_shopstorage ss WHERE ss.term != ""');
