@@ -400,7 +400,9 @@
 							$weight = 0;
 							foreach ($order as $item){
 								foreach ($item->products as $product){
-									$weight += ($product->product->weight/100) * $product->quantity ;
+                                    if($product->product){
+                                        $weight += ($product->product->weight/100) * $product->quantity ;
+                                    }
 								}
 							}
 
