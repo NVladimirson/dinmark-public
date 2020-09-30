@@ -457,7 +457,7 @@ nav.navbar-grey .container {
 }
 nav.navbar-grey a.shop {
     white-space: nowrap;
-    /* width: calc(25% - 37px); */
+    width: 300px;
     margin-left: 8px;
     margin-right: 100px;
     text-transform: uppercase;
@@ -542,12 +542,7 @@ nav.mainmenu > div > a + div.submenu {
     padding: 15px;
     z-index: 98;
 }
-.right-actions-block a {
-    /* color: #fff; */
-}
-.right-actions-block .dropdown a {
-    /* color: #000; */
-}
+
 .right-actions-block a:hover {
     color: #fff;
     text-decoration: none;
@@ -568,8 +563,10 @@ nav.mainmenu > div > a {
 }
 nav div.submenu a {
     color: #fff;
+    background-color: #5A5A5A;
 }
 .mainmenu {
+    width: 270px;
     position: absolute;
     z-index: 99;
     margin-top: 30px;
@@ -594,17 +591,7 @@ nav.mainmenu > div > a {
     position: relative;
 }
 
-nav.mainmenu > div > a + div.submenu {
-    display: none;
-    position: absolute;
-    width: 300px;
-    left: calc(100% + 10px);
-    top: 0;
-    color: #fff;
-    background: #5A5A5A;
-    padding: 15px;
-    z-index: 98;
-}
+
 nav.mainmenu > div > a div:first-child {
     text-align: right;
     width: 40%;
@@ -1030,6 +1017,10 @@ header .actions > a:hover, section.subscribe a:hover {
     /* margin: auto; */
     width: 90%;
     max-width: 1600px;
+}
+
+.navbar-grey .container {
+    width: 100% !important;
 }
 
 .navbar-items {
