@@ -24,12 +24,21 @@
 					<div class="row">
 						<div class="col-md-5 text-center">
 							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%" class="m-b-15">
-                            <div class="row m-b-10">
+                            <div class="row m-b-10 product-gallery">
                                 @foreach($productPhotos as $photo)
                                     <div class="col-sm-4">
-                                        <img src="{{$photo}}" alt="{{$productName}}" width="100%" class="m-b-5">
+                                        <a href="#">
+                                            <img src="{{$photo}}" alt="{{$productName}}" width="100%" class="m-b-5">
+                                        </a>
                                     </div>
                                 @endforeach
+                                    @if($productVideo)
+                                        <div class="col-sm-4">
+                                            <a href="#modal-video" class="to-modal flex video" data-toggle="modal">
+                                                <img src="https://dinmark.com.ua/images/video-thumbnail.svg" alt="video svg thumbnail" class="w50">
+                                            </a>
+                                        </div>
+                                    @endif
                             </div>
                             @if($productPDF)
                                 <a href="{{$productPDF}}" target="_blank" class="btn btn-white btn-block btn-lg">
@@ -246,7 +255,23 @@
 	@include('product.include.modal_wishlist')
 	@include('product.include.modal_order')
     @include('product.include.modal_get_price')
-
+    <div class="modal fade" id="modal-video" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{$productName}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    @if($productVideo)
+                        <p>
+                            <iframe width="466" height="300" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')

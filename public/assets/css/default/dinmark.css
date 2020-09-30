@@ -1639,3 +1639,25 @@ body ul.wysihtml5-toolbar .glyphicon {
 .fas {
     font-family: "Font Awesome 5 Free";
 }
+.product-gallery a {
+    display: flex;
+    align-items: center;
+    height: 90px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.product-gallery a.video { position: relative; justify-content: center; margin-right: 0; cursor: pointer }
+.product-gallery a.video::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    background: #29ABE2;
+}
+.product-gallery a.video img{
+    z-index: 1;
+}
