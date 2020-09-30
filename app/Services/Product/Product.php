@@ -14,6 +14,7 @@ use App\Models\Product\Currency;
 use App\Models\Company\Company;
 use App\Models\Product\GetPrice;
 use App\Models\WlImage;
+use App\Models\WlVideo;
 use Carbon\Carbon;
 use LaravelLocalization;
 
@@ -75,9 +76,19 @@ class Product
             ['language',$lang],
             ['content',-$product->group],
         ])->first();
-		//$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
 		$productText = $content?$content->text:'';
 		return $productText;
+	}
+
+    public static function getVideo($product)
+    {
+        $content = WlVideo::where([
+            ['alias',$product->wl_alias],
+            ['content',-$product->group],
+        ])->first();
+        $productVideo = $content?$content->link:'';
+        return $productVideo;
+
 	}
 
 	public static function getBasePrice($product){
