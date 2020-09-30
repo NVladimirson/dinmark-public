@@ -69,6 +69,7 @@ return [
 	'weight_kg' => 'кг',
 	'header_params' => 'Специфікації',
 	'header_storage' => 'Склади',
+    'header_detail' => 'Технічні характеристики',
 	'storage_name' => 'Склад',
 	'storage_amount' => 'Залишок',
 	'storage_package' => 'Упаковка (шт)',

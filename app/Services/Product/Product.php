@@ -65,6 +65,21 @@ class Product
 		return $productName;
 	}
 
+	public static function getText($product, $lang = null){
+		$instance =  static::getInstance();
+		if(empty($lang)){
+			$lang = $instance->lang;
+		}
+        $content = Content::where([
+            ['alias',$product->wl_alias],
+            ['language',$lang],
+            ['content',-$product->group],
+        ])->first();
+		//$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
+		$productText = $content?$content->text:'';
+		return $productText;
+	}
+
 	public static function getBasePrice($product){
 		$instance =  static::getInstance();
 

@@ -396,6 +396,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         $productName = \App\Services\Product\Product::getName($product);
+        $productText = \App\Services\Product\Product::getText($product);
         $imagePath = \App\Services\Product\Product::getImagePathThumb($product);
         $price = \App\Services\Product\Product::getPrice($product);
         $limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
@@ -414,7 +415,7 @@ class ProductController extends Controller
         }
         SEOTools::setTitle($productName);
 
-        return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice',
+        return view('product.index', compact('product','productName', 'productText', 'imagePath', 'price', 'basePrice',
             'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices','storage_raw_prices'));
     }
 

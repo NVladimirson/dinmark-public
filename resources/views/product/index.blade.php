@@ -85,13 +85,26 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.header_storage')</h4>
+                    <ul id="product_tab" class="nav nav-tabs nav-tabs-panel panel-title">
+                        <li class="nav-item">
+                            <a href="#storage-tab" data-toggle="tab" class="nav-link active">
+                                <span>@lang('product.header_storage')</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#detail-tab" data-toggle="tab" class="nav-link">
+                                <span>@lang('product.header_detail')</span>
+                            </a>
+                        </li>
+                    </ul>
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<div class="row">
-                        <div class="table-scroll-container">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="storage-tab">
+					        <div class="row">
+                                <div class="table-scroll-container">
 							<table class="table table-striped">
 								<tr>
 									<th>@lang('product.storage_name')</th>
@@ -187,6 +200,18 @@
 								</tr>
 								@endforelse
 							</table>
+                        </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade active show" id="detail-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {!! $productText !!}
+                                </div>
+                                <div class="col-md-6">
+
+                                </div>
+                            </div>
                         </div>
 					</div>
 				</div>
