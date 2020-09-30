@@ -23,7 +23,13 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-5 text-center">
-							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%">
+							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%" class="m-b-15">
+
+                            @if($productPDF)
+                                <a href="{{$productPDF}}" target="_blank" class="btn btn-white btn-block btn-lg">
+                                    @lang('product.btn_pdf')
+                                </a>
+                            @endif
 						</div>
 						<div class="col-md-7">
 							<h3>@lang('product.header_main_info')</h3>
@@ -49,7 +55,7 @@
 								@if($product->limit_2 > 0)
 								<tr>
 									<th>@lang('product.show_price_porog_2')</th>
-									<td>{{ $limit2  }}</td>
+									<td>{{ $limit2 }}</td>
 								</tr>
 								@endif
 								<tr>

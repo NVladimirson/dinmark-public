@@ -60,6 +60,7 @@ return [
     'storage_empty' => 'Нет в наличии',
 
 	'show_tab_name' => 'Информация о товаре',
+    'btn_pdf' => 'Скачать чертеж PDF',
 	'header_main_info' => 'Основная информация',
 	'show_article' => 'Артикул',
 	'show_price' => 'Розничная цена (100шт)',

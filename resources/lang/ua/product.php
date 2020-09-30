@@ -59,6 +59,7 @@ return [
 	'storage_empty' => 'Немає в наявності',
 
 	'show_tab_name' => 'Інформація про товар',
+    'btn_pdf' => 'Завантажити креслення PDF',
 	'header_main_info' => 'Основна інформація',
 	'show_article' => 'Артикул',
 	'show_price' => 'Роздрібна ціна (100шт)',
