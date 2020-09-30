@@ -13,6 +13,7 @@ use App\Models\Content;
 use App\Models\Product\Currency;
 use App\Models\Company\Company;
 use App\Models\Product\GetPrice;
+use App\Models\WlFile;
 use App\Models\WlImage;
 use App\Models\WlVideo;
 use Carbon\Carbon;
@@ -89,6 +90,20 @@ class Product
         $productVideo = $content?$content->link:'';
         return $productVideo;
 
+	}
+
+    public static function getPDF($product)
+    {
+        $content = WlFile::where([
+            ['alias',$product->wl_alias],
+            ['content',-$product->group],
+            ['extension','pdf'],
+        ])->first();
+        $productPDF = null;
+        if($content){
+            $productPDF = 'https://dinmark.com.ua/files/shop/-'.$product->group.'/'.$content->name;
+        }
+        return $productPDF;
 	}
 
 	public static function getBasePrice($product){

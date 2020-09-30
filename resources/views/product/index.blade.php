@@ -209,12 +209,16 @@
                                     {!! str_replace('<p>&nbsp;</p>','',html_entity_decode($productText,ENT_QUOTES)) !!}
                                     @if($productVideo)
                                     <p>
-                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <iframe width="737" height="415" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </p>
                                     @endif
                                 </div>
                                 <div class="col-md-6">
-
+                                    @if($productPDF)
+                                        <a href="{{$productPDF}}" target="_blank" class="preview">
+                                            <img src="https://dinmark.com.ua/images/file_preview.jpg" width="100%">
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
