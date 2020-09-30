@@ -398,6 +398,7 @@ class ProductController extends Controller
         $productName = \App\Services\Product\Product::getName($product);
         $productText = \App\Services\Product\Product::getText($product);
         $imagePath = \App\Services\Product\Product::getImagePathThumb($product);
+        $productPhotos = \App\Services\Product\Product::getImagePathThumbs($product);
         $productVideo = \App\Services\Product\Product::getVideo($product);
         $productPDF = \App\Services\Product\Product::getPDF($product);
         $price = \App\Services\Product\Product::getPrice($product);
@@ -417,7 +418,7 @@ class ProductController extends Controller
         }
         SEOTools::setTitle($productName);
 
-        return view('product.index', compact('product','productName', 'productText', 'imagePath', 'productVideo', 'productPDF', 'price', 'basePrice',
+        return view('product.index', compact('product','productName', 'productText', 'imagePath', 'productPhotos', 'productVideo', 'productPDF', 'price', 'basePrice',
             'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices','storage_raw_prices'));
     }
 

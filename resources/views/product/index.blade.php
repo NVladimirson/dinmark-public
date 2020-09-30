@@ -24,7 +24,13 @@
 					<div class="row">
 						<div class="col-md-5 text-center">
 							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%" class="m-b-15">
-
+                            <div class="row m-b-10">
+                                @foreach($productPhotos as $photo)
+                                    <div class="col-sm-4">
+                                        <img src="{{$photo}}" alt="{{$productName}}" width="100%" class="m-b-5">
+                                    </div>
+                                @endforeach
+                            </div>
                             @if($productPDF)
                                 <a href="{{$productPDF}}" target="_blank" class="btn btn-white btn-block btn-lg">
                                     @lang('product.btn_pdf')
