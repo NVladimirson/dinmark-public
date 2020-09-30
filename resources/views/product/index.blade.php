@@ -203,10 +203,10 @@
                         </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade active show" id="detail-tab">
+                        <div class="tab-pane fade show" id="detail-tab">
                             <div class="row">
                                 <div class="col-md-6">
-                                    {!! $productText !!}
+                                    {!! html_entity_decode($productText,ENT_QUOTES) !!}
                                 </div>
                                 <div class="col-md-6">
 
