@@ -35,7 +35,7 @@ class Product
 		])->first();
 		$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
 		if($photo){
-			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/group_'.$photo->file_name;
+			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/'.$photo->file_name;
 		}
 
 		return $src;
