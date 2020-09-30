@@ -206,7 +206,7 @@
                         <div class="tab-pane fade show" id="detail-tab">
                             <div class="row">
                                 <div class="col-md-6">
-                                    {!! html_entity_decode($productText,ENT_QUOTES) !!}
+                                    {!! str_replace('<p>&nbsp;</p>','',html_entity_decode($productText,ENT_QUOTES)) !!}
                                 </div>
                                 <div class="col-md-6">
 
