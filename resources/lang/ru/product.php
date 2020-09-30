@@ -78,6 +78,7 @@ return [
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
 	'storage_quantity' => 'Количество',
+	'storage_total' => 'Сумма',
   'storage_term_measure_shortly' => 'дн.',
 
 	'modal_wishlist_header' => 'Выберите список',
