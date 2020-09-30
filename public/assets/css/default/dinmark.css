@@ -1639,6 +1639,11 @@ body ul.wysihtml5-toolbar .glyphicon {
 .fas {
     font-family: "Font Awesome 5 Free";
 }
+.product-main-image{
+    display: block;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+}
 .product-gallery a {
     display: flex;
     align-items: center;

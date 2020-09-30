@@ -3,6 +3,8 @@
 @push('css')
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
+
 @endpush
 
 @section('content')
@@ -23,22 +25,24 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-5 text-center">
-							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%" class="m-b-15">
+                            <a href="{{$imagePathFull}}" class="product-main-image m-b-15" data-lightbox="gallery-group-1">
+                                <img src="{{$imagePath}}" alt="{{$productName}}" width="100%" >
+                            </a>
                             <div class="row m-b-10 product-gallery">
                                 @foreach($productPhotos as $photo)
                                     <div class="col-sm-4">
-                                        <a href="#">
-                                            <img src="{{$photo}}" alt="{{$productName}}" width="100%" class="m-b-5">
+                                        <a href="{{$photo[1]}}" data-lightbox="gallery-group-1">
+                                            <img src="{{$photo[0]}}" alt="{{$productName}}" width="100%" class="m-b-5">
                                         </a>
                                     </div>
                                 @endforeach
-                                    @if($productVideo)
-                                        <div class="col-sm-4">
-                                            <a href="#modal-video" class="to-modal flex video" data-toggle="modal">
-                                                <img src="https://dinmark.com.ua/images/video-thumbnail.svg" alt="video svg thumbnail" class="w50">
-                                            </a>
-                                        </div>
-                                    @endif
+                                @if($productVideo)
+                                    <div class="col-sm-4">
+                                        <a href="#modal-video" class="to-modal flex video" data-toggle="modal">
+                                            <img src="https://dinmark.com.ua/images/video-thumbnail.svg" alt="video svg thumbnail" class="w50">
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                             @if($productPDF)
                                 <a href="{{$productPDF}}" target="_blank" class="btn btn-white btn-block btn-lg">
@@ -278,7 +282,7 @@
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-
+    <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
 	<script>
 		(function ($) {
 			"use strict";

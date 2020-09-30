@@ -68,7 +68,7 @@ class Product
 
 		$productPhotos = [];
 		foreach ($photos as $photo){
-            $productPhotos[] = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name;
+            $productPhotos[] = 	[env('DINMARK_URL').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name, env('DINMARK_URL').'images/shop/-'.$product->group.'/'.$photo->file_name];
         }
 
 		return $productPhotos;
