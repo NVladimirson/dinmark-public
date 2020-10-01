@@ -35,6 +35,7 @@ class ProductController extends Controller
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getFilters();
         //dd($filters);
+        //dd(\Cache::get('light'));
         return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters'));
     }
 

@@ -18,7 +18,9 @@
     @else
         {{ Breadcrumbs::render('product.all') }}
     @endif
-
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
     <!-- begin row -->
     <div class="row">
@@ -121,7 +123,7 @@
                     <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
                     <div id="optionfilters" class="content1">
                         @foreach($filters as $filtername=>$filterdata)
-                            <h3 class="ui-accordion-header">{!! $filtername !!}</h3>
+                            <h3 class="filtername" filter_name="{!! $filtername !!}">{!! $filtername !!}</h3>
                             <div class="filter" id="filter">
                                 @php $i=0;@endphp
                                 @foreach($filterdata as $value=>$data)
@@ -131,8 +133,13 @@
                                     @endif
 
                                             <div class="col-md-6">
-                                                <p class="filter_with_options" option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
-                                                   option_name="{!! $value !!}" filter-selected="false" style="cursor:pointer">{!! $value !!}
+                                                <p class="filter_with_options"
+                                                   option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
+                                                   option_name="{!! $value !!}"
+                                                   option_filter_name = "{!! $filtername !!}"
+                                                   filter-selected="false"
+                                                   filter-accessible="true"
+                                                   style="cursor:pointer">{!! $value !!}
                                                     {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
                                                        {{--aria-hidden="true" style="display: none"></i>--}}
                                                 </p>
@@ -208,6 +215,7 @@
 
     <script>
         jQuery(function($) {
+            window.loading = 0;
             var loaded = [];
             $("#jstree").jstree({
                 "plugins": ["wholerow", "checkbox", "json_data"],
@@ -384,51 +392,59 @@
             });
 
             function initOptionFilters(){
-                //let filters = window.optionfilterids;
-                let filter_selected_map = $("[filter-selected=true]");
-                let all_filters = $(".filter_with_options");
-                $.each(all_filters,function (key,value) {
-                    value.setAttribute("style", "cursor:not-allowed");
-                    value.setAttribute("style", "color:red");
-                });
-                filter_selected_ids = Array();
-                $.each(filter_selected_map,function (key,value) {
-                    if(value.attributes['filter-selected'].value === 'true'){
-                        let option_id = value.attributes['option_id'].value;
-                        let option_name = value.attributes['option_name'].value;
-                        filter_selected_ids.push(option_id+';'+option_name);
-                        //filter_selected_ids.option_id = option_name;
-                    }
-                });
-                console.log("REQUEST: "+filter_selected_ids);
-                let route = 'products/option-filters';
+                if(window.loading === 0){
+                    window.loading = 1;
+                    let filter_selected_map = $("[filter-selected=true]");
+                    let all_filters = $(".filter_with_options");
+                    $.each(all_filters,function (key,value) {
+                        value.setAttribute("style", "color:grey;cursor:progress");
+                    });
+                    filter_selected_ids = Array();
+                    $.each(filter_selected_map,function (key,value) {
+                        if(value.attributes['filter-selected'].value === 'true'){
+                            let option_id = value.attributes['option_id'].value;
+                            let option_name = value.attributes['option_name'].value;
+                            filter_selected_ids.push(option_id+';'+option_name);
+                            //filter_selected_ids.option_id = option_name;
+                        }
+                    });
+                    let route = 'products/option-filters';
 
-                $.ajax({
-                    method: "GET",
-                    url: route,
-                    data: {
-                        filter_with_options : filter_selected_ids,
-                        language: 'ru'
-                    },
-                    success: function(resp)
-                    {
-                        //console.log("RESPONSE");
-                        $.each(resp, function( index, value ) {
-                            if(Object.keys(value).length){
-                                $.each(value, function( index, value ) {
-                                    let filter_by_id = $("[option_id="+index+"]");
-                                    //console.log(filter_by_id[0].innerText);
-                                    filter_by_id[0].setAttribute("style", "color:red");
-                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
-                                    // filter_by_id[0].setAttribute("style", "cursor:not-allowed");
-                                });
-                            }
-                        });
-                    },
-                    error:  function(xhr, str){
-                        console.log(xhr);
-                    }
-                });
+                    $.ajax({
+                        method: "GET",
+                        url: route,
+                        data: {
+                            filter_with_options : filter_selected_ids,
+                            language: 'ru'
+                        },
+                        success: function(resp)
+                        {
+                            //console.log("RESPONSE");
+                            $.each(all_filters,function (key,value) {
+                                value.setAttribute("style", "color:grey;cursor:not-allowed");
+                                value.setAttribute("filter-accessible","false");
+                            });
+                            $.each(resp, function( index, value ) {
+                                if(Object.keys(value).length){
+                                    $.each(value, function( index, value ) {
+                                        let filter_by_id = $("[option_id="+index+"]");
+                                        filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                        filter_by_id[0].setAttribute("filter-accessible","true");
+                                    });
+                                }
+                            });
+                            window.loading = 0;
+                        },
+                        error:  function(xhr, str){
+                            console.log(xhr);
+                        }
+                    });
+
+                    $.each(all_filters,function (key,value) {
+                        value.setAttribute("style", "color:grey;cursor:progress");
+                        // value.setAttribute("filter-accessible","false");
+                    });
+                }
 
             }
 
@@ -842,25 +858,21 @@
                 }
             });
             $('.filter_with_options').click(function(){
-
-                    if($(this).attr('filter-selected') === 'true'){
-                        $(this).attr('filter-selected', 'false');
-                        $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
-
+                    if(window.loading === 0){
+                        if($(this).attr('filter-selected') === 'true'){
+                            $(this).attr('filter-selected', 'false');
+                            $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
+                        }
+                        else{
+                            $(this).attr('filter-selected', 'true');
+                            $("#filter-checked_"+$(this).attr('option_id')).css("display","");
+                        }
+                        initOptionFilters();
+                        jsTreetoDatatable();
                     }
                     else{
-                        $(this).attr('filter-selected', 'true');
-                        $("#filter-checked_"+$(this).attr('option_id')).css("display","");
-                        // if(window.optionfilterids === undefined){
-                        //     window.optionfilterids = [];
-                        // }
-                        //
-                        // window.optionfilterids.push($(this).attr('option_id'));
+                        console.log('WAIT');
                     }
-                    initOptionFilters();
-                    jsTreetoDatatable();
-
-
             });
         });
     </script>
