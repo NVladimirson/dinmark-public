@@ -13,6 +13,7 @@
 @endpush
 
 @section('content')
+
     @if(isset($breadcrumbs))
         {{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
     @else
@@ -321,6 +322,7 @@
                                     return 1;
                                 }
                             },
+
                             "filter_with_options":function ( ){
                                 let filter_selected_map = $("[filter-selected=true]");
                                 filter_selected_ids = Array();
@@ -473,16 +475,12 @@
             });
 
             $('#storages').on('change', function (e) {
-
-                    jsTreetoDatatable()
-
+                jsTreetoDatatable()
             });
 
 
             $('#instockToggler').click(function() {
-
                     jsTreetoDatatable()
-
             });
 
             $('#mass_actions').on('change', function (e) {

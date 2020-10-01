@@ -143,9 +143,33 @@
             @endif
         </div>
         <div class="actions flex ">
-            <a href="#" class="likes"><i>{{$wishlists_count}}</i></a>
+
+        @if( $wishlists_count > 0)
+                            <a href="#" class="likes-active">
+                        @else
+                            <a href="#" class="likes">
+                        @endif
+                            <i>{{$wishlists_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $implementation_count > 0)
+                            <a href="#" class="comparison-active">
+                        @else
+                            <a href="#" class="comparison">
+                        @endif
+                            <i>{{$implementation_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $orders_count > 0)
+                            <a href="#" class="cart-active">
+                        @else
+                            <a href="#" class="cart">
+                        @endif
+                            <i>{{$orders_count}} </i>
+                        </a>
+            <!-- <a href="#" class="likes"><i>{{$wishlists_count}}</i></a>
             <a href="#" class="comparison"><i>{{$implementation_count}}</i></a>
-            <a href="#" class="cart">{{$orders_count}}</a>
+            <a href="#" class="cart"><i>{{$orders_count}}</i></a> -->
             <div id="compareGroups"></div>
         </div>
 	<!-- end header navigation right -->
@@ -154,7 +178,7 @@
 
 <form action="https://dinmark.com.ua/search/filter" id="filter"
 class="hide" style="display: block;">
-    <div class="container flex">
+    {{--<div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
             <select id="header_filter-64-standart" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
@@ -306,7 +330,7 @@ class="hide" style="display: block;">
                     <span class="dropdown-wrapper" aria-hidden="true"></span>
                 </span>
             </div>
-        </div>
+        </div>--}}
     <div class="submit">
         <button class="hexa">Пошук</button>
     </div>
@@ -323,7 +347,7 @@ class="hide" style="display: block;">
                 <div class="top-actions-block--wrapper">
                     <a href="javascript:;" id="close-burger-menu" class="hide"
                     data-click="sidebar-minify1">
-                        <i class="fas fa-times"></i>
+                        <i id="fa-times" class="fas fa-times"></i>
                     </a>
                     <div class="top-actions-block">
                             <div class="debt-item">
@@ -424,9 +448,32 @@ class="hide" style="display: block;">
                     @endif
                     <a href="{{route('home')}}" class="navbar-brand"><img src="{{asset('assets/img/logo/logo.png')}}" alt="Dinmark Logo" class="dinmark-logo"></a>
                     <div class="actions flex ">
-                        <a href="#" class="likes hideMobile"></a>
-                        <a href="#" class="comparison hideMobile"></a>
-                        <a href="#" class="cart"></a>
+                        <!--  -->
+                        @if( $wishlists_count > 0)
+                            <a href="#" class="hideMobile likes-active">
+                        @else
+                            <a href="#" class="likes">
+                        @endif
+                            <i>{{$wishlists_count}}</i>
+                        </a>
+                        <!--  -->
+                        @if( $implementation_count > 0)
+                            <a href="#" class="hideMobile comparison-active">
+                        @else
+                            <a href="#" class="comparison">
+                        @endif
+                            <i>{{$implementation_count}}</i>
+                        </a>
+                        <!--  -->
+
+                        @if( $orders_count > 0)
+                            <a href="#" class="cart-active">
+                        @else
+                            <a href="#" class="cart">
+                        @endif
+                            <i>{{$orders_count}} </i>
+                        </a>
+                        <!--  -->
                         <div id="compareGroups"></div>
                     </div>
                 </div>

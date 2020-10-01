@@ -33,14 +33,25 @@ class BalanceServices
                         ]);
                     });
                 });
-        });
+        })
+            ->where('bukh','<>',0);;
 
         return $implementations;
     }
 
     public static function getFilteredImplementation($request){
-        $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
-        $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        $dateFromCarbon = Carbon::parse(0);
+        if($request->has('date_from')){
+            $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
+        }
+
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            if($request->date_to != ''){
+                $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+            }
+        }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
@@ -80,8 +91,19 @@ class BalanceServices
     }
 
     public static function getFilteredPayment($request){
-        $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
-        $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        $dateFromCarbon = Carbon::parse(0);
+        if($request->has('date_from')){
+            $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
+        }
+
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            if($request->date_to != ''){
+                $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+            }
+
+        }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
@@ -108,14 +130,20 @@ class BalanceServices
             $dateFromCarbon = Carbon::createFromTimestamp($request->date_from);
         }
 
-        $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+        $dateToCarbon = Carbon::now();
+        if($request->has('date_to'))
+        {
+            if($request->date_to != ''){
+                $dateToCarbon = Carbon::createFromTimestamp($request->date_to)->addDay();
+            }
+        }
         $dateFrom = $dateFromCarbon->timestamp;
         $dateTo = $dateToCarbon->timestamp;
 
         $company = Company::find(session('current_company_id'));
 
-        $saldoStart = 0 - $company->balance;
-        $saldoEnd = 0;
+        $saldoStart = 0;
+        $saldoEnd = $company->balance;
         $implementations = $instance
             ->getImplementations()
             ->where('date_add','<',$dateFrom)
@@ -127,10 +155,10 @@ class BalanceServices
             ->get();
 
         foreach ($implementations as $implementation){
-            $saldoStart += $implementation->products->sum('total');
+            $saldoStart -= $implementation->products->sum('total');
         }
         foreach ($payments as $payment){
-            $saldoStart -= $payment->payed;
+            $saldoStart += $payment->payed;
         }
 
         $implementations = BalanceServices::getImplementations()->where('date_add','>',$dateTo)->get();
@@ -141,10 +169,10 @@ class BalanceServices
             ->get();
 
         foreach ($implementations as $implementation){
-            $saldoEnd += $implementation->products->sum('total');
+            $saldoEnd -= $implementation->products->sum('total');
         }
         foreach ($payments as $payment){
-            $saldoEnd -= $payment->payed;
+            $saldoEnd += $payment->payed;
         }
 
         return [

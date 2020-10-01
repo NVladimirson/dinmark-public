@@ -62,9 +62,10 @@ $(window).resize(function() {
     if (windowsize > 1050 && ($('.sidebar').css('left') == '-220px' )) {
         $('.sidebar').css('left', '0');
         $('.sidebar').css('z-index', '1020');
-    } else if ( windowsize < 1050 && ($('.sidebar').css('z-index') == '1010' ) ) {
-        $('.sidebar').css('z-index', '1020');
-    }
+    } 
+    // else if ( windowsize < 1050 && ($('.sidebar').css('z-index') == '1010' ) ) {
+    //     $('.sidebar').css('z-index', '1020');
+    // }
 });
 </script>
 

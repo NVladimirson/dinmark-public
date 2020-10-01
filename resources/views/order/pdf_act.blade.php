@@ -100,13 +100,12 @@
 </p>
 
 <table class="f8 border">
-    <thead>
-    <tr>
-        <td colspan="4">За даними Товариство з обмеженою відповідальністю "Леомарк", грн </td>
-        <td colspan="4">За даними {{$company->name}}, грн </td>
-    </tr>
-    </thead>
+
     <tbody>
+    <tr>
+        <td colspan="4" style="background-color: #ffffff">За даними Товариство з обмеженою відповідальністю "Леомарк", грн </td>
+        <td colspan="4" style="background-color: #ffffff">За даними {{$company->name}}, грн </td>
+    </tr>
     <tr class="f-b t-c">
         <td>Дата</td>
         <td>Документ</td>
