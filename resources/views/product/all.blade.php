@@ -20,6 +20,10 @@
         {{ Breadcrumbs::render('product.all') }}
     @endif
 
+    @php
+        use Illuminate\Support\Str;
+    @endphp
+
     <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
     <!-- begin row -->
     <div class="row">
@@ -69,6 +73,7 @@
                                 @endif
                             </div>
                         </div>
+
                     </div>
 
                     <div class="table-scroll-container">
@@ -115,14 +120,17 @@
                 </div>
                 <div id="reload" style="display:none"></div>
                 <div id="selected_products" style="display:none"></div>
-                <div id="accordion"  class=".ui-helper-reset">
+                <div id="filters_selected">
+
+                </div>
+                <div id="accordion" class=".ui-helper-reset">
                     <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
                     <div id="jstree" class="content1"></div>
 
                     <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
                     <div id="optionfilters" class="content1">
                         @foreach($filters as $filtername=>$filterdata)
-                            <h3 class="ui-accordion-header">{!! $filtername !!}</h3>
+                            <h3 class="filtername" filter_name="{!! $filtername !!}">{!! $filtername !!}</h3>
                             <div class="filter" id="filter">
                                 @php $i=0;@endphp
                                 @foreach($filterdata as $value=>$data)
@@ -132,8 +140,13 @@
                                     @endif
 
                                             <div class="col-md-6">
-                                                <p class="filter_with_options" option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
-                                                   option_name="{!! $value !!}" filter-selected="false" style="cursor:pointer">{!! $value !!}
+                                                <p class="filter_with_options"
+                                                   option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
+                                                   option_name="{!! $value !!}"
+                                                   option_filter_name = "{!! $filtername !!}"
+                                                   filter-selected="false"
+                                                   filter-accessible="true"
+                                                   style="cursor:pointer">{!! $value !!}
                                                     {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
                                                        {{--aria-hidden="true" style="display: none"></i>--}}
                                                 </p>
@@ -209,7 +222,9 @@
 
     <script>
         jQuery(function($) {
+            window.loading = 0;
             var loaded = [];
+            setFiltersQuantity();
             $("#jstree").jstree({
                 "plugins": ["wholerow", "checkbox", "json_data"],
                 "core": {
@@ -386,52 +401,118 @@
             });
 
             function initOptionFilters(){
-                //let filters = window.optionfilterids;
-                let filter_selected_map = $("[filter-selected=true]");
-                let all_filters = $(".filter_with_options");
-                $.each(all_filters,function (key,value) {
-                    value.setAttribute("style", "cursor:not-allowed");
-                    value.setAttribute("style", "color:red");
-                });
-                filter_selected_ids = Array();
-                $.each(filter_selected_map,function (key,value) {
-                    if(value.attributes['filter-selected'].value === 'true'){
-                        let option_id = value.attributes['option_id'].value;
-                        let option_name = value.attributes['option_name'].value;
-                        filter_selected_ids.push(option_id+';'+option_name);
-                        //filter_selected_ids.option_id = option_name;
-                    }
-                });
-                console.log("REQUEST: "+filter_selected_ids);
-                let route = 'products/option-filters';
+                if(window.loading === 0){
+                    window.loading = 1;
+                    let filter_selected_map = $("[filter-selected=true]");
+                    let all_filters = $(".filter_with_options");
+                    $.each(all_filters,function (key,value) {
+                        value.setAttribute("style", "color:grey;cursor:progress");
+                    });
+                    filter_selected_ids = Array();
+                    $.each(filter_selected_map,function (key,value) {
+                        if(value.attributes['filter-selected'].value === 'true'){
+                            let option_id = value.attributes['option_id'].value;
+                            let option_name = value.attributes['option_name'].value;
+                            filter_selected_ids.push(option_id+';'+option_name);
+                            //filter_selected_ids.option_id = option_name;
+                        }
+                    });
+                    let route = 'products/option-filters';
 
-                $.ajax({
-                    method: "GET",
-                    url: route,
-                    data: {
-                        filter_with_options : filter_selected_ids,
-                        language: 'ru'
-                    },
-                    success: function(resp)
-                    {
-                        //console.log("RESPONSE");
-                        $.each(resp, function( index, value ) {
-                            if(Object.keys(value).length){
-                                $.each(value, function( index, value ) {
+                    $.ajax({
+                        method: "GET",
+                        url: route,
+                        data: {
+                            filter_with_options : filter_selected_ids,
+                            language: 'ru'
+                        },
+                        success: function(resp)
+                        {
+                            let element = document.getElementById("filters_selected");
+                            while (element.firstChild) {
+                                element.removeChild(element.firstChild);
+                            }
+
+                            $.each(all_filters,function (key,value) {
+                                value.setAttribute("style", "color:red;cursor:not-allowed");
+                                value.setAttribute("filter-accessible","false");
+                            });
+
+                            if(resp.available){
+                                $.each(resp.available, function( index, value ) {
                                     let filter_by_id = $("[option_id="+index+"]");
-                                    //console.log(filter_by_id[0].innerText);
-                                    filter_by_id[0].setAttribute("style", "color:red");
                                     filter_by_id[0].setAttribute("style", "cursor:pointer");
-                                    // filter_by_id[0].setAttribute("style", "cursor:not-allowed");
+                                    filter_by_id[0].setAttribute("filter-accessible","true");
                                 });
                             }
-                        });
-                    },
-                    error:  function(xhr, str){
-                        console.log(xhr);
-                    }
+
+                            if(resp['checked']){
+                                $.each(resp['checked'], function( index, value ) {
+                                    let filter_by_id = $("[option_id="+index+"]");
+                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                    filter_by_id[0].setAttribute("filter-accessible","true");
+                                    $('#filters_selected').append($('<div class="selected_filter">' +
+                                        '<p class="tesst" id="deselected_filter_'+index+'" style="font-size: 10pt;' +
+                                        'text-align: center;margin: auto;">'+value+'' +
+                                        '<a class="deselect_filter" deselectid="deselected_filter_'+index+'" href=#>' +
+                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                        'text-align: center;"></i></a></p></div>'));
+                                });
+                            }
+
+                            // if((resp.available) && !(resp['checked'])){
+                            //     $.each(all_filters,function (key,value) {
+                            //         value.setAttribute("style", "color:black;cursor:pointer");
+                            //         value.setAttribute("filter-accessible","true");
+                            //     });
+                            // }
+
+                            if((resp.available.length === 0) && (resp['checked'].length === 0)){
+                                $.each(all_filters,function (key,value) {
+                                    value.setAttribute("style", "cursor:pointer");
+                                    value.setAttribute("filter-accessible","true");
+                                });
+                            }
+
+                            setFiltersQuantity();
+                            window.loading = 0;
+                        },
+                        error:  function(xhr, str){
+                            console.log(xhr);
+                        }
+                    });
+
+                    $.each(all_filters,function (key,value) {
+                        value.setAttribute("style", "color:grey;cursor:progress");
+                        // value.setAttribute("filter-accessible","false");
+                    });
+                }
+
+            }
+
+            function setFiltersQuantity(){
+                let accessible = $("[filter-accessible=true]");
+                let accessible_per_filter = Object();
+                $.each(accessible,function(key,value){
+                    let option_filter_name = value.getAttribute("option_filter_name");
+                    // if(value.getAttribute("filter-selected")==='false'){
+                        if (typeof accessible_per_filter[option_filter_name] !== 'undefined') {
+                            accessible_per_filter[option_filter_name] = accessible_per_filter[option_filter_name] + 1;
+                        }else{
+                            accessible_per_filter[option_filter_name] = 1;
+                        }
+                    //}
                 });
 
+                $.each(accessible_per_filter,function(key,value){
+                    let header = $("[filter_name='"+key+"']")[0];
+                    if(value>1){
+                        header.innerText = key + ' ('+value+')';
+                    }else{
+                        header.innerText = key;
+                    }
+
+                });
             }
 
             $( "#optionfilters" ).accordion({
@@ -459,7 +540,9 @@
             });
 
             $('#storages').on('change', function (e) {
-                jsTreetoDatatable()
+
+                    jsTreetoDatatable()
+
             });
 
 
@@ -809,6 +892,7 @@
                 return false;
             });
 
+
             $('#new').click(function(e){
                 if($('#new-checked').css("display") === 'none'){
                     $('#new-checked').css("display","");
@@ -839,27 +923,44 @@
                     jsTreetoDatatable();
                 }
             });
+
+
             $('.filter_with_options').click(function(){
-
-                    if($(this).attr('filter-selected') === 'true'){
-                        $(this).attr('filter-selected', 'false');
-                        $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
-
+                    if(window.loading === 0 && ($(this).attr('filter-accessible') == 'true')){
+                        if($(this).attr('filter-selected') === 'true'){
+                            $(this).attr('filter-selected', 'false');
+                            $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
+                        }
+                        else{
+                            $(this).attr('filter-selected', 'true');
+                            $("#filter-checked_"+$(this).attr('option_id')).css("display","");
+                        }
+                        initOptionFilters();
+                        jsTreetoDatatable();
                     }
-                    else{
-                        $(this).attr('filter-selected', 'true');
-                        $("#filter-checked_"+$(this).attr('option_id')).css("display","");
-                        // if(window.optionfilterids === undefined){
-                        //     window.optionfilterids = [];
-                        // }
-                        //
-                        // window.optionfilterids.push($(this).attr('option_id'));
+            });
+            // $('.deselect_filter').click(function(e){
+            //     alert('sdsd');
+            // });
+            $(document).on("click", ".deselect_filter", function(e) {
+                e.preventDefault();
+                let id = $(this)[0].getAttribute("deselectid").split('deselected_filter_')[1];
+                console.log(id);
+                let all_filters = $(".filter_with_options");
+                $.each(all_filters,function (key,value) {
+                    if(value.getAttribute("option_id")===id){
+                        value.setAttribute("style", "cursor:pointer");
+                        value.setAttribute("filter-selected","false");
+                        return false;
                     }
-                    initOptionFilters();
-                    jsTreetoDatatable();
-
+                });
+                let myobj = document.getElementById('deselected_filter_'+id);
+                myobj.remove();
+                initOptionFilters();
+                jsTreetoDatatable();
 
             });
+
         });
     </script>
     <script>
@@ -879,6 +980,28 @@
         }
     </script>
     <style>
+        .ui-accordion .ui-accordion-content {
+            padding:0px !important;
+        }
+        .jstree{
+            padding:0px;
+        }
+        .jstree-default a {
+            white-space:normal !important; height: auto;
+        }
+        .jstree-anchor {
+            height: auto !important;
+            width: 90%;
+        }
+        .jstree-default li > ins {
+            vertical-align:top;
+        }
+        .jstree-leaf {
+            height: auto;
+        }
+        .jstree-leaf a{
+            height: auto !important;
+        }
         .checkbox.checkbox-css label{
             padding:8px;
             margin-left:6px;
@@ -902,6 +1025,13 @@
         }
         .filter_with_options{
             padding-left: 14px;
+        }
+
+        .selected_filter{
+            border: 1px solid #c5c5c5;
+            background: #f6f6f6;
+            font-weight: 400;
+            color: #454545;
         }
     </style>
 

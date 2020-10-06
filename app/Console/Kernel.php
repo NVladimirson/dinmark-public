@@ -40,8 +40,6 @@ class Kernel extends ConsoleKernel
         })->everyMinute();
         $schedule->job(new ProductOptions('uk'))->weeklyOn(1, '1:00');
         $schedule->job(new ProductOptions('ru'))->weeklyOn(1, '1:00');
-        //$schedule->job(new ProductOptions('uk'))->everyMinute();
-       // $schedule->job(new ProductOptions('ru'))->everyMinute();
     }
 
     /**
