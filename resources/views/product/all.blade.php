@@ -13,7 +13,6 @@
 @endpush
 
 @section('content')
-
     @if(isset($breadcrumbs))
         {{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
     @else
@@ -117,7 +116,10 @@
                 </div>
                 <div id="reload" style="display:none"></div>
                 <div id="selected_products" style="display:none"></div>
-                <div id="accordion"  class=".ui-helper-reset">
+                <div id="filters_selected">
+
+                </div>
+                <div id="accordion" class=".ui-helper-reset">
                     <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
                     <div id="jstree" class="content1"></div>
 
@@ -218,6 +220,7 @@
         jQuery(function($) {
             window.loading = 0;
             var loaded = [];
+            setFiltersQuantity();
             $("#jstree").jstree({
                 "plugins": ["wholerow", "checkbox", "json_data"],
                 "core": {
@@ -322,7 +325,6 @@
                                     return 1;
                                 }
                             },
-
                             "filter_with_options":function ( ){
                                 let filter_selected_map = $("[filter-selected=true]");
                                 filter_selected_ids = Array();
@@ -392,7 +394,6 @@
                 heightStyle: "content",
                 content : '.content1'
             });
-
             function initOptionFilters(){
                 if(window.loading === 0){
                     window.loading = 1;
@@ -421,20 +422,53 @@
                         },
                         success: function(resp)
                         {
-                            //console.log("RESPONSE");
+                            let element = document.getElementById("filters_selected");
+                            while (element.firstChild) {
+                                element.removeChild(element.firstChild);
+                            }
+
                             $.each(all_filters,function (key,value) {
-                                value.setAttribute("style", "color:grey;cursor:not-allowed");
+                                value.setAttribute("style", "color:red;cursor:not-allowed");
                                 value.setAttribute("filter-accessible","false");
                             });
-                            $.each(resp, function( index, value ) {
-                                if(Object.keys(value).length){
-                                    $.each(value, function( index, value ) {
-                                        let filter_by_id = $("[option_id="+index+"]");
-                                        filter_by_id[0].setAttribute("style", "cursor:pointer");
-                                        filter_by_id[0].setAttribute("filter-accessible","true");
-                                    });
-                                }
-                            });
+
+                            if(resp.available){
+                                $.each(resp.available, function( index, value ) {
+                                    let filter_by_id = $("[option_id="+index+"]");
+                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                    filter_by_id[0].setAttribute("filter-accessible","true");
+                                });
+                            }
+
+                            if(resp['checked']){
+                                $.each(resp['checked'], function( index, value ) {
+                                    let filter_by_id = $("[option_id="+index+"]");
+                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                    filter_by_id[0].setAttribute("filter-accessible","true");
+                                    $('#filters_selected').append($('<div class="selected_filter">' +
+                                        '<p class="tesst" id="deselected_filter_'+index+'" style="font-size: 10pt;' +
+                                        'text-align: center;margin: auto;">'+value+'' +
+                                        '<a class="deselect_filter" deselectid="deselected_filter_'+index+'" href=#>' +
+                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                        'text-align: center;"></i></a></p></div>'));
+                                });
+                            }
+
+                            // if((resp.available) && !(resp['checked'])){
+                            //     $.each(all_filters,function (key,value) {
+                            //         value.setAttribute("style", "color:black;cursor:pointer");
+                            //         value.setAttribute("filter-accessible","true");
+                            //     });
+                            // }
+
+                            if((resp.available.length === 0) && (resp['checked'].length === 0)){
+                                $.each(all_filters,function (key,value) {
+                                    value.setAttribute("style", "cursor:pointer");
+                                    value.setAttribute("filter-accessible","true");
+                                });
+                            }
+
+                            setFiltersQuantity();
                             window.loading = 0;
                         },
                         error:  function(xhr, str){
@@ -448,6 +482,31 @@
                     });
                 }
 
+            }
+
+            function setFiltersQuantity(){
+                let accessible = $("[filter-accessible=true]");
+                let accessible_per_filter = Object();
+                $.each(accessible,function(key,value){
+                    let option_filter_name = value.getAttribute("option_filter_name");
+                    // if(value.getAttribute("filter-selected")==='false'){
+                        if (typeof accessible_per_filter[option_filter_name] !== 'undefined') {
+                            accessible_per_filter[option_filter_name] = accessible_per_filter[option_filter_name] + 1;
+                        }else{
+                            accessible_per_filter[option_filter_name] = 1;
+                        }
+                    //}
+                });
+
+                $.each(accessible_per_filter,function(key,value){
+                    let header = $("[filter_name='"+key+"']")[0];
+                    if(value>1){
+                        header.innerText = key + ' ('+value+')';
+                    }else{
+                        header.innerText = key;
+                    }
+
+                });
             }
 
             $( "#optionfilters" ).accordion({
@@ -475,12 +534,16 @@
             });
 
             $('#storages').on('change', function (e) {
-                jsTreetoDatatable()
+
+                    jsTreetoDatatable()
+
             });
 
 
             $('#instockToggler').click(function() {
+
                     jsTreetoDatatable()
+
             });
 
             $('#mass_actions').on('change', function (e) {
@@ -825,6 +888,7 @@
                 return false;
             });
 
+
             $('#new').click(function(e){
                 if($('#new-checked').css("display") === 'none'){
                     $('#new-checked').css("display","");
@@ -855,8 +919,9 @@
                     jsTreetoDatatable();
                 }
             });
+
             $('.filter_with_options').click(function(){
-                    if(window.loading === 0){
+                    if(window.loading === 0 && ($(this).attr('filter-accessible') == 'true')){
                         if($(this).attr('filter-selected') === 'true'){
                             $(this).attr('filter-selected', 'false');
                             $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
@@ -868,10 +933,28 @@
                         initOptionFilters();
                         jsTreetoDatatable();
                     }
-                    else{
-                        console.log('WAIT');
-                    }
             });
+            // $('.deselect_filter').click(function(e){
+            //     alert('sdsd');
+            // });
+            $(document).on("click", ".deselect_filter", function(e) {
+                e.preventDefault();
+                let id = $(this)[0].getAttribute("deselectid").split('deselected_filter_')[1];
+                console.log(id);
+                let all_filters = $(".filter_with_options");
+                $.each(all_filters,function (key,value) {
+                    if(value.getAttribute("option_id")===id){
+                        value.setAttribute("style", "cursor:pointer");
+                        value.setAttribute("filter-selected","false");
+                        return false;
+                    }
+                });
+                let myobj = document.getElementById('deselected_filter_'+id);
+                myobj.remove();
+                initOptionFilters();
+                jsTreetoDatatable();
+            });
+
         });
     </script>
     <script>
@@ -891,6 +974,28 @@
         }
     </script>
     <style>
+        .ui-accordion .ui-accordion-content {
+            padding:0px !important;
+        }
+        .jstree{
+            padding:0px;
+        }
+        .jstree-default a {
+            white-space:normal !important; height: auto;
+        }
+        .jstree-anchor {
+            height: auto !important;
+            width: 90%;
+        }
+        .jstree-default li > ins {
+            vertical-align:top;
+        }
+        .jstree-leaf {
+            height: auto;
+        }
+        .jstree-leaf a{
+            height: auto !important;
+        }
         .checkbox.checkbox-css label{
             padding:8px;
             margin-left:6px;
@@ -914,6 +1019,14 @@
         }
         .filter_with_options{
             padding-left: 14px;
+        }
+
+        .selected_filter{
+            border: 1px solid #c5c5c5;
+            background: #f6f6f6;
+            font-weight: 400;
+            color: #454545;
+
         }
     </style>
 

@@ -54,6 +54,10 @@ class ProductController extends Controller
 
     public function optionFilters(Request $request){
         $request_options = $request->filter_with_options;
+        $valid_options = ['checked' => [],'available' => []];
+        if(!$request_options){
+            return $valid_options;
+        }
 
         foreach($request_options as $option){
             $key = explode(';',$option)[0];
@@ -94,15 +98,13 @@ class ProductController extends Controller
                 }
             }
         }
-
-        $valid_options = ['checked' => [],'availiable' => []];
         if(isset($filter_map)){
             foreach ($filter_map as $product_id => $valuedata) {
                 foreach ($valuedata as $value_id => $valuename){
                     if(in_array($value_id,array_keys($option_map))){
                         $valid_options['checked'][$value_id] = $valuename;
                     }
-                    $valid_options['availiable'][$value_id] = $valuename;
+                    $valid_options['available'][$value_id] = $valuename;
                 }
             }
 
@@ -110,7 +112,6 @@ class ProductController extends Controller
         return $valid_options;
 
     }
-
 
     public function allAjax(Request $request){
         $products = Product::with(['storages','content','options']);
@@ -223,7 +224,7 @@ class ProductController extends Controller
             else{
                 $valid_ids = [];
             }
-            info($valid_ids);
+
             $products = $products->whereIn('id',array_values($valid_ids));
         }
 
@@ -304,7 +305,7 @@ class ProductController extends Controller
                 if($product->storages){
                     $storages = $product->storages;
                     if($storages){
-                        $value = '';
+                        $value = '<select class="custom-select" id="storage_product_'.$product->id.'">';
                         //dd($storages);
                         foreach ($storages as $key => $storage) {
                             $term = $storage->storage->term;
@@ -337,10 +338,16 @@ class ProductController extends Controller
                                     }
                                 }
                             }
-
-                            $value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).' / '.$term.' '.$days."<br>";
+                            //$value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).
+                            //' / '.$term.' '.$days."<br>";
+                            $name = CatalogServices::dayrounder($storage->amount).
+                            ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
+//                            if($key == 0){
+//                                $value .= '<option selected value="'.$storage->storage->id.'">'.$name.'</option>';
+//                            }
+                            $value .= '<option value="'.$storage->storage->id.'">'.$name.'</option>';
                         }
-                        //$value = substr($value,0,-2);
+                        $value .= '</select>';
                     }
                 }
                 return $value;

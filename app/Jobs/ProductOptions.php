@@ -67,6 +67,8 @@ class ProductOptions implements ShouldQueue
                 }
             }
 
+
+
             foreach ($option_map as $option){
                 if(!isset($option['value'])){
                     continue;

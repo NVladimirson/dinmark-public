@@ -70,30 +70,30 @@ class CategoryServices
 			foreach ($storages as $key => $term) {
 				if(Str::length($term->term) == 1){
 						if(intval($term->term) == 1){
-							$days =  ' доба';
+							$days =  'доба';
 						}
 						else if((intval($term->term) <= 4) && intval($term->term) >= 2){
-							$days =  ' доби';
+							$days =  'доби';
 						}
 						else{
-							$days =  ' діб';
+							$days =  'діб';
 						}
 				}
 				else{
 					$tens = substr($term->term,-2);
 					$ones = substr($term->term,-1);
 					if($tens == 1){
-						$days =  ' діб';
+						$days =  'діб';
 					}
 					else{
 						if(intval($ones) == 1){
-							$days =  ' доба';
+							$days =  'доба';
 						}
 						else if((intval($term->term) <= 4) && intval($term->term) >= 2){
-							$days =  ' доби';
+							$days =  'доби';
 						}
 						else{
-							$days =  ' діб';
+							$days =  'діб';
 						}
 					}
 				}
@@ -103,10 +103,10 @@ class CategoryServices
 			foreach ($storages as $key => $term) {
 				if(Str::length($term->term) == 1){
 						if(intval($term->term) == 1){
-							$days =  ' сутки';
+							$days =  'сутки';
 						}
 						else{
-							$days =  ' суток';
+							$days =  'суток';
 						}
 				}
 				else{
@@ -114,14 +114,14 @@ class CategoryServices
 					$ones = substr($term->term,-1);
 
 					if($tens == 1){
-						$days =  ' суток';
+						$days =  'суток';
 					}
 					else{
 						if(intval($ones) == 1){
-							$days =  ' сутки';
+							$days =  'сутки';
 						}
 						else{
-							$days =  ' суток';
+							$days =  'суток';
 						}
 					}
 				}
@@ -171,20 +171,34 @@ class CategoryServices
 
 
 	public static function getNodeAjax($id = 0){
-		$instance =  static::getInstance();
+		//$instance =  static::getInstance();
 		$categories = CategoryServices::getChilds($id);
-		$result = array();
+		$unfiltered = array();
 		foreach ($categories as $key => $value) {
 					$data = [
 						'text' => CategoryServices::getName($key),
+                        'position' => $value['position'],
 						'id' => $key
 					];
 
 					if(CategoryServices::anyChilds($key)){
 						$data['children'] = ['Загрузка'];
 					}
-					$result[$key] = $data;
+            $unfiltered[$key] = $data;
 		}
+
+        $unfiltered = array_values(Arr::sort($unfiltered, function ($value) {
+            return $value['position'];
+        }));
+        $result = Array();
+		foreach ($unfiltered as $no=>$value){
+		    $result[$value['id']] = [
+                "text" => $value["text"],
+                "id" => $value["id"],
+            ];
+        }
+        info("RES");
+        info($result);
 		return $result;
 	}
 
