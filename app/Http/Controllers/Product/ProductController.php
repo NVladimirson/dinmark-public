@@ -304,7 +304,7 @@ class ProductController extends Controller
                 $value = trans('product.storage_empty');
                 if($product->storages){
                     $storages = $product->storages;
-                    if($storages){
+                    if(count($storages)){
                         $value = '<select class="custom-select" id="storage_product_'.$product->id.'">';
                         //dd($storages);
                         foreach ($storages as $key => $storage) {
