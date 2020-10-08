@@ -65,7 +65,7 @@
                             <div class="right-align m-b-15">
                                 @if(isset($terms))
                                     <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
-                                        <option value="">@lang('product.select_term')</option>
+                                        <option value="0">@lang('product.select_term')</option>
                                         @foreach($terms as $key => $term)
                                             <option value="{{$key}}">{!! $term !!}</option>
                                         @endforeach
@@ -456,7 +456,7 @@
                                         '<i class="far fa-times-circle" style="float: right;color: red;' +
                                         'text-align: center;"></i></a></p></div>'));
                                 }
-                                if($("option:selected", $('#storages')).val()){
+                                if($("option:selected", $('#storages')).val() !== '0'){
                                     $('#filters_selected').append($('<div class="selected_filter">' +
                                         '<p class="tesst" id="deselected_filter_storage" style="font-size: 10pt;' +
                                         'text-align: center;margin: auto;">'+
@@ -998,7 +998,7 @@
                     var myobj = document.getElementById(id);
                 }
                 else if (id === 'deselected_filter_storage'){
-
+                    $('#storages option[value=0]').prop('selected', true);
                     var myobj = document.getElementById(id);
                 }
                 else if(id === 'deselected_filter_new'){
