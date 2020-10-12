@@ -54,6 +54,7 @@ class ProductOptions implements ShouldQueue
 
             $vals = json_decode(json_encode($vals),true);
 
+
             $s_shopshowcase_options_map = \Cache::get('photo_options');
 
             $option_map = array();

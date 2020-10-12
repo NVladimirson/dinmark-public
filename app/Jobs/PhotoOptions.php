@@ -42,6 +42,7 @@ class PhotoOptions implements ShouldQueue
 
     }
 
+
     /**
      * Execute the job.
      *
