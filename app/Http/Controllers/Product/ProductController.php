@@ -30,6 +30,8 @@ class ProductController extends Controller
 
 
     public function index(){
+//        ProductOptions::dispatch('ru');
+//        ProductOptions::dispatch('uk');
         SEOTools::setTitle(trans('product.all_tab_name'));
         $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
