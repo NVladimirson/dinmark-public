@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 
+use App\Jobs\PhotoOptions;
 use App\Jobs\ProductOptions;
 use App\Models\Content;
 use App\Models\Order\OrderProduct;
@@ -30,6 +31,7 @@ class ProductController extends Controller
 
 
     public function index(){
+            //PhotoOptions::dispatch();
 //        ProductOptions::dispatch('ru');
 //        ProductOptions::dispatch('uk');
         SEOTools::setTitle(trans('product.all_tab_name'));

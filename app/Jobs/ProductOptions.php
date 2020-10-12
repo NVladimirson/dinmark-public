@@ -50,25 +50,11 @@ class ProductOptions implements ShouldQueue
               WHERE s_shopshowcase_options_name.`name` IS NOT NULL AND s_shopshowcase_options_name.`language` = \''.$language.'\'
             ');
 
-            $s_shopshowcase_options_map = DB::select('
-              SELECT s_shopshowcase_options.`id`,s_shopshowcase_options.`group`,s_shopshowcase_options.`alias`,s_shopshowcase_options.`photo`
-              FROM s_shopshowcase_options
-        ');
-
-
             $options = json_decode(json_encode($options),true);
 
             $vals = json_decode(json_encode($vals),true);
 
-            $s_shopshowcase_options_map = (collect(json_decode(json_encode($s_shopshowcase_options_map),true))->keyBy('id'))->toArray();
-
-            foreach ($s_shopshowcase_options_map as $id => $data){
-                unset($s_shopshowcase_options_map[$id]['id']);
-                if(!$data['alias']){
-                    $s_shopshowcase_options_map[$id]['alias'] = $s_shopshowcase_options_map[-($data['group'])]['alias'];
-                }
-                unset($s_shopshowcase_options_map[$id]['group']);
-            }
+            $s_shopshowcase_options_map = \Cache::get('photo_options');
 
             $option_map = array();
             foreach ($options as $no => $option){
