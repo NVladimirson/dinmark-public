@@ -30,14 +30,14 @@ class ProductController extends Controller
 
 
     public function index(){
+//        ProductOptions::dispatch('ru');
+//        ProductOptions::dispatch('uk');
         SEOTools::setTitle(trans('product.all_tab_name'));
         $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
         $orders = OrderServices::getByCompany();
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getFilters();
-        //dd($filters);
-        //dd(\Cache::get('light'));
         return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters'));
     }
 
