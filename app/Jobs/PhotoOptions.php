@@ -19,6 +19,7 @@ class PhotoOptions implements ShouldQueue
      */
     public function __construct()
     {
+
         info('Job PhotoOptions fired at: '.Carbon::now()."\n");
 
         $s_shopshowcase_options_map = DB::select('
