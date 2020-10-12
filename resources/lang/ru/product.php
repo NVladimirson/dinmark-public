@@ -60,6 +60,7 @@ return [
     'storage_empty' => 'Нет в наличии',
 
 	'show_tab_name' => 'Информация о товаре',
+    'btn_pdf' => 'Скачать чертеж PDF',
 	'header_main_info' => 'Основная информация',
 	'show_article' => 'Артикул',
 	'show_price' => 'Розничная цена (100шт)',
@@ -70,6 +71,7 @@ return [
 	'weight_kg' => 'кг',
 	'header_params' => 'Спецификации',
 	'header_storage' => 'Склады',
+	'header_detail' => 'Технические характеристики',
 	'storage_name' => 'Склад',
 	'storage_amount' => 'Остаток',
 	'storage_package' => 'Упаковка (шт)',
@@ -78,6 +80,7 @@ return [
 	'storage_limit_2' => 'Лимит 2',
 	'storage_term' => 'Срок доставки',
 	'storage_quantity' => 'Количество',
+	'storage_total' => 'Сумма',
   'storage_term_measure_shortly' => 'дн.',
 
 	'modal_wishlist_header' => 'Выберите список',

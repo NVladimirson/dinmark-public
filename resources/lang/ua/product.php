@@ -59,6 +59,7 @@ return [
 	'storage_empty' => 'Немає в наявності',
 
 	'show_tab_name' => 'Інформація про товар',
+    'btn_pdf' => 'Завантажити креслення PDF',
 	'header_main_info' => 'Основна інформація',
 	'show_article' => 'Артикул',
 	'show_price' => 'Роздрібна ціна (100шт)',
@@ -69,6 +70,7 @@ return [
 	'weight_kg' => 'кг',
 	'header_params' => 'Специфікації',
 	'header_storage' => 'Склади',
+    'header_detail' => 'Технічні характеристики',
 	'storage_name' => 'Склад',
 	'storage_amount' => 'Залишок',
 	'storage_package' => 'Упаковка (шт)',
@@ -77,6 +79,7 @@ return [
 	'storage_limit_2' => 'Ліміт 2',
 	'storage_term' => 'Термін доставки',
   'storage_quantity' => 'Кількість',
+    'storage_total' => 'Сума',
   'storage_term_measure_shortly' => 'дн.',
 
 	'modal_wishlist_header' => 'Оберіть список',

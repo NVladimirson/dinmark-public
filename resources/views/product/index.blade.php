@@ -3,6 +3,8 @@
 @push('css')
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
+
 @endpush
 
 @section('content')
@@ -23,7 +25,30 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-5 text-center">
-							<img src="{{$imagePath}}" alt="{{$productName}}" width="100%">
+                            <a href="{{$imagePathFull}}" class="product-main-image m-b-15" data-lightbox="gallery-group-1">
+                                <img src="{{$imagePath}}" alt="{{$productName}}" width="100%" >
+                            </a>
+                            <div class="row m-b-10 product-gallery">
+                                @foreach($productPhotos as $photo)
+                                    <div class="col-sm-4">
+                                        <a href="{{$photo[1]}}" data-lightbox="gallery-group-1">
+                                            <img src="{{$photo[0]}}" alt="{{$productName}}" width="100%" class="m-b-5">
+                                        </a>
+                                    </div>
+                                @endforeach
+                                @if($productVideo)
+                                    <div class="col-sm-4">
+                                        <a href="#modal-video" class="to-modal flex video" data-toggle="modal">
+                                            <img src="https://dinmark.com.ua/images/video-thumbnail.svg" alt="video svg thumbnail" class="w50">
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                            @if($productPDF)
+                                <a href="{{$productPDF}}" target="_blank" class="btn btn-white btn-block btn-lg">
+                                    @lang('product.btn_pdf')
+                                </a>
+                            @endif
 						</div>
 						<div class="col-md-7">
 							<h3>@lang('product.header_main_info')</h3>
@@ -49,7 +74,7 @@
 								@if($product->limit_2 > 0)
 								<tr>
 									<th>@lang('product.show_price_porog_2')</th>
-									<td>{{ $limit2  }}</td>
+									<td>{{ $limit2 }}</td>
 								</tr>
 								@endif
 								<tr>
@@ -85,13 +110,26 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.header_storage')</h4>
+                    <ul id="product_tab" class="nav nav-tabs nav-tabs-panel panel-title">
+                        <li class="nav-item">
+                            <a href="#storage-tab" data-toggle="tab" class="nav-link active">
+                                <span>@lang('product.header_storage')</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#detail-tab" data-toggle="tab" class="nav-link">
+                                <span>@lang('product.header_detail')</span>
+                            </a>
+                        </li>
+                    </ul>
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
-					<div class="row">
-                        <div class="table-scroll-container">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="storage-tab">
+					        <div class="row">
+                                <div class="table-scroll-container">
 							<table class="table table-striped">
 								<tr>
 									<th>@lang('product.storage_name')</th>
@@ -188,6 +226,27 @@
 								@endforelse
 							</table>
                         </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show" id="detail-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {!! str_replace('<p>&nbsp;</p>','',html_entity_decode($productText,ENT_QUOTES)) !!}
+                                    @if($productVideo)
+                                    <p>
+                                        <iframe width="737" height="415" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </p>
+                                    @endif
+                                </div>
+                                <div class="col-md-6">
+                                    @if($productPDF)
+                                        <a href="{{$productPDF}}" target="_blank" class="preview">
+                                            <img src="https://dinmark.com.ua/images/file_preview.jpg" width="100%">
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 				<!-- end panel-body -->
@@ -200,14 +259,30 @@
 	@include('product.include.modal_wishlist')
 	@include('product.include.modal_order')
     @include('product.include.modal_get_price')
-
+    <div class="modal fade" id="modal-video" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{$productName}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    @if($productVideo)
+                        <p>
+                            <iframe width="466" height="300" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
 	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-
+    <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
 	<script>
 		(function ($) {
 			"use strict";

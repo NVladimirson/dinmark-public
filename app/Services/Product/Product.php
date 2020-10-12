@@ -13,7 +13,9 @@ use App\Models\Content;
 use App\Models\Product\Currency;
 use App\Models\Company\Company;
 use App\Models\Product\GetPrice;
+use App\Models\WlFile;
 use App\Models\WlImage;
+use App\Models\WlVideo;
 use Carbon\Carbon;
 use LaravelLocalization;
 
@@ -33,7 +35,7 @@ class Product
 		])->first();
 		$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
 		if($photo){
-			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/group_'.$photo->file_name;
+			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/'.$photo->file_name;
 		}
 
 		return $src;
@@ -55,6 +57,23 @@ class Product
 		return $src;
 	}
 
+	public static function getImagePathThumbs($product)
+	{
+		$ids[] = -$product->group;
+		$photos = WlImage::where([
+			['alias',$product->wl_alias],
+			['content',$ids],
+			['position','<>',1],
+		])->get();
+
+		$productPhotos = [];
+		foreach ($photos as $photo){
+            $productPhotos[] = 	[env('DINMARK_URL').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name, env('DINMARK_URL').'images/shop/-'.$product->group.'/'.$photo->file_name];
+        }
+
+		return $productPhotos;
+	}
+
 	public static function getName($product, $lang = null){
 		$instance =  static::getInstance();
 		if(empty($lang)){
@@ -63,6 +82,45 @@ class Product
 		$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
 		$productName = $content?$content->name:'';
 		return $productName;
+	}
+
+	public static function getText($product, $lang = null){
+		$instance =  static::getInstance();
+		if(empty($lang)){
+			$lang = $instance->lang;
+		}
+        $content = Content::where([
+            ['alias',$product->wl_alias],
+            ['language',$lang],
+            ['content',-$product->group],
+        ])->first();
+		$productText = $content?$content->text:'';
+		return $productText;
+	}
+
+    public static function getVideo($product)
+    {
+        $content = WlVideo::where([
+            ['alias',$product->wl_alias],
+            ['content',-$product->group],
+        ])->first();
+        $productVideo = $content?$content->link:'';
+        return $productVideo;
+
+	}
+
+    public static function getPDF($product)
+    {
+        $content = WlFile::where([
+            ['alias',$product->wl_alias],
+            ['content',-$product->group],
+            ['extension','pdf'],
+        ])->first();
+        $productPDF = null;
+        if($content){
+            $productPDF = 'https://dinmark.com.ua/files/shop/-'.$product->group.'/'.$content->name;
+        }
+        return $productPDF;
 	}
 
 	public static function getBasePrice($product){
