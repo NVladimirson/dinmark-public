@@ -56,6 +56,7 @@ class ProductController extends Controller
 
     public function optionFilters(Request $request){
         $request_options = $request->filter_with_options;
+
         $valid_options = ['checked' => [],'available' => []];
         if(!$request_options){
             return $valid_options;
@@ -100,13 +101,16 @@ class ProductController extends Controller
                 }
             }
         }
+
         if(isset($filter_map)){
             foreach ($filter_map as $product_id => $valuedata) {
                 foreach ($valuedata as $value_id => $valuename){
                     if(in_array($value_id,array_keys($option_map))){
                         $valid_options['checked'][$value_id] = $valuename;
                     }
+
                     $valid_options['available'][$value_id] = $valuename;
+
                 }
             }
 
@@ -114,6 +118,7 @@ class ProductController extends Controller
         return $valid_options;
 
     }
+
 
     public function allAjax(Request $request){
         $products = Product::with(['storages','content','options']);
@@ -308,7 +313,7 @@ class ProductController extends Controller
                     $storages = $product->storages;
                     if(count($storages)){
                         $value = '<select class="custom-select" id="storage_product_'.$product->id.'">';
-                        //dd($storages);
+
                         foreach ($storages as $key => $storage) {
                             $term = $storage->storage->term;
                             if(Str::length($term) == 1){
@@ -340,6 +345,7 @@ class ProductController extends Controller
                                     }
                                 }
                             }
+
                             //$value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).
                             //' / '.$term.' '.$days."<br>";
                             $name = CatalogServices::dayrounder($storage->amount).
@@ -406,7 +412,12 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         $productName = \App\Services\Product\Product::getName($product);
+        $productText = \App\Services\Product\Product::getText($product);
         $imagePath = \App\Services\Product\Product::getImagePathThumb($product);
+        $imagePathFull = \App\Services\Product\Product::getImagePath($product);
+        $productPhotos = \App\Services\Product\Product::getImagePathThumbs($product);
+        $productVideo = \App\Services\Product\Product::getVideo($product);
+        $productPDF = \App\Services\Product\Product::getPDF($product);
         $price = \App\Services\Product\Product::getPrice($product);
         $limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
         $limit2 = ($product->limit_2 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
@@ -424,7 +435,8 @@ class ProductController extends Controller
         }
         SEOTools::setTitle($productName);
 
-        return view('product.index', compact('product','productName','imagePath', 'price', 'basePrice',
+        return view('product.index', compact('product','productName', 'productText', 'imagePath', 'imagePathFull', 'productPhotos', 'productVideo', 'productPDF', 'price', 'basePrice',
+
             'wishlists', 'orders', 'limit1', 'limit2', 'storage_prices','storage_raw_prices'));
     }
 

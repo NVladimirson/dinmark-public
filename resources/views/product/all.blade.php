@@ -13,14 +13,17 @@
 @endpush
 
 @section('content')
+
     @if(isset($breadcrumbs))
         {{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
     @else
         {{ Breadcrumbs::render('product.all') }}
     @endif
+
     @php
         use Illuminate\Support\Str;
     @endphp
+
     <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
     <!-- begin row -->
     <div class="row">
@@ -70,6 +73,7 @@
                                 @endif
                             </div>
                         </div>
+
                     </div>
 
                     <div class="table-scroll-container">
@@ -337,6 +341,7 @@
                                     return 1;
                                 }
                             },
+
                             "filter_with_options":function ( ){
                                 let filter_selected_map = $("[filter-selected=true]");
                                 filter_selected_ids = Array();
@@ -406,6 +411,7 @@
                 heightStyle: "content",
                 content : '.content1'
             });
+
             function initOptionFilters(){
                 if(window.loading === 0){
                     window.loading = 1;
@@ -633,7 +639,6 @@
                     jsTreetoDatatable();
                     window.loading = 0;
                 }
-
             });
 
             $('#mass_actions').on('change', function (e) {
@@ -1179,7 +1184,6 @@
             background: #f6f6f6;
             font-weight: 400;
             color: #454545;
-
         }
 
         .image-container{
