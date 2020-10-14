@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Jobs;
-
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class PhotoOptions implements ShouldQueue
 {
@@ -20,7 +22,7 @@ class PhotoOptions implements ShouldQueue
     public function __construct()
     {
 
-        info('Job PhotoOptions fired at: '.Carbon::now()."\n");
+//        info('Job PhotoOptions fired at: '.Carbon::now()."\n");
 
         $s_shopshowcase_options_map = DB::select('
               SELECT s_shopshowcase_options.`id`,s_shopshowcase_options.`group`,s_shopshowcase_options.`alias`,s_shopshowcase_options.`photo`
@@ -39,7 +41,7 @@ class PhotoOptions implements ShouldQueue
 
         \Cache::put('photo_options',$s_shopshowcase_options_map);
 
-        info('Job PhotoOptions fired succesfully');
+//        info('Job PhotoOptions fired succesfully');
 
     }
 

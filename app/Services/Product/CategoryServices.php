@@ -49,20 +49,34 @@ class CategoryServices
 			->get();
 	}
 
-	public static function getFilters($options = 0){
+	public static function getOptionFilters(){
         $language =  static::getInstance()->lang;
-        if($language == 'ru'){
-            $object = Cache::get('filters_ru');
-        }
-        else{
-            $object = Cache::get('filters_uk');
-        }
+        $object = Cache::get('optionfilters');
+            foreach ($object as $optionid => $main){
 
-        if(!$options){
-            return $object;
-        }
+                $localization = $main['data'][$language];
+                unset($object[$optionid]['data']);
+                foreach ($localization as $key => $value){
+                    $object[$optionid]['data'][$key] = $value;
+                }
+
+                foreach ($main['options'] as $branchid => $branch){
+                    $localization = $branch['data'][$language];
+                    unset($object[$optionid]['options'][$branchid]['data']);
+                    foreach ($localization as $key => $value){
+                        $object[$optionid]['options'][$branchid]['data'][$key] = $value;
+                    }
+                }
+            }
+
+        return $object;
 
     }
+
+    public static function getLang(){
+	    return static::getInstance()->lang;
+    }
+
 
 	public static function getTermsForSelect(){
 		$instance =  static::getInstance();

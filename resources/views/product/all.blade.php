@@ -129,11 +129,11 @@
 
                     <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
                     <div id="optionfilters" class="content1">
-                        @foreach($filters as $filtername=>$filterdata)
-                            <h3 class="filtername" filter_name="{!! $filtername !!}"><b>{!! $filtername !!}</b></h3>
+                        @foreach($filters as $option_id=>$filterdata)
+                            <h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
                             <div class="filter" id="filter">
                                 @php $i=0;@endphp
-                                @foreach($filterdata as $value=>$data)
+                                @foreach($filterdata['options'] as $branch_id => $data)
 
                                     @if($i % 2 == 0)
                                         <div class="row" style="margin: auto">
@@ -141,21 +141,21 @@
 
                                             <div class="col-md-12">
                                                 <div class="row" style="margin: auto">
-                                                @if($data[array_key_first($data)]['photo'])
-                                                    @php $url = 'http://dinmark.com.ua'.'/images/shop/options/'.$data[array_key_first($data)]['alias'].
-                                                    '/'.$data[array_key_first($data)]['photo']; @endphp
-                                                    <div class="image-container"><img src="{!! $url !!}" alt='https://dinmark.com.ua/style/images/checkbox.svg' title="{!! $value !!}"></div>
+                                                @if(isset($data['data']['photo']))
+                                                    @php $url = 'https://dinmark.com.ua'.'/images/shop/options/'.$filterdata['data']['alias'].
+                                                    '/'.$data['data']['photo']; @endphp
+                                                    <div class="image-container"><img src="{!! $url !!}" alt='https://dinmark.com.ua/style/images/checkbox.svg' title="{!! $data['data']['name'] !!}"></div>
                                                 @else
                                                     @php $url = 'https://dinmark.com.ua/style/images/checkbox.svg'; @endphp
-                                                    <div class="image-container"><img src="{!! $url !!}" alt="{!! $value !!}" title="{!! $value !!}"></div>
+                                                    <div class="image-container"><img src="{!! $url !!}" alt="{!! $data['data']['name'] !!}" title="{!! $data['data']['name'] !!}"></div>
                                                 @endif
                                                 <p class="filter_with_options"
-                                                   option_id="{!! $data[array_key_first($data)]['value_id'] !!}"
-                                                   option_name="{!! $value !!}"
-                                                   option_filter_name = "{!! $filtername !!}"
+                                                   option_id="{!! $data['data']['option'] !!}"
+                                                   option_name="{!! $data['data']['name'] !!}"
+                                                   option_filter_name = "{!! $filterdata['data']['name'] !!}"
                                                    filter-selected="false"
                                                    filter-accessible="true"
-                                                   style="cursor:pointer">{!! $value !!}
+                                                   style="cursor:pointer">{!! $data['data']['name'] !!}
                                                     {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
                                                        {{--aria-hidden="true" style="display: none"></i>--}}
                                                 </p>
@@ -451,8 +451,10 @@
                             });
 
                             if(resp.available){
+                                //console.log(resp);
                                 $.each(resp.available, function( index, value ) {
                                     let filter_by_id = $("[option_id="+index+"]");
+                                    //console.log(filter_by_id);
                                     filter_by_id[0].setAttribute("style", "cursor:pointer");
                                     filter_by_id[0].setAttribute("filter-accessible","true");
                                 });
