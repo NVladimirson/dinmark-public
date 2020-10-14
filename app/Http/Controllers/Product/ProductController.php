@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
+use PhpParser\Node\Expr\Array_;
 
 class ProductController extends Controller
 {
@@ -39,7 +40,8 @@ class ProductController extends Controller
         $wishlists = CatalogServices::getByCompany();
         $orders = OrderServices::getByCompany();
         $terms = CategoryServices::getTermsForSelect();
-        $filters = CategoryServices::getFilters();
+        $filters = CategoryServices::getOptionFilters();
+        //dd($filters);
         return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters'));
     }
 
@@ -56,66 +58,45 @@ class ProductController extends Controller
 
     public function optionFilters(Request $request){
         $request_options = $request->filter_with_options;
-
-        $valid_options = ['checked' => [],'available' => []];
+        info(1);
         if(!$request_options){
-            return $valid_options;
+            return $valid_options = ['checked' => [],'available' => []];
         }
-
+        info(1);
         foreach($request_options as $option){
             $key = explode(';',$option)[0];
             $value = explode(';',$option)[1];
             $option_map[$key] = $value;
         }
 
-        $language = ProductOptionName::find(array_key_first($option_map))->language;
-        $object = \Cache::get('filters_'.$language);
-
-        $filter_map = array();
-        foreach ($object as $filtername => $filtervalues){
-            foreach ($filtervalues as $valuename => $products){
-                foreach ($products as $product_id => $product_data){
-                    $filter_map[$product_id][$product_data['value_id']] = $valuename;
-                }
-            }
-        }
-        //dd($filter_map);
-        $filter_map = Arr::where($filter_map, function ($value) use ($option_map) {
-            if(count($value)>=count($option_map)){
-                return $value;
-            }
-        });//filtering
-
-        if(isset($filter_map)){
-            foreach ($filter_map as $product_id => $valuedata){
-                //dd($option_map);
-                foreach ($option_map as $value_id => $valuename){
-                    if(!in_array($value_id,array_keys($valuedata))){
-                        $contains = false;
-                        break;
-                    }
-                    $contains = true;
-                }
-                if(!$contains){
-                    unset($filter_map[$product_id]);
-                }
+        $language = CategoryServices::getLang();
+        $product_options = Cache::get('productoptions');
+        foreach ($product_options as $product_id => $product_info){
+            foreach ($product_info as $value_id => $valueinfo){
+                $localization = $valueinfo[$language];
+                $product_options[$product_id][$value_id] = $localization;
             }
         }
 
-        if(isset($filter_map)){
-            foreach ($filter_map as $product_id => $valuedata) {
-                foreach ($valuedata as $value_id => $valuename){
-                    if(in_array($value_id,array_keys($option_map))){
-                        $valid_options['checked'][$value_id] = $valuename;
-                    }
+        $request_options_length = count($option_map);
+        $available = Array();
+        foreach ($product_options as $product_id => $product_info){
 
-                    $valid_options['available'][$value_id] = $valuename;
-
+            if(count(array_intersect(array_keys($product_info),array_keys($option_map))) == $request_options_length){
+                foreach ($product_info as $value_id => $valueinfo){
+                    $available[$value_id] = $valueinfo['name'];
                 }
             }
 
         }
+
+        $valid_options = ['checked' => $option_map,'available' => $available];
+        info($valid_options);
         return $valid_options;
+
+    }
+
+    public function test(Request $request){
 
     }
 
@@ -180,59 +161,23 @@ class ProductController extends Controller
 
         if($request->filter_with_options){
             $request_options = explode(',',$request->filter_with_options);
-
-            foreach($request_options as $option){
-                $key = explode(';',$option)[0];
-                $value = explode(';',$option)[1];
-                $option_map[$key] = $value;
-            }
-
-
-            $language = ProductOptionName::find(array_key_first($option_map))->language;
-            $object = \Cache::get('filters_'.$language);
-            if(!$object){
-                dispatch(new ProductOption($language));
-            }
-
-            $filter_map = array();
-            foreach ($object as $filtername => $filtervalues){
-                foreach ($filtervalues as $valuename => $product_ids){
-                    foreach ($product_ids as $product_id => $product_data){
-                        $filter_map[$product_id][$product_data['value_id']] = $valuename;
-                    }
-                }
-            }
-            //dd($filter_map);
-            $filter_map = Arr::where($filter_map, function ($value) use ($option_map) {
-                if(count($value)>=count($option_map)){
-                    return $value;
-                }
-            });//filtering
-
-            if(isset($filter_map)){
-                foreach ($filter_map as $product_id => $valuedata){
-                    //dd($option_map);
-                    foreach ($option_map as $value_id => $valuename){
-                        if(!in_array($value_id,array_keys($valuedata))){
-                            $contains = false;
-                            break;
+            $valid_ids = Array();
+            $filters = CategoryServices::getOptionFilters();
+            foreach ($filters as $option_id=>$filterdata){
+                foreach($filterdata['options'] as $branch_id => $data){
+                    if(in_array($branch_id,$request_options)){
+                        if(empty($valid_ids)){
+                            $valid_ids = $data['products'];
+                        }else{
+                            $valid_ids = array_intersect($valid_ids,$data['products']);
                         }
-                        $contains = true;
-                    }
-                    if(!$contains){
-                        unset($filter_map[$product_id]);
+
                     }
                 }
             }
-
-            if (isset($filter_map)){
-                $valid_ids = array_keys($filter_map);
+            if(!empty($valid_ids)){
+                $products = $products->whereIn('id',array_values($valid_ids));
             }
-            else{
-                $valid_ids = [];
-            }
-
-            $products = $products->whereIn('id',array_values($valid_ids));
         }
 
         $ids = null;
