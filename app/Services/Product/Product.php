@@ -18,6 +18,7 @@ use App\Models\WlImage;
 use App\Models\WlVideo;
 use Carbon\Carbon;
 use LaravelLocalization;
+use Config;
 
 class Product
 {
@@ -33,9 +34,9 @@ class Product
 			['content',$ids],
 			['position',1],
 		])->first();
-		$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
+		$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
 		if($photo){
-			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/'.$photo->file_name;
+			$src = 	Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/'.$photo->file_name;
 		}
 
 		return $src;
@@ -49,9 +50,9 @@ class Product
 			['content',$ids],
 			['position',1],
 		])->first();
-		$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
+		$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
 		if($photo){
-			$src = 	env('DINMARK_URL').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name;
+			$src = 	Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name;
 		}
 
 		return $src;
@@ -68,7 +69,8 @@ class Product
 
 		$productPhotos = [];
 		foreach ($photos as $photo){
-            $productPhotos[] = 	[env('DINMARK_URL').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name, env('DINMARK_URL').'images/shop/-'.$product->group.'/'.$photo->file_name];
+            $productPhotos[] = 	[Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/thumbnail_'.$photo->file_name,
+                Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/'.$photo->file_name];
         }
 
 		return $productPhotos;

@@ -81,20 +81,20 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th width="30">
+                                <th>
                                     <div class="checkbox checkbox-css">
                                         <input type="checkbox" id="select_all_products">
                                         <label for="select_all_products"> </label>
                                     </div>
                                 </th>
-                                <th width="1%" data-orderable="false"></th>
+                                <th data-orderable="false"></th>
                                 <th class="text-nowrap">@lang('product.table_header_name')</th>
-                                <th class="text-nowrap">@lang('product.table_header_article')</th>
-                                <th class="text-nowrap">@lang('product.table_header_price')</th>
-                                <th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
+                                <th style="max-width: 65px" class="text-nowrap">@lang('product.table_header_article')</th>
+                                <th style="max-width: 65px" class="text-nowrap">@lang('product.table_header_price')</th>
+                                <th style="max-width: 65px" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
                                 <th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
                                 <th class="text-nowrap">@lang('product.table_header_storage')</th>
-                                <th width="124">
+                                <th>
                                     <!-- <div id = "mass_actions">
                                         <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-eye"></i></a>
                                         <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-star"></i></a>
@@ -142,12 +142,12 @@
                                             <div class="col-md-12">
                                                 <div class="row" style="margin: auto">
                                                 @if(isset($data['data']['photo']))
-                                                    @php $url = 'https://dinmark.com.ua'.'/images/shop/options/'.$filterdata['data']['alias'].
+                                                    @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
                                                     '/'.$data['data']['photo']; @endphp
-                                                    <div class="image-container"><img src="{!! $url !!}" alt='https://dinmark.com.ua/style/images/checkbox.svg' title="{!! $data['data']['name'] !!}"></div>
+                                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
                                                 @else
-                                                    @php $url = 'https://dinmark.com.ua/style/images/checkbox.svg'; @endphp
-                                                    <div class="image-container"><img src="{!! $url !!}" alt="{!! $data['data']['name'] !!}" title="{!! $data['data']['name'] !!}"></div>
+                                                    @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
+                                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
                                                 @endif
                                                 <p class="filter_with_options"
                                                    option_id="{!! $data['data']['option'] !!}"
@@ -292,7 +292,14 @@
                     },
                     //"scrollX": true,
                     "pageLength": 25,
-                    "autoWidth": true,
+                     "autoWidth": true,
+                    // responsive: true,
+                    // "bAutoWidth": false,
+                    //"autoWidth": false,
+                    // "columns": [
+                    //
+                    //     { "width": "80%" },
+                    // ],
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
@@ -365,39 +372,50 @@
                         {
                             data: 'id',
                             "visible": false,
-                            "searchable": false
+                            "searchable": false,
+                            "width": "5%"
                         },
                         {
                             "orderable":      false,
                             data: 'check_html',
+                            "width": "10%"
                         },
                         {
                             "orderable":      false,
                             data: 'image_html',
+                            "width": "10%",
+                            "height":"1000px"
                         },
                         {
                             "orderable":      false,
                             data: 'name_html',
+                            "width": "12%"
                         },
                         {
                             data: 'article_show_html',
+                            "width": "12%"
                         },
                         {
                             data: 'user_price',
+                            "width": "8%"
                         },
                         {
                             data: 'html_limit_1',
+                            "width": "8%"
                         },
                         {
                             data: 'html_limit_2',
+                            "width": "8%"
                         },
                         {
                             data: 'storage_html',
                             "orderable":      false,
+                            "width": "12%"
                         },
                         {
                             data: 'actions',
                             "orderable":      false,
+                            "width": "15%"
                         },
                     ],
                     "preUpload": function(settings, json) {
@@ -1202,6 +1220,15 @@
         #optionfilters .row{
             max-height: 100%;
             max-width: 100%;
+        }
+
+        .filter {
+            max-height:300px;
+            overflow-y:scroll;
+        }
+
+        #data-table-buttons{
+            max-width:100%;
         }
     </style>
 
