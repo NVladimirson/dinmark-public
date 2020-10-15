@@ -35,14 +35,16 @@ class ProductController extends Controller
             //PhotoOptions::dispatch();
 //        ProductOptions::dispatch('ru');
 //        ProductOptions::dispatch('uk');
+//        dd(\Config::get('values.dinmarkurl'));
         SEOTools::setTitle(trans('product.all_tab_name'));
         $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
         $orders = OrderServices::getByCompany();
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getOptionFilters();
+        $dinmark_url = \Config::get('values.dinmarkurl');
         //dd($filters);
-        return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters'));
+        return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
 
     public function category($id){
@@ -219,7 +221,7 @@ class ProductController extends Controller
             ->addColumn('image_html', function (Product $product) {
                 $src = \App\Services\Product\Product::getImagePath($product);
 
-                return '<img src="'.$src.'" width="80">';
+                return '<img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">';
             })
             ->addColumn('name_html', function (Product $product){
                 $name = \App\Services\Product\Product::getName($product);
