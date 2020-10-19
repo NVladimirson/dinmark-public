@@ -49,14 +49,20 @@ return [
 
 	'select_term' => 'Оберіть термін доставки',
 
+    'table_header_name/article' => 'Назва/Артикул',
 	'table_header_name' => 'Назва',
+    'table_header_photo' => 'Фото',
 	'table_header_article' => 'Артикул',
-	'table_header_price' => 'Ціна (100шт)',
-	'table_header_price_porog_1' => 'Ціна порогу 1',
-	'table_header_price_porog_2' => 'Ціна порогу 2',
+    'table_header_price_retail' => 'Роздріб',
+    'table_header_price' => 'Ваша ціна',
+    'table_header_price_porog_1' => '-3%',
+    'table_header_price_porog_2' => '-7%',
+//	'table_header_price_porog_1' => 'Ціна порогу 1',
+//	'table_header_price_porog_2' => 'Ціна порогу 2',
 	'table_header_price_from' => '(від :quantity шт.)',
 	'table_header_storage' => 'Залишок/Термін  доставки',
 	'storage_empty' => 'Немає в наявності',
+    'storage_choose' => 'Оберіть склад',
 
 	'show_tab_name' => 'Інформація про товар',
     'btn_pdf' => 'Завантажити креслення PDF',

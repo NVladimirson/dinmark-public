@@ -22,6 +22,7 @@ return [
 	'orders_all' => 'Мої замовлення',
 	'orders_new' => 'Нове замовлення',
 	'implementations' => 'Відправлення',
+    'purchases' => 'Покупки',
 
 	'reclamations'		=> 'Повернення',
 	'reclamations_all'	=> 'Мої повернення',

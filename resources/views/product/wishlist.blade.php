@@ -108,12 +108,24 @@
                     <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
 							<tr>
 								<th></th>
 								<th width="30"></th>
 								<th width="1%" data-orderable="false"></th>
-								<th class="text-nowrap">@lang('wishlist.table_header_name')</th>
-								<th class="text-nowrap">@lang('wishlist.table_header_article')</th>
+                               <th class="text-nowrap">@lang('wishlist.table_header_name_article')</th>
+								{{--<th class="text-nowrap">@lang('wishlist.table_header_name')</th>--}}
+								{{--<th class="text-nowrap">@lang('wishlist.table_header_article')</th>--}}
 								<th class="text-nowrap">@lang('wishlist.table_header_holding_article')</th>
 								<th class="text-nowrap">@lang('wishlist.table_header_price')</th>
 								<th class="text-nowrap coef-header">@lang('wishlist.table_header_user_price') x {{
@@ -145,6 +157,11 @@
 @endsection
 
 @push('scripts')
+	{{--<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>--}}
+	{{--<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>--}}
+	{{--<script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>--}}
+
+
 	<script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 	<script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
@@ -155,6 +172,7 @@
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
 	<script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
+
 	<script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
 	<script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
 	<script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
@@ -176,6 +194,10 @@
 						"url": "@lang('table.localization_link')",
 					},
 					//"scrollX": true,
+                    // fixedHeader: {
+                     //    header: true,
+                     //    footer: true
+                    // },
 					"pageLength": 25,
 					"autoWidth": true,
 					"processing": true,
@@ -192,7 +214,7 @@
 						{
 							"orderable":      false,
 							data: 'check_html',
-							"visible": false,
+							"visible": true	,
 						},
 						{
 							"orderable":      false,
@@ -200,11 +222,11 @@
 						},
 						{
 							"orderable":      false,
-							data: 'name_html',
+							data: 'name_article_html',
 						},
-						{
-							data: 'article_show_html',
-						},
+						// {
+						// 	data: 'article_show_html',
+						// },
 						{
 							data: 'article_holding',
 						},

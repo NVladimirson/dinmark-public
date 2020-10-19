@@ -23,6 +23,7 @@ return [
     'orders_all'		=> 'Мои заказы',
     'orders_new'		=> 'Новый заказ',
     'implementations'	=> 'Реализации',
+    'purchases' => 'Покупки',
 
     'reclamations'		=> 'Возвраты',
     'reclamations_all'	=> 'Мои возвраты',

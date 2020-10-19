@@ -50,14 +50,20 @@ return [
 
 	'select_term' => 'Выберите срок доставки',
 
+    'table_header_name/article' => 'Название/Артикул',
     'table_header_name' => 'Название',
+    'table_header_photo' => 'Фото',
     'table_header_article' => 'Артикул',
-    'table_header_price' => 'Цена (100шт)',
-    'table_header_price_porog_1' => 'Цена порог 1',
-    'table_header_price_porog_2' => 'Цена порог 2',
+    'table_header_price_retail' => 'Розница',
+    'table_header_price' => 'Ваша цена',
+    'table_header_price_porog_1' => '  -3%  ',
+    'table_header_price_porog_2' => '  -7%  ',
+//    'table_header_price_porog_1' => 'Цена порог 1',
+//    'table_header_price_porog_2' => 'Цена порог 2',
     'table_header_price_from' => '(от :quantity шт.)',
     'table_header_storage' => 'Остаток/Срок доставки',
     'storage_empty' => 'Нет в наличии',
+    'storage_choose' => 'Выберите склад',
 
 	'show_tab_name' => 'Информация о товаре',
     'btn_pdf' => 'Скачать чертеж PDF',

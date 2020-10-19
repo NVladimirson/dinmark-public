@@ -27,7 +27,7 @@
     <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
     <!-- begin row -->
     <div class="row">
-        <div class="col-xl-9">
+        <div class="col-xl-12">
             <!-- begin panel -->
             <div class="panel panel-primary">
                 <!-- begin panel-heading -->
@@ -39,7 +39,6 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xl-3">
-
                             @if(Request::get('instock'))
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="instockToggler" checked>
@@ -80,6 +79,12 @@
                         <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
                             <tr>
+                                <th colspan="4" class="text-nowrap" style="text-align: center">Інформація</th>
+                                <th colspan="4" class="text-nowrap" style="text-align: center">Ціна(100 шт.)</th>
+                                <th></th>
+                                <th colspan="4" class="text-nowrap" style="text-align: center">Калькулятор вартості</th>
+                            </tr>
+                            <tr>
                                 <th></th>
                                 <th>
                                     <div class="checkbox checkbox-css">
@@ -87,20 +92,25 @@
                                         <label for="select_all_products"> </label>
                                     </div>
                                 </th>
-                                <th data-orderable="false"></th>
-                                <th class="text-nowrap">@lang('product.table_header_name')</th>
-                                <th style="max-width: 65px" class="text-nowrap">@lang('product.table_header_article')</th>
-                                <th style="max-width: 65px" class="text-nowrap">@lang('product.table_header_price')</th>
-                                <th style="max-width: 65px" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
+                                <th data-orderable="false">@lang('product.table_header_photo')</th>
+                                <th class="text-nowrap" style="max-width: 150px;">@lang('product.table_header_name/article')</th>
+                                {{--<th class="text-nowrap">@lang('product.table_header_name')</th>--}}
+                                {{--<th class="text-nowrap">@lang('product.table_header_article')</th>--}}
+                                <th>@lang('product.table_header_price_retail')</th>
+                                <th class="text-nowrap">@lang('product.table_header_price')</th>
+                                <th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
                                 <th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
                                 <th class="text-nowrap">@lang('product.table_header_storage')</th>
                                 <th>
-                                    <!-- <div id = "mass_actions">
-                                        <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-star"></i></a>
-                                        <a href="#" class="btn btn-sm btn-success m-r-4"><i class="fas fa-cart-plus"></i></a>
-                                    </div> -->
+                                    Кількість
                                 </th>
+                                <th>
+                                    Упак./Вага
+                                </th>
+                                <th>
+                                    Сума з ПДВ
+                                </th>
+                                <th style="max-width: 25px"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -112,6 +122,8 @@
             </div>
             <!-- end panel -->
         </div>
+    </div>
+    <div class="row">
         <div class="col-xl-3">
 
             <div class="panel panel-primary">
@@ -137,69 +149,66 @@
 
                                     @if($i % 2 == 0)
                                         <div class="row" style="margin: auto">
-                                    @endif
+                                            @endif
 
                                             <div class="col-md-12">
                                                 <div class="row" style="margin: auto">
-                                                @if(isset($data['data']['photo']))
-                                                    @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
+                                                    @if(isset($data['data']['photo']))
+                                                        @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
                                                     '/'.$data['data']['photo']; @endphp
-                                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-                                                @else
-                                                    @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-                                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-                                                @endif
-                                                <p class="filter_with_options"
-                                                   option_id="{!! $data['data']['option'] !!}"
-                                                   option_name="{!! $data['data']['name'] !!}"
-                                                   option_filter_name = "{!! $filterdata['data']['name'] !!}"
-                                                   filter-selected="false"
-                                                   filter-accessible="true"
-                                                   style="cursor:pointer">{!! $data['data']['name'] !!}
-                                                    {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
-                                                       {{--aria-hidden="true" style="display: none"></i>--}}
-                                                </p>
+                                                        <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                                    @else
+                                                        @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
+                                                        <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                                    @endif
+                                                    <p class="filter_with_options"
+                                                       option_id="{!! $data['data']['option'] !!}"
+                                                       option_name="{!! $data['data']['name'] !!}"
+                                                       option_filter_name = "{!! $filterdata['data']['name'] !!}"
+                                                       filter-selected="false"
+                                                       filter-accessible="true"
+                                                       style="cursor:pointer">{!! $data['data']['name'] !!}
+                                                        {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
+                                                        {{--aria-hidden="true" style="display: none"></i>--}}
+                                                    </p>
                                                 </div>
                                             </div>
 
-                                     @if($i % 2 == 1)
+                                            @if($i % 2 == 1)
                                         </div>
                                     @endif
 
                                     @php $i++; @endphp
                                 @endforeach
                                 @if($i % 2 != 0)
-                                    </div>
-                                @endif
                             </div>
-                        @endforeach
+                            @endif
                     </div>
-
+                    @endforeach
                 </div>
 
-                <div id="filters">
-                    {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
-                    <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
-                        <h5 style="text-align: center">
-                            <a href="#" id="new">
-                                <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
-                            <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                    </div>
-                    <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
-                        <h5 style="text-align: center"><a href="#" id="hits">
-                                <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
-                            <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                    </div>
-                    <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
-                        <h5 style="text-align: center"><a href="#" id="discount">
-                                <i class="fa fa-percent" aria-hidden="true"></i>  @lang('product.filters.discount')</a>
-                            <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                    </div>
+            </div>
+
+            <div id="filters">
+                {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
+                <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
+                    <h5 style="text-align: center">
+                        <a href="#" id="new">
+                            <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
+                        <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                </div>
+                <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
+                    <h5 style="text-align: center"><a href="#" id="hits">
+                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
+                        <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                </div>
+                <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
+                    <h5 style="text-align: center"><a href="#" id="discount">
+                            <i class="fa fa-percent" aria-hidden="true"></i>  @lang('product.filters.discount')</a>
+                        <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
                 </div>
             </div>
         </div>
-
-    </div>
     </div>
     <!-- end row -->
 
@@ -285,15 +294,45 @@
                 $('#select_all_products').prop('checked', false);
             } );
 
+            $('#data-table-buttons').on( 'click', 'tr', function () {
+                // console.log( table.row( this ).data() );
+
+                // table.cell({row:1, column:7}).data('New value for row 1 column 7');
+
+                // var rData = [
+                // ];
+
+                // rData['id'] = 100500;
+                // rData['check_html'] = '';
+                // rData['image_html'] = '';
+                // rData['name_article_html'] = '';
+                // rData['retail_price'] = '';
+                // rData['user_price'] = '';
+                // rData['html_limit_1'] = '';
+                // rData['html_limit_2'] = '';
+                // rData['storage_html'] = '';
+                // rData['calc_quantity'] = '';
+                // rData['package_weight'] = '';
+                // rData['sum_w_taxes'] = '';
+                // rData['actions'] = '';
+                //
+                // table.row( this )
+                //     .data(rData)
+                //     .draw();
+            } );
+
+
+
             window.table =
                 $('#data-table-buttons').DataTable( {
+                    fixedHeader: true,
                     "language": {
                         "url": "@lang('table.localization_link')",
                     },
-                    //"scrollX": true,
+                    // "scrollX": true,
                     "pageLength": 25,
-                     "autoWidth": true,
-                    // responsive: true,
+                    "autoWidth": true,
+                     //responsive: true,
                     // "bAutoWidth": false,
                     //"autoWidth": false,
                     // "columns": [
@@ -373,49 +412,53 @@
                             data: 'id',
                             "visible": false,
                             "searchable": false,
-                            "width": "5%"
                         },
                         {
                             "orderable":      false,
                             data: 'check_html',
-                            "width": "10%"
                         },
                         {
                             "orderable":      false,
                             data: 'image_html',
-                            "width": "10%",
-                            "height":"1000px"
                         },
                         {
                             "orderable":      false,
-                            data: 'name_html',
-                            "width": "12%"
+                            data: 'name_article_html',
                         },
                         {
-                            data: 'article_show_html',
-                            "width": "12%"
+
+                            data: 'retail_price',
                         },
                         {
                             data: 'user_price',
-                            "width": "8%"
                         },
                         {
+                            "orderable":      false,
                             data: 'html_limit_1',
-                            "width": "8%"
                         },
                         {
+                            "orderable":      false,
                             data: 'html_limit_2',
-                            "width": "8%"
                         },
                         {
                             data: 'storage_html',
                             "orderable":      false,
-                            "width": "12%"
+                        },
+                        {
+                            data: 'calc_quantity',
+                            "orderable":      false,
+                        },
+                        {
+                            data: 'package_weight',
+                            "orderable":      false,
+                        },
+                        {
+                            data: 'sum_w_taxes',
+                            "orderable":      false,
                         },
                         {
                             data: 'actions',
                             "orderable":      false,
-                            "width": "15%"
                         },
                     ],
                     "preUpload": function(settings, json) {
@@ -478,84 +521,84 @@
                                 });
                             }
 
-                                //console.log($('#instockToggler').prop('checked'));
-                                if($('#instockToggler').prop('checked')){
-                                    $('#filters_selected').append($('<div class="selected_filter">' +
-                                        '<p class="tesst" id="deselected_filter_toggler" style="font-size: 10pt;' +
-                                        'text-align: center;margin: auto;">'+"@lang('product.in_stock_button_name')"+'' +
-                                        '<a class="deselect_filter" deselectid="deselected_filter_toggler" href=#>' +
-                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
-                                        'text-align: center;"></i></a></p></div>'));
-                                }
-                                if($("option:selected", $('#storages')).val() !== '0'){
-                                    $('#filters_selected').append($('<div class="selected_filter">' +
-                                        '<p class="tesst" id="deselected_filter_storage" style="font-size: 10pt;' +
-                                        'text-align: center;margin: auto;">'+
-                                        $("option:selected", $('#storages')).text() +
-                                        '<a class="deselect_filter" deselectid="deselected_filter_storage" href=#>' +
-                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
-                                        'text-align: center;"></i></a></p></div>'));
-                                }
-                                if(!($('#new-checked').css("display") === 'none')){
-                                    $('#filters_selected').append($('<div class="selected_filter">' +
-                                        '<p class="tesst" id="deselected_filter_new" style="font-size: 10pt;' +
-                                        'text-align: center;margin: auto;">'+"@lang('product.filters.new')"+'' +
-                                        '<a class="deselect_filter" deselectid="deselected_filter_new" href=#>' +
-                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
-                                        'text-align: center;"></i></a></p></div>'));
-                                }
-                                if(!($('#hits-checked').css("display") === 'none')){
-                                    $('#filters_selected').append($('<div class="selected_filter">' +
-                                        '<p class="tesst" id="deselected_filter_hits" style="font-size: 10pt;' +
-                                        'text-align: center;margin: auto;">'+"@lang('product.filters.hits')"+'' +
-                                        '<a class="deselect_filter" deselectid="deselected_filter_hits" href=#>' +
-                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
-                                        'text-align: center;"></i></a></p></div>'));
-                                }
-                                if(!($('#discount-checked').css("display") === 'none')){
-                                    $('#filters_selected').append($('<div class="selected_filter">' +
-                                        '<p class="tesst" id="deselected_filter_discount" style="font-size: 10pt;' +
-                                        'text-align: center;margin: auto;">'+"@lang('product.filters.discount')"+'' +
-                                        '<a class="deselect_filter" deselectid="deselected_filter_discount" href=#>' +
-                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
-                                        'text-align: center;"></i></a></p></div>'));
-                                }
+                            //console.log($('#instockToggler').prop('checked'));
+                            if($('#instockToggler').prop('checked')){
+                                $('#filters_selected').append($('<div class="selected_filter">' +
+                                    '<p class="tesst" id="deselected_filter_toggler" style="font-size: 10pt;' +
+                                    'text-align: center;margin: auto;">'+"@lang('product.in_stock_button_name')"+'' +
+                                    '<a class="deselect_filter" deselectid="deselected_filter_toggler" href=#>' +
+                                    '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                    'text-align: center;"></i></a></p></div>'));
+                            }
+                            if($("option:selected", $('#storages')).val() !== '0'){
+                                $('#filters_selected').append($('<div class="selected_filter">' +
+                                    '<p class="tesst" id="deselected_filter_storage" style="font-size: 10pt;' +
+                                    'text-align: center;margin: auto;">'+
+                                    $("option:selected", $('#storages')).text() +
+                                    '<a class="deselect_filter" deselectid="deselected_filter_storage" href=#>' +
+                                    '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                    'text-align: center;"></i></a></p></div>'));
+                            }
+                            if(!($('#new-checked').css("display") === 'none')){
+                                $('#filters_selected').append($('<div class="selected_filter">' +
+                                    '<p class="tesst" id="deselected_filter_new" style="font-size: 10pt;' +
+                                    'text-align: center;margin: auto;">'+"@lang('product.filters.new')"+'' +
+                                    '<a class="deselect_filter" deselectid="deselected_filter_new" href=#>' +
+                                    '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                    'text-align: center;"></i></a></p></div>'));
+                            }
+                            if(!($('#hits-checked').css("display") === 'none')){
+                                $('#filters_selected').append($('<div class="selected_filter">' +
+                                    '<p class="tesst" id="deselected_filter_hits" style="font-size: 10pt;' +
+                                    'text-align: center;margin: auto;">'+"@lang('product.filters.hits')"+'' +
+                                    '<a class="deselect_filter" deselectid="deselected_filter_hits" href=#>' +
+                                    '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                    'text-align: center;"></i></a></p></div>'));
+                            }
+                            if(!($('#discount-checked').css("display") === 'none')){
+                                $('#filters_selected').append($('<div class="selected_filter">' +
+                                    '<p class="tesst" id="deselected_filter_discount" style="font-size: 10pt;' +
+                                    'text-align: center;margin: auto;">'+"@lang('product.filters.discount')"+'' +
+                                    '<a class="deselect_filter" deselectid="deselected_filter_discount" href=#>' +
+                                    '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                    'text-align: center;"></i></a></p></div>'));
+                            }
 
-                                let loaded_filter_categories = document.getElementById('reload').textContent.split(",");
-                                if(loaded_filter_categories.length > 0 || loaded_filter_categories[0] !== ""){
-                                    $.each(loaded_filter_categories, function( index, value ) {
-                                        let id = value;
-                                        let name = document.getElementById(value+'_anchor');
-                                        if(name){
+                            let loaded_filter_categories = document.getElementById('reload').textContent.split(",");
+                            if(loaded_filter_categories.length > 0 || loaded_filter_categories[0] !== ""){
+                                $.each(loaded_filter_categories, function( index, value ) {
+                                    let id = value;
+                                    let name = document.getElementById(value+'_anchor');
+                                    if(name){
                                         name = name.innerText;
                                         if (name.length > 35){
                                             name = name.substr(0,35)+'...';
                                         }
-                                            $('#filters_selected').append($('<div class="selected_filter">' +
-                                                '<p class="tesst" id="deselected_filter_categories_'+id+'" style="font-size: 10pt;' +
-                                                'text-align: center;margin: auto;">'+name+'' +
-                                                '<a class="deselect_filter" deselectid="deselected_filter_categories_'+id+'" href=#>' +
-                                                '<i class="far fa-times-circle" style="float: right;' +
-                                                'color: red;' +
-                                                'text-align: center;"></i></a></p></div>'));
-                                        }
-                                    });
-                                }
-
-                                $.each(resp['checked'], function( index, value ) {
-                                    if(value.length > 35){
-                                        value = value.substr(0,35)+'...';
+                                        $('#filters_selected').append($('<div class="selected_filter">' +
+                                            '<p class="tesst" id="deselected_filter_categories_'+id+'" style="font-size: 10pt;' +
+                                            'text-align: center;margin: auto;">'+name+'' +
+                                            '<a class="deselect_filter" deselectid="deselected_filter_categories_'+id+'" href=#>' +
+                                            '<i class="far fa-times-circle" style="float: right;' +
+                                            'color: red;' +
+                                            'text-align: center;"></i></a></p></div>'));
                                     }
-                                    let filter_by_id = $("[option_id="+index+"]");
-                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
-                                    filter_by_id[0].setAttribute("filter-accessible","true");
-                                    $('#filters_selected').append($('<div class="selected_filter">' +
-                                        '<p class="tesst" id="deselected_filter_'+index+'" style="font-size: 10pt;' +
-                                        'text-align: center;margin: auto;">'+value+'' +
-                                        '<a class="deselect_filter" deselectid="deselected_filter_'+index+'" href=#>' +
-                                        '<i class="far fa-times-circle" style="float: right;color: red;' +
-                                        'text-align: center;"></i></a></p></div>'));
                                 });
+                            }
+
+                            $.each(resp['checked'], function( index, value ) {
+                                if(value.length > 35){
+                                    value = value.substr(0,35)+'...';
+                                }
+                                let filter_by_id = $("[option_id="+index+"]");
+                                filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                filter_by_id[0].setAttribute("filter-accessible","true");
+                                $('#filters_selected').append($('<div class="selected_filter">' +
+                                    '<p class="tesst" id="deselected_filter_'+index+'" style="font-size: 10pt;' +
+                                    'text-align: center;margin: auto;">'+value+'' +
+                                    '<a class="deselect_filter" deselectid="deselected_filter_'+index+'" href=#>' +
+                                    '<i class="far fa-times-circle" style="float: right;color: red;' +
+                                    'text-align: center;"></i></a></p></div>'));
+                            });
 
 
                             // if((resp.available) && !(resp['checked'])){
@@ -594,11 +637,11 @@
                 $.each(accessible,function(key,value){
                     let option_filter_name = value.getAttribute("option_filter_name");
                     // if(value.getAttribute("filter-selected")==='false'){
-                        if (typeof accessible_per_filter[option_filter_name] !== 'undefined') {
-                            accessible_per_filter[option_filter_name] = accessible_per_filter[option_filter_name] + 1;
-                        }else{
-                            accessible_per_filter[option_filter_name] = 1;
-                        }
+                    if (typeof accessible_per_filter[option_filter_name] !== 'undefined') {
+                        accessible_per_filter[option_filter_name] = accessible_per_filter[option_filter_name] + 1;
+                    }else{
+                        accessible_per_filter[option_filter_name] = 1;
+                    }
                     //}
                 });
 
@@ -650,7 +693,6 @@
                 }
 
             });
-
 
             $('#instockToggler').click(function() {
                 if(window.loading === 0) {
@@ -806,7 +848,6 @@
                 $('#modal-order_multiple').modal('hide');
                 return false;
             });
-
 
             function jsTreetoDatatable(){
 
@@ -1009,129 +1050,130 @@
 
             //Новые
             $('#new').click(function(e){
+                if($('#new-checked').css("display") === 'none'){
+                    $('#new-checked').css("display","");
+                }
+                else{
+                    $('#new-checked').css("display","none");
+                }
+                initOptionFilters();
+                jsTreetoDatatable();
+            });
+            //Новые
+
+            //Хиты
+            $('#hits').click(function(e){
+                if($('#hits-checked').css("display") === 'none'){
+                    $('#hits-checked').css("display","");
+                }
+                else{
+                    $('#hits-checked').css("display","none");
+                }
+                initOptionFilters();
+                jsTreetoDatatable();
+            });
+            //Хиты
+
+            //Акционные предложения
+            $('#discount').click(function(e){
+                if($('#discount-checked').css("display") === 'none'){
+                    $('#discount-checked').css("display","");
+                }
+                else{
+                    $('#discount-checked').css("display","none");
+                }
+                initOptionFilters();
+                jsTreetoDatatable();
+            });
+            //Акционные предложения
+
+            //фильтры со свойствами
+            $('.filter_with_options').click(function(){
+                if($(this).attr('filter-accessible') == 'true'){
+                    if($(this).attr('filter-selected') === 'true'){
+                        $(this).attr('filter-selected', 'false');
+                        $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
+                    }
+                    else{
+                        $(this).attr('filter-selected', 'true');
+                        $("#filter-checked_"+$(this).attr('option_id')).css("display","");
+                    }
+                    initOptionFilters();
+                    jsTreetoDatatable();
+                }
+            });
+            //фильтры со свойствами
+
+            //удаление фильтров из списка
+            $(document).on("click", ".deselect_filter", function(e) {
+                let id = $(this)[0].getAttribute("deselectid");
+                if(id === 'deselected_filter_toggler'){
+                    if($('#instockToggler').prop('checked') === true){
+                        $('#instockToggler').prop('checked',false);
+                    }else{
+                        $('#instockToggler').prop('checked',true);
+
+                    }
+                    var myobj = document.getElementById(id);
+                }
+                else if (id === 'deselected_filter_storage'){
+                    $('#storages option[value=0]').prop('selected', true);
+                    var myobj = document.getElementById(id);
+                }
+                else if(id === 'deselected_filter_new'){
                     if($('#new-checked').css("display") === 'none'){
                         $('#new-checked').css("display","");
                     }
                     else{
                         $('#new-checked').css("display","none");
                     }
-                    initOptionFilters();
-                    jsTreetoDatatable();
-            });
-            //Новые
-
-            //Хиты
-            $('#hits').click(function(e){
+                    var myobj = document.getElementById(id);
+                }
+                else if(id === 'deselected_filter_hits'){
                     if($('#hits-checked').css("display") === 'none'){
                         $('#hits-checked').css("display","");
                     }
                     else{
                         $('#hits-checked').css("display","none");
                     }
-                    initOptionFilters();
-                    jsTreetoDatatable();
-            });
-            //Хиты
-
-            //Акционные предложения
-            $('#discount').click(function(e){
+                    var myobj = document.getElementById(id);
+                }
+                else if(id === 'deselected_filter_discount'){
                     if($('#discount-checked').css("display") === 'none'){
                         $('#discount-checked').css("display","");
                     }
                     else{
                         $('#discount-checked').css("display","none");
                     }
-                    initOptionFilters();
-                    jsTreetoDatatable();
-            });
-            //Акционные предложения
+                    var myobj = document.getElementById(id);
+                }
+                else if($(this)[0].getAttribute("deselectid").split('deselected_filter_categories_')[1]){
+                    let id = $(this)[0].getAttribute("deselectid").split('deselected_filter_categories_')[1];
 
-            //фильтры со свойствами
-            $('.filter_with_options').click(function(){
-                    if($(this).attr('filter-accessible') == 'true'){
-                        if($(this).attr('filter-selected') === 'true'){
-                            $(this).attr('filter-selected', 'false');
-                            $("#filter-checked_"+$(this).attr('option_id')).css("display","none");
-                        }
-                        else{
-                            $(this).attr('filter-selected', 'true');
-                            $("#filter-checked_"+$(this).attr('option_id')).css("display","");
-                        }
-                        initOptionFilters();
-                        jsTreetoDatatable();
-                    }
-            });
-            //фильтры со свойствами
+                    $('#jstree').jstree().deselect_node(id, true);
 
-            //удаление фильтров из списка
-            $(document).on("click", ".deselect_filter", function(e) {
-                    let id = $(this)[0].getAttribute("deselectid");
-                    if(id === 'deselected_filter_toggler'){
-                        if($('#instockToggler').prop('checked') === true){
-                            $('#instockToggler').prop('checked',false);
-                        }else{
-                            $('#instockToggler').prop('checked',true);
-
+                    var myobj = document.getElementById('deselected_filter_categories_'+id);
+                }
+                else{
+                    let id = $(this)[0].getAttribute("deselectid").split('deselected_filter_')[1];
+                    let all_filters = $(".filter_with_options");
+                    $.each(all_filters,function (key,value) {
+                        if(value.getAttribute("option_id")===id){
+                            value.setAttribute("style", "cursor:pointer");
+                            value.setAttribute("filter-selected","false");
+                            return false;
                         }
-                        var myobj = document.getElementById(id);
-                    }
-                    else if (id === 'deselected_filter_storage'){
-                        $('#storages option[value=0]').prop('selected', true);
-                        var myobj = document.getElementById(id);
-                    }
-                    else if(id === 'deselected_filter_new'){
-                        if($('#new-checked').css("display") === 'none'){
-                            $('#new-checked').css("display","");
-                        }
-                        else{
-                            $('#new-checked').css("display","none");
-                        }
-                        var myobj = document.getElementById(id);
-                    }
-                    else if(id === 'deselected_filter_hits'){
-                        if($('#hits-checked').css("display") === 'none'){
-                            $('#hits-checked').css("display","");
-                        }
-                        else{
-                            $('#hits-checked').css("display","none");
-                        }
-                        var myobj = document.getElementById(id);
-                    }
-                    else if(id === 'deselected_filter_discount'){
-                        if($('#discount-checked').css("display") === 'none'){
-                            $('#discount-checked').css("display","");
-                        }
-                        else{
-                            $('#discount-checked').css("display","none");
-                        }
-                        var myobj = document.getElementById(id);
-                    }
-                    else if($(this)[0].getAttribute("deselectid").split('deselected_filter_categories_')[1]){
-                        let id = $(this)[0].getAttribute("deselectid").split('deselected_filter_categories_')[1];
-
-                        $('#jstree').jstree().deselect_node(id, true);
-
-                        var myobj = document.getElementById('deselected_filter_categories_'+id);
-                    }
-                    else{
-                        let id = $(this)[0].getAttribute("deselectid").split('deselected_filter_')[1];
-                        let all_filters = $(".filter_with_options");
-                        $.each(all_filters,function (key,value) {
-                            if(value.getAttribute("option_id")===id){
-                                value.setAttribute("style", "cursor:pointer");
-                                value.setAttribute("filter-selected","false");
-                                return false;
-                            }
-                        });
-                        var myobj = document.getElementById('deselected_filter_'+id);
-                    }
-                    myobj.remove();
-                    initOptionFilters();
-                    jsTreetoDatatable();
+                    });
+                    var myobj = document.getElementById('deselected_filter_'+id);
+                }
+                myobj.remove();
+                initOptionFilters();
+                jsTreetoDatatable();
             });
             //удаление фильтров из списка
 
         });
+
     </script>
     <script>
         var acc = document.getElementsByClassName("accordion");
@@ -1148,7 +1190,135 @@
                 }
             });
         }
+
+        function initCalc(obj){
+            let optionselected = $("option:selected", obj);
+            let product_id = obj.getAttribute('product_id');
+            let quantityinput = $('#calc_quantity_'+product_id);
+            let packageweight = $('#package_weight_'+product_id);
+            let sumwithtaxes = $('#sum_w_taxes_'+product_id);
+            let storage_id = optionselected.val();
+            if(storage_id!=='0'){
+                let min = optionselected[0].getAttribute('package_min');
+                let max = optionselected[0].getAttribute('package_max');
+
+                quantityinput[0].setAttribute('value',min);
+                quantityinput[0].setAttribute('min',min);
+                quantityinput[0].setAttribute('step',min);
+                quantityinput[0].setAttribute('data-max',max);
+                quantityinput.css("display","");
+
+                $.ajax({
+                    type: "GET",
+                    data: {
+                        product_id:product_id,
+                        storage_id:storage_id,
+                        amount:quantityinput[0].getAttribute('value')
+                    },
+                    url: "{!! @route('priceCalc') !!}",
+                    success: function(msg){
+
+                        let package_weight = document.getElementById('package_weight_'+product_id);
+                        package_weight.children[0].innerText = msg['multiplier'];
+                        package_weight.children[1].innerText = msg['package'];
+                        package_weight.children[3].innerText = msg['weight'];
+
+                        let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+                        sum_w_taxes.children[0].innerText = msg['price'];
+
+                        if(msg['limit_amount_quantity_2'] !== 0){
+                            sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                            sum_w_taxes.children[3].innerText = msg['discountamount'];
+                        }else{
+                            sum_w_taxes.children[2].innerText = '';
+                            sum_w_taxes.children[3].innerText = '';
+                        }
+
+                        if(msg['limit_amount_quantity_1'] !== 0){
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = msg['limit_amount_price_1'];
+                            limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
+                        }else{
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = '';
+                            limit_1.children[2].innerText = '-';
+                        }
+
+                        if(msg['limit_amount_quantity_2'] !== 0){
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = msg['limit_amount_price_2'];
+                            limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
+                        }else{
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = '';
+                            limit_2.children[2].innerText = '-';
+                        }
+
+                    }
+                });
+
+                packageweight.css("display","");
+
+                sumwithtaxes.css("display","");
+
+
+            }else{
+                quantityinput.css("display","none");
+
+                packageweight.css("display","none");
+
+                sumwithtaxes.css("display","none");
+
+                let limit_1 = document.getElementById('limit_1_'+product_id);
+                limit_1.children[0].innerText = '';
+                limit_1.children[2].innerText = '-';
+
+
+                let limit_2 = document.getElementById('limit_2_'+product_id);
+                limit_2.children[0].innerText = '';
+                limit_2.children[2].innerText = '-';
+            }
+        }
+
+
+        function changeamount(obj){
+            let id = obj.id;
+
+            let product_id = id.substr(14);
+            let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
+            let storage_id = optionselected.val();
+            let amount = obj.value;
+            $.ajax({
+                type: "GET",
+                data: {
+                    product_id:product_id,
+                    storage_id:storage_id,
+                    amount:amount
+                },
+                url: "{!! @route('priceCalc') !!}",
+                success: function(msg){
+                    console.log(msg);
+
+                    let package_weight = document.getElementById('package_weight_'+product_id);
+                    package_weight.children[0].innerText = msg['multiplier'];
+                    package_weight.children[1].innerText = msg['package'];
+                    package_weight.children[3].innerText = msg['weight'];
+
+                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+                    sum_w_taxes.children[0].innerText = msg['price'];
+                    sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                    sum_w_taxes.children[3].innerText = msg['discountamount'];
+                }
+            });
+        }
+        // $('.custom-select').on('change', function (e) {
+        //     console.log(this);
+        // });
+        // $( "select" ).change(function() {
+        //     alert( "Handler for .change() called." );
+        // });
     </script>
+
     <style>
         .ui-accordion .ui-accordion-content {
             padding:0px !important;
@@ -1230,6 +1400,10 @@
         #data-table-buttons{
             max-width:100%;
         }
+
+        /*.custom-select{*/
+            /**/
+        /*}*/
     </style>
 
 @endpush

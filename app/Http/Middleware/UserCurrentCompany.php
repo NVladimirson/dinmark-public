@@ -31,9 +31,9 @@ class UserCurrentCompany
 				['holding','<>',0]
 			])->orWhere('id',$curent_company->id)->get();
 
-			$logo = env('DINMARK_URL').'images/empty-avatar.png';
+			$logo = \Config::get('values.dinmarkurl').'images/empty-avatar.png';
 			if($curent_company->logo){
-				$logo = env('DINMARK_URL').'images/company/'.$curent_company->logo;
+				$logo = \Config::get('values.dinmarkurl').'images/company/'.$curent_company->logo;
 			}
 
             $wishlists_count = CatalogServices::getByCompany()->count();

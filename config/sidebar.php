@@ -45,7 +45,10 @@ return [
 				],[
 					'url' => 'implementations',
 					'title' => 'menu.implementations'
-				],
+				],[
+                    'url' => 'purchases',
+                    'title' => 'menu.purchases'
+                ],
 			]
 		],[
 			'icon' => 'fas fa-exchange-alt',
