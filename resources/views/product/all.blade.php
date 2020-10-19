@@ -1226,7 +1226,7 @@
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                         sum_w_taxes.children[0].innerText = msg['price'];
 
-                        if(msg['limit_amount_quantity_2'] !== 0){
+                        if(msg['limit_amount_quantity_2'] !== "0"){
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
                         }else{
@@ -1234,7 +1234,7 @@
                             sum_w_taxes.children[3].innerText = '';
                         }
 
-                        if(msg['limit_amount_quantity_1'] !== 0){
+                        if(msg['limit_amount_quantity_1'] !== "0"){
                             let limit_1 = document.getElementById('limit_1_'+product_id);
                             limit_1.children[0].innerText = msg['limit_amount_price_1'];
                             limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
@@ -1244,7 +1244,7 @@
                             limit_1.children[2].innerText = '-';
                         }
 
-                        if(msg['limit_amount_quantity_2'] !== 0){
+                        if(msg['limit_amount_quantity_2'] !== "0"){
                             let limit_2 = document.getElementById('limit_2_'+product_id);
                             limit_2.children[0].innerText = msg['limit_amount_price_2'];
                             limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
