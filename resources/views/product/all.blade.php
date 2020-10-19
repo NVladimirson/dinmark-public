@@ -1245,7 +1245,7 @@
                             limit_1.children[2].innerText = '-';
                         }
 
-                        if(msg['limit_amount_quantity_2'] === 0){
+                        if(msg['limit_amount_quantity_2'] === 0 || msg['limit_amount_quantity_2'] === '0'){
                             let limit_2 = document.getElementById('limit_2_'+product_id);
                             limit_2.children[0].innerText = '';
                             limit_2.children[2].innerText = '-';
