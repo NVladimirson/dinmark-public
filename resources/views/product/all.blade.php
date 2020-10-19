@@ -85,29 +85,29 @@
                                 <th colspan="4" class="text-nowrap" style="text-align: center">Калькулятор вартості</th>
                             </tr>
                             <tr>
-                                <th></th>
-                                <th>
+                                <th style="text-align: center"></th>
+                                <th style="text-align: center">
                                     <div class="checkbox checkbox-css">
                                         <input type="checkbox" id="select_all_products">
                                         <label for="select_all_products"> </label>
                                     </div>
                                 </th>
-                                <th data-orderable="false">@lang('product.table_header_photo')</th>
-                                <th class="text-nowrap" style="max-width: 150px;">@lang('product.table_header_name/article')</th>
+                                <th data-orderable="false" style="text-align: center;max-width: 102px">@lang('product.table_header_photo')</th>
+                                <th class="text-nowrap" style="max-width: 150px;text-align: center">@lang('product.table_header_name/article')</th>
                                 {{--<th class="text-nowrap">@lang('product.table_header_name')</th>--}}
                                 {{--<th class="text-nowrap">@lang('product.table_header_article')</th>--}}
-                                <th>@lang('product.table_header_price_retail')</th>
-                                <th class="text-nowrap">@lang('product.table_header_price')</th>
-                                <th class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
-                                <th class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
-                                <th class="text-nowrap">@lang('product.table_header_storage')</th>
-                                <th>
+                                <th style="text-align: center;max-width: 45px" >@lang('product.table_header_price_retail')</th>
+                                <th class="text-nowrap" style="text-align: center;max-width: 55px">@lang('product.table_header_price')</th>
+                                <th class="text-nowrap" style="text-align: center;min-width: 55px">@lang('product.table_header_price_porog_1')</th>
+                                <th class="text-nowrap" style="text-align: center;min-width: 55px">@lang('product.table_header_price_porog_2')</th>
+                                <th class="text-nowrap" style="text-align: center;max-width: 175px">@lang('product.table_header_storage')</th>
+                                <th style="text-align: center">
                                     Кількість
                                 </th>
-                                <th>
+                                <th style="text-align: center">
                                     Упак./Вага
                                 </th>
-                                <th>
+                                <th style="text-align: center">
                                     Сума з ПДВ
                                 </th>
                                 <th style="max-width: 25px"></th>
@@ -1226,7 +1226,8 @@
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                         sum_w_taxes.children[0].innerText = msg['price'];
 
-                        if(msg['limit_amount_quantity_2'] !== "0"){
+                        if(msg['limit_amount_quantity_2'] !== 0){
+                            console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
                         }else{
@@ -1234,7 +1235,7 @@
                             sum_w_taxes.children[3].innerText = '';
                         }
 
-                        if(msg['limit_amount_quantity_1'] !== "0"){
+                        if(msg['limit_amount_quantity_1'] !== 0){
                             let limit_1 = document.getElementById('limit_1_'+product_id);
                             limit_1.children[0].innerText = msg['limit_amount_price_1'];
                             limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
@@ -1244,14 +1245,14 @@
                             limit_1.children[2].innerText = '-';
                         }
 
-                        if(msg['limit_amount_quantity_2'] !== "0"){
-                            let limit_2 = document.getElementById('limit_2_'+product_id);
-                            limit_2.children[0].innerText = msg['limit_amount_price_2'];
-                            limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
-                        }else{
+                        if(msg['limit_amount_quantity_2'] === 0){
                             let limit_2 = document.getElementById('limit_2_'+product_id);
                             limit_2.children[0].innerText = '';
                             limit_2.children[2].innerText = '-';
+                        }else{
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = msg['limit_amount_price_2'];
+                            limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
                         }
 
                     }
