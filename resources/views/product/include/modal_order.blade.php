@@ -17,7 +17,7 @@
                                 <option value="{{$order->id}}">{{$order->id}} ({{Carbon\Carbon::parse($order->date_add)->format('d.m.Y')}})</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div>product_id
                     <div class="form-group m-b-15 storage-limit-info">
                         <strong>@lang('product.modal_order_warning_1')<span class="order-storage-amount"></span>@lang('product.modal_order_warning_2')</strong>
                     </div>

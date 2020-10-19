@@ -35,8 +35,9 @@ return [
 	'select_product'	=> 'Выберите товар',
 	'add_product_btn'	=> 'Добавить товар',
 
-	'table_header_name' => 'Название',
-	'table_header_article' => 'Артикул Dinmark',
+    'table_header_photo' => 'Фото',
+	'table_header_name_article' => 'Название/Артикул Dinmark',
+//	'table_header_article' => 'Артикул Dinmark',
 	'table_header_holding_article' => 'Мой Артикул',
 	'table_header_price' => 'Цена (100шт)',
 	'table_header_user_price' => 'Цена с наценкой',

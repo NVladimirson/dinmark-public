@@ -19,6 +19,7 @@ use App\Models\WlVideo;
 use Carbon\Carbon;
 use LaravelLocalization;
 use Config;
+use Illuminate\Support\Str;
 
 class Product
 {
@@ -128,7 +129,7 @@ class Product
 	public static function getBasePrice($product){
 		$instance =  static::getInstance();
 
-        $storage = $product->storages->firstWhere('is_main',1);
+		$storage = $product->storages->firstWhere('is_main',1);
 
         $price = 0;
         if($storage){
@@ -144,6 +145,12 @@ class Product
 		return number_format($price,2,'.',' ');
 	}
 
+    public static function getPriceUnformatted($product,$storage_id = null)
+    {
+        $instance = static::getInstance();
+        return $instance->calcPrice($product, $storage_id);
+
+    }
 	public static function getPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
 		$price = $instance->calcPrice($product,$storage_id );
@@ -176,7 +183,8 @@ class Product
 
         $storage = null;
         if(isset($storage_id)){
-            $storage = $product->storages->firstWhere('id',$storage_id);
+            //$storage = $product->storages->firstWhere('id',$storage_id);
+            $storage = $product->storages->firstWhere('storage_id',$storage_id);
         }else{
             $storage = $product->storages->firstWhere('is_main',1);
         }
@@ -310,6 +318,39 @@ class Product
 		$out[] = $kop.' '.$instance->morph($kop,$unit[0][0],$unit[0][1],$unit[0][2]); // kop
 		return trim(preg_replace('/ {2,}/', ' ', join(' ',$out)));
 	}
+
+	public static function getStingDays($term){
+        if(Str::length($term) == 1){
+            if(intval($term) == 1){
+                $days =  'роб. доба';
+            }
+            else if((intval($term) <= 4) && intval($term) >= 2){
+                $days =  'роб. доби';
+            }
+            else{
+                $days =  'роб. діб';
+            }
+        }
+        else{
+            $tens = substr($term,-2);
+            $ones = substr($term,-1);
+            if($tens == 1){
+                $days =  'роб. діб';
+            }
+            else{
+                if(intval($ones) == 1){
+                    $days =  'роб. доба';
+                }
+                else if((intval($term) <= 4) && intval($term) >= 2){
+                    $days =  'роб. доби';
+                }
+                else{
+                    $days =  'роб. діб';
+                }
+            }
+        }
+        return $days;
+    }
 
 	/**
 	 * Склоняем словоформу

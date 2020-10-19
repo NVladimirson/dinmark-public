@@ -390,10 +390,10 @@ class="hide" style="display: block;">
                                 <a class="dropdown navbar-user">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         @if(auth()->user()->photo)
-                                            <img class="navbar-user-img" src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}"
+                                            <img class="navbar-user-img" src="{{\Config::get('values.dinmarkurl')}}images/profile/{{auth()->user()->photo}}"
                                             alt="{{auth()->user()->name}}" />
                                             @else
-                                            <img class="navbar-user-img" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                                            <img class="navbar-user-img" src="{{\Config::get('values.dinmarkurl')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
                                         @endif
 
                                         <span class="d-none d-md-inline">{{auth()->user()->name}}</span> <b class="caret"></b>

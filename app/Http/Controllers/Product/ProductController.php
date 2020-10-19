@@ -4,21 +4,11 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 
-use App\Jobs\PhotoOptions;
-use App\Jobs\ProductOptions;
-use App\Models\Content;
-use App\Models\Order\OrderProduct;
-use App\Models\Product\GetPrice;
+
 use App\Models\Product\Product;
-use App\Models\Product\ProductCategory;
-use App\Models\Product\ProductOption;
-use App\Models\Product\ProductOptionName;
 use App\Services\Product\CategoryServices;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
+use App\Services\Product\Product as ProductServices;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use App\Services\Order\OrderServices;
 use App\Services\Product\CatalogServices;
 use Carbon\Carbon;
@@ -93,12 +83,18 @@ class ProductController extends Controller
         }
 
         $valid_options = ['checked' => $option_map,'available' => $available];
-        info($valid_options);
         return $valid_options;
 
     }
 
     public function test(Request $request){
+        $product_id = 65572;
+        $storage_id = 14;
+        $amount = 100;
+        $productinfo = Product::find($product_id);
+        dd($productinfo->storages->firstWhere('storage_id',$storage_id));
+
+
 
     }
 
@@ -223,91 +219,88 @@ class ProductController extends Controller
 
                 return '<img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">';
             })
-            ->addColumn('name_html', function (Product $product){
+            ->addColumn('name_article_html', function (Product $product){
                 $name = \App\Services\Product\Product::getName($product);
-                return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
+                return '<a class="data-product_name" href="'
+                    .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
+                    '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
             })
-            ->addColumn('article_show_html', function (Product $product) {
-                return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+//            ->addColumn('name_html', function (Product $product){
+//                $name = \App\Services\Product\Product::getName($product);
+//                return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
+//            })
+//            ->addColumn('article_show_html', function (Product $product) {
+//                return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+//            })
+            ->addColumn('retail_price', function (Product $product) {
+                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    return ProductServices::getBasePrice($product);
+                }
+                return number_format(0,2,'.',' ');
             })
             ->addColumn('user_price', function (Product $product) {
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return \App\Services\Product\Product::getPrice($product);
+                    return ProductServices::getPrice($product);
                 }
                 return number_format(0,2,'.',' ');
             })
             ->addColumn('html_limit_1', function (Product $product) {
-                if($product->limit_1 > 0){
-                    if(\App\Services\Product\Product::hasAmount($product->storages)){
-                        return \App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
-                    }
-                }
+//                if($product->l > 0){
+//                    if(\App\Services\Product\Product::hasAmount($product->storages)){
+//                        return '<p style="color: #96ca0a">'.ProductServices::getPriceWithCoef($product,0.97).'<br> > '.$product->limit_1.'шт.</p>';
+////                        return \App\Services\Product\Product::getPriceWithCoef($product,0.97).
+////                            ' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
+//
+//                    }
+//                }
 
-                return '-';
+                return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;">
+                        <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
             })
             ->addColumn('html_limit_2', function (Product $product) {
-                if($product->limit_2 > 0){
-                    if(\App\Services\Product\Product::hasAmount($product->storages)){
-                        return \App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2]);
-                    }
-                }
 
-                return '-';
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674">
+                        <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
+
             })
             ->addColumn('storage_html', function (Product $product) {
                 $value = trans('product.storage_empty');
+                $emptyvalue = trans('product.storage_choose');
                 if($product->storages){
                     $storages = $product->storages;
                     if(count($storages)){
-                        $value = '<select class="custom-select" id="storage_product_'.$product->id.'">';
-
+                        $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
+                        $value .= "<option value='0'>$emptyvalue</option>";
                         foreach ($storages as $key => $storage) {
                             $term = $storage->storage->term;
-                            if(Str::length($term) == 1){
-                                if(intval($term) == 1){
-                                    $days =  'роб. доба';
-                                }
-                                else if((intval($term) <= 4) && intval($term) >= 2){
-                                    $days =  'роб. доби';
-                                }
-                                else{
-                                    $days =  'роб. діб';
-                                }
-                            }
-                            else{
-                                $tens = substr($term,-2);
-                                $ones = substr($term,-1);
-                                if($tens == 1){
-                                    $days =  'роб. діб';
-                                }
-                                else{
-                                    if(intval($ones) == 1){
-                                        $days =  'роб. доба';
-                                    }
-                                    else if((intval($term) <= 4) && intval($term) >= 2){
-                                        $days =  'роб. доби';
-                                    }
-                                    else{
-                                        $days =  'роб. діб';
-                                    }
-                                }
-                            }
-
-                            //$value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).
-                            //' / '.$term.' '.$days."<br>";
+                            $days = ProductServices::getStingDays($term);
                             $name = CatalogServices::dayrounder($storage->amount).
                             ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-//                            if($key == 0){
-//                                $value .= '<option selected value="'.$storage->storage->id.'">'.$name.'</option>';
-//                            }
-                            $value .= '<option value="'.$storage->storage->id.'">'.$name.'</option>';
+                            $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'" 
+                            package_max="'.$storage->amount.'">'.$name.'</option>';
                         }
                         $value .= '</select>';
                     }
                 }
                 return $value;
             })
-
+            ->addColumn('calc_quantity', function (Product $product) {
+                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    return '<input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;display: none"
+                                           placeholder="@lang(\'product.quantity_order\')" value="0" min="0" step="10" data-max="1000"/>';
+                }
+            })
+            ->addColumn('package_weight', function (Product $product) {
+                return '
+                <p id="package_weight_'.$product->id.'" style="display: none">
+                <span class="multiplier"> </span> x <span class="package"> </span><br>
+                <span class="weight"></span>
+                </p>';
+            })
+            ->addColumn('sum_w_taxes', function (Product $product) {
+                return '<p id="sum_w_taxes_'.$product->id.'" style="display: none"><span class="price">  </span> <br>
+                <span class="discount">  </span> <span class="discountamount">  </span> </p>';
+            })
             ->addColumn('actions', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
                 $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
@@ -346,13 +339,75 @@ class ProductController extends Controller
                     $product->whereIn('id',$ids);
                 }
             }, true)
-            ->rawColumns(['name_html','article_show_html','image_html','check_html','actions','switch','storage_html'])
+            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight'])
             ->toJson();
     }
 
     public function getNode(Request $request){
         $tree = CategoryServices::getNodeAjax($request->id);
         return array_values($tree);
+    }
+
+    public function priceCalc(Request $request){
+        info($request);
+        $product_id = $request->product_id;
+        $storage_id = $request->storage_id;
+        $amount = $request->amount;
+
+        $productinfo = Product::find($product_id);
+        $storageinfo = $productinfo->storages->where('storage_id',$storage_id)->first();
+        $package = $storageinfo->package;
+        $three_percent_discount_limit = $storageinfo->limit_1;
+        $seven_percent_discount_limit = $storageinfo->limit_2;
+
+        $unit = $productinfo->unit;
+
+        info($amount);
+        info($three_percent_discount_limit);
+        info($seven_percent_discount_limit);
+
+
+        if (($amount >= $seven_percent_discount_limit) && $seven_percent_discount_limit){
+            $price = ProductServices::getPriceWithCoef($productinfo,0.93);
+            $discount = '7%';
+        }
+        else if(($amount >= $three_percent_discount_limit) && $three_percent_discount_limit){
+            $price = ProductServices::getPriceWithCoef($productinfo,0.97);
+            $discount = '3%';
+        }
+        else{
+            $price = ProductServices::getPriceUnformatted($productinfo,$storage_id);
+            $discount = '0%';
+        }
+
+
+        $multiplier = $amount/$package - $amount%$package;
+
+        preg_match_all('!\d+!', $unit, $isnumber);
+        if(!empty($isnumber[0])){
+            $unitnumber = $isnumber[0][0];
+        }else{
+            $unitnumber = 1;
+        }//сори
+
+        $weight = $productinfo->weight * ($amount/$unitnumber);
+        info('DISCOUNT '.$discount);
+        info('MULT '.$multiplier);
+        info('PRICE '.$price);
+        $response = [
+            'multiplier' => $multiplier,
+            'package' => $package,
+            'weight' => number_format($weight,3,'.',' '),
+            'price' => number_format($multiplier*$price,2,'.',' '),
+            'discount' => $discount,
+            'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storage_id) - $multiplier*$price,2,'.',' '),
+            'limit_amount_price_1' => ProductServices::getPriceWithCoef($productinfo,0.97),
+            'limit_amount_price_2' => ProductServices::getPriceWithCoef($productinfo,0.93),
+            'limit_amount_quantity_1' => $three_percent_discount_limit,
+            'limit_amount_quantity_2' => $seven_percent_discount_limit,
+        ];
+
+        return $response;
     }
 
     public function show($id){

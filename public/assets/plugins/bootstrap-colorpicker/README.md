@@ -86,7 +86,7 @@ dependencies.
       <h1>Bootstrap Colorpicker Demo</h1>
       <input id="demo" type="text" class="form-control" value="rgb(255, 128, 0)" />
   </div>
-  <script src="//code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="//code.jquery.com/jquery-3.3.fixedHeader.min.js"></script>
   <script src="//cdn.rawgit.com/twbs/bootstrap/v4.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="dist/js/bootstrap-colorpicker.js"></script>
   <script>

@@ -197,13 +197,19 @@ class CatalogController extends Controller
 
 				return '<img src="'.$src.'" width="80">';
 			})
-			->addColumn('name_html', function (Product $product){
-				$name = \App\Services\Product\Product::getName($product);
-				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
-			})
-			->addColumn('article_show_html', function (Product $product) {
-				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
-			})
+            ->addColumn('name_article_html', function (Product $product){
+                $name = \App\Services\Product\Product::getName($product);
+                return '<a class="data-product_name" href="'
+                    .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
+                    '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+            })
+//			->addColumn('name_html', function (Product $product){
+//				$name = \App\Services\Product\Product::getName($product);
+//				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
+//			})
+//			->addColumn('article_show_html', function (Product $product) {
+//				return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+//			})
 
 			->addColumn('article_holding', function (Product $product) use ($holdingId) {
 				$article = '';
@@ -317,7 +323,7 @@ class CatalogController extends Controller
 					$product->whereIn('id',$ids);
 				}
 			}, true)
-			->rawColumns(['name_html','article_show_html','image_html','check_html','actions','article_holding','storage_html'])
+			->rawColumns(['name_article_html','image_html','check_html','actions','article_holding','storage_html'])
 			->toJson();
 	}
 
