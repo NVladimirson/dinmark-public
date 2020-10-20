@@ -1284,6 +1284,12 @@
                 let limit_2 = document.getElementById('limit_2_'+product_id);
                 limit_2.children[0].innerText = '';
                 limit_2.children[2].innerText = '-';
+
+                let retail_price = document.getElementById('retail_price_'+product_id);
+                retail_price.children[0].innerText = '';
+
+                let user_price = document.getElementById('user_price_'+product_id);
+                user_price.children[0].innerText = '';
             }
         }
 
