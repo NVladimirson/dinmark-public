@@ -145,6 +145,25 @@ class Product
 		return number_format($price,2,'.',' ');
 	}
 
+    public static function getBasePriceUnformatted($product){
+        $instance =  static::getInstance();
+
+        $storage = $product->storages->firstWhere('is_main',1);
+
+        $price = 0;
+        if($storage){
+            $currency = $instance->currencies->firstWhere('code',$storage->currency);
+            $price = $storage->price;
+
+            if($currency){
+                $price *= $currency->currency;
+            }
+        }
+        $price *= 1.2 * 2;
+
+        return $price;
+    }
+
     public static function getPriceUnformatted($product,$storage_id = null)
     {
         $instance = static::getInstance();
@@ -234,6 +253,11 @@ class Product
 		$price = $instance->calcPrice($product);
 		return number_format($price * $coef,2,'.',' ');
 	}
+
+    public static function getPriceWithCoefUnformatted($product, $coef){
+        $instance =  static::getInstance();
+        return $instance->calcPrice($product);
+    }
 
     public static function hasAmount($storages, $storage_id = null)
     {

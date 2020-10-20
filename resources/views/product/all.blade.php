@@ -1217,6 +1217,11 @@
                     },
                     url: "{!! @route('priceCalc') !!}",
                     success: function(msg){
+                        let retail_price = document.getElementById('retail_price_'+product_id);
+                        retail_price.children[0].innerText = msg['retail_price'];
+
+                        let user_price = document.getElementById('user_price_'+product_id);
+                        user_price.children[0].innerText = msg['user_price'];
 
                         let package_weight = document.getElementById('package_weight_'+product_id);
                         package_weight.children[0].innerText = msg['multiplier'];
@@ -1226,26 +1231,27 @@
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                         sum_w_taxes.children[0].innerText = msg['price'];
 
-                        if(msg['limit_amount_quantity_2'] !== '0'){
-                            console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
-                            sum_w_taxes.children[2].innerText = '-'+msg['discount'];
-                            sum_w_taxes.children[3].innerText = msg['discountamount'];
-                        }else{
+                        if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                            console.log(msg['limit_amount_quantity_2']);
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
+                            //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
+                        }else{
+                            sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                            sum_w_taxes.children[3].innerText = msg['discountamount'];
                         }
 
-                        if(msg['limit_amount_quantity_1'] !== '0'){
-                            let limit_1 = document.getElementById('limit_1_'+product_id);
-                            limit_1.children[0].innerText = msg['limit_amount_price_1'];
-                            limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
-                        }else{
+                        if(msg['limit_amount_quantity_1'] === '0' || msg['limit_amount_quantity_1'] === 0){
                             let limit_1 = document.getElementById('limit_1_'+product_id);
                             limit_1.children[0].innerText = '';
                             limit_1.children[2].innerText = '-';
+                        }else{
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = msg['limit_amount_price_1'];
+                            limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
                         }
 
-                        if(msg['limit_amount_quantity_2'] === '0'){
+                        if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
                             let limit_2 = document.getElementById('limit_2_'+product_id);
                             limit_2.children[0].innerText = '';
                             limit_2.children[2].innerText = '-';
@@ -1299,6 +1305,11 @@
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
                     console.log(msg);
+                    let retail_price = document.getElementById('retail_price_'+product_id);
+                    retail_price.children[0].innerText = msg['retail_price'];
+
+                    let user_price = document.getElementById('user_price_'+product_id);
+                    user_price.children[0].innerText = msg['user_price'];
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
@@ -1307,8 +1318,18 @@
 
                     let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                     sum_w_taxes.children[0].innerText = msg['price'];
-                    sum_w_taxes.children[2].innerText = '-'+msg['discount'];
-                    sum_w_taxes.children[3].innerText = msg['discountamount'];
+
+                    if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                        console.log(msg['limit_amount_quantity_2']);
+                        sum_w_taxes.children[2].innerText = '';
+                        sum_w_taxes.children[3].innerText = '';
+                        //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
+                    }else{
+                        sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                        sum_w_taxes.children[3].innerText = msg['discountamount'];
+                    }
+
+
                 }
             });
         }
