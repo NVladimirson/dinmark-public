@@ -233,16 +233,18 @@ class ProductController extends Controller
 //                return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
 //            })
             ->addColumn('retail_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return ProductServices::getBasePrice($product);
-                }
-                return number_format(0,2,'.',' ');
+//                if(\App\Services\Product\Product::hasAmount($product->storages)){
+//                    return ProductServices::getBasePrice($product);
+//                }
+//                return number_format(0,2,'.',' ');
+                return '<p id="retail_price_'.$product->id.'"><span></span></p>';
             })
             ->addColumn('user_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return ProductServices::getPrice($product);
-                }
-                return number_format(0,2,'.',' ');
+//                if(\App\Services\Product\Product::hasAmount($product->storages)){
+//                    return ProductServices::getPrice($product);
+//                }
+//                return number_format(0,2,'.',' ');
+                return '<p id="user_price_'.$product->id.'"><span></span></p>';
             })
             ->addColumn('html_limit_1', function (Product $product) {
 //                if($product->l > 0){
@@ -258,7 +260,6 @@ class ProductController extends Controller
                         <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
             })
             ->addColumn('html_limit_2', function (Product $product) {
-
                     return '<p id="limit_2_'.$product->id.'" style="color: #f0c674">
                         <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
 
@@ -339,7 +340,7 @@ class ProductController extends Controller
                     $product->whereIn('id',$ids);
                 }
             }, true)
-            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight'])
+            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price'])
             ->toJson();
     }
 
@@ -349,7 +350,6 @@ class ProductController extends Controller
     }
 
     public function priceCalc(Request $request){
-        info($request);
         $product_id = $request->product_id;
         $storage_id = $request->storage_id;
         $amount = $request->amount;
@@ -361,12 +361,6 @@ class ProductController extends Controller
         $seven_percent_discount_limit = $storageinfo->limit_2;
 
         $unit = $productinfo->unit;
-
-        info($amount);
-        info($three_percent_discount_limit);
-        info($seven_percent_discount_limit);
-
-
         if (($amount >= $seven_percent_discount_limit) && $seven_percent_discount_limit){
             $price = ProductServices::getPriceWithCoef($productinfo,0.93);
             $discount = '7%';
@@ -391,10 +385,15 @@ class ProductController extends Controller
         }//сори
 
         $weight = $productinfo->weight * ($amount/$unitnumber);
-        info('DISCOUNT '.$discount);
-        info('MULT '.$multiplier);
-        info('PRICE '.$price);
+
+        $retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo)*$multiplier,2,'.',' ');
+
+
+        $user_price = number_format(ProductServices::getPriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
+
         $response = [
+            'retail_price' => $retail_price,
+            'user_price' => $user_price,
             'multiplier' => $multiplier,
             'package' => $package,
             'weight' => number_format($weight,3,'.',' '),
