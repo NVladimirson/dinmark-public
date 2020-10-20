@@ -256,7 +256,7 @@ class Product
 
     public static function getPriceWithCoefUnformatted($product, $coef){
         $instance =  static::getInstance();
-        return $instance->calcPrice($product);
+        return $coef * ($instance->calcPrice($product));
     }
 
     public static function hasAmount($storages, $storage_id = null)
