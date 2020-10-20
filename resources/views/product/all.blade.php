@@ -3,81 +3,82 @@
 @section('title', 'Managed Tables - Buttons')
 
 @push('css')
-    <link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
-    <link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
+<link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+<link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
+<link href="/assets/plugins/select2/dist/css/table-ptoduct.css" rel="stylesheet" />
 @endpush
 
 @section('content')
 
-    @if(isset($breadcrumbs))
-        {{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
-    @else
-        {{ Breadcrumbs::render('product.all') }}
-    @endif
+@if(isset($breadcrumbs))
+{{ Breadcrumbs::render('product.categories',$breadcrumbs) }}
+@else
+{{ Breadcrumbs::render('product.all') }}
+@endif
 
-    @php
-        use Illuminate\Support\Str;
-    @endphp
+@php
+use Illuminate\Support\Str;
+@endphp
 
-    <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
-    <!-- begin row -->
-    <div class="row">
-        <div class="col-xl-12">
-            <!-- begin panel -->
-            <div class="panel panel-primary">
-                <!-- begin panel-heading -->
-                <div class="panel-heading">
-                    <h4 class="panel-title">@lang('product.all_tab_name')</h4>
-                </div>
-                <!-- end panel-heading -->
-                <!-- begin panel-body -->
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            @if(Request::get('instock'))
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="instockToggler" checked>
-                                    <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
-                                </div>
-                            @else
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="instockToggler">
-                                    <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
-                                </div>
-                            @endif
+<h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
+<!-- begin row -->
+<div class="row wrap-table">
+    <div class="col-xl-9">
+        <!-- begin panel -->
+        <div class="panel panel-primary">
+            <!-- begin panel-heading -->
+            <div class="panel-heading">
+                <h4 class="panel-title">@lang('product.all_tab_name')</h4>
+            </div>
+            <!-- end panel-heading -->
+            <!-- begin panel-body -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xl-3">
+                        @if(Request::get('instock'))
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="instockToggler" checked>
+                            <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
                         </div>
-
-                        <div class="col-xl-4">
-                            <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
-                                <option value="0">@lang('product.mass_actions.select')</option>
-                                <option value="wishlist">@lang('product.mass_actions.add-to-wishlist')</option>
-                                <option value="order">@lang('product.mass_actions.add-to-order')</option>
-                            </select>
+                        @else
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="instockToggler">
+                            <label class="custom-control-label" for="instockToggler">	@lang('product.in_stock_button_name')</label>
                         </div>
-
-                        <div class="col-xl-5">
-                            <div class="right-align m-b-15">
-                                @if(isset($terms))
-                                    <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
-                                        <option value="0">@lang('product.select_term')</option>
-                                        @foreach($terms as $key => $term)
-                                            <option value="{{$key}}">{!! $term !!}</option>
-                                        @endforeach
-                                    </select>
-                                @endif
-                            </div>
-                        </div>
-
+                        @endif
                     </div>
 
-                    <div class="table-scroll-container">
-                        <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
-                            <thead>
+                    <div class="col-xl-4">
+                        <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
+                            <option value="0">@lang('product.mass_actions.select')</option>
+                            <option value="wishlist">@lang('product.mass_actions.add-to-wishlist')</option>
+                            <option value="order">@lang('product.mass_actions.add-to-order')</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xl-5">
+                        <div class="right-align m-b-15">
+                            @if(isset($terms))
+                            <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
+                                <option value="0">@lang('product.select_term')</option>
+                                @foreach($terms as $key => $term)
+                                <option value="{{$key}}">{!! $term !!}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="table-scroll-container">
+                    <table id="data-table-buttons" class="table-responsive table-striped table-bordered table-td-valign-middle">
+                        <thead>
                             <tr>
                                 <th colspan="4" class="text-nowrap" style="text-align: center">Інформація</th>
                                 <th colspan="4" class="text-nowrap" style="text-align: center">Ціна(100 шт.)</th>
@@ -112,164 +113,163 @@
                                 </th>
                                 <th style="max-width: 25px"></th>
                             </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- end panel-body -->
             </div>
-            <!-- end panel -->
+            <!-- end panel-body -->
         </div>
+        <!-- end panel -->
     </div>
-    <div class="row">
-        <div class="col-xl-3">
 
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4 class="panel-title">@lang('product.right_widget_name')</h4>
-                </div>
-                <div id="reload" style="display:none"></div>
-                <div id="selected_products" style="display:none"></div>
-                <div id="filters_selected">
+    <div class="col-xl-3 responsive-width">
 
-                </div>
-                <div id="accordion" class=".ui-helper-reset">
-                    <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
-                    <div id="jstree" class="content1"></div>
-
-                    <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
-                    <div id="optionfilters" class="content1">
-                        @foreach($filters as $option_id=>$filterdata)
-                            <h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
-                            <div class="filter" id="filter">
-                                @php $i=0;@endphp
-                                @foreach($filterdata['options'] as $branch_id => $data)
-
-                                    @if($i % 2 == 0)
-                                        <div class="row" style="margin: auto">
-                                            @endif
-
-                                            <div class="col-md-12">
-                                                <div class="row" style="margin: auto">
-                                                    @if(isset($data['data']['photo']))
-                                                        @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
-                                                    '/'.$data['data']['photo']; @endphp
-                                                        <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-                                                    @else
-                                                        @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-                                                        <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-                                                    @endif
-                                                    <p class="filter_with_options"
-                                                       option_id="{!! $data['data']['option'] !!}"
-                                                       option_name="{!! $data['data']['name'] !!}"
-                                                       option_filter_name = "{!! $filterdata['data']['name'] !!}"
-                                                       filter-selected="false"
-                                                       filter-accessible="true"
-                                                       style="cursor:pointer">{!! $data['data']['name'] !!}
-                                                        {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
-                                                        {{--aria-hidden="true" style="display: none"></i>--}}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            @if($i % 2 == 1)
-                                        </div>
-                                    @endif
-
-                                    @php $i++; @endphp
-                                @endforeach
-                                @if($i % 2 != 0)
-                            </div>
-                            @endif
-                    </div>
-                    @endforeach
-                </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">@lang('product.right_widget_name')</h4>
+            </div>
+            <div id="reload" style="display:none"></div>
+            <div id="selected_products" style="display:none"></div>
+            <div id="filters_selected">
 
             </div>
+            <div id="accordion" class=".ui-helper-reset">
+                <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
+                <div id="jstree" class="content1"></div>
 
-            <div id="filters">
-                {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
-                <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
-                    <h5 style="text-align: center">
-                        <a href="#" id="new">
-                            <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
-                        <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
+                <div id="optionfilters" class="content1">
+                    @foreach($filters as $option_id=>$filterdata)
+                    <h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
+                    <div class="filter" id="filter">
+                        @php $i=0;@endphp
+                        @foreach($filterdata['options'] as $branch_id => $data)
+
+                        @if($i % 2 == 0)
+                        <div class="row" style="margin: auto">
+                            @endif
+
+                            <div class="col-md-12">
+                                <div class="row" style="margin: auto">
+                                    @if(isset($data['data']['photo']))
+                                    @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
+                                    '/'.$data['data']['photo']; @endphp
+                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                    @else
+                                    @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
+                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                    @endif
+                                    <p class="filter_with_options"
+                                    option_id="{!! $data['data']['option'] !!}"
+                                    option_name="{!! $data['data']['name'] !!}"
+                                    option_filter_name = "{!! $filterdata['data']['name'] !!}"
+                                    filter-selected="false"
+                                    filter-accessible="true"
+                                    style="cursor:pointer">{!! $data['data']['name'] !!}
+                                    {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
+                                    {{--aria-hidden="true" style="display: none"></i>--}}
+                                </p>
+                            </div>
+                        </div>
+
+                        @if($i % 2 == 1)
+                    </div>
+                    @endif
+
+                    @php $i++; @endphp
+                    @endforeach
+                    @if($i % 2 != 0)
+                </div>
+                @endif
+            </div>
+            @endforeach
+        </div>
+
+    </div>
+
+    <div id="filters">
+        {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
+        <div style="height: 10%;padding: 10px;background-color: #E4F1DD">
+            <h5 style="text-align: center">
+                <a href="#" id="new">
+                    <i class="fa fa-bullhorn" aria-hidden="true"></i>  @lang('product.filters.new')</a>
+                    <i id="new-checked" class="fas fa-check-circle" style="display: none"></i></h5>
                 </div>
                 <div style="height: 10%;padding: 10px;background-color: #FCF2DF">
                     <h5 style="text-align: center"><a href="#" id="hits">
-                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>  @lang('product.filters.hits')</a>
                         <i id="hits-checked" class="fas fa-check-circle" style="display: none"></i></h5>
-                </div>
-                <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
-                    <h5 style="text-align: center"><a href="#" id="discount">
+                    </div>
+                    <div style="height: 10%;padding: 10px;background-color: #FCE1DF">
+                        <h5 style="text-align: center"><a href="#" id="discount">
                             <i class="fa fa-percent" aria-hidden="true"></i>  @lang('product.filters.discount')</a>
-                        <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                            <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- end row -->
+            <!-- end row -->
 
-    @include('product.include.modal_wishlist')
-    @include('product.include.modal_order')
-    @include('product.include.modal_order_multiple')
-    @include('product.include.modal_get_price')
-@endsection
+            @include('product.include.modal_wishlist')
+            @include('product.include.modal_order')
+            @include('product.include.modal_order_multiple')
+            @include('product.include.modal_get_price')
+            @endsection
 
-@push('scripts')
-    <script src="/assets/plugins/jstree/dist/jstree.min.js"></script>
-    <script src="/assets/plugins/jstree/dist/jstree.js"></script>
-    <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-    <script src="/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="/assets/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-    <script src="/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-    <script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
+            @push('scripts')
+            <script src="/assets/plugins/jstree/dist/jstree.min.js"></script>
+            <script src="/assets/plugins/jstree/dist/jstree.js"></script>
+            <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+            <script src="/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+            <script src="/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+            <script src="/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+            <script src="/assets/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+            <script src="/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+            <script src="/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
+            <script src="/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
+            <script src="/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
 
-    <script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
-    <script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
-    <script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
-    <script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
-    <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+            <script src="/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
+            <script src="/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
+            <script src="/assets/plugins/jszip/dist/jszip.min.js"></script>
+            <script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+            <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+            <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 
-    <script>
-        jQuery(function($) {
-            window.loading = 0;
-            var loaded = [];
-            setFiltersQuantity();
-            $("#jstree").jstree({
-                "plugins": ["wholerow", "checkbox", "json_data"],
-                "core": {
-                    "check_callback": true,
-                    "data": {
-                        url: "{!! @route('getnode', ['id' => 0]) !!}",
-                        contentType: "application/json; charset=utf-8",
-                    },
-                }
-            }).on('deselect_node.jstree', function(e, data) {
-                jsTreetoDatatable();
-                initOptionFilters();
-            })
-                .on('select_node.jstree', function(e, data) {
-                    jsTreetoDatatable();
-                    initOptionFilters();
-                }).
-            on('before_open.jstree', function(e, data) {
-                if (!loaded.includes(data.node.id)) {
+            <script>
+                jQuery(function($) {
+                    window.loading = 0;
+                    var loaded = [];
+                    setFiltersQuantity();
+                    $("#jstree").jstree({
+                        "plugins": ["wholerow", "checkbox", "json_data"],
+                        "core": {
+                            "check_callback": true,
+                            "data": {
+                                url: "{!! @route('getnode', ['id' => 0]) !!}",
+                                contentType: "application/json; charset=utf-8",
+                            },
+                        }
+                    }).on('deselect_node.jstree', function(e, data) {
+                        jsTreetoDatatable();
+                        initOptionFilters();
+                    })
+                    .on('select_node.jstree', function(e, data) {
+                        jsTreetoDatatable();
+                        initOptionFilters();
+                    }).
+                    on('before_open.jstree', function(e, data) {
+                        if (!loaded.includes(data.node.id)) {
 
-                    var url = "{!! @route('getnode', ['id' => 0]) !!}";
-                    url = url.substring(0, url.length - 1) + data.node.id;
-                    $.ajax({
-                        method: "GET",
-                        url: url,
-                        success: function(resp) {
+                            var url = "{!! @route('getnode', ['id' => 0]) !!}";
+                            url = url.substring(0, url.length - 1) + data.node.id;
+                            $.ajax({
+                                method: "GET",
+                                url: url,
+                                success: function(resp) {
                             // $('#jstree').jstree().delete_node();
                             $('#jstree').jstree().delete_node($('#jstree').jstree().get_node(data.node.id).children);
                             var child = resp;
@@ -286,15 +286,15 @@
                             console.log(xhr);
                         }
                     });
-                    loaded.push(data.node.id);
-                }
-            });
+                            loaded.push(data.node.id);
+                        }
+                    });
 
-            $('#data-table-buttons').on( 'draw.dt', function () {
-                $('#select_all_products').prop('checked', false);
-            } );
+                    $('#data-table-buttons').on( 'draw.dt', function () {
+                        $('#select_all_products').prop('checked', false);
+                    } );
 
-            $('#data-table-buttons').on( 'click', 'tr', function () {
+                    $('#data-table-buttons').on( 'click', 'tr', function () {
                 // console.log( table.row( this ).data() );
 
                 // table.cell({row:1, column:7}).data('New value for row 1 column 7');
@@ -323,12 +323,12 @@
 
 
 
-            window.table =
-                $('#data-table-buttons').DataTable( {
-                    fixedHeader: true,
-                    "language": {
-                        "url": "@lang('table.localization_link')",
-                    },
+                    window.table =
+                    $('#data-table-buttons').DataTable( {
+                        fixedHeader: true,
+                        "language": {
+                            "url": "@lang('table.localization_link')",
+                        },
                     // "scrollX": true,
                     "pageLength": 25,
                     "autoWidth": true,
@@ -408,110 +408,110 @@
                     },
                     "order": [[ 0, "desc" ]],
                     "columns": [
-                        {
-                            data: 'id',
-                            "visible": false,
-                            "searchable": false,
-                        },
-                        {
-                            "orderable":      false,
-                            data: 'check_html',
-                        },
-                        {
-                            "orderable":      false,
-                            data: 'image_html',
-                        },
-                        {
-                            "orderable":      false,
-                            data: 'name_article_html',
-                        },
-                        {
+                    {
+                        data: 'id',
+                        "visible": false,
+                        "searchable": false,
+                    },
+                    {
+                        "orderable":      false,
+                        data: 'check_html',
+                    },
+                    {
+                        "orderable":      false,
+                        data: 'image_html',
+                    },
+                    {
+                        "orderable":      false,
+                        data: 'name_article_html',
+                    },
+                    {
 
-                            data: 'retail_price',
-                        },
-                        {
-                            data: 'user_price',
-                        },
-                        {
-                            "orderable":      false,
-                            data: 'html_limit_1',
-                        },
-                        {
-                            "orderable":      false,
-                            data: 'html_limit_2',
-                        },
-                        {
-                            data: 'storage_html',
-                            "orderable":      false,
-                        },
-                        {
-                            data: 'calc_quantity',
-                            "orderable":      false,
-                        },
-                        {
-                            data: 'package_weight',
-                            "orderable":      false,
-                        },
-                        {
-                            data: 'sum_w_taxes',
-                            "orderable":      false,
-                        },
-                        {
-                            data: 'actions',
-                            "orderable":      false,
-                        },
+                        data: 'retail_price',
+                    },
+                    {
+                        data: 'user_price',
+                    },
+                    {
+                        "orderable":      false,
+                        data: 'html_limit_1',
+                    },
+                    {
+                        "orderable":      false,
+                        data: 'html_limit_2',
+                    },
+                    {
+                        data: 'storage_html',
+                        "orderable":      false,
+                    },
+                    {
+                        data: 'calc_quantity',
+                        "orderable":      false,
+                    },
+                    {
+                        data: 'package_weight',
+                        "orderable":      false,
+                    },
+                    {
+                        data: 'sum_w_taxes',
+                        "orderable":      false,
+                    },
+                    {
+                        data: 'actions',
+                        "orderable":      false,
+                    },
                     ],
                     "preUpload": function(settings, json) {
                         $('#select_all_products').prop('checked', false);
                     }
                 });
 
-            $( "#accordion" ).accordion({
-                collapsible: true,
-                active: false,
-                heightStyle: "content",
-                content : '.content1'
-            });
+$( "#accordion" ).accordion({
+    collapsible: true,
+    active: false,
+    heightStyle: "content",
+    content : '.content1'
+});
 
-            function initOptionFilters(){
-                if(window.loading === 0){
-                    window.loading = 1;
-                    let filter_selected_map = $("[filter-selected=true]");
-                    let all_filters = $(".filter_with_options");
-                    $.each(all_filters,function (key,value) {
-                        value.setAttribute("style", "color:grey;cursor:progress");
-                    });
-                    filter_selected_ids = Array();
-                    $.each(filter_selected_map,function (key,value) {
-                        if(value.attributes['filter-selected'].value === 'true'){
-                            let option_id = value.attributes['option_id'].value;
-                            let option_name = value.attributes['option_name'].value;
-                            filter_selected_ids.push(option_id+';'+option_name);
+function initOptionFilters(){
+    if(window.loading === 0){
+        window.loading = 1;
+        let filter_selected_map = $("[filter-selected=true]");
+        let all_filters = $(".filter_with_options");
+        $.each(all_filters,function (key,value) {
+            value.setAttribute("style", "color:grey;cursor:progress");
+        });
+        filter_selected_ids = Array();
+        $.each(filter_selected_map,function (key,value) {
+            if(value.attributes['filter-selected'].value === 'true'){
+                let option_id = value.attributes['option_id'].value;
+                let option_name = value.attributes['option_name'].value;
+                filter_selected_ids.push(option_id+';'+option_name);
                             //filter_selected_ids.option_id = option_name;
                         }
                     });
-                    let route = 'products/option-filters';
+        let route = 'products/option-filters';
 
-                    $.ajax({
-                        method: "GET",
-                        url: route,
-                        data: {
-                            filter_with_options : filter_selected_ids,
-                            language: 'ru'
-                        },
-                        success: function(resp)
-                        {
-                            let element = document.getElementById("filters_selected");
-                            while (element.firstChild) {
-                                element.removeChild(element.firstChild);
-                            }
+        $.ajax({
+            method: "GET",
+            url: route,
+            data: {
+                filter_with_options : filter_selected_ids,
+                language: 'ru'
+            },
+            success: function(resp)
+            {
+                let element = document.getElementById("filters_selected");
+                while (element.firstChild) {
+                    element.removeChild(element.firstChild);
+                }
 
-                            $.each(all_filters,function (key,value) {
-                                value.setAttribute("style", "color:red;cursor:not-allowed");
-                                value.setAttribute("filter-accessible","false");
-                            });
+                $.each(all_filters,function (key,value) {
+                    value.setAttribute("style", "color:red;cursor:not-allowed");
+                    value.setAttribute("filter-accessible","false");
+                });
 
-                            if(resp.available){
+                if(resp.available){
                                 //console.log(resp);
                                 $.each(resp.available, function( index, value ) {
                                     let filter_by_id = $("[option_id="+index+"]");
@@ -623,106 +623,106 @@
                         }
                     });
 
-                    $.each(all_filters,function (key,value) {
-                        value.setAttribute("style", "color:grey;cursor:progress");
+$.each(all_filters,function (key,value) {
+    value.setAttribute("style", "color:grey;cursor:progress");
                         // value.setAttribute("filter-accessible","false");
                     });
-                }
+}
 
-            }
+}
 
-            function setFiltersQuantity(){
-                let accessible = $("[filter-accessible=true]");
-                let accessible_per_filter = Object();
-                $.each(accessible,function(key,value){
-                    let option_filter_name = value.getAttribute("option_filter_name");
+function setFiltersQuantity(){
+    let accessible = $("[filter-accessible=true]");
+    let accessible_per_filter = Object();
+    $.each(accessible,function(key,value){
+        let option_filter_name = value.getAttribute("option_filter_name");
                     // if(value.getAttribute("filter-selected")==='false'){
-                    if (typeof accessible_per_filter[option_filter_name] !== 'undefined') {
-                        accessible_per_filter[option_filter_name] = accessible_per_filter[option_filter_name] + 1;
-                    }else{
-                        accessible_per_filter[option_filter_name] = 1;
-                    }
+                        if (typeof accessible_per_filter[option_filter_name] !== 'undefined') {
+                            accessible_per_filter[option_filter_name] = accessible_per_filter[option_filter_name] + 1;
+                        }else{
+                            accessible_per_filter[option_filter_name] = 1;
+                        }
                     //}
                 });
 
-                $.each(accessible_per_filter,function(key,value){
-                    let header = $("[filter_name='"+key+"']")[0];
-                    if(value>1){
-                        header.innerText = key + ' ('+value+')';
-                    }else{
-                        header.innerText = key;
-                    }
+    $.each(accessible_per_filter,function(key,value){
+        let header = $("[filter_name='"+key+"']")[0];
+        if(value>1){
+            header.innerText = key + ' ('+value+')';
+        }else{
+            header.innerText = key;
+        }
 
-                });
+    });
+}
+
+$( "#optionfilters" ).accordion({
+    collapsible: true,
+    active: false,
+    heightStyle: "content",
+    content: '.filter'
+});
+
+$('#select_all_products').change(function() {
+    if(window.loading === 0) {
+        window.loading = 1;
+        if ($('#select_all_products').prop('checked')) {
+            window.products = [];
+            $(".intable").each(function () {
+                $(this).prop('checked', true);
+                products.push($(this).prop('id').slice(8));
+            });
+        }
+        else {
+            $(".intable").each(function () {
+                $(this).prop('checked', false);
+                document.getElementById('selected_products').innerText = '';
+            });
+            window.products = [];
+        }
+        window.loading = 0;
+    }
+});
+
+$('#storages').on('change', function (e) {
+    if(window.loading === 0) {
+        window.loading = 1;
+        initOptionFilters();
+        jsTreetoDatatable();
+        window.loading = 0;
+    }
+
+});
+
+$('#instockToggler').click(function() {
+    if(window.loading === 0) {
+        window.loading = 1;
+        initOptionFilters();
+        jsTreetoDatatable();
+        window.loading = 0;
+    }
+});
+
+$('#mass_actions').on('change', function (e) {
+    if(window.loading === 0) {
+        window.loading = 1;
+        let option = $("option:selected", $('#mass_actions')).val();
+        window.products = [];
+        if(option === 'wishlist'){
+            $(".intable").each(function(){
+                if($(this).prop('checked')){
+                    window.products.push($(this).prop('id').slice(8));
+                }
+            });
+
+            if(window.products.length>0) {
+                $('#products_wishlist').val(window.products);
+                $('#mass_actions option[value="0"]').prop('selected',true);
+                $('#modal-wishlist').modal('show');
             }
 
-            $( "#optionfilters" ).accordion({
-                collapsible: true,
-                active: false,
-                heightStyle: "content",
-                content: '.filter'
-            });
-
-            $('#select_all_products').change(function() {
-                if(window.loading === 0) {
-                    window.loading = 1;
-                    if ($('#select_all_products').prop('checked')) {
-                        window.products = [];
-                        $(".intable").each(function () {
-                            $(this).prop('checked', true);
-                            products.push($(this).prop('id').slice(8));
-                        });
-                    }
-                    else {
-                        $(".intable").each(function () {
-                            $(this).prop('checked', false);
-                            document.getElementById('selected_products').innerText = '';
-                        });
-                        window.products = [];
-                    }
-                    window.loading = 0;
-                }
-            });
-
-            $('#storages').on('change', function (e) {
-                if(window.loading === 0) {
-                    window.loading = 1;
-                    initOptionFilters();
-                    jsTreetoDatatable();
-                    window.loading = 0;
-                }
-
-            });
-
-            $('#instockToggler').click(function() {
-                if(window.loading === 0) {
-                    window.loading = 1;
-                    initOptionFilters();
-                    jsTreetoDatatable();
-                    window.loading = 0;
-                }
-            });
-
-            $('#mass_actions').on('change', function (e) {
-                if(window.loading === 0) {
-                    window.loading = 1;
-                    let option = $("option:selected", $('#mass_actions')).val();
-                    window.products = [];
-                    if(option === 'wishlist'){
-                        $(".intable").each(function(){
-                            if($(this).prop('checked')){
-                                window.products.push($(this).prop('id').slice(8));
-                            }
-                        });
-
-                        if(window.products.length>0) {
-                            $('#products_wishlist').val(window.products);
-                            $('#mass_actions option[value="0"]').prop('selected',true);
-                            $('#modal-wishlist').modal('show');
-                        }
-
-                    }
-                    if(option === 'order'){
+        }
+        if(option === 'order'){
                         // $('#modal-order_multiple').modal('show');
 
                         $(".intable").each(function(){
@@ -753,19 +753,19 @@
                                         +'_:_'+value.attributes['data-storage'].value
                                         +'_:_'+value.attributes['data-storage_min'].value
                                         +'_:_'+value.attributes['data-storage_max'].value
-                                    );
+                                        );
                                 }
                             });
 
                             $('#append_to').append($('<div id="multiple_input_div"></div>'));
                             $.each(multiple_order_map, function(key, value) {
                                 $('#products_selector')
-                                    .append($("<option></option>")
-                                        .attr("value", value.split('_:_')[0])
-                                        .text(value.split('_:_')[1])
-                                        .attr("data-storage", value.split('_:_')[2])
-                                        .attr("data-storage_min", value.split('_:_')[3])
-                                        .attr("data-storage_max", value.split('_:_')[4])
+                                .append($("<option></option>")
+                                    .attr("value", value.split('_:_')[0])
+                                    .text(value.split('_:_')[1])
+                                    .attr("data-storage", value.split('_:_')[2])
+                                    .attr("data-storage_min", value.split('_:_')[3])
+                                    .attr("data-storage_max", value.split('_:_')[4])
                                     );
 
                                 if(key !== 0){
@@ -804,54 +804,54 @@
                 }
             });
 
-            $('#products_selector').on('change',function(){
-                let id = this.options[this.selectedIndex].attributes['value'].value;
-                let inputs = $('.multipleorderinput');
-                $.each(inputs,function(key, value){
-                    $('#'+value.attributes['id'].value).hide();
-                });
-                $('#multiple_input_'+id).show();
+$('#products_selector').on('change',function(){
+    let id = this.options[this.selectedIndex].attributes['value'].value;
+    let inputs = $('.multipleorderinput');
+    $.each(inputs,function(key, value){
+        $('#'+value.attributes['id'].value).hide();
+    });
+    $('#multiple_input_'+id).show();
                 // $('#multiple_input').attr('value', selector.attributes['data-storage_min'].value);
             });
 
-            $('#form_add_order_multiple').submit(function (e) {
-                e.preventDefault();
+$('#form_add_order_multiple').submit(function (e) {
+    e.preventDefault();
 
-                let form = $(this);
+    let form = $(this);
 
-                let route = '{{route('orders')}}/add-to-order-multiple';
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+    let route = '{{route('orders')}}/add-to-order-multiple';
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        method: "GET",
+        url: route,
+        data: form.serialize(),
+        success: function(resp)
+        {
+            if(resp == "ok"){
+
+                $('#new_wishlist_name').val('');
+
+                $.gritter.add({
+                    title: '@lang('wishlist.modal_success')',
                 });
-                $.ajax({
-                    method: "GET",
-                    url: route,
-                    data: form.serialize(),
-                    success: function(resp)
-                    {
-                        if(resp == "ok"){
+            }
+        },
+        error:  function(xhr, str){
+            console.log(xhr);
+        }
 
-                            $('#new_wishlist_name').val('');
+    });
+    $('#modal-order_multiple').modal('hide');
+    return false;
+});
 
-                            $.gritter.add({
-                                title: '@lang('wishlist.modal_success')',
-                            });
-                        }
-                    },
-                    error:  function(xhr, str){
-                        console.log(xhr);
-                    }
+function jsTreetoDatatable(){
 
-                });
-                $('#modal-order_multiple').modal('hide');
-                return false;
-            });
-
-            function jsTreetoDatatable(){
-
-                let collection = document.getElementsByClassName("jstree-node");
+    let collection = document.getElementsByClassName("jstree-node");
                 //let arr = [].slice.call(collection);
                 let loaded = [];
                 for (let i = 0; i < collection.length; i++) {
@@ -1404,7 +1404,7 @@
 
         /*.custom-select{*/
             /**/
-        /*}*/
-    </style>
+            /*}*/
+        </style>
 
-@endpush
+        @endpush
