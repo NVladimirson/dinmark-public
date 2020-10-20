@@ -303,10 +303,10 @@ class ProductController extends Controller
                 <span class="discount">  </span> <span class="discountamount">  </span> </p>';
             })
             ->addColumn('actions', function (Product $product) {
-                $storage = $product->storages->firstWhere('is_main',1);
+                //$storage = $product->storages->firstWhere('is_main',1);
                 $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                $name = \App\Services\Product\Product::getName($product);
-                return view('product.include.action_buttons',compact('product', 'name', 'storage', 'hasStorage'));
+                //$name = \App\Services\Product\Product::getName($product);
+                return view('product.include.action_buttons',compact('product','hasStorage'));
             })
             ->orderColumn('storage_html','storage_1 $1')
             ->orderColumn('article_show_html','article_show $1')
@@ -355,18 +355,21 @@ class ProductController extends Controller
         $amount = $request->amount;
 
         $productinfo = Product::find($product_id);
+        $name = ProductServices::getName($productinfo);
         $storageinfo = $productinfo->storages->where('storage_id',$storage_id)->first();
         $package = $storageinfo->package;
+        $package ? ($storageamount = $storageinfo->amount-($storageinfo->amount%$storageinfo->package)) :
+            ($storageamount = $storageinfo->amount-($storageinfo->amount%100));
         $three_percent_discount_limit = $storageinfo->limit_1;
         $seven_percent_discount_limit = $storageinfo->limit_2;
 
         $unit = $productinfo->unit;
         if (($amount >= $seven_percent_discount_limit) && $seven_percent_discount_limit){
-            $price = ProductServices::getPriceWithCoef($productinfo,0.93);
+            $price = ProductServices::getPriceWithCoefUnformatted($productinfo,0.93);
             $discount = '7%';
         }
         else if(($amount >= $three_percent_discount_limit) && $three_percent_discount_limit){
-            $price = ProductServices::getPriceWithCoef($productinfo,0.97);
+            $price = ProductServices::getPriceWithCoefUnformatted($productinfo,0.97);
             $discount = '3%';
         }
         else{
@@ -388,13 +391,14 @@ class ProductController extends Controller
 
         $retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo)*$multiplier,2,'.',' ');
 
-
         $user_price = number_format(ProductServices::getPriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
 
         $response = [
+            'name' => $name,
             'retail_price' => $retail_price,
             'user_price' => $user_price,
             'multiplier' => $multiplier,
+            'storageamount' => $storageamount,
             'package' => $package,
             'weight' => number_format($weight,3,'.',' '),
             'price' => number_format($multiplier*$price,2,'.',' '),

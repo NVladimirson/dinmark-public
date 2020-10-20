@@ -917,26 +917,27 @@
                 }
             });
 
-            $('input[name="quantity"]').change(function (e) {
-                e.preventDefault();
-                if($(this).val() > $(this).data('max')){
-                    var request =  $(this).val() - $(this).data('max');
-                    $(this).val($(this).data('max'));
-                    $('input[name="quantity_request"]').val(request);
-                    $('.storage-limit-info').show();
-                    $('.storage-limit-request').show();
-                    $('input[name="quantity_request"]').change();
-                }
-            });
-
-            $('input[name="quantity_request"]').change(function (e) {
-                e.preventDefault();
-                if($(this).val() > 0){
-                    $('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
-                }else{
-                    $('.btn-add-order').text($('.btn-add-order').data('btn_order'));
-                }
-            });
+            //form_add_order
+            // $('input[name="quantity"]').change(function (e) {
+            //     e.preventDefault();
+            //     if($(this).val() > $(this).data('max')){
+            //         var request =  $(this).val() - $(this).data('max');
+            //         $(this).val($(this).data('max'));
+            //         $('input[name="quantity_request"]').val(request);
+            //         $('.storage-limit-info').show();
+            //         $('.storage-limit-request').show();
+            //         $('input[name="quantity_request"]').change();
+            //     }
+            // });
+            //
+            // $('input[name="quantity_request"]').change(function (e) {
+            //     e.preventDefault();
+            //     if($(this).val() > 0){
+            //         $('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
+            //     }else{
+            //         $('.btn-add-order').text($('.btn-add-order').data('btn_order'));
+            //     }
+            // });
 
             //Добавление инфы в модальное окно
             $('#form_add_catalog').submit(function (e) {
@@ -985,7 +986,6 @@
                 var form = $(this);
                 var order_id = $('#order_id').val();
                 var route = '{{route('orders')}}/add-to-order/'+order_id;
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1261,6 +1261,20 @@
                             limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
                         }
 
+                        // document.getElementById('limit_2_'+product_id){
+                        //
+                        // }
+                        let productbutton = $('#action_buttons_'+product_id);
+                        if(productbutton[0].children[2]){
+                            productbutton[0].children[2].remove();
+                        }
+
+                        $('#action_buttons_'+product_id).append(
+                            '<a href="#modal-order" class="btn btn-sm btn-primary source" data-toggle="modal" data-product="'+product_id+'" ' +
+                            'data-product_name="'+msg['name']+'" data-storage="'+storage_id+'" data-storage_min="'+msg['package']+'" ' +
+                            'data-storage_max="'+msg['storageamount']+'"> <i class="fas fa-cart-plus"></i></a>'
+                        );
+
                     }
                 });
 
@@ -1290,6 +1304,11 @@
 
                 let user_price = document.getElementById('user_price_'+product_id);
                 user_price.children[0].innerText = '';
+
+                let productbutton = $('#action_buttons_'+product_id);
+                if(productbutton[0].children[2]){
+                    productbutton[0].children[2].remove();
+                }
             }
         }
 

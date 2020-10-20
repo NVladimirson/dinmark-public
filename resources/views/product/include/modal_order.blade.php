@@ -8,6 +8,7 @@
             <form id="form_add_order">
                 <input type="hidden" class="product_id" name="product_id">
                 <input type="hidden" class="storage_id" name="storage_id">
+                <input type="hidden" class="storage_id" name="storage_id">
                 <div class="modal-body">
                     <div class="form-group m-b-15">
                         <label>@lang('product.select_order')</label>
@@ -21,14 +22,14 @@
                     <div class="form-group m-b-15 storage-limit-info">
                         <strong>@lang('product.modal_order_warning_1')<span class="order-storage-amount"></span>@lang('product.modal_order_warning_2')</strong>
                     </div>
-                    <div class="form-group m-b-15">
-                        <label>@lang('product.quantity_order')</label>
-                        <input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="100" min="100" step="100" data-max="1000"/>
-                    </div>
-                    <div class="form-group m-b-15 storage-limit-request">
-                        <label>@lang('product.quantity_order_request')</label>
-                        <input type="number" name="quantity_request" class="form-control m-b-5" placeholder="@lang('product.quantity_order_request')" value="0" min="0" step="100" max="1000"/>
-                    </div>
+                    {{--<div class="form-group m-b-15">--}}
+                        {{--<label>@lang('product.quantity_order')</label>--}}
+                        {{--<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')" value="100" min="100" step="100" data-max="1000"/>--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group m-b-15 storage-limit-request">--}}
+                        {{--<label>@lang('product.quantity_order_request')</label>--}}
+                        {{--<input type="number" name="quantity_request" class="form-control m-b-5" placeholder="@lang('product.quantity_order_request')" value="0" min="0" step="100" max="1000"/>--}}
+                    {{--</div>--}}
                 </div>
                 <div class="modal-footer">
                     <a href="javascript:;" class="btn btn-white" data-dismiss="modal">@lang('global.cancel')</a>
