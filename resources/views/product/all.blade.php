@@ -958,8 +958,7 @@ use Illuminate\Support\Str;
             var form = $(this);
             let list_id = $('#wishlist').val();
 
-            var route = '{{route('
-            catalogs ')}}/add-to-catalog/' + list_id;
+            var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
 
                 var form = $(this);
                 var order_id = $('#order_id').val();
