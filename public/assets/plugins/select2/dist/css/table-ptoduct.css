@@ -1,27 +1,80 @@
-*{
+* {
     box-sizing: border-box;
 }
-@media only screen and (min-width: 1200px) and (max-width: 1450px) {
-    .wrap-table {
-        justify-content: space-between;
+
+@media only screen and (min-width: 1200px) {
+    #slide-filter-of {
+        position: absolute;
+        background: #000;
+        width: 50px;
+        height: 100%;
+        right: 0;
+        color: #fff;
+        border-radius: 20px 0 0 20px;
+        cursor: pointer;
     }
+    #slide-filter-on {
+        position: absolute;
+        background: #000;
+        width: 50px;
+        right: 0;
+        top: 0;
+        color: #fff;
+        border-radius: 20px 0 0 20px;
+        cursor: pointer;
+        height: 100%;
+    }
+    #slide-filter-of::before,
+    #slide-filter-on::before {
+        font-size: 20px;
+        position: absolute;
+        top: 25%;
+        right: 20%;
+        cursor: pointer;
+        animation: 1.5s ease-in-out infinite reverse both running rock;
+    }
+    .table-responsive {
+        z-index: -1;
+    }
+    .responsive-width {
+        z-index: 1;
+        position: absolute;
+        right: 0;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
     .table-responsive {
         width: 100% !important;
         display: table;
+        z-index: -1;
     }
     .responsive-width {
         max-width: 20vw;
+        z-index: 1;
+    }
+    #slide-label {
+        position: absolute;
+        right: 75px;
     }
 }
+.table-responsive {
+    z-index: -1;
+}
+.responsive-width {
+    z-index: 1;
+}
+
 td {
-    padding-right: 5px;
+    padding: 5px;
 }
 tr td:nth-child(3) {
-    max-width: 200px;
+    min-width: 15vw;
+    max-width: 20vw;
 }
 .data-product_name {
     display: block;
-    max-width: 150px;
+    max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -34,3 +87,27 @@ td:hover .data-product_name {
     display: table;
 }
 
+.panel-heading {
+    position: relative;
+}
+
+#price_porog_1 {
+    font-size: 18px;
+    color: #fff;
+    background-color: #96ca0a;
+}
+#price_porog_2 {
+    font-size: 18px;
+    color: #fff;
+    background-color: #f0c674;
+}
+
+@keyframes rock {
+    0% {right: 20%;}
+    50% {right: 35%;}
+    100% {right: 20%}
+}
+
+thead {
+    display: table-header-group;
+}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 
 
+use App\Jobs\ProductOptionFiltersJob;
 use App\Models\Product\Product;
 use App\Services\Product\CategoryServices;
 use App\Services\Product\Product as ProductServices;
@@ -22,10 +23,6 @@ class ProductController extends Controller
 
 
     public function index(){
-            //PhotoOptions::dispatch();
-//        ProductOptions::dispatch('ru');
-//        ProductOptions::dispatch('uk');
-//        dd(\Config::get('values.dinmarkurl'));
         SEOTools::setTitle(trans('product.all_tab_name'));
         $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
@@ -88,13 +85,9 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $product_id = 65572;
-        $storage_id = 14;
-        $amount = 100;
-        $productinfo = Product::find($product_id);
-        dd($productinfo->storages->firstWhere('storage_id',$storage_id));
 
 
+        return view('test.test');
 
     }
 
@@ -185,46 +178,46 @@ class ProductController extends Controller
         }
 
         return datatables()
-            ->eloquent($products)
-            ->addColumn('check_html', function (Product $product) {
-                return '<div class="checkbox checkbox-css">
-						  <input type="checkbox" id="product-'.$product->id.'" class="intable" onclick="(function(){
-								var pid = '."$product->id".';
-								var selected_products = document.getElementById('."'selected_products'".');
-								textContent = selected_products.textContent;
-								selected_products_arr = textContent.split('."','".');
-								const index = selected_products_arr.indexOf(String(pid));
+        ->eloquent($products)
+        ->addColumn('check_html', function (Product $product) {
+            return '<div class="checkbox checkbox-css">
+            <input type="checkbox" id="product-'.$product->id.'" class="intable" onclick="(function(){
+                var pid = '."$product->id".';
+                var selected_products = document.getElementById('."'selected_products'".');
+                textContent = selected_products.textContent;
+                selected_products_arr = textContent.split('."','".');
+                const index = selected_products_arr.indexOf(String(pid));
 //								console.log(index);
-										if (index > -1) {
-  										selected_products_arr.splice(index, 1);
-										}
-										else{
-											if(selected_products_arr.length === 1 && selected_products_arr[0] === '."''".'){
-												selected_products_arr = [String(pid)];
-											}
-											else{
-												selected_products_arr.push(String(pid));
-											}
-										}
-										selected_products.textContent = selected_products_arr.toString();
+                if (index > -1) {
+                    selected_products_arr.splice(index, 1);
+                }
+                else{
+                 if(selected_products_arr.length === 1 && selected_products_arr[0] === '."''".'){
+                    selected_products_arr = [String(pid)];
+                }
+                else{
+                    selected_products_arr.push(String(pid));
+                }
+            }
+            selected_products.textContent = selected_products_arr.toString();
 
 //										 console.log(selected_products_arr);
-                                        
-							})();"/>
-						  <label for="product-'.$product->id.'"> </label>
-						</div>';
-            })
-            ->addColumn('image_html', function (Product $product) {
-                $src = \App\Services\Product\Product::getImagePath($product);
 
-                return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80"></div>';
-            })
-            ->addColumn('name_article_html', function (Product $product){
-                $name = \App\Services\Product\Product::getName($product);
-                return '<a class="data-product_name" href="'
-                    .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
-                    '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
-            })
+            })();"/>
+            <label for="product-'.$product->id.'"> </label>
+            </div>';
+        })
+        ->addColumn('image_html', function (Product $product) {
+            $src = \App\Services\Product\Product::getImagePath($product);
+
+            return '<img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">';
+        })
+        ->addColumn('name_article_html', function (Product $product){
+            $name = \App\Services\Product\Product::getName($product);
+            return '<a class="data-product_name" href="'
+            .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
+            '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+        })
 //            ->addColumn('name_html', function (Product $product){
 //                $name = \App\Services\Product\Product::getName($product);
 //                return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
@@ -232,6 +225,7 @@ class ProductController extends Controller
 //            ->addColumn('article_show_html', function (Product $product) {
 //                return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
 //            })
+
             ->addColumn('retail_price', function (Product $product) {
 //                if(\App\Services\Product\Product::hasAmount($product->storages)){
 //                    return ProductServices::getBasePrice($product);
@@ -247,6 +241,7 @@ class ProductController extends Controller
                 return '<p id="user_price_'.$product->id.'"><span></span></p>';
             })
             ->addColumn('html_limit_1', function (Product $product) {
+
 //                if($product->l > 0){
 //                    if(\App\Services\Product\Product::hasAmount($product->storages)){
 //                        return '<p style="color: #96ca0a">'.ProductServices::getPriceWithCoef($product,0.97).'<br> > '.$product->limit_1.'шт.</p>';
@@ -255,6 +250,7 @@ class ProductController extends Controller
 //
 //                    }
 //                }
+
 
                 return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;">
                         <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
@@ -282,6 +278,7 @@ class ProductController extends Controller
                         }
                         $value .= '</select>';
                     }
+                    $value .= '</select>';
                 }
                 return $value;
             })
@@ -378,7 +375,7 @@ class ProductController extends Controller
         }
 
 
-        $multiplier = floor($amount/$package);
+        $multiplier = $amount/$package - $amount%$package;
 
         preg_match_all('!\d+!', $unit, $isnumber);
         if(!empty($isnumber[0])){
@@ -452,14 +449,14 @@ class ProductController extends Controller
         $ids = \App\Services\Product\Product::getIdsSearch($search);
 
         $products = Product::whereIn('id',$ids)
-            ->orWhere([
-                ['article','like',"%".$search."%"],
-            ])->orWhere([
-                ['article_show','like',"%".$search."%"],
-            ])
-            ->orderBy('article')
-            ->limit(10)
-            ->get();
+        ->orWhere([
+            ['article','like',"%".$search."%"],
+        ])->orWhere([
+            ['article_show','like',"%".$search."%"],
+        ])
+        ->orderBy('article')
+        ->limit(10)
+        ->get();
 
         foreach ($products as $product) {
             $name = \App\Services\Product\Product::getName($product);
@@ -494,14 +491,14 @@ class ProductController extends Controller
         $ids = \App\Services\Product\Product::getIdsSearch($search);
 
         $products = Product::with(['content'])->whereIn('id',$ids)
-            ->orWhere([
-                ['article','like',"%".$search."%"],
-            ])->orWhere([
-                ['article_show','like',"%".$search."%"],
-            ])
-            ->orderBy('article')
-            ->limit(20)
-            ->get();
+        ->orWhere([
+            ['article','like',"%".$search."%"],
+        ])->orWhere([
+            ['article_show','like',"%".$search."%"],
+        ])
+        ->orderBy('article')
+        ->limit(20)
+        ->get();
 
         foreach ($products as $product) {
             $name = \App\Services\Product\Product::getName($product);
