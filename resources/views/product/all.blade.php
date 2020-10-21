@@ -1059,8 +1059,7 @@ use Illuminate\Support\Str;
             var product_id = $('#get_price_product_id').val();
             var form = $(this);
 
-            var route = '{{route('
-            products ')}}/' + product_id + '/get-price/';
+            var route = '{{route('products')}}/' + product_id + '/get-price/';
 
             $.ajaxSetup({
                 headers: {
