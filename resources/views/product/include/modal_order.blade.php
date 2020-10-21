@@ -8,7 +8,9 @@
             <form id="form_add_order">
                 <input type="hidden" class="product_id" name="product_id">
                 <input type="hidden" class="storage_id" name="storage_id">
-                <input type="hidden" class="storage_id" name="storage_id">
+                {{--<input type="hidden" class="amount" name="amount">--}}
+                <input type="hidden" class="quantity" name="quantity">
+                <input type="hidden" class="quantity_request" name="quantity_request">
                 <div class="modal-body">
                     <div class="form-group m-b-15">
                         <label>@lang('product.select_order')</label>
