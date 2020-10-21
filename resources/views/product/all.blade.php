@@ -829,8 +829,7 @@ use Illuminate\Support\Str;
 
             let form = $(this);
 
-            let route = '{{route('
-            orders ')}}/add-to-order-multiple';
+            let route = '{{route('orders')}}/add-to-order-multiple';
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1026,8 +1025,7 @@ use Illuminate\Support\Str;
 
             var form = $(this);
             var order_id = $('#order_id').val();
-            var route = '{{route('
-            orders ')}}/add-to-order/' + order_id;
+            var route = '{{route('orders')}}/add-to-order/' + order_id;
 
             $.ajaxSetup({
                 headers: {
