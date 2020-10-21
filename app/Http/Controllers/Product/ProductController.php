@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 
 
+use App\Jobs\ProductOptionFiltersJob;
 use App\Models\Product\Product;
 use App\Services\Product\CategoryServices;
 use App\Services\Product\Product as ProductServices;
@@ -22,10 +23,6 @@ class ProductController extends Controller
 
 
     public function index(){
-            //PhotoOptions::dispatch();
-//        ProductOptions::dispatch('ru');
-//        ProductOptions::dispatch('uk');
-//        dd(\Config::get('values.dinmarkurl'));
         SEOTools::setTitle(trans('product.all_tab_name'));
         $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
@@ -88,13 +85,9 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $product_id = 65572;
-        $storage_id = 14;
-        $amount = 100;
-        $productinfo = Product::find($product_id);
-        dd($productinfo->storages->firstWhere('storage_id',$storage_id));
 
 
+        return view('test.test');
 
     }
 
@@ -185,46 +178,46 @@ class ProductController extends Controller
         }
 
         return datatables()
-            ->eloquent($products)
-            ->addColumn('check_html', function (Product $product) {
-                return '<div class="checkbox checkbox-css">
-						  <input type="checkbox" id="product-'.$product->id.'" class="intable" onclick="(function(){
-								var pid = '."$product->id".';
-								var selected_products = document.getElementById('."'selected_products'".');
-								textContent = selected_products.textContent;
-								selected_products_arr = textContent.split('."','".');
-								const index = selected_products_arr.indexOf(String(pid));
+        ->eloquent($products)
+        ->addColumn('check_html', function (Product $product) {
+            return '<div class="checkbox checkbox-css">
+            <input type="checkbox" id="product-'.$product->id.'" class="intable" onclick="(function(){
+                var pid = '."$product->id".';
+                var selected_products = document.getElementById('."'selected_products'".');
+                textContent = selected_products.textContent;
+                selected_products_arr = textContent.split('."','".');
+                const index = selected_products_arr.indexOf(String(pid));
 //								console.log(index);
-										if (index > -1) {
-  										selected_products_arr.splice(index, 1);
-										}
-										else{
-											if(selected_products_arr.length === 1 && selected_products_arr[0] === '."''".'){
-												selected_products_arr = [String(pid)];
-											}
-											else{
-												selected_products_arr.push(String(pid));
-											}
-										}
-										selected_products.textContent = selected_products_arr.toString();
+                if (index > -1) {
+                    selected_products_arr.splice(index, 1);
+                }
+                else{
+                 if(selected_products_arr.length === 1 && selected_products_arr[0] === '."''".'){
+                    selected_products_arr = [String(pid)];
+                }
+                else{
+                    selected_products_arr.push(String(pid));
+                }
+            }
+            selected_products.textContent = selected_products_arr.toString();
 
 //										 console.log(selected_products_arr);
-                                        
-							})();"/>
-						  <label for="product-'.$product->id.'"> </label>
-						</div>';
-            })
-            ->addColumn('image_html', function (Product $product) {
-                $src = \App\Services\Product\Product::getImagePath($product);
 
-                return '<img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">';
-            })
-            ->addColumn('name_article_html', function (Product $product){
-                $name = \App\Services\Product\Product::getName($product);
-                return '<a class="data-product_name" href="'
-                    .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
-                    '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
-            })
+            })();"/>
+            <label for="product-'.$product->id.'"> </label>
+            </div>';
+        })
+        ->addColumn('image_html', function (Product $product) {
+            $src = \App\Services\Product\Product::getImagePath($product);
+
+            return '<img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">';
+        })
+        ->addColumn('name_article_html', function (Product $product){
+            $name = \App\Services\Product\Product::getName($product);
+            return '<a class="data-product_name" href="'
+            .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
+            '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+        })
 //            ->addColumn('name_html', function (Product $product){
 //                $name = \App\Services\Product\Product::getName($product);
 //                return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
@@ -232,19 +225,19 @@ class ProductController extends Controller
 //            ->addColumn('article_show_html', function (Product $product) {
 //                return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
 //            })
-            ->addColumn('retail_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return ProductServices::getBasePrice($product);
-                }
-                return number_format(0,2,'.',' ');
-            })
-            ->addColumn('user_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return ProductServices::getPrice($product);
-                }
-                return number_format(0,2,'.',' ');
-            })
-            ->addColumn('html_limit_1', function (Product $product) {
+        ->addColumn('retail_price', function (Product $product) {
+            if(\App\Services\Product\Product::hasAmount($product->storages)){
+                return ProductServices::getBasePrice($product);
+            }
+            return number_format(0,2,'.',' ');
+        })
+        ->addColumn('user_price', function (Product $product) {
+            if(\App\Services\Product\Product::hasAmount($product->storages)){
+                return ProductServices::getPrice($product);
+            }
+            return number_format(0,2,'.',' ');
+        })
+        ->addColumn('html_limit_1', function (Product $product) {
 //                if($product->l > 0){
 //                    if(\App\Services\Product\Product::hasAmount($product->storages)){
 //                        return '<p style="color: #96ca0a">'.ProductServices::getPriceWithCoef($product,0.97).'<br> > '.$product->limit_1.'шт.</p>';
@@ -254,93 +247,93 @@ class ProductController extends Controller
 //                    }
 //                }
 
-                return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;">
-                        <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
-            })
-            ->addColumn('html_limit_2', function (Product $product) {
+            return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;">
+            <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
+        })
+        ->addColumn('html_limit_2', function (Product $product) {
 
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674">
-                        <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
+            return '<p id="limit_2_'.$product->id.'" style="color: #f0c674">
+            <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
 
-            })
-            ->addColumn('storage_html', function (Product $product) {
-                $value = trans('product.storage_empty');
-                $emptyvalue = trans('product.storage_choose');
-                if($product->storages){
-                    $storages = $product->storages;
-                    if(count($storages)){
-                        $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
-                        $value .= "<option value='0'>$emptyvalue</option>";
-                        foreach ($storages as $key => $storage) {
-                            $term = $storage->storage->term;
-                            $days = ProductServices::getStingDays($term);
-                            $name = CatalogServices::dayrounder($storage->amount).
-                            ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-                            $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'" 
-                            package_max="'.$storage->amount.'">'.$name.'</option>';
-                        }
-                        $value .= '</select>';
+        })
+        ->addColumn('storage_html', function (Product $product) {
+            $value = trans('product.storage_empty');
+            $emptyvalue = trans('product.storage_choose');
+            if($product->storages){
+                $storages = $product->storages;
+                if(count($storages)){
+                    $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
+                    $value .= "<option value='0'>$emptyvalue</option>";
+                    foreach ($storages as $key => $storage) {
+                        $term = $storage->storage->term;
+                        $days = ProductServices::getStingDays($term);
+                        $name = CatalogServices::dayrounder($storage->amount).
+                        ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
+                        $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'" 
+                        package_max="'.$storage->amount.'">'.$name.'</option>';
                     }
+                    $value .= '</select>';
                 }
-                return $value;
-            })
-            ->addColumn('calc_quantity', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;display: none"
-                                           placeholder="@lang(\'product.quantity_order\')" value="0" min="0" step="10" data-max="1000"/>';
-                }
-            })
-            ->addColumn('package_weight', function (Product $product) {
-                return '
-                <p id="package_weight_'.$product->id.'" style="display: none">
-                <span class="multiplier"> </span> x <span class="package"> </span><br>
-                <span class="weight"></span>
-                </p>';
-            })
-            ->addColumn('sum_w_taxes', function (Product $product) {
-                return '<p id="sum_w_taxes_'.$product->id.'" style="display: none"><span class="price">  </span> <br>
-                <span class="discount">  </span> <span class="discountamount">  </span> </p>';
-            })
-            ->addColumn('actions', function (Product $product) {
-                $storage = $product->storages->firstWhere('is_main',1);
-                $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                $name = \App\Services\Product\Product::getName($product);
-                return view('product.include.action_buttons',compact('product', 'name', 'storage', 'hasStorage'));
-            })
-            ->orderColumn('storage_html','storage_1 $1')
-            ->orderColumn('article_show_html','article_show $1')
-            ->orderColumn('user_price', function ($product, $order){
-                $product
-                    ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
-                    ->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
-                    ->orderBy("price_with_currency", $order);
-            })
-            ->filterColumn('storage_html', function($product, $keyword) {
-                $product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
-            })
-            ->filterColumn('article_show_html', function($product, $keyword) {
-                $product->where('article_show', 'like',["%{$keyword}%"]);
-            })
-            ->filterColumn('name_html', function($product, $keyword) use($ids) {
-                if($ids){
-                    $product->whereIn('id',$ids);
-                }else{
-                    $product->select();
-                }
-            })
-            ->filter(function ($product) use ($request,$ids) {
-                if (request()->has('storage_html')) {
-                    $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
-                }
-                if (request()->has('article_show_html')) {
-                    $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
-                }
-                if(request()->has('name_html')){
-                    $product->whereIn('id',$ids);
-                }
-            }, true)
-            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight'])
-            ->toJson();
+            }
+            return $value;
+        })
+        ->addColumn('calc_quantity', function (Product $product) {
+            if(\App\Services\Product\Product::hasAmount($product->storages)){
+                return '<input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;display: none"
+                placeholder="@lang(\'product.quantity_order\')" value="0" min="0" step="10" data-max="1000"/>';
+            }
+        })
+        ->addColumn('package_weight', function (Product $product) {
+            return '
+            <p id="package_weight_'.$product->id.'" style="display: none">
+            <span class="multiplier"> </span> x <span class="package"> </span><br>
+            <span class="weight"></span>
+            </p>';
+        })
+        ->addColumn('sum_w_taxes', function (Product $product) {
+            return '<p id="sum_w_taxes_'.$product->id.'" style="display: none"><span class="price">  </span> <br>
+            <span class="discount">  </span> <span class="discountamount">  </span> </p>';
+        })
+        ->addColumn('actions', function (Product $product) {
+            $storage = $product->storages->firstWhere('is_main',1);
+            $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
+            $name = \App\Services\Product\Product::getName($product);
+            return view('product.include.action_buttons',compact('product', 'name', 'storage', 'hasStorage'));
+        })
+        ->orderColumn('storage_html','storage_1 $1')
+        ->orderColumn('article_show_html','article_show $1')
+        ->orderColumn('user_price', function ($product, $order){
+            $product
+            ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
+            ->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
+            ->orderBy("price_with_currency", $order);
+        })
+        ->filterColumn('storage_html', function($product, $keyword) {
+            $product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
+        })
+        ->filterColumn('article_show_html', function($product, $keyword) {
+            $product->where('article_show', 'like',["%{$keyword}%"]);
+        })
+        ->filterColumn('name_html', function($product, $keyword) use($ids) {
+            if($ids){
+                $product->whereIn('id',$ids);
+            }else{
+                $product->select();
+            }
+        })
+        ->filter(function ($product) use ($request,$ids) {
+            if (request()->has('storage_html')) {
+                $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
+            }
+            if (request()->has('article_show_html')) {
+                $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
+            }
+            if(request()->has('name_html')){
+                $product->whereIn('id',$ids);
+            }
+        }, true)
+        ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight'])
+        ->toJson();
     }
 
     public function getNode(Request $request){
@@ -449,14 +442,14 @@ class ProductController extends Controller
         $ids = \App\Services\Product\Product::getIdsSearch($search);
 
         $products = Product::whereIn('id',$ids)
-            ->orWhere([
-                ['article','like',"%".$search."%"],
-            ])->orWhere([
-                ['article_show','like',"%".$search."%"],
-            ])
-            ->orderBy('article')
-            ->limit(10)
-            ->get();
+        ->orWhere([
+            ['article','like',"%".$search."%"],
+        ])->orWhere([
+            ['article_show','like',"%".$search."%"],
+        ])
+        ->orderBy('article')
+        ->limit(10)
+        ->get();
 
         foreach ($products as $product) {
             $name = \App\Services\Product\Product::getName($product);
@@ -491,14 +484,14 @@ class ProductController extends Controller
         $ids = \App\Services\Product\Product::getIdsSearch($search);
 
         $products = Product::with(['content'])->whereIn('id',$ids)
-            ->orWhere([
-                ['article','like',"%".$search."%"],
-            ])->orWhere([
-                ['article_show','like',"%".$search."%"],
-            ])
-            ->orderBy('article')
-            ->limit(20)
-            ->get();
+        ->orWhere([
+            ['article','like',"%".$search."%"],
+        ])->orWhere([
+            ['article_show','like',"%".$search."%"],
+        ])
+        ->orderBy('article')
+        ->limit(20)
+        ->get();
 
         foreach ($products as $product) {
             $name = \App\Services\Product\Product::getName($product);
