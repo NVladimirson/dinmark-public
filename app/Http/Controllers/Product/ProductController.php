@@ -217,7 +217,7 @@ class ProductController extends Controller
             ->addColumn('image_html', function (Product $product) {
                 $src = \App\Services\Product\Product::getImagePath($product);
 
-                return '<img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">';
+                return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80"></div>';
             })
             ->addColumn('name_article_html', function (Product $product){
                 $name = \App\Services\Product\Product::getName($product);
@@ -378,7 +378,7 @@ class ProductController extends Controller
         }
 
 
-        $multiplier = $amount/$package - $amount%$package;
+        $multiplier = floor($amount/$package);
 
         preg_match_all('!\d+!', $unit, $isnumber);
         if(!empty($isnumber[0])){

@@ -77,6 +77,9 @@
 
                     <div class="table-scroll-container">
                         <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+                            <div id="filters_selected">
+
+                            </div>
                             <thead>
                             <tr>
                                 <th colspan="4" class="text-nowrap" style="text-align: center">Інформація</th>
@@ -132,9 +135,7 @@
                 </div>
                 <div id="reload" style="display:none"></div>
                 <div id="selected_products" style="display:none"></div>
-                <div id="filters_selected">
 
-                </div>
                 <div id="accordion" class=".ui-helper-reset">
                     <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
                     <div id="jstree" class="content1"></div>
@@ -899,45 +900,52 @@
                     modal.find('.product-name').text(button.data('product_name'));
                     modal.find('.product_id').val(button.data('product'));
                     modal.find('.storage_id').val(button.data('storage'));
+                    modal.find('.amount').val(button.data('amount'));
                     modal.find('.order-storage-amount').text(button.data('storage_max'));
-                    var quantity = modal.find('input[name="quantity"]');
-                    quantity.val(button.data('storage_min'));
-                    quantity.attr('min',button.data('storage_min'));
-                    quantity.attr('step',button.data('storage_min'));
-                    quantity.attr('data-max',button.data('storage_max'));
+                    console.log(button.data('amount')>button.data('storage_max'));
+                    console.log(button.data('amount') % button.data('storage_min'));
+                    if(button.data('amount')>button.data('storage_max')){
+                        //data-storage_min
+                        if(button.data('amount') % button.data('storage_min')){
+                            modal.find('.quantity').val(button.data('storage_max'));
+                            modal.find('.quantity_request').val(button.data('amount')-button.data('storage_max'));
+                        }
+                        else{
+                            modal.find('.quantity').val(button.data('amount'));
+                            modal.find('.quantity_request').val(button.data('amount')-button.data('storage_max'));
+                        }
+                    }
+                    else{
+                        if(button.data('amount') % button.data('storage_min')){
+                            modal.find('.quantity').val(button.data('amount') -
+                                button.data('amount') % button.data('storage_min'));
 
-                    var quantity_request = modal.find('input[name="quantity_request"]');
-                    quantity_request.val(0);
-                    quantity_request.attr('min',0);
-                    quantity_request.attr('step',button.data('storage_min'));
+                            modal.find('.quantity_request').val(button.data('amount')
+                                % button.data('storage_min'));
+                        }else{
+                            modal.find('.quantity').val(button.data('amount'));
+                            modal.find('.quantity_request').val(0);
+                        }
+
+                    }
+
+
+                    // var quantity = modal.find('input[name="quantity"]');
+                    // quantity.val(button.data('storage_min'));
+                    // quantity.attr('min',button.data('storage_min'));
+                    // quantity.attr('step',button.data('storage_min'));
+                    // quantity.attr('data-max',button.data('storage_max'));
+                    //
+                    // var quantity_request = modal.find('input[name="quantity_request"]');
+                    // quantity_request.val(0);
+                    // quantity_request.attr('min',0);
+                    // quantity_request.attr('step',button.data('storage_min'));
 
                     $('.storage-limit-info').hide();
                     $('.storage-limit-request').hide();
                     $('input[name="quantity_request"]').change();
                 }
             });
-
-            //form_add_order
-            // $('input[name="quantity"]').change(function (e) {
-            //     e.preventDefault();
-            //     if($(this).val() > $(this).data('max')){
-            //         var request =  $(this).val() - $(this).data('max');
-            //         $(this).val($(this).data('max'));
-            //         $('input[name="quantity_request"]').val(request);
-            //         $('.storage-limit-info').show();
-            //         $('.storage-limit-request').show();
-            //         $('input[name="quantity_request"]').change();
-            //     }
-            // });
-            //
-            // $('input[name="quantity_request"]').change(function (e) {
-            //     e.preventDefault();
-            //     if($(this).val() > 0){
-            //         $('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
-            //     }else{
-            //         $('.btn-add-order').text($('.btn-add-order').data('btn_order'));
-            //     }
-            // });
 
             //Добавление инфы в модальное окно
             $('#form_add_catalog').submit(function (e) {
@@ -1272,7 +1280,8 @@
                         $('#action_buttons_'+product_id).append(
                             '<a href="#modal-order" class="btn btn-sm btn-primary source" data-toggle="modal" data-product="'+product_id+'" ' +
                             'data-product_name="'+msg['name']+'" data-storage="'+storage_id+'" data-storage_min="'+msg['package']+'" ' +
-                            'data-storage_max="'+msg['storageamount']+'"> <i class="fas fa-cart-plus"></i></a>'
+                            'data-storage_max="'+msg['storageamount']+'" data-amount="'+quantityinput[0].getAttribute('value')+'"> ' +
+                            '<i class="fas fa-cart-plus"></i></a>'
                         );
 
                     }
@@ -1354,7 +1363,9 @@
                         sum_w_taxes.children[3].innerText = msg['discountamount'];
                     }
 
-
+                    let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
+                    add_to_order_button.setAttribute('data-amount',amount);
+                    //$('#action_buttons_'+product_id).children[2].setAttribute('data-amount',amount);
                 }
             });
         }
@@ -1421,6 +1432,7 @@
             background: #f6f6f6;
             font-weight: 400;
             color: #454545;
+            width: auto;
         }
 
         .image-container{
