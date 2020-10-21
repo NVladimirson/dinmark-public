@@ -855,6 +855,7 @@ use Illuminate\Support\Str;
                     console.log(xhr);
                 }
 
+
             });
             $('#modal-order_multiple').modal('hide');
             return false;
@@ -955,11 +956,42 @@ use Illuminate\Support\Str;
 
             $('#modal-wishlist').modal('hide');
 
+
             var form = $(this);
             let list_id = $('#wishlist').val();
 
             var route = '{{route('
             catalogs ')}}/add-to-catalog/' + list_id;
+
+                var form = $(this);
+                var order_id = $('#order_id').val();
+                var route = '{{route('orders')}}/add-to-order/'+order_id;
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    method: "POST",
+                    url: route,
+                    data: form.serialize(),
+                    success: function(resp)
+                    {
+                        if(resp == "ok"){
+                            $.gritter.add({
+                                title: '@lang('order.modal_success')',
+                            });
+                            if(order_id == 0){
+                                document.location.reload(true);
+                            }
+                            //window.table.ajax.reload();
+                        }
+                    },
+                    error:  function(xhr, str){
+                        console.log(xhr);
+                    }
+                });
+
 
             $.ajaxSetup({
                 headers: {
@@ -1191,127 +1223,176 @@ use Illuminate\Support\Str;
         });
     }
 
-    function initCalc(obj) {
-        let optionselected = $("option:selected", obj);
-        let product_id = obj.getAttribute('product_id');
-        let quantityinput = $('#calc_quantity_' + product_id);
-        let packageweight = $('#package_weight_' + product_id);
-        let sumwithtaxes = $('#sum_w_taxes_' + product_id);
-        let storage_id = optionselected.val();
-        if (storage_id !== '0') {
-            let min = optionselected[0].getAttribute('package_min');
-            let max = optionselected[0].getAttribute('package_max');
+        function initCalc(obj){
+            let optionselected = $("option:selected", obj);
+            let product_id = obj.getAttribute('product_id');
+            let quantityinput = $('#calc_quantity_'+product_id);
+            let packageweight = $('#package_weight_'+product_id);
+            let sumwithtaxes = $('#sum_w_taxes_'+product_id);
+            let storage_id = optionselected.val();
+            if(storage_id!=='0'){
+                let min = optionselected[0].getAttribute('package_min');
+                let max = optionselected[0].getAttribute('package_max');
 
-            quantityinput[0].setAttribute('value', min);
-            quantityinput[0].setAttribute('min', min);
-            quantityinput[0].setAttribute('step', min);
-            quantityinput[0].setAttribute('data-max', max);
-            quantityinput.css("display", "");
+                quantityinput[0].setAttribute('value',min);
+                quantityinput[0].setAttribute('min',min);
+                quantityinput[0].setAttribute('step',min);
+                quantityinput[0].setAttribute('data-max',max);
+                quantityinput.css("display","");
 
+                $.ajax({
+                    type: "GET",
+                    data: {
+                        product_id:product_id,
+                        storage_id:storage_id,
+                        amount:quantityinput[0].getAttribute('value')
+                    },
+                    url: "{!! @route('priceCalc') !!}",
+                    success: function(msg){
+                        let retail_price = document.getElementById('retail_price_'+product_id);
+                        retail_price.children[0].innerText = msg['retail_price'];
+
+                        let user_price = document.getElementById('user_price_'+product_id);
+                        user_price.children[0].innerText = msg['user_price'];
+
+                        let package_weight = document.getElementById('package_weight_'+product_id);
+                        package_weight.children[0].innerText = msg['multiplier'];
+                        package_weight.children[1].innerText = msg['package'];
+                        package_weight.children[3].innerText = msg['weight'];
+
+                        let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+                        sum_w_taxes.children[0].innerText = msg['price'];
+
+                        if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                            console.log(msg['limit_amount_quantity_2']);
+                            sum_w_taxes.children[2].innerText = '';
+                            sum_w_taxes.children[3].innerText = '';
+                            //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
+                        }else{
+                            sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                            sum_w_taxes.children[3].innerText = msg['discountamount'];
+                        }
+
+                        if(msg['limit_amount_quantity_1'] === '0' || msg['limit_amount_quantity_1'] === 0){
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = '';
+                            limit_1.children[2].innerText = '-';
+                        }else{
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = msg['limit_amount_price_1'];
+                            limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
+                        }
+
+                        if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = '';
+                            limit_2.children[2].innerText = '-';
+                        }else{
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = msg['limit_amount_price_2'];
+                            limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
+                        }
+
+                        // document.getElementById('limit_2_'+product_id){
+                        //
+                        // }
+                        let productbutton = $('#action_buttons_'+product_id);
+                        if(productbutton[0].children[2]){
+                            productbutton[0].children[2].remove();
+                        }
+
+                        $('#action_buttons_'+product_id).append(
+                            '<a href="#modal-order" class="btn btn-sm btn-primary source" data-toggle="modal" data-product="'+product_id+'" ' +
+                            'data-product_name="'+msg['name']+'" data-storage="'+storage_id+'" data-storage_min="'+msg['package']+'" ' +
+                            'data-storage_max="'+msg['storageamount']+'" data-amount="'+quantityinput[0].getAttribute('value')+'"> ' +
+                            '<i class="fas fa-cart-plus"></i></a>'
+                        );
+
+                    }
+                });
+
+                packageweight.css("display","");
+
+                sumwithtaxes.css("display","");
+
+
+            }else{
+                quantityinput.css("display","none");
+
+                packageweight.css("display","none");
+
+                sumwithtaxes.css("display","none");
+
+                let limit_1 = document.getElementById('limit_1_'+product_id);
+                limit_1.children[0].innerText = '';
+                limit_1.children[2].innerText = '-';
+
+
+                let limit_2 = document.getElementById('limit_2_'+product_id);
+                limit_2.children[0].innerText = '';
+                limit_2.children[2].innerText = '-';
+
+                let retail_price = document.getElementById('retail_price_'+product_id);
+                retail_price.children[0].innerText = '';
+
+                let user_price = document.getElementById('user_price_'+product_id);
+                user_price.children[0].innerText = '';
+
+                let productbutton = $('#action_buttons_'+product_id);
+                if(productbutton[0].children[2]){
+                    productbutton[0].children[2].remove();
+                }
+            }
+        }
+
+
+        function changeamount(obj){
+            let id = obj.id;
+
+            let product_id = id.substr(14);
+            let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
+            let storage_id = optionselected.val();
+            let amount = obj.value;
             $.ajax({
                 type: "GET",
                 data: {
-                    product_id: product_id,
-                    storage_id: storage_id,
-                    amount: quantityinput[0].getAttribute('value')
+                    product_id:product_id,
+                    storage_id:storage_id,
+                    amount:amount
                 },
                 url: "{!! @route('priceCalc') !!}",
-                success: function(msg) {
+                success: function(msg){
+                    console.log(msg);
+                    let retail_price = document.getElementById('retail_price_'+product_id);
+                    retail_price.children[0].innerText = msg['retail_price'];
 
-                    let package_weight = document.getElementById('package_weight_' + product_id);
+                    let user_price = document.getElementById('user_price_'+product_id);
+                    user_price.children[0].innerText = msg['user_price'];
+
+                    let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
                     package_weight.children[1].innerText = msg['package'];
                     package_weight.children[3].innerText = msg['weight'];
 
-                    let sum_w_taxes = document.getElementById('sum_w_taxes_' + product_id);
+                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                     sum_w_taxes.children[0].innerText = msg['price'];
 
-                    if (msg['limit_amount_quantity_2'] !== '0') {
-                        console.log('QUA ' + typeof(msg['limit_amount_quantity_2']));
-                        sum_w_taxes.children[2].innerText = '-' + msg['discount'];
-                        sum_w_taxes.children[3].innerText = msg['discountamount'];
-                    } else {
+                    if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                        console.log(msg['limit_amount_quantity_2']);
                         sum_w_taxes.children[2].innerText = '';
                         sum_w_taxes.children[3].innerText = '';
+                        //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
+                    }else{
+                        sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                        sum_w_taxes.children[3].innerText = msg['discountamount'];
                     }
 
-                    if (msg['limit_amount_quantity_1'] !== '0') {
-                        let limit_1 = document.getElementById('limit_1_' + product_id);
-                        limit_1.children[0].innerText = msg['limit_amount_price_1'];
-                        limit_1.children[2].innerText = '>' + msg['limit_amount_quantity_1'];
-                    } else {
-                        let limit_1 = document.getElementById('limit_1_' + product_id);
-                        limit_1.children[0].innerText = '';
-                        limit_1.children[2].innerText = '-';
-                    }
-
-                    if (msg['limit_amount_quantity_2'] === '0') {
-                        let limit_2 = document.getElementById('limit_2_' + product_id);
-                        limit_2.children[0].innerText = '';
-                        limit_2.children[2].innerText = '-';
-                    } else {
-                        let limit_2 = document.getElementById('limit_2_' + product_id);
-                        limit_2.children[0].innerText = msg['limit_amount_price_2'];
-                        limit_2.children[2].innerText = '>' + msg['limit_amount_quantity_2'];
-                    }
-
+                    let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
+                    add_to_order_button.setAttribute('data-amount',amount);
+                    //$('#action_buttons_'+product_id).children[2].setAttribute('data-amount',amount);
                 }
             });
-
-            packageweight.css("display", "");
-
-            sumwithtaxes.css("display", "");
-
-
-        } else {
-            quantityinput.css("display", "none");
-
-            packageweight.css("display", "none");
-
-            sumwithtaxes.css("display", "none");
-
-            let limit_1 = document.getElementById('limit_1_' + product_id);
-            limit_1.children[0].innerText = '';
-            limit_1.children[2].innerText = '-';
-
-
-            let limit_2 = document.getElementById('limit_2_' + product_id);
-            limit_2.children[0].innerText = '';
-            limit_2.children[2].innerText = '-';
         }
-    }
-
-
-    function changeamount(obj) {
-        let id = obj.id;
-
-        let product_id = id.substr(14);
-        let optionselected = $("option:selected", document.getElementById('storage_product_' + product_id));
-        let storage_id = optionselected.val();
-        let amount = obj.value;
-        $.ajax({
-            type: "GET",
-            data: {
-                product_id: product_id,
-                storage_id: storage_id,
-                amount: amount
-            },
-            url: "{!! @route('priceCalc') !!}",
-            success: function(msg) {
-                console.log(msg);
-
-                let package_weight = document.getElementById('package_weight_' + product_id);
-                package_weight.children[0].innerText = msg['multiplier'];
-                package_weight.children[1].innerText = msg['package'];
-                package_weight.children[3].innerText = msg['weight'];
-
-                let sum_w_taxes = document.getElementById('sum_w_taxes_' + product_id);
-                sum_w_taxes.children[0].innerText = msg['price'];
-                sum_w_taxes.children[2].innerText = '-' + msg['discount'];
-                sum_w_taxes.children[3].innerText = msg['discountamount'];
-            }
-        });
-    }
     // $('.custom-select').on('change', function (e) {
     //     console.log(this);
     // });
@@ -1339,6 +1420,7 @@ use Illuminate\Support\Str;
         width: 90%;
     }
 
+
     .jstree-default li>ins {
         vertical-align: top;
     }
@@ -1355,7 +1437,9 @@ use Illuminate\Support\Str;
         padding: 8px;
         margin-left: 6px;
 
+
     }
+
 
     .custom-control-label {
         margin-top: 10px;
@@ -1363,6 +1447,35 @@ use Illuminate\Support\Str;
         font-size: 1rem;
         line-height: 1.0;
     }
+
+
+    <style>
+        .ui-accordion .ui-accordion-content {
+            padding:0px !important;
+        }
+        .jstree{
+            padding:0px;
+        }
+        .jstree-default a {
+            white-space:normal !important; height: auto;
+        }
+        .jstree-anchor {
+            height: auto !important;
+            width: 90%;
+        }
+        .jstree-default li > ins {
+            vertical-align:top;
+        }
+        .jstree-leaf {
+            height: auto;
+        }
+        .jstree-leaf a{
+            height: auto !important;
+        }
+        .checkbox.checkbox-css label{
+            padding:8px;
+            margin-left:6px;
+
 
     .right-align {
         float: right;
