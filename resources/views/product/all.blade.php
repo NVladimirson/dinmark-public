@@ -846,8 +846,7 @@ use Illuminate\Support\Str;
                         $('#new_wishlist_name').val('');
 
                         $.gritter.add({
-                            title: '@lang('
-                            wishlist.modal_success ')',
+                            title: '@lang('wishlist.modal_success ')',
                         });
                     }
                 },
@@ -1008,8 +1007,7 @@ use Illuminate\Support\Str;
                         $('#new_wishlist_name').val('');
 
                         $.gritter.add({
-                            title: '@lang('
-                            wishlist.modal_success ')',
+                            title: '@lang('wishlist.modal_success ')',
                         });
                     }
                 },
@@ -1043,8 +1041,7 @@ use Illuminate\Support\Str;
                 success: function(resp) {
                     if (resp == "ok") {
                         $.gritter.add({
-                            title: '@lang('
-                            order.modal_success ')',
+                            title: '@lang('order.modal_success ')',
                         });
                         if (order_id == 0) {
                             document.location.reload(true);
@@ -1080,8 +1077,7 @@ use Illuminate\Support\Str;
                 success: function(resp) {
                     if (resp == "ok") {
                         $.gritter.add({
-                            title: '@lang('
-                            product.get_price_success ')',
+                            title: '@lang('product.get_price_success ')',
                         });
                     }
                 },
