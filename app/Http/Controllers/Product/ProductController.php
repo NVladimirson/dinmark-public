@@ -85,9 +85,8 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-
-
-        return view('test.test');
+        $product = Product::find(65573);
+        $storage = $product->storages->firstWhere('is_main',1);
 
     }
 
@@ -227,37 +226,43 @@ class ProductController extends Controller
 //            })
 
             ->addColumn('retail_price', function (Product $product) {
-//                if(\App\Services\Product\Product::hasAmount($product->storages)){
-//                    return ProductServices::getBasePrice($product);
-//                }
-//                return number_format(0,2,'.',' ');
-                return '<p id="retail_price_'.$product->id.'"><span></span></p>';
+                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    return '<p id="retail_price_'.$product->id.'"><span>'.ProductServices::getBasePrice($product).'</span></p>';
+                }
+                return number_format(0,2,'.',' ');
             })
             ->addColumn('user_price', function (Product $product) {
-//                if(\App\Services\Product\Product::hasAmount($product->storages)){
-//                    return ProductServices::getPrice($product);
-//                }
-//                return number_format(0,2,'.',' ');
-                return '<p id="user_price_'.$product->id.'"><span></span></p>';
+                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    return '<p id="user_price_'.$product->id.'"><span>'.ProductServices::getPrice($product).'</span></p>';
+                }
+                return number_format(0,2,'.',' ');
+                //return '<p id="user_price_'.$product->id.'"><span></span></p>';
             })
             ->addColumn('html_limit_1', function (Product $product) {
-
-//                if($product->l > 0){
-//                    if(\App\Services\Product\Product::hasAmount($product->storages)){
-//                        return '<p style="color: #96ca0a">'.ProductServices::getPriceWithCoef($product,0.97).'<br> > '.$product->limit_1.'шт.</p>';
-////                        return \App\Services\Product\Product::getPriceWithCoef($product,0.97).
-////                            ' '.trans('product.table_header_price_from',['quantity' => $product->limit_1]);
-//
-//                    }
-//                }
-
-
-                return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;">
-                        <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
+                $storage = $product->storages->firstWhere('is_main',1);
+                if($storage->limit_1){
+                    $price_limit = ProductServices::getPriceWithCoef($product,0.97);
+                    $limit = $storage->limit_1;
+                    return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a" ><span class="limit_amount_price_1">'.$price_limit.
+                        '</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
+                }
+                else{
+                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_1"> - 
+                        </span><br><span class="limit_amount_quantity_1"></span></p>';
+                }
             })
             ->addColumn('html_limit_2', function (Product $product) {
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674">
-                        <span class="limit_amount_price"></span><br><span class="limit_amount_quantity"></span></p>';
+                $storage = $product->storages->firstWhere('is_main',1);
+                if($storage->limit_2){
+                    $price_limit = ProductServices::getPriceWithCoef($product,0.93);
+                    $limit = $storage->limit_2;
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2">'.$price_limit.
+                        '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
+                }
+                else{
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2"> - 
+                        </span><br><span class="limit_amount_quantity_2"></span></p>';
+                }
 
             })
             ->addColumn('storage_html', function (Product $product) {
@@ -267,14 +272,21 @@ class ProductController extends Controller
                     $storages = $product->storages;
                     if(count($storages)){
                         $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
-                        $value .= "<option value='0'>$emptyvalue</option>";
+                        //$value .= "<option value='0'>$emptyvalue</option>";
+                        $main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
                         foreach ($storages as $key => $storage) {
                             $term = $storage->storage->term;
                             $days = ProductServices::getStingDays($term);
                             $name = CatalogServices::dayrounder($storage->amount).
                             ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
                             $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'" 
-                            package_max="'.$storage->amount.'">'.$name.'</option>';
+                            package_max="'.$storage->amount.'"';
+                            if($storage->storage->id == $main_storage){
+                                $value .= 'selected>'.$name.'</option>';
+                            }
+                            else{
+                                $value .= '>'.$name.'</option>';
+                            }
                         }
                         $value .= '</select>';
                     }
@@ -283,27 +295,49 @@ class ProductController extends Controller
                 return $value;
             })
             ->addColumn('calc_quantity', function (Product $product) {
+                $storage = $product->storages->firstWhere('is_main',1);
+                $package = $storage->package;
+
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;display: none"
-                                           placeholder="@lang(\'product.quantity_order\')" value="0" min="0" step="10" data-max="1000"/>';
+                    return '
+                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
+                    name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
+                    placeholder="@lang(\'product.quantity_order\')" 
+                    value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" data-max="'.$storage->amount.'"/>';
                 }
             })
             ->addColumn('package_weight', function (Product $product) {
+                $storage = $product->storages->firstWhere('is_main',1);
+                $package = $storage->package;
+                $unit = $product->unit;
+
+                preg_match_all('!\d+!', $unit, $isnumber);
+                if(!empty($isnumber[0])){
+                    $unitnumber = $isnumber[0][0];
+                }else{
+                    $unitnumber = 1;
+                }//сори
+
+                $weight = $product->weight * ($storage->package/$unitnumber);
                 return '
-                <p id="package_weight_'.$product->id.'" style="display: none">
-                <span class="multiplier"> </span> x <span class="package"> </span><br>
-                <span class="weight"></span>
+                <p id="package_weight_'.$product->id.'">
+                <span class="multiplier">1</span> x <span class="package">'.$package.'</span><br>
+                <span class="weight">'.number_format($weight,3,'.',',').'</span>
                 </p>';
             })
             ->addColumn('sum_w_taxes', function (Product $product) {
-                return '<p id="sum_w_taxes_'.$product->id.'" style="display: none"><span class="price">  </span> <br>
-                <span class="discount">  </span> <span class="discountamount">  </span> </p>';
+                $storage = $product->storages->firstWhere('is_main',1);
+                $price = ProductServices::getPriceUnformatted($product);
+               // 'discount' => $discount,
+            //'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storage_id) - $multiplier*$price,2,'.',' '),
+                return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p>';
             })
             ->addColumn('actions', function (Product $product) {
-                //$storage = $product->storages->firstWhere('is_main',1);
+                $storage = $product->storages->firstWhere('is_main',1);
                 $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                //$name = \App\Services\Product\Product::getName($product);
-                return view('product.include.action_buttons',compact('product','hasStorage'));
+                $name = \App\Services\Product\Product::getName($product);
+                return view('product.include.action_buttons',compact('product','hasStorage','name','storage'));
             })
             ->orderColumn('storage_html','storage_1 $1')
             ->orderColumn('article_show_html','article_show $1')
@@ -359,8 +393,6 @@ class ProductController extends Controller
             ($storageamount = $storageinfo->amount-($storageinfo->amount%100));
         $three_percent_discount_limit = $storageinfo->limit_1;
         $seven_percent_discount_limit = $storageinfo->limit_2;
-
-        $unit = $productinfo->unit;
         if (($amount >= $seven_percent_discount_limit) && $seven_percent_discount_limit){
             $price = ProductServices::getPriceWithCoefUnformatted($productinfo,0.93);
             $discount = '7%';
@@ -376,7 +408,7 @@ class ProductController extends Controller
 
 
         $multiplier = $amount/$package - $amount%$package;
-
+        $unit = $productinfo->unit;
         preg_match_all('!\d+!', $unit, $isnumber);
         if(!empty($isnumber[0])){
             $unitnumber = $isnumber[0][0];
@@ -385,6 +417,7 @@ class ProductController extends Controller
         }//сори
 
         $weight = $productinfo->weight * ($amount/$unitnumber);
+        //number_format($weight,3,'.',' ')
 
         $retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo)*$multiplier,2,'.',' ');
 
