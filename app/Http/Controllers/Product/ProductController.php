@@ -240,7 +240,7 @@ class ProductController extends Controller
             })
             ->addColumn('html_limit_1', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                if($storage->limit_1){
+                if(isset($storage->limit_1) && $storage->limit_1!=0){
                     $price_limit = ProductServices::getPriceWithCoef($product,0.97);
                     $limit = $storage->limit_1;
                     return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a" ><span class="limit_amount_price_1">'.$price_limit.
@@ -253,7 +253,7 @@ class ProductController extends Controller
             })
             ->addColumn('html_limit_2', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                if($storage->limit_2){
+                if(isset($storage->limit_2) && $storage->limit_2!=0){
                     $price_limit = ProductServices::getPriceWithCoef($product,0.93);
                     $limit = $storage->limit_2;
                     return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2">'.$price_limit.
@@ -273,7 +273,12 @@ class ProductController extends Controller
                     if(count($storages)){
                         $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
                         //$value .= "<option value='0'>$emptyvalue</option>";
-                        $main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
+                        if(isset($product->storages->firstWhere('is_main',1)->storage_id)){
+                            $main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
+                        }
+                        else{
+                            $main_storage = 0;
+                        }
                         foreach ($storages as $key => $storage) {
                             $term = $storage->storage->term;
                             $days = ProductServices::getStingDays($term);
@@ -296,42 +301,63 @@ class ProductController extends Controller
             })
             ->addColumn('calc_quantity', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                $package = $storage->package;
 
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
+                    $package = $storage->package;
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
                     placeholder="@lang(\'product.quantity_order\')" 
                     value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" data-max="'.$storage->amount.'"/>';
                 }
+                else{
+                    return '
+                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
+                    name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
+                    placeholder="@lang(\'product.quantity_order\')" 
+                    value="0" min="0" step="10" data-max="1000"/>';
+                }
             })
             ->addColumn('package_weight', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                $package = $storage->package;
-                $unit = $product->unit;
+                if(isset($storage->package)){
+                    $package = $storage->package;
+                    $unit = $product->unit;
 
-                preg_match_all('!\d+!', $unit, $isnumber);
-                if(!empty($isnumber[0])){
-                    $unitnumber = $isnumber[0][0];
-                }else{
-                    $unitnumber = 1;
-                }//сори
+                    preg_match_all('!\d+!', $unit, $isnumber);
+                    if(!empty($isnumber[0])){
+                        $unitnumber = $isnumber[0][0];
+                    }else{
+                        $unitnumber = 1;
+                    }//сори
 
-                $weight = $product->weight * ($storage->package/$unitnumber);
-                return '
+                    $weight = $product->weight * ($storage->package/$unitnumber);
+                    return '
                 <p id="package_weight_'.$product->id.'">
                 <span class="multiplier">1</span> x <span class="package">'.$package.'</span><br>
                 <span class="weight">'.number_format($weight,3,'.',',').'</span>
                 </p>';
+                }else{
+                    return '
+                <p id="package_weight_'.$product->id.'">
+                <span class="multiplier"></span><span class="package"></span><br>
+                <span class="weight"></span>
+                </p>';
+                }
             })
             ->addColumn('sum_w_taxes', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                $price = ProductServices::getPriceUnformatted($product);
-               // 'discount' => $discount,
-            //'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storage_id) - $multiplier*$price,2,'.',' '),
-                return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                if(isset($storage)){
+                    $price = ProductServices::getPriceUnformatted($product);
+                    // 'discount' => $discount,
+                    //'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storage_id) - $multiplier*$price,2,'.',' '),
+                    return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
                 <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p>';
+                }else{
+                    return '<p id="sum_w_taxes_'.$product->id.'"><span class="price"></span> <br>
+                <span class="discount"></span> <span class="discountamount"></span> </p>';
+                }
+
             })
             ->addColumn('actions', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);

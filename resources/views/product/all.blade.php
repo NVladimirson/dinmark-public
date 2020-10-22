@@ -131,8 +131,8 @@ use Illuminate\Support\Str;
     </div>
 
     <div v-show="isShow" class="responsive-width">
-        <div class="panel panel-primary">
-            <div style="border-left: 2px solid #fff;" class="panel-heading">
+        <div id="scroll-filter" class="panel panel-primary">
+            <div class="panel-heading">
                 <h4 class="panel-title">@lang('product.right_widget_name')</h4>
             </div>
             <div id="reload" style="display:none"></div>
@@ -164,7 +164,7 @@ use Illuminate\Support\Str;
                                     <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
                                     @else
                                     @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
                                     @endif
                                     <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
                                         {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
