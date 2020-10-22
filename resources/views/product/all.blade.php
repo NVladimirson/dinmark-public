@@ -27,15 +27,18 @@ use Illuminate\Support\Str;
 
 <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
 <!-- begin row -->
+<div id="filters_selected">
+
+</div>
 <div id="wrap-table" class="row wrap-table">
+<i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-angle-double-left"></i>
+<i v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
     <div class="col-xl-12">
         <!-- begin panel -->
         <div class="panel panel-primary">
             <!-- begin panel-heading -->
             <div class="panel-heading">
                 <h4 class="panel-title">@lang('product.all_tab_name')
-                    <span v-show="!isShow" id="slide-label">Категорії і фільтри</span>
-                    <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-angle-double-left"></i>
                 </h4>
             </div>
             <!-- end panel-heading -->
@@ -127,10 +130,9 @@ use Illuminate\Support\Str;
         <!-- end panel -->
     </div>
 
-    <div v-show="isShow" class="col-xl-3 responsive-width">
+    <div v-show="isShow" class="responsive-width">
         <div class="panel panel-primary">
             <div style="border-left: 2px solid #fff;" class="panel-heading">
-                <i v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
                 <h4 class="panel-title">@lang('product.right_widget_name')</h4>
             </div>
             <div id="reload" style="display:none"></div>
@@ -241,7 +243,7 @@ use Illuminate\Support\Str;
     const wrapTable = new Vue({
         el: "#wrap-table",
         data: {
-            isShow: true
+            isShow: false
         },
         methods: {
             toggleShow: function() {
