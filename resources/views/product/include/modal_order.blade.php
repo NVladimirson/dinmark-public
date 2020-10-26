@@ -6,6 +6,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <form id="form_add_order">
+                <div class="row">
+                    <div class="col-xl-3"><img src=""></div>
+                    <div class="col-xl-9"></div>
+                </div>
                 <input type="hidden" class="product_id" name="product_id">
                 <input type="hidden" class="storage_id" name="storage_id">
                 {{--<input type="hidden" class="amount" name="amount">--}}

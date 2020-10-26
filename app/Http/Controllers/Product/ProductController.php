@@ -85,9 +85,9 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $product = Product::find(65573);
-        $storage = $product->storages->firstWhere('is_main',1);
-
+        $terms = CategoryServices::getTermsForSelect();
+        ksort($terms);
+        dd($terms);
     }
 
 
@@ -308,7 +308,7 @@ class ProductController extends Controller
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
                     placeholder="@lang(\'product.quantity_order\')" 
-                    value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" data-max="'.$storage->amount.'"/>';
+                    value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" max="'.$storage->amount.'"/>';
                 }
                 else{
                     return '
@@ -362,8 +362,9 @@ class ProductController extends Controller
             ->addColumn('actions', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
                 $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
+                $src = \App\Services\Product\Product::getImagePath($product);
                 $name = \App\Services\Product\Product::getName($product);
-                return view('product.include.action_buttons',compact('product','hasStorage','name','storage'));
+                return view('product.include.action_buttons',compact('product','hasStorage','name','src','storage'));
             })
             ->orderColumn('storage_html','storage_1 $1')
             ->orderColumn('article_show_html','article_show $1')

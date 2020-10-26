@@ -59,7 +59,6 @@ class OrderController extends Controller
 	}
 
 	public function addToOrder($id, Request $request){
-	    info('ORDER'.$request);
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 

@@ -689,7 +689,7 @@ use Illuminate\Support\Str;
                 } else {
                     $(".intable").each(function() {
                         $(this).prop('checked', false);
-                        document.getElementById('selected_products').innerText = '';
+                            document.getElementById('selected_products').innerText = '';
                     });
                     window.products = [];
                 }
@@ -718,6 +718,7 @@ use Illuminate\Support\Str;
 
         $('#mass_actions').on('change', function(e) {
             if (window.loading === 0) {
+
                 window.loading = 1;
                 let option = $("option:selected", $('#mass_actions')).val();
                 window.products = [];
@@ -759,52 +760,113 @@ use Illuminate\Support\Str;
                         //let map = $('.data-product_name');
                         let map = $('.source');
                         window.multiple_order_map = [];
+                        console.log(map);
                         $.each(map, function(key, value) {
                             let id = value.attributes['data-product'].value;
                             if (window.products.indexOf(id) !== -1) {
                                 multiple_order_map.push(id + '_:_' + value.attributes['data-product_name'].value +
                                     '_:_' + value.attributes['data-storage'].value +
                                     '_:_' + value.attributes['data-storage_min'].value +
-                                    '_:_' + value.attributes['data-storage_max'].value
+                                    '_:_' + value.attributes['data-storage_max'].value +
+                                    '_:_' + value.attributes['data-amount'].value
                                 );
                             }
                         });
 
                         $('#append_to').append($('<div id="multiple_input_div"></div>'));
+                        console.log(multiple_order_map);
                         $.each(multiple_order_map, function(key, value) {
+                            let model_order_data = value.split('_:_');
+                            let product_id = model_order_data[0];
+                            let text = value.split('_:_')[1];
+                            let data_storage = value.split('_:_')[2];
+                            let data_storage_min = value.split('_:_')[3];
+                            let data_storage_max = value.split('_:_')[4];
+                            let data_amount = value.split('_:_')[5];
+                            let quantity_amount = 0;
+
+                            if(data_amount > data_storage_max){
+                                    quantity_amount = data_amount - data_storage_max;
+                                    data_amount = data_storage_max;
+                            }
+                            else{
+                                quantity_amount = data_amount % data_storage_min;
+                                data_amount = data_amount - quantity_amount;
+                            }
                             $('#products_selector')
                                 .append($("<option></option>")
-                                    .attr("value", value.split('_:_')[0])
-                                    .text(value.split('_:_')[1])
-                                    .attr("data-storage", value.split('_:_')[2])
-                                    .attr("data-storage_min", value.split('_:_')[3])
-                                    .attr("data-storage_max", value.split('_:_')[4])
+                                    .attr("value", product_id)
+                                    .text(text)
+                                    .attr("data-storage", data_storage)
+                                    .attr("data-storage_min", data_storage_min)
+                                    .attr("data-storage_max", data_storage_max)
                                 );
 
-                            if (key !== 0) {
-                                $('#multiple_input_div').append($("" +
-                                    //"<label>" + "@lang('product.quantity_order_request')" + multiple_order_map[0].split('_:_')[3] +"</label>"+
-                                    '<input id="multiple_input_' + multiple_order_map[key].split('_:_')[0] + '" type="number" ' +
-                                    'name="id_' + multiple_order_map[key].split('_:_')[0] +
-                                    ':storageid_' + multiple_order_map[key].split('_:_')[2] + '" ' +
-                                    'class="form-control m-b-5 multipleorderinput" placeholder="@lang("product.quantity_order_request")"' +
-                                    'value ="' + multiple_order_map[key].split('_:_')[3] + '" ' +
-                                    'min="' + multiple_order_map[key].split('_:_')[3] + '" ' +
-                                    'max="' + multiple_order_map[key].split('_:_')[4] + '" ' + 'style="display:none"' + '>' +
-                                    ""));
-                            } else {
-                                $('#multiple_input_div').append($("" +
-                                    //"<label>" + "@lang('product.quantity_order_request')" + multiple_order_map[0].split('_:_')[3] +"</label>"+
-                                    '<input id="multiple_input_' + multiple_order_map[key].split('_:_')[0] + '" type="number" ' +
-                                    'name="id_' + multiple_order_map[key].split('_:_')[0] +
-                                    ':storageid_' + multiple_order_map[key].split('_:_')[2] + '" ' +
-                                    'class="form-control m-b-5 multipleorderinput" placeholder="@lang("product.quantity_order_request")"' +
-                                    'value ="' + multiple_order_map[key].split('_:_')[3] + '" ' +
-                                    'min="' + multiple_order_map[key].split('_:_')[3] + '" ' +
-                                    'max="' + multiple_order_map[key].split('_:_')[4] + '" ' + '>' +
-                                    ""));
-
+                            {{--let inputdata = "<label id=\"multiple_input_label_"+product_id+"\">@lang('product.quantity_order')</label>"--}}
+                            {{--if(key !== 0){--}}
+                                {{--let inputdata = "<label style=\"display:none\" id=\"multiple_input_label_"+product_id+"\" style=\"display:none\">@lang('product.quantity_order')</label>";--}}
+                            {{--}--}}
+                            let wrapper = '<div id="wrapper_inputs_'+product_id+'" style="display:none"></div>';
+                            if(key !== 0){
+                                let wrapper = '<div id="wrapper_inputs_'+product_id+'" style="display:none"></div>';
                             }
+                            $('#multiple_input_div').append($(wrapper));
+
+                            let inputdata = '<input id="multiple_input_' + product_id + '" type="number" ' +
+                                'name="id_' + product_id +
+                                ':storageid_' + data_storage + '" ' +
+                                'class="form-control m-b-5 multipleorderinput" placeholder="@lang("product.quantity_order_request")"' +
+                                'value ="' + data_amount + '" ' +
+                                'min="' + data_storage_min + '" ' +
+                                'max="' + data_storage_max + '" ';
+                                // if(key !== 0){
+                                //     inputdata += 'style="display:none"';
+                                // }
+                            inputdata += 'disabled >';
+
+                            {{--let inputdataqr = "<label id=\"multiple_input_label_"+product_id+"\">@lang('product.quantity_order')</label>";--}}
+                            {{--if(key !== 0){--}}
+                                {{--let inputdataqr = "<label id=\"multiple_input_label_"+product_id+"\" style=\"display:none\">@lang('product.quantity_order')</label>";--}}
+                            {{--}--}}
+                            let inputdataqr = '<input id="multiple_input_' + product_id + '_qr" type="number" ' +
+                                'name="qr_id_' + product_id +
+                                ':storageid_' + data_storage + '" ' +
+                                'class="form-control m-b-5 multipleorderinputquantity" placeholder="@lang("product.quantity_order_request")"' +
+                                'value ="' + quantity_amount + '" ' +
+                                'min="' + data_storage_min + '" ' +
+                                'max="' + data_storage_max + '" ';
+                            // if(key !== 0){
+                            //     inputdataqr += 'style="display:none"';
+                            // }
+                            inputdataqr += 'disabled >';
+
+                            $('#wrapper_inputs_'+product_id).append($(inputdata));
+                            $('#wrapper_inputs_'+product_id).append($(inputdataqr));
+
+                            // var quantity_request = modal.find('input[name="quantity_request"]');
+                            //
+                            // if (button.data('amount') > button.data('storage_max')) {
+                            //     //data-storage_min
+                            //     if (button.data('amount') % button.data('storage_min')) {
+                            //         quantity.val(button.data('storage_max'));
+                            //         quantity_request.val(button.data('amount') - button.data('storage_max'));
+                            //     }
+                            //     else {
+                            //         quantity.val(button.data('amount'));
+                            //         quantity_request.val(button.data('amount') - button.data('storage_max'));
+                            //     }
+                            // }
+                            // else {
+                            //     if (button.data('amount') % button.data('storage_min')) {
+                            //         quantity.val(button.data('amount') -
+                            //             button.data('amount') % button.data('storage_min'));
+                            //         quantity_request.val(button.data('amount')
+                            //             % button.data('storage_min'));
+                            //     } else {
+                            //         quantity.val(button.data('amount'));
+                            //         quantity_request.val(0);
+                            //     }
+                            // }
                         });
 
 
@@ -822,7 +884,19 @@ use Illuminate\Support\Str;
             $.each(inputs, function(key, value) {
                 $('#' + value.attributes['id'].value).hide();
             });
-            $('#multiple_input_' + id).show();
+            let inputs_quantity = $('.multipleorderinputquantity');
+            $.each(inputs_quantity, function(key, value) {
+                $('#' + value.attributes['id'].value).hide();
+            });
+
+
+            $('#wrapper_inputs_'+id).show();
+            //$('#multiple_input_label_'+id).show();
+            //$('#multiple_input_' + id).show();
+
+            // $('#multiple_input_label_'+id+'_qr').show();
+            //$('#multiple_input_' + id+'_qr').show();
+
             // $('#multiple_input').attr('value', selector.attributes['data-storage_min'].value);
         });
 
@@ -913,6 +987,7 @@ use Illuminate\Support\Str;
                 modal.find('.product_id').val(button.data('product'));
                 modal.find('.storage_id').val(button.data('storage'));
                 modal.find('.amount').val(button.data('amount'));
+
                 // modal.find('.order-storage-amount').text(button.data('storage_max'));
 
                 var quantity = modal.find('input[name="quantity"]');
@@ -1227,7 +1302,7 @@ use Illuminate\Support\Str;
                 quantityinput[0].setAttribute('value',min);
                 quantityinput[0].setAttribute('min',min);
                 quantityinput[0].setAttribute('step',min);
-                quantityinput[0].setAttribute('data-max',max);
+                quantityinput[0].setAttribute('max',max);
                 quantityinput.css("display","");
 
                 $.ajax({
