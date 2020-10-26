@@ -130,7 +130,6 @@ use Illuminate\Support\Str;
     </div>
 
     <div v-show="isShow" class="responsive-width">
-    <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
         <div id="scroll-filter" class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title">@lang('product.right_widget_name')</h4>
@@ -161,7 +160,7 @@ use Illuminate\Support\Str;
                                     @if(isset($data['data']['photo']))
                                     @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
                                     '/'.$data['data']['photo']; @endphp
-                                    <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                    <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
                                     @else
                                     @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
                                     <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
@@ -206,6 +205,7 @@ use Illuminate\Support\Str;
                         <i class="fa fa-percent" aria-hidden="true"></i> @lang('product.filters.discount')</a>
                     <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
             </div>
+            <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"><span>Приховати</span></i>
         </div>
     </div>
 </div>
@@ -1570,14 +1570,14 @@ use Illuminate\Support\Str;
     }
 
     .image-container {
-        width: 25px;
-        height: 25px;
+        width: 75px;
+        height: 75px;
         /*border: dashed blue 1px;*/
     }
 
     .image-container img {
         max-height: 100%;
-        max-width: 100%;
+        max-width: 50px;
     }
 
     #optionfilters .row {
