@@ -21,7 +21,10 @@
        @else
        data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}"
        @endif
-       data-amount="{{$storage->package}}">
+       data-amount="{{$storage->package}}"
+       data-image="{{$src}}"
+       data-name="{{$name}}"
+    >
         <i class="fas fa-cart-plus"></i></a>
 @else
     <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal"

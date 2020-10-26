@@ -143,6 +143,7 @@ class CategoryServices
 				$terms[$term->term] = $term->term . $days;
 			}
 		}
+        ksort($terms);
 		return $terms;
 	}
 
