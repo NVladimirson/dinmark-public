@@ -31,8 +31,7 @@ use Illuminate\Support\Str;
 
 </div>
 <div id="wrap-table" class="row wrap-table">
-<i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-angle-double-left"></i>
-<i v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
+<i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fas fa-filter"></i>
     <div class="col-xl-12">
         <!-- begin panel -->
         <div class="panel panel-primary">
@@ -79,7 +78,7 @@ use Illuminate\Support\Str;
                             @endif
                         </div>
                     </div>
-
+                   
                 </div>
 
                 <div class="table-scroll-container">
@@ -131,6 +130,7 @@ use Illuminate\Support\Str;
     </div>
 
     <div v-show="isShow" class="responsive-width">
+    <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
         <div id="scroll-filter" class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title">@lang('product.right_widget_name')</h4>

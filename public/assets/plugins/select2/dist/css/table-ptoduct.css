@@ -2,14 +2,26 @@
 	box-sizing: border-box;
 }
 
-#slide-filter-on,
+#slide-filter-on {
+	position: fixed;
+	background: #000;
+	width: 45px;
+	height: 40px;
+	right: 0;
+	top: 350px;
+	color: #fff;
+	border-radius: 20px 0 0 20px;
+	cursor: pointer;
+	z-index: 2;
+}
+
 #slide-filter-of {
 	position: absolute;
 	background: #000;
 	width: 45px;
 	height: 40px;
-	right: 0;
-	top: 55%;
+	left: -45px;
+	top: 215px;
 	color: #fff;
 	border-radius: 20px 0 0 20px;
 	cursor: pointer;
@@ -22,7 +34,6 @@
 	top: 25%;
 	right: 20%;
 	cursor: pointer;
-	animation: 1.5s ease-in-out infinite reverse both running rock;
 }
 
 .table-responsive {
@@ -30,21 +41,18 @@
 	display: table;
 	z-index: -1;
 }
-
-.table-responsive {
-	z-index: -1;
-}
 .responsive-width {
-	z-index: 1;
-	position: absolute;
-	top: 55%;
+	z-index: 3;
+	position: fixed;
+	top: 135px;
 	right: 0;
 }
 
 td {
 	padding: 5px;
 }
-tr td:nth-child(3) {
+tr td:nth-child(3),
+tr th:nth-child(3) {
 	min-width: 15vw;
 	max-width: 20vw;
 }
@@ -78,29 +86,16 @@ td:hover .data-product_name {
 	background-color: #f0c674;
 }
 
-@keyframes rock {
-	0% {
-		right: 20%;
-	}
-	50% {
-		right: 35%;
-	}
-	100% {
-		right: 20%;
-	}
-}
-
 thead {
 	display: table-header-group;
 }
 
 #scroll-filter {
 	overflow: auto;
-	max-height: 50vh;
+	max-height: 80vh;
 }
 
 #filters_selected {
-	padding: 5px;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 5px;
@@ -116,4 +111,8 @@ thead {
 	padding: 5px 10px;
 	border: 1px solid #b3b2b2;
 	border-radius: 20px;
+}
+
+.product-image {
+	width: 80px;
 }
