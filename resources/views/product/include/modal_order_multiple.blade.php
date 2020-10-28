@@ -9,6 +9,10 @@
                 {{--<input type="hidden" class="product_id" name="product_id" id="products_order">--}}
                 {{--<input type="hidden" class="storage_id" name="storage_id" id="storages_order">--}}
                 <div class="modal-body" id="append_to">
+
+                        {{--<div class="col-xl-3"><img class="image" src="" width="80"></div>--}}
+                        {{--<div class="col-xl-9"><p class="name"></p></div>--}}
+
                     <div class="form-group m-b-15">
                         <label>@lang('product.select_order')</label>
                         <select class="form-control selectpicker" id="order_multiple_id" data-live-search="true" data-style="btn-white">
