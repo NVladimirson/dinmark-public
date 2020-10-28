@@ -340,9 +340,9 @@ use Illuminate\Support\Str;
         window.table =
             $('#data-table-buttons').DataTable({
                 "fixedHeader": true,
-                scrollY: "100vh",
+                // scrollY: "100vh",
                 deferRender: true,
-                scroller: true,
+                // scroller: true,
                 "language": {
                     "url": "@lang('table.localization_link')",
                 },
