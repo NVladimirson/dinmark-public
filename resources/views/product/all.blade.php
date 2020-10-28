@@ -521,6 +521,7 @@ use Illuminate\Support\Str;
                         }
 
                         $.each(all_filters, function(key, value) {
+                            //value.setAttribute("style", "color:red;cursor:not-allowed");
                             value.setAttribute("style", "color:red;cursor:not-allowed");
                             value.setAttribute("filter-accessible", "false");
                         });
@@ -751,6 +752,9 @@ use Illuminate\Support\Str;
                             multiple_select.removeChild(multiple_select.firstChild);
                         }
 
+                        if (document.getElementById("name_image_container")) {
+                            name_image_container.remove();
+                        }
                         if (document.getElementById("multiple_input_div")) {
                             multiple_input_div.remove();
                         }
@@ -760,7 +764,6 @@ use Illuminate\Support\Str;
                         //let map = $('.data-product_name');
                         let map = $('.source');
                         window.multiple_order_map = [];
-                        console.log(map);
                         $.each(map, function(key, value) {
                             let id = value.attributes['data-product'].value;
                             if (window.products.indexOf(id) !== -1) {
@@ -768,13 +771,21 @@ use Illuminate\Support\Str;
                                     '_:_' + value.attributes['data-storage'].value +
                                     '_:_' + value.attributes['data-storage_min'].value +
                                     '_:_' + value.attributes['data-storage_max'].value +
-                                    '_:_' + value.attributes['data-amount'].value
+                                    '_:_' + value.attributes['data-amount'].value +
+                                    '_:_' + value.attributes['data-image'].value
                                 );
                             }
                         });
-
+                        $('#append_to').prepend($('<div id="name_image_container"></div>'));
                         $('#append_to').append($('<div id="multiple_input_div"></div>'));
-                        console.log(multiple_order_map);
+                        let inputs = document.getElementById("multiple_input_div").children;
+                        let name_images = document.getElementById("name_image_container").children;
+                        while (inputs.firstChild) {
+                            inputs.removeChild(inputs.lastChild);
+                        }
+                        while (name_images.firstChild) {
+                            name_images.removeChild(name_images.lastChild);
+                        }
                         $.each(multiple_order_map, function(key, value) {
                             let model_order_data = value.split('_:_');
                             let product_id = model_order_data[0];
@@ -783,6 +794,7 @@ use Illuminate\Support\Str;
                             let data_storage_min = value.split('_:_')[3];
                             let data_storage_max = value.split('_:_')[4];
                             let data_amount = value.split('_:_')[5];
+                            let data_image = value.split('_:_')[6];
                             let quantity_amount = 0;
 
                             if(data_amount > data_storage_max){
@@ -802,15 +814,19 @@ use Illuminate\Support\Str;
                                     .attr("data-storage_max", data_storage_max)
                                 );
 
-                            {{--let inputdata = "<label id=\"multiple_input_label_"+product_id+"\">@lang('product.quantity_order')</label>"--}}
-                            {{--if(key !== 0){--}}
-                                {{--let inputdata = "<label style=\"display:none\" id=\"multiple_input_label_"+product_id+"\" style=\"display:none\">@lang('product.quantity_order')</label>";--}}
-                            {{--}--}}
-                            let wrapper = '<div id="wrapper_inputs_'+product_id+'" style="display:none"></div>';
-                            if(key !== 0){
-                                let wrapper = '<div id="wrapper_inputs_'+product_id+'" style="display:none"></div>';
+                            let wrapper_name_image = '<div class="row" id="wrapper_name_image_'+product_id+'" style="display: none">'+
+                                '<div class="col-xl-3"><img class="image" src="'+data_image+'" width="80"></div>' +
+                                '<div class="col-xl-9"><p class="name">'+text+'</p></div>' +
+                                '</div>';
+                            let wrapper_inputs = '<div id="wrapper_inputs_'+product_id+'" style="display: none"></div>';
+                            if(key === 0){
+                                wrapper_name_image = '<div class="row" id="wrapper_name_image_'+product_id+'">'+
+                                    '<div class="col-xl-3"><img class="image" src="'+data_image+'" width="80"></div>' +
+                                    '<div class="col-xl-9"><p class="name">'+text+'</p></div>' +
+                                    '</div>';
+                                wrapper_inputs = '<div id="wrapper_inputs_'+product_id+'"></div>';
                             }
-                            $('#multiple_input_div').append($(wrapper));
+                            $('#multiple_input_div').append($(wrapper_inputs));
 
                             let inputdata = '<input id="multiple_input_' + product_id + '" type="number" ' +
                                 'name="id_' + product_id +
@@ -819,15 +835,8 @@ use Illuminate\Support\Str;
                                 'value ="' + data_amount + '" ' +
                                 'min="' + data_storage_min + '" ' +
                                 'max="' + data_storage_max + '" ';
-                                // if(key !== 0){
-                                //     inputdata += 'style="display:none"';
-                                // }
                             inputdata += 'disabled >';
 
-                            {{--let inputdataqr = "<label id=\"multiple_input_label_"+product_id+"\">@lang('product.quantity_order')</label>";--}}
-                            {{--if(key !== 0){--}}
-                                {{--let inputdataqr = "<label id=\"multiple_input_label_"+product_id+"\" style=\"display:none\">@lang('product.quantity_order')</label>";--}}
-                            {{--}--}}
                             let inputdataqr = '<input id="multiple_input_' + product_id + '_qr" type="number" ' +
                                 'name="qr_id_' + product_id +
                                 ':storageid_' + data_storage + '" ' +
@@ -835,13 +844,12 @@ use Illuminate\Support\Str;
                                 'value ="' + quantity_amount + '" ' +
                                 'min="' + data_storage_min + '" ' +
                                 'max="' + data_storage_max + '" ';
-                            // if(key !== 0){
-                            //     inputdataqr += 'style="display:none"';
-                            // }
+
                             inputdataqr += 'disabled >';
 
                             $('#wrapper_inputs_'+product_id).append($(inputdata));
                             $('#wrapper_inputs_'+product_id).append($(inputdataqr));
+                            $('#name_image_container').append(wrapper_name_image);
 
                             // var quantity_request = modal.find('input[name="quantity_request"]');
                             //
@@ -880,17 +888,45 @@ use Illuminate\Support\Str;
 
         $('#products_selector').on('change', function() {
             let id = this.options[this.selectedIndex].attributes['value'].value;
-            let inputs = $('.multipleorderinput');
+            console.log('PRODUCT_ID');
+            console.log(id);
+            let inputs = document.getElementById("multiple_input_div").children;
+            let name_images = document.getElementById("name_image_container").children;
+
+            // console.log(inputs[0]);
+            // console.log(name_images[0]);
+
             $.each(inputs, function(key, value) {
-                $('#' + value.attributes['id'].value).hide();
+                //$('#' + value.attributes['id'].value).hide();
+                //if(value.id.substr(15) !== id){
+                    $('#'+value.attributes['id'].value).hide();
+                //}
+                // else{
+                //     $('#'+value.attributes['id'].value).show();
+                // }
             });
-            let inputs_quantity = $('.multipleorderinputquantity');
-            $.each(inputs_quantity, function(key, value) {
-                $('#' + value.attributes['id'].value).hide();
+            $.each(name_images, function(key, value) {
+                //if(value.id.substr(19) !== id){
+                    $('#'+value.attributes['id'].value).hide();
+                //}
+                // else{
+                //     $('#'+value.attributes['id'].value).show();
+                // }
             });
-
-
+            $('#wrapper_name_image_'+id).show();
             $('#wrapper_inputs_'+id).show();
+
+            // $.each(name_images, function(key, value) {
+            //     $('#' + value.attributes['id'].value).hide();
+            // });
+            //
+            // let inputs_quantity = $('.multipleorderinputquantity');
+            // $.each(inputs_quantity, function(key, value) {
+            //     $('#' + value.attributes['id'].value).hide();
+            // });
+
+
+            // $('#wrapper_inputs_'+id).show();
             //$('#multiple_input_label_'+id).show();
             //$('#multiple_input_' + id).show();
 
@@ -983,11 +1019,13 @@ use Illuminate\Support\Str;
             // if (!$('#get_price_product_id').val()) {
                 var button = $(event.relatedTarget);
                 var modal = $(this);
+                modal.find('.image').attr("src",button.data('image'));
+                modal.find('.name').text(button.data('name'));
+
                 modal.find('.product-name').text(button.data('product_name'));
                 modal.find('.product_id').val(button.data('product'));
                 modal.find('.storage_id').val(button.data('storage'));
                 modal.find('.amount').val(button.data('amount'));
-
                 // modal.find('.order-storage-amount').text(button.data('storage_max'));
 
                 var quantity = modal.find('input[name="quantity"]');
@@ -1104,6 +1142,7 @@ use Illuminate\Support\Str;
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            console.log(form.serialize());
             $.ajax({
                 method: "POST",
                 url: route,
