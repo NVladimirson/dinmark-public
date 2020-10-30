@@ -6,9 +6,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <form id="form_add_order">
-                <div class="row">
-                    <div class="col-xl-3"><img class="image" src="'{{env('DINMARK_URL')}}'images/dinmark_nophoto.jpg" width="80"></div>
-                    <div class="col-xl-9"><p class="name"></p></div>
+                <div class="row" style="padding-left: 15px">
+                    <div class="col-xl-4"><img class="image" src="'{{env('DINMARK_URL')}}'images/dinmark_nophoto.jpg" height="80"></div>
+                    <div class="col-xl-8"><p class="name"></p></div>
                 </div>
                 <input type="hidden" class="product_id" name="product_id">
                 <input type="hidden" class="storage_id" name="storage_id">
@@ -26,16 +26,19 @@
                         </select>
                     </div>
                     {{--<div class="form-group m-b-15 storage-limit-info">--}}
-                        {{--<strong>@lang('product.modal_order_warning_1')<span class="order-storage-amount"></span>@lang('product.modal_order_warning_2')</strong>--}}
+                    {{--<strong>@lang('product.modal_order_warning_1')<span class="order-storage-amount"></span>@lang('product.modal_order_warning_2')</strong>--}}
                     {{--</div>--}}
-                    <div class="form-group m-b-15">
-                        <label>@lang('product.quantity_order')</label>
-                        <input type="number" name="quantity" class="form-control m-b-5 quantity" placeholder="@lang('product.quantity_order')" disabled/>
+                    <div id="modal_order_inputs">
+
                     </div>
-                    <div class="form-group m-b-15 storage-limit-request">
-                        <label>@lang('product.quantity_order_request')</label>
-                        <input type="number" name="quantity_request" class="form-control m-b-5 quantity_request" placeholder="@lang('product.quantity_order_request')" disabled/>
-                    </div>
+                    {{--<div class="form-group m-b-15">--}}
+                    {{--<label>@lang('product.quantity_order')</label>--}}
+                    {{--<input type="number" name="quantity" class="form-control m-b-5 quantity" placeholder="@lang('product.quantity_order')" disabled/>--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group m-b-15 storage-limit-request">--}}
+                    {{--<label>@lang('product.quantity_order_request')</label>--}}
+                    {{--<input type="number" name="quantity_request" class="form-control m-b-5 quantity_request" placeholder="@lang('product.quantity_order_request')" disabled/>--}}
+                    {{--</div>--}}
                 </div>
                 <div class="modal-footer">
                     <a href="javascript:;" class="btn btn-white" data-dismiss="modal">@lang('global.cancel')</a>

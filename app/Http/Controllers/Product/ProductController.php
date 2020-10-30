@@ -209,7 +209,13 @@ class ProductController extends Controller
         ->addColumn('image_html', function (Product $product) {
             $src = \App\Services\Product\Product::getImagePath($product);
 
-            return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80"></div>';
+            return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">
+                        <div class="wrap-label">
+                        <span class="bage-default bage-sale" style="display: none">SALE</span>
+                        <span class="bage-default bage-new" style="display: none">NEW</span>
+                        <span class="bage-default bage-hits" style="display: none">HITS</span>
+                        </div>
+                    </div>';
         })
         ->addColumn('name_article_html', function (Product $product){
             $name = \App\Services\Product\Product::getName($product);
@@ -307,14 +313,12 @@ class ProductController extends Controller
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
-                    placeholder="@lang(\'product.quantity_order\')" 
                     value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" max="'.$storage->amount.'"/>';
                 }
                 else{
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
-                    placeholder="@lang(\'product.quantity_order\')" 
                     value="0" min="0" step="10" data-max="1000"/>';
                 }
             })
