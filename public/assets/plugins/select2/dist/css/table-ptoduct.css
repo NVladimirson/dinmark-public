@@ -117,3 +117,40 @@ thead {
 	border: 1px solid #b3b2b2;
 	border-radius: 20px;
 }
+
+td {
+	position: relative;
+}
+
+.wrap-label {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+	gap: 2px;
+	position: absolute;
+	bottom: 2px;
+	left: 2px;
+}
+
+.wrap-label span {
+	padding: 3px;
+}
+
+.bage-default{
+	font-size: 8px;
+	font-weight: 700;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	position: relative;
+	right:auto;
+	top:-1px;
+	display:inline-block;
+}
+.bage-sale{
+	background-color: #ee3f3c;
+}
+.bage-hits{
+	background-color: #ff9f1a;
+}
+.bage-new{
+	background-color: #43d171;
+}

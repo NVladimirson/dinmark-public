@@ -59,6 +59,7 @@ class OrderController extends Controller
 	}
 
 	public function addToOrder($id, Request $request){
+
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 
@@ -100,29 +101,36 @@ class OrderController extends Controller
 
 	public function addToOrderMultiple(Request $request){
 
-        foreach ($request->input() as $productinfo => $quantity){
-            $product_id = substr(explode(':',$productinfo)[0],3);
-            $storage_id = substr(explode(':',$productinfo)[1],10);
-            $res[] = ['product_id' => $product_id, 'storage_id' => $storage_id, 'quantity' => $quantity];
+
+//        foreach ($request->input() as $productinfo => $quantity){
+//            $product_id = substr(explode(':',$productinfo)[0],3);
+//            $storage_id = substr(explode(':',$productinfo)[1],10);
+//            $res[] = ['product_id' => $product_id, 'storage_id' => $storage_id, 'quantity' => $quantity];
+//        }
+
+        foreach($request->input() as $product_id => $product_info){
+            $quantity =  explode(':',explode(',', $product_info)[0])[1];
+            $storage =  explode(':',explode(',', $product_info)[1])[1];
+            $quantity_request =  explode(':',explode(',', $product_info)[2])[1];
+            $res[] = ['product_id' => $product_id, 'storage_id' => $storage, 'quantity' => $quantity,'quantity_request' => $quantity_request];
+        }
+        $order = null;
+        if(!($request->storage_id)){
+            $order = Order::create([
+                'user' => auth()->user()->id,
+                'customer_id' => auth()->user()->id,
+                'status' => 8,
+                'total' => 0,
+                'source' => 'b2b',
+            ]);
+        }else{
+            $order = Order::find($request->storage_id);
+            $order->save();
         }
 
         foreach ($res as $no => $data){
-            $order = null;
-            if(!$data['storage_id']){
-                $order = Order::create([
-                    'user' => auth()->user()->id,
-                    'customer_id' => auth()->user()->id,
-                    'status' => 8,
-                    'total' => 0,
-                    'source' => 'b2b',
-                ]);
-            }else{
-                $order = Order::find($data['storage_id']);
-                $order->save();
-            }
 
             $product = Product::with(['storages'])->find($data['product_id']);
-
             OrderProduct::create([
                 'cart' => $order->id,
                 'user' => auth()->user()->id,
