@@ -837,15 +837,16 @@
 
                 if (amount > button.data('storage_max')) {
                     //data-storage_min
-                    if (amount % button.data('storage_min')) {
-                        quantity.val(button.data('storage_max'));
-                        quantity_request.val(amount - button.data('storage_max'));
-                        quantity_request.setAttribute('value',amount - button.data('storage_max'));
-                    }
-                    else {
-                        quantity.val(amount);
-                        quantity_request.val(amount - button.data('storage_max'));
-                    }
+                    // if (amount % button.data('storage_min')) {
+                    //     quantity.val(button.data('storage_max'));
+                    //     quantity_request.val(amount - button.data('storage_max'));
+                    // }
+                    // else {
+                    //     quantity.val(button.data('storage_max'));
+                    //     quantity_request.val(amount - button.data('storage_max'));
+                    // }
+                    quantity.val(button.data('storage_max'));
+                    quantity_request.val(amount - button.data('storage_max'));
                 }
                 else {
 
