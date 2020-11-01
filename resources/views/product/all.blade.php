@@ -1183,27 +1183,27 @@
 
                 let route = '{{route('orders')}}/add-to-order-multiple';
                 $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
                 });
                 $.ajax({
-                method: "GET",
-                url: route,
-                data: data,
-                success: function(resp) {
-                if (resp == "ok") {
+                    method: "GET",
+                    url: route,
+                    data: data,
+                    success: function(resp) {
+                        if (resp == "ok") {
 
-                $('#new_wishlist_name').val('');
+                            $('#new_wishlist_name').val('');
 
-                $.gritter.add({
-                title: '@lang('wishlist.modal_success ')',
-                });
-                }
-                },
-                error: function(xhr, str) {
-                console.log(xhr);
-                }
+                            $.gritter.add({
+                                title: '@lang('wishlist.modal_success ')',
+                            });
+                        }
+                    },
+                    error: function(xhr, str) {
+                        console.log(xhr);
+                    }
 
 
                 });
@@ -1584,9 +1584,9 @@
             line-height: 1.0;
         }
 
-         .ui-accordion .ui-accordion-content {
-             padding:0px !important;
-         }
+        .ui-accordion .ui-accordion-content {
+            padding:0px !important;
+        }
         .jstree{
             padding:0px;
         }
