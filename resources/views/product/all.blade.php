@@ -98,7 +98,7 @@ use Illuminate\Support\Str;
                                         <label for="select_all_products"> </label>
                                     </div>
                                 </th>
-                                <th data-orderable="false" style="text-align: center;max-width: 102px">@lang('product.table_header_photo')</th>
+                                <th data-orderable="false" style="text-align: center;">@lang('product.table_header_photo')</th>
                                 <th class="text-nowrap" style="max-width: 150px;text-align: center">@lang('product.table_header_name/article')</th>
                                 {{--<th class="text-nowrap">@lang('product.table_header_name')</th>--}}
                                 {{--<th class="text-nowrap">@lang('product.table_header_article')</th>--}}
@@ -335,18 +335,16 @@ use Illuminate\Support\Str;
             //     .draw();
         });
 
-
-
         window.table =
             $('#data-table-buttons').DataTable({
                 "fixedHeader": true,
-                // scrollY: "100vh",
+                scrollY: "100vh",
                 deferRender: true,
-                // scroller: true,
+                scroller: true,
                 "language": {
                     "url": "@lang('table.localization_link')",
                 },
-                // "scrollY": true,
+                "scrollX": true,
                 "pageLength": 25,
                 "autoWidth": true,
                 //responsive: true,
@@ -758,8 +756,6 @@ use Illuminate\Support\Str;
                         if (document.getElementById("multiple_input_div")) {
                             multiple_input_div.remove();
                         }
-
-
 
                         //let map = $('.data-product_name');
                         let map = $('.source');

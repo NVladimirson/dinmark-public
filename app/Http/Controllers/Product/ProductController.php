@@ -209,7 +209,9 @@ class ProductController extends Controller
         ->addColumn('image_html', function (Product $product) {
             $src = \App\Services\Product\Product::getImagePath($product);
 
-            return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80"></div>';
+            return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">
+            <div class="wrap-label"><span class="bage-default bage-sale">SALE</span><span class="bage-default bage-new">NEW</span><span class="bage-default bage-hits">HITS</span></div>
+            </div>';
         })
         ->addColumn('name_article_html', function (Product $product){
             $name = \App\Services\Product\Product::getName($product);

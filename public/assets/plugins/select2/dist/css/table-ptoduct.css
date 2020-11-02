@@ -46,11 +46,15 @@
 	cursor: pointer;
 }
 
-.table-responsive {
-	width: 100% !important;
-	display: table;
-	z-index: -1;
+.table-scroll-container {
+	height: 100vh;
+	overflow-y: auto;
 }
+
+td select {
+	max-width: 250px;
+}
+
 .responsive-width {
 	z-index: 3;
 	position: fixed;
@@ -61,10 +65,13 @@
 td {
 	padding: 5px;
 }
+tr td:nth-child(2) {
+	width: 85px;
+}
 tr td:nth-child(3),
 tr th:nth-child(3) {
-	min-width: 15vw;
-	max-width: 20vw;
+	min-width: 150px;
+	max-width: 200px;
 }
 .data-product_name {
 	display: block;
@@ -96,10 +103,6 @@ td:hover .data-product_name {
 	background-color: #f0c674;
 }
 
-thead {
-	display: table-header-group;
-}
-
 #scroll-filter {
 	overflow: auto;
 	max-height: 80vh;
@@ -124,10 +127,6 @@ thead {
 	margin-bottom: 10px;
 }
 
-.product-image {
-	width: 80px;
-}
-
 @media screen and (max-width: 1050px) {
 	.responsive-width {
 		z-index: 9999;
@@ -149,4 +148,38 @@ thead {
 .image-container img {
 	max-height: 100%;
 	max-width: 100%;
+}
+td {
+	position: relative;
+}
+.wrap-label {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+	gap: 2px;
+	position: absolute;
+	bottom: 2px;
+	left: 2px;
+}
+.wrap-label span {
+	padding: 3px;
+}
+
+.bage-default{
+	font-size: 8px;
+	font-weight: 700;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	position: relative;
+	right:auto;
+	top:-1px;
+	display:inline-block;
+}
+.bage-sale{
+	background-color: #ee3f3c;
+}
+.bage-hits{
+	background-color: #ff9f1a;
+}
+.bage-new{
+	background-color: #43d171;
 }
