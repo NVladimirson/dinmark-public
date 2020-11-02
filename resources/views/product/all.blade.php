@@ -422,49 +422,61 @@
                         {
                             "orderable": false,
                             data: 'check_html',
+                            className: "datatable_checkbox_class"
                         },
                         {
                             "orderable": false,
                             data: 'image_html',
+                            className: "datatable_image_class"
                         },
                         {
                             "orderable": false,
                             data: 'name_article_html',
+                            className: "datatable_namearticle_class"
                         },
                         {
 
                             data: 'retail_price',
+                            className: "datatable_retailprice_class"
                         },
                         {
                             data: 'user_price',
+                            className: "datatable_userprice_class"
                         },
                         {
                             "orderable": false,
                             data: 'html_limit_1',
+                            className: "datatable_limit1_class"
                         },
                         {
                             "orderable": false,
                             data: 'html_limit_2',
+                            className: "datatable_limit2_class"
                         },
                         {
                             data: 'storage_html',
                             "orderable": false,
+                            className: "datatable_storage_class"
                         },
                         {
                             data: 'calc_quantity',
                             "orderable": false,
+                            className: "datatable_quantity_class"
                         },
                         {
                             data: 'package_weight',
                             "orderable": false,
+                            className: "datatable_weight_class"
                         },
                         {
                             data: 'sum_w_taxes',
                             "orderable": false,
+                            className: "datatable_sum_class"
                         },
                         {
                             data: 'actions',
                             "orderable": false,
+                            className: "datatable_actions_class"
                         },
                     ],
                     "preUpload": function(settings, json) {
