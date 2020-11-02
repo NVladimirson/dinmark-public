@@ -85,9 +85,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $terms = CategoryServices::getTermsForSelect();
-        ksort($terms);
-        dd($terms);
+        dd(Product::where('old_price','!=',0)->get());
     }
 
 
@@ -124,6 +122,10 @@ class ProductController extends Controller
         }
 
         if($request->new){
+            $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
+        }
+
+        if($request->hits){
             $order_products = \DB::select('SELECT product_id, COUNT(*)
               FROM s_cart_products
               GROUP BY product_id
@@ -136,12 +138,6 @@ class ProductController extends Controller
             }
 
             $products = $products->whereIn('id', $filtered);
-
-
-        }
-
-        if($request->hits){
-            $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
         }
 
         if($request->discount){
