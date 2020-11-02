@@ -79,6 +79,10 @@ class ImplementationController extends Controller
 
 				return number_format($implementation->weight,2,',',' ');
 			})
+            ->addColumn('status',function (Implementation $implementation){
+
+                return ImplementationServices::getStatus($implementation->status);
+            })
 			->addColumn('total',function (Implementation $implementation){
 
 				return number_format($implementation->products->sum('total'),2,',',' ');
