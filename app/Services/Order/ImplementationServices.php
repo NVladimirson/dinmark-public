@@ -12,6 +12,8 @@ use App\Models\Order\Implementation;
 
 class ImplementationServices
 {
+    private  $lang;
+
     public static function getByCompany()
     {
         $implementations = Implementation::with(['products.orderProduct.product.content','products.orderProduct.getCart'])
@@ -39,6 +41,20 @@ class ImplementationServices
             });
 
         return $implementations;
+    }
+
+    public static function getStatus($status){
+        $instance =  static::getInstance();
+        if(!$status){
+            if($instance->lang == 'ru'){
+                return 'Немає статусу';
+            }else{
+                return 'Нет статуса';
+            }
+        }
+        else{
+           return $status;
+        }
     }
 
     public static function getFilteredData($request){

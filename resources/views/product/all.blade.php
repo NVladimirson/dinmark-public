@@ -699,12 +699,8 @@
             });
 
             $('#instockToggler').click(function() {
-                if (window.loading === 0) {
-                    window.loading = 1;
                     initOptionFilters();
                     jsTreetoDatatable();
-                    window.loading = 0;
-                }
             });
 
             $('#products_selector').on('change', function() {
