@@ -85,7 +85,35 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        dd(Product::where('old_price','!=',0)->get());
+//        $product_id = 65573;
+//        \DB::select('SELECT product_id, COUNT(*)
+//            FROM s_cart_products
+//            GROUP BY product_id
+//            HAVING COUNT(*) >= 5
+//            WHERE product_id = '.$product_id.'
+//              ');
+        $order_products = \DB::select('SELECT product_id, COUNT(*)
+              FROM s_cart_products
+              GROUP BY product_id
+              HAVING COUNT(*) >= 5
+              ');
+        $filtered = array();
+        foreach ($order_products as $no => $order_product){
+            $filtered[] = $order_product->product_id;
+        }
+        //dd($filtered);
+        dd(Product::whereIn('id', $filtered)->get()->pluck('id'));
+
+        //dd(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = 5549')[0]->count);
+
+//        if(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = 5549')->count >= 5){
+//            dd('yeah');
+//        }
+//        dd(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = '.$product_id.'')[0] -> count > 5);
+//        echo(Product::find($product_id)->date_add."\n");
+//        echo(Carbon::now()->timestamp."\n");
+//        echo(Carbon::now()->subDays(7)->timestamp."\n");
+//        echo(Product::find($product_id)->date_add > Carbon::now()->subDays(7)->timestamp);
     }
 
 
@@ -205,11 +233,24 @@ class ProductController extends Controller
         ->addColumn('image_html', function (Product $product) {
             $src = \App\Services\Product\Product::getImagePath($product);
 
+            $spans = '';
+
+            if($product->old_price != 0){
+                $spans .= '<span class="bage-default bage-sale">SALE</span>';
+            }
+
+            if($product->date_add >= Carbon::now()->subDays(7)->timestamp){
+                $spans .= '<span class="bage-default bage-new">NEW</span>';
+            }
+
+            if(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = '.$product->id.'')[0]->count >= 5){
+                $spans .= '<span class="bage-default bage-hits">HITS</span>';
+            }
+
+
             return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="80">
                         <div class="wrap-label">
-                        <span class="bage-default bage-sale" style="display: none">SALE</span>
-                        <span class="bage-default bage-new" style="display: none">NEW</span>
-                        <span class="bage-default bage-hits" style="display: none">HITS</span>
+                        '.$spans.'
                         </div>
                     </div>';
         })

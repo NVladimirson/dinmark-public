@@ -99,7 +99,7 @@
                                         <label for="select_all_products"> </label>
                                     </div>
                                 </th>
-                                <th data-orderable="false" style="text-align: center;max-width: 102px">@lang('product.table_header_photo')</th>
+                                <th data-orderable="false" style="text-align: center;">@lang('product.table_header_photo')</th>
                                 <th class="text-nowrap" style="max-width: 150px;text-align: center">@lang('product.table_header_name/article')</th>
                                 {{--<th class="text-nowrap">@lang('product.table_header_name')</th>--}}
                                 {{--<th class="text-nowrap">@lang('product.table_header_article')</th>--}}
@@ -161,10 +161,10 @@
                                                     @if(isset($data['data']['photo']))
                                                         @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
                                     '/'.$data['data']['photo']; @endphp
-                                                        <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                                        <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
                                                     @else
                                                         @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-                                                        <div class="image-container"><img src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
+                                                        <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
                                                     @endif
                                                     <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
                                                         {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
@@ -206,6 +206,7 @@
                             <i class="fa fa-percent" aria-hidden="true"></i> @lang('product.filters.discount')</a>
                         <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
                 </div>
+                <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"><span>Приховати</span></i>
             </div>
         </div>
     </div>
@@ -340,13 +341,13 @@
             window.table =
                 $('#data-table-buttons').DataTable({
                     "fixedHeader": true,
-                    // scrollY: "100vh",
+                     scrollY: "100vh",
                     deferRender: true,
-                    // scroller: true,
+                     scroller: true,
                     "language": {
                         "url": "@lang('table.localization_link')",
                     },
-                    // "scrollY": true,
+                     "scrollX": true,
                     "pageLength": 25,
                     "autoWidth": true,
                     "processing": true,
@@ -1633,14 +1634,14 @@
         }
 
         .image-container {
-            width: 25px;
-            height: 25px;
+            width: 75px;
+            height: 75px;
             /*border: dashed blue 1px;*/
         }
 
         .image-container img {
             max-height: 100%;
-            max-width: 100%;
+            max-width: 50px;
         }
 
         #optionfilters .row {
