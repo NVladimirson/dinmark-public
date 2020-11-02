@@ -139,7 +139,7 @@
 				@php
 					$manager = auth()->user()->getCompany->getManager;
 				@endphp
-			<ul class="nav">
+			<ul style="background: #B3B2B2;" class="nav">
 				<li class="media media-xs nav-profile">
 					<div class="media-left">
 						@if($manager->photo)
@@ -176,6 +176,16 @@
 	</div>
 	<!-- end sidebar scrollbar -->
 </div>
+<style>
+	#sidebar {
+		background: url("images/cover-sidebar-user.jpg");
+		background-repeat: repeat;
+	}
+	ul.nav {
+		background-color: #eee;
+	}
+</style>
+
 <!-- <div class="sidebar-bg"></div> -->
 <!-- end #sidebar -->
 

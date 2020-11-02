@@ -9,8 +9,8 @@
 @endpush
 
 @section('content')
-    <div class="profile" style="margin-top: -1px">
-        <div class="profile-header">
+    <div class="profile" style="margin-top: -1px;">
+        <div class="profile-header" style="height: 107px;">
             <!-- BEGIN profile-header-cover -->
             <div class="profile-header-cover"></div>
             <!-- END profile-header-cover -->

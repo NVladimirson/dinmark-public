@@ -32,7 +32,6 @@
     </div>
     <div id="wrap-table" class="row wrap-table">
         <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-angle-double-left"></i>
-        <i v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
         <div class="col-xl-12">
             <!-- begin panel -->
             <div class="panel panel-primary">
@@ -100,14 +99,14 @@
                                     </div>
                                 </th>
                                 <th data-orderable="false" style="text-align: center;">@lang('product.table_header_photo')</th>
-                                <th class="text-nowrap" style="max-width: 150px;text-align: center">@lang('product.table_header_name/article')</th>
+                                <th class="text-nowrap" style="text-align: center">@lang('product.table_header_name/article')</th>
                                 {{--<th class="text-nowrap">@lang('product.table_header_name')</th>--}}
                                 {{--<th class="text-nowrap">@lang('product.table_header_article')</th>--}}
-                                <th style="text-align: center;max-width: 45px">@lang('product.table_header_price_retail')</th>
-                                <th class="text-nowrap" style="text-align: center;max-width: 55px">@lang('product.table_header_price')</th>
-                                <th id="price_porog_1" class="text-nowrap" style="text-align: center;min-width: 55px">@lang('product.table_header_price_porog_1')</th>
-                                <th id="price_porog_2" class="text-nowrap" style="text-align: center;min-width: 55px">@lang('product.table_header_price_porog_2')</th>
-                                <th class="text-nowrap" style="text-align: center;max-width: 175px">@lang('product.table_header_storage')</th>
+                                <th style="text-align: center;">@lang('product.table_header_price_retail')</th>
+                                <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_price')</th>
+                                <th id="price_porog_1" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_1')</th>
+                                <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
+                                <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_storage')</th>
                                 <th style="text-align: center">
                                     Кількість
                                 </th>
@@ -341,13 +340,13 @@
             window.table =
                 $('#data-table-buttons').DataTable({
                     "fixedHeader": true,
-                     scrollY: "100vh",
+                    //  scrollY: "100vh",
                     deferRender: true,
-                     scroller: true,
+                    //  scroller: true,
                     "language": {
                         "url": "@lang('table.localization_link')",
                     },
-                     "scrollX": true,
+                    //  "scrollX": true,
                     "pageLength": 25,
                     "autoWidth": true,
                     "processing": true,
@@ -418,6 +417,7 @@
                         data: 'id',
                         "visible": false,
                         "searchable": false,
+
                     },
                         {
                             "orderable": false,

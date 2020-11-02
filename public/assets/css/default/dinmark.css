@@ -1666,3 +1666,6 @@ body ul.wysihtml5-toolbar .glyphicon {
 .product-gallery a.video img{
     z-index: 1;
 }
+.profile-header .profile-header-cover:before {
+    background: none;
+}

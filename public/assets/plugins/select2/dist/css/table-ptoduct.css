@@ -62,17 +62,6 @@ td select {
 	right: 0;
 }
 
-td {
-	padding: 5px;
-}
-tr td:nth-child(2) {
-	width: 85px;
-}
-tr td:nth-child(3),
-tr th:nth-child(3) {
-	min-width: 150px;
-	max-width: 200px;
-}
 .data-product_name {
 	display: block;
 	max-width: 100%;
@@ -182,4 +171,33 @@ td {
 }
 .bage-new{
 	background-color: #43d171;
+}
+
+/*================== WIDTH td, th =====================*/
+td {
+	padding-left: 5px;
+}
+.datatable_namearticle_class {
+	max-width: 150px;
+}
+.datatable_weight_class,
+.datatable_sum_class {
+	min-width: 75px;
+	max-width: 100px;
+}
+
+.datatable_actions_class div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.datatable_actions_class div a{
+	display: none;
+	transition: scale .3s;
+}
+.datatable_actions_class div a:nth-child(1) {
+	display: block;
+}
+.datatable_actions_class:hover div a {
+	display: block;
 }
