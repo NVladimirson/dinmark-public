@@ -145,10 +145,14 @@ class Product
 		return number_format($price,2,'.',' ');
 	}
 
-    public static function getBasePriceUnformatted($product){
+    public static function getBasePriceUnformatted($product, $storage_id = 0){
         $instance =  static::getInstance();
 
-        $storage = $product->storages->firstWhere('is_main',1);
+        if(!$storage_id){
+            $storage = $product->storages->firstWhere('is_main',1);
+        }else{
+            $storage = $product->storages->firstWhere('storage_id',$storage_id);
+        }
 
         $price = 0;
         if($storage){

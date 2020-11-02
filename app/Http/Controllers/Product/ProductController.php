@@ -85,24 +85,28 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-//        $product_id = 65573;
+        $product_id = 65571;
+        $storage_id = 14;
+        $product = Product::find($product_id);
+        $storage = $product->storages->firstWhere('storage_id',$storage_id);
+        dd($storage);
 //        \DB::select('SELECT product_id, COUNT(*)
 //            FROM s_cart_products
 //            GROUP BY product_id
 //            HAVING COUNT(*) >= 5
 //            WHERE product_id = '.$product_id.'
 //              ');
-        $order_products = \DB::select('SELECT product_id, COUNT(*)
-              FROM s_cart_products
-              GROUP BY product_id
-              HAVING COUNT(*) >= 5
-              ');
-        $filtered = array();
-        foreach ($order_products as $no => $order_product){
-            $filtered[] = $order_product->product_id;
-        }
-        //dd($filtered);
-        dd(Product::whereIn('id', $filtered)->get()->pluck('id'));
+//        $order_products = \DB::select('SELECT product_id, COUNT(*)
+//              FROM s_cart_products
+//              GROUP BY product_id
+//              HAVING COUNT(*) >= 5
+//              ');
+//        $filtered = array();
+//        foreach ($order_products as $no => $order_product){
+//            $filtered[] = $order_product->product_id;
+//        }
+//        //dd($filtered);
+//        dd(Product::whereIn('id', $filtered)->get()->pluck('id'));
 
         //dd(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = 5549')[0]->count);
 
@@ -487,7 +491,7 @@ class ProductController extends Controller
         $weight = $productinfo->weight * ($amount/$unitnumber);
         //number_format($weight,3,'.',' ')
 
-        $retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo)*$multiplier,2,'.',' ');
+        $retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
 
         $user_price = number_format(ProductServices::getPriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
 
