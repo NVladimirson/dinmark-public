@@ -1669,3 +1669,32 @@ body ul.wysihtml5-toolbar .glyphicon {
 .profile-header .profile-header-cover:before {
     background: none;
 }
+#order_tab {
+    background: #b3b2b2;
+}
+#order_tab .nav-item a {
+    background: #b3b2b2;
+}
+#order_tab .nav-item a.active span {
+    background-color:  #348fe2;
+    color: #fff;
+    padding: 5px 15px;
+}
+#order_tab .nav-item a span {
+    color: #4e5c68;
+}
+#order_tab .nav-item a:hover span {
+    color: #fff;
+}
+.dropdown-menu .dropdown-item:hover {
+    color: #348fe2;
+}
+.dropdown-menu.inner.show li a.dropdown-item{
+    color: #4e5c68;
+}
+.dropdown-menu.inner.show li a.dropdown-item.active {
+    color: #fff;
+}
+.dropdown-menu.inner.show li a.dropdown-item:hover {
+    color:  #29ABE2;
+}

@@ -529,5 +529,8 @@
 
 			});
 		})(jQuery);
-	</script>
+    </script>
+    <style>
+        
+    </style>
 @endpush
