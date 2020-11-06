@@ -14,4 +14,7 @@ return [
     'get_feeds_btn' 	=> 'Запит на файл імпорту',
 
     'get_feeds_success' 	=> 'Запит успішно відправлено',
+
+    'download_button' => 'Завантажити',
+    'cancel_button' => 'Скасувати',
 ];

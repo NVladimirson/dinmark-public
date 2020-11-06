@@ -136,11 +136,11 @@
                                                 <td>@lang('company.document_'.$document->folder)</td>
                                                 <td>{{$document->info}}</td>
                                                 <td>
-                                                    <a href="{{env('DINMARK_URL')}}documents/{{$company->id}}/{{$document->folder}}/{{$document->document}}" class="btn btn-sm btn-primary m-r-10" target="_blank"><i class="fas fa-download"></i></a>
+                                                    <a href="{{env('DINMARK_URL')}}documents/{{$company->id}}/{{$document->folder}}/{{$document->document}}" title="@lang('documents.download_button')" class="btn btn-sm btn-primary m-r-10" target="_blank"><i class="fas fa-download"></i></a>
                                                     @if($document->manager_add == auth()->user()->id)
                                                         <form action="{{route('company.destroy_document',[$document->id])}}" method="post" class="d-inline">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
+                                                            <button title="@lang('documents.cancel_button')" type="submit" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
                                                         </form>
                                                     @endif
                                                 </td>

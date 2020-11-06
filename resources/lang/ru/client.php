@@ -40,5 +40,8 @@ return [
 	'update_success'		=> 'Данные клиента успешно обновлены.',
 	'client_already_exist'	=> 'Клиент с таким email или телефоном уже существует',
 
-	'client_deleted'	=> 'Клиент удалён',
+    'client_deleted'	=> 'Клиент удалён',
+
+    'action_button_show' => 'Просмотреть',
+    'action_button_cancel' => 'Удалить'
 ];

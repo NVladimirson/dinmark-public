@@ -47,5 +47,9 @@ return [
 	'ttn'					=> 'ТТН рекламации',
 	'comment'				=> 'Причина рекламации',
 	'document_type'			=> 'Только: jpeg,png,pdf,jpg,doc,docx,xls,xlsx',
-	'btn_submit'			=> 'Создать рекламацию',
+    'btn_submit'			=> 'Создать рекламацию',
+    
+    'download_file' => 'Загрузить',
+    'deploy' => 'Развернуть',
+    'collapse' => 'Свернуть'
 ];

@@ -303,8 +303,20 @@
                     loaded.push(data.node.id);
                 }
             });
+            
 
             $('#data-table-buttons').on('draw.dt', function() {
+                const arr = Array.from(document.querySelectorAll('.datatable_actions_class a'))
+                for (let i = 0; i < arr.length; i++) {
+                    if (i % 3 === 0) {
+                        arr[i].setAttribute('title', "@lang('product.show_card_product')")
+                    }else if(i % 2 === 0) {
+                        arr[i].setAttribute('title', "@lang('product.add_to_wish_list')")
+                    }else {
+                        arr[i].setAttribute('title', "@lang('product.add_to_order')")
+                    }
+                    
+                }
                 $('#select_all_products').prop('checked', false);
             });
 
@@ -476,7 +488,7 @@
                         {
                             data: 'actions',
                             "orderable": false,
-                            className: "datatable_actions_class"
+                            className: "datatable_actions_class" 
                         },
                     ],
                     "preUpload": function(settings, json) {
@@ -1137,6 +1149,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+                
 
                 $.ajax({
                     method: "POST",
@@ -1544,6 +1557,9 @@
         // $( "select" ).change(function() {
         //     alert( "Handler for .change() called." );
         // });
+
+        //Array.from($('.last')).map(item => item.setAttribute('title', 'ПРИВЕТ'))
+
     </script>
 
     <style>
