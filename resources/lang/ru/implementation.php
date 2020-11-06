@@ -37,5 +37,7 @@ return [
 
 	'btn_generate_pdf' 			=> 'Расходная накладная',
     'btn_create_implementation' => 'Оформить возврат',
+    'deploy' => 'Развернуть',
+    'collapse' => 'Свернуть'
 
 ];

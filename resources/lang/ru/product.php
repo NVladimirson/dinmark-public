@@ -106,5 +106,8 @@ return [
     'phone_get_price' => 'Ваш телефон',
     'quantity_get_price' => 'Желаемое количетсво',
     'get_price_comment' => 'Ваш комментарий',
-    'modal_get_price_submit' => 'Отправить запрос'
+    'modal_get_price_submit' => 'Отправить запрос',
+    'show_card_product' =>'Просмотреть карточку товара',
+    'add_to_wish_list' =>'Добавить в список желаний',
+    'add_to_order' =>'Добавить в заказ'
 ];

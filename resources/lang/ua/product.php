@@ -105,5 +105,8 @@ return [
     'phone_get_price' => 'Ваш телефон',
     'quantity_get_price' => 'Бажана колькість',
     'get_price_comment' => 'Ваш коментар',
-    'modal_get_price_submit' => 'Надіслати запит'
+    'modal_get_price_submit' => 'Надіслати запит',
+    'show_card_product' =>'Переглянути картку товара',
+    'add_to_wish_list' =>'Додати до списку бажань',
+    'add_to_order' =>'Додати до замовлення'
 ];

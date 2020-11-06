@@ -15,4 +15,7 @@ return [
 
     'get_feeds_success' 	=> 'Запрос успешно отправлен',
 
+    'download_button' => 'Скачать',
+    'cancel_button' => 'Отменить'
+
 ];
