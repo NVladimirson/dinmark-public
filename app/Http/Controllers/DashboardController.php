@@ -6,6 +6,9 @@ use App\Models\News\News;
 use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Order\Payment;
+use App\Models\Product\Product;
+use App\Services\Miscellenous\GlobalSearchService;
+use App\Services\Product\Product as ProductService;
 use App\Models\Ticket\TicketMessage;
 use App\Services\News\NewsServices;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -169,5 +172,45 @@ class DashboardController extends Controller
             'mostPopularOrderProducts',
             'newsData'
         ));
+    }
+
+    public function globalSearch(Request $request)
+    {
+        $search = $request->name;
+
+        $product_search = GlobalSearchService::getProductsSearch($search);
+
+        $order_search = GlobalSearchService::getOrderProductsSearch($search);
+
+        $implementation_search = GlobalSearchService::getImplementationProductsSearch($search);
+
+        $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search);
+
+  $res = [
+      'products' =>
+      $product_search,
+//          [
+//              'text' => '...empty',
+//          ],
+
+      'orders' =>
+      $order_search,
+//                  [
+//                      'text' => '...empty',
+//                  ],
+
+      'reclamations' =>
+      $reclamation_search,
+//          [
+//              'text' => '...empty',
+//          ],
+      'implementations' =>
+        $implementation_search,
+//          [
+//              'text' => '...empty',
+//          ],
+
+  ];
+        return \Response::json($res);
     }
 }

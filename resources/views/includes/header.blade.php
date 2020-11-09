@@ -60,11 +60,23 @@
             @csrf
                 <input type="text" name="search" placeholder="@lang('global.header_search')" min="3"
                 required value="{{request()->has('search')?request()->input('search'):''}}">
+            <select class="form-control m-b-5 hexa" id="global_search" name="product_id">
+            </select>
 
                 <div class="more hexa-plus">
                     <i class="fas fa-plus"></i>
                 </div>
         </form>
+
+        <div class="more hexa-plus">
+        <i class="fas fa-plus"></i>
+        </div>
+
+        <select class="form-control m-b-5" id="global_search" name="product_id">
+        </select>
+        <div class="more hexa-plus">
+        <i class="fas fa-plus"></i>
+        </div>
         </div>
         <!-- </li> -->
         <!-- new search -->
@@ -681,3 +693,52 @@ class="hide" style="display: block;">
     </div>
 </form>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+<script>
+    (function ($) {
+        "use strict";
+        $(document).ready(function() {
+
+            $('#global_search').select2({
+                placeholder: "@lang('global.global_search.placeholder')",
+                minimumInputLength: 3,
+                ajax: {
+                    url: function () {
+                        return '{{route('globalsearch')}}'
+                    },
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            name: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: [
+                                {
+                                    "text": "@lang('global.global_search.article')",
+                                    "children" : data['products']
+                                },
+                                {
+                                    "text": "@lang('global.global_search.order')",
+                                    "children" : data['orders']
+                                },
+                                {
+                                    "text": "@lang('global.global_search.implementation')",
+                                    "children" : data['implementations']
+                                },
+                                {
+                                    "text": "@lang('global.global_search.reclamation')",
+                                    "children" : data['reclamations']
+                                },
+
+                            ],
+                        };
+                    },
+                    cache: true
+                },
+            });
+        });
+    })(jQuery);
+</script>

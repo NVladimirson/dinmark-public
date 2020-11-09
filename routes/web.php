@@ -19,6 +19,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 	Route::group(['middleware'=> ['auth','currentCompany','headerDebt','ticketSeidebar']],function() {
 
 		Route::get('/', 'DashboardController@index')->name('home');
+        Route::get('/globalSearch', 'DashboardController@globalSearch')->name('globalsearch');
 
 		Route::get('/profile','UserController@profile')->name('user.profile');
 		Route::post('/profile/data','UserController@updateData')->name('user.profile.update_data');

@@ -40,4 +40,13 @@ return [
     'header_menu_contact' => 'Контакти',
 
     'btn_clear_filter'	=> 'Скасувати фільтри',
+
+    'global_search' => [
+        'placeholder' => 'Загальний пошук',
+        'article' => 'в Номенклатурі',
+        'order' => 'в Замовлені',
+        'implementation' => 'в Реалізації',
+        'reclamation' => 'в Рекламації',
+        'nothing_to_show' => 'нічого немає...'
+    ],
 ];
