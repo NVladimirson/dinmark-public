@@ -56,27 +56,29 @@
 
 		<!-- <li class="navbar-form"> -->
         <!-- new search -->
-        <form action="{{route('products.find')}}" method="GET" name="search_form" class="hexa">
+        <!-- <form action="{{route('products.find')}}" method="GET" name="search_form" class="hexa">
             @csrf
                 <input type="text" name="search" placeholder="@lang('global.header_search')" min="3"
                 required value="{{request()->has('search')?request()->input('search'):''}}">
-            <select class="form-control m-b-5 hexa" id="global_search" name="product_id">
+            <select class="form-control m-b-5" id="global_search" name="product_id">
             </select>
 
                 <div class="more hexa-plus">
                     <i class="fas fa-plus"></i>
                 </div>
-        </form>
+        </form> -->
 
-        <div class="more hexa-plus">
+        <!-- <div class="more hexa-plus">
+        <i class="fas fa-plus"></i>
+        </div> -->
+
+        <div id="global_search_wrap">
+            <select class="form-control m-b-5" id="global_search" name="product_id"></select>
+            <div class="more hexa-plus">
         <i class="fas fa-plus"></i>
         </div>
-
-        <select class="form-control m-b-5" id="global_search" name="product_id">
-        </select>
-        <div class="more hexa-plus">
-        <i class="fas fa-plus"></i>
         </div>
+        
         </div>
         <!-- </li> -->
         <!-- new search -->
@@ -491,7 +493,7 @@ class="hide" style="display: block;">
             </div>
             <div class="col">
                 <div class="navbar-nav navbar-right flex-wrap navbar-form">
-                    <form action="{{route('products.find')}}" method="GET" name="search_form" class="hexa">
+                    <!-- <form action="{{route('products.find')}}" method="GET" name="search_form" class="hexa">
                         @csrf
                         <input type="text" name="search" placeholder="@lang('global.header_search')" min="3"
                         required value="{{request()->has('search')?request()->input('search'):''}}">
@@ -499,7 +501,15 @@ class="hide" style="display: block;">
                         <div class="more hexa-plus">
                             <i class="fas fa-plus"></i>
                         </div>
-                    </form>
+                    </form> -->
+
+                    <div id="global_search_wrap">
+            <select class="form-control m-b-5" id="global_search" name="product_id"></select>
+            <div class="more hexa-plus">
+        <i class="fas fa-plus"></i>
+        </div>
+        </div>
+
                 </div>
             </div>
         </div>

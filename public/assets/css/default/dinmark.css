@@ -87,6 +87,7 @@ body {
 
 
 
+.hexa:after,
 .hexa:after {
     content: '';
     left: auto;
@@ -99,11 +100,34 @@ body {
     display: block;
 }
 .more.hexa-plus {
-    padding: 0 4px;
+    box-sizing: border-box;
+    padding: 0 2px;
     height: 15px;
     width: auto;
     cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: -30px;
 }
+.more.hexa-plus::before,
+.more.hexa-plus:after {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    left: -2.5px;
+    top: 0;
+    z-index: 2;
+    background-image: url(../default/images/before-filter.svg);
+}
+
+.more.hexa-plus:after {
+    left: auto;
+    right: -2px;
+    background-image: url(../default/images/after-filter.svg);
+}
+
 #header i.fas {
     font-size: 11px;
     color: #3c3c3a;
@@ -134,24 +158,26 @@ body {
 *:focus {
     outline: unset !important;
 }
-
-.hexa-plus:before {
+#global_search_wrap {
+    position: relative;
+}
+#global_search_wrap:before {
     content: '';
     position: absolute;
     width: 14px;
     height: 100%;
-    left: 0;
+    left: -8px;
     top: 0;
     z-index: 2;
     background-image: url(../default/images/before_plus.svg);
 }
-.hexa-plus:after {
+#global_search_wrap:after {
     content: '';
     position: absolute;
     width: 14px;
     height: 100%;
     left: auto;
-    right: 0;
+    right: -11px;
     top: 0;
     z-index: 2;
     background-image: url(../default/images/after_plus.svg);
@@ -770,12 +796,16 @@ nav.mainmenu > div > a img {
         font-size: 11px;
         color: #3c3c3a;
     }
-    #mobile-header form.hexa {
+    #mobile-header #global_search_wrap {
         height: 44px;
         /* width: calc(100% - 20px); */
         width: 100%;
         position: relative;
         z-index: 992;
+    }
+    #mobile-header #global_search_wrap::before,
+    #mobile-header #global_search_wrap::after {
+        height: 34px;
     }
     .mobile-navbar .navbar-grey {
         /* margin: 10px 0; */
