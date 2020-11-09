@@ -39,4 +39,13 @@ return [
     'header_menu_contact' => 'Контакты',
 
 	'btn_clear_filter'	=> 'Отменить фильтры',
+
+    'global_search' => [
+        'placeholder' => 'Общий поиск',
+        'article' => 'в Номенклатуре',
+        'order' => 'в Заказе',
+        'implementation' => 'в Реализации',
+        'reclamation' => 'в Рекламации',
+        'nothing_to_show' => 'ничего нет...'
+    ],
 ];

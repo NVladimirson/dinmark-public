@@ -164,6 +164,14 @@ body {
     z-index: 992;
 }
 
+#header div.hexa {
+    height: 44px;
+    /* width: calc(100% - 20px); */
+    width: 100%;
+    position: relative;
+    z-index: 992;
+}
+
 #header #debt {
     margin: 0 auto;
     text-align: center;

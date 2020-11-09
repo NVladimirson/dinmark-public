@@ -143,7 +143,7 @@ return [
 	'act_date_to'		=> 'Дата до',
 	'btn_act_pdf'		=> 'Акт взаєморозрахунків PDF',
 
-    'purchases_pagename' => 'Замовлення',
+    'purchases_pagename' => 'Покупки',
     'purchases_startdate' => 'Дата від: ',
     'purchases_enddate' => 'Дата до: ',
     'purchases_status' => 'Статуси замовлення',

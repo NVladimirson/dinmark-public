@@ -6,7 +6,13 @@ use App\Http\Controllers\Controller;
 
 
 use App\Jobs\ProductOptionFiltersJob;
+use App\Models\Content;
+use App\Models\Order\Implementation;
+use App\Models\Order\ImplementationProduct;
+use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
+use App\Models\Reclamation\ReclamationProduct;
+use App\Services\Miscellenous\GlobalSearchService;
 use App\Services\Product\CategoryServices;
 use App\Services\Product\Product as ProductServices;
 use Illuminate\Support\Facades\Cache;
@@ -85,39 +91,11 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $product_id = 65571;
-        $storage_id = 14;
-        $product = Product::find($product_id);
-        $storage = $product->storages->firstWhere('storage_id',$storage_id);
-        dd($storage);
-//        \DB::select('SELECT product_id, COUNT(*)
-//            FROM s_cart_products
-//            GROUP BY product_id
-//            HAVING COUNT(*) >= 5
-//            WHERE product_id = '.$product_id.'
-//              ');
-//        $order_products = \DB::select('SELECT product_id, COUNT(*)
-//              FROM s_cart_products
-//              GROUP BY product_id
-//              HAVING COUNT(*) >= 5
-//              ');
-//        $filtered = array();
-//        foreach ($order_products as $no => $order_product){
-//            $filtered[] = $order_product->product_id;
-//        }
-//        //dd($filtered);
-//        dd(Product::whereIn('id', $filtered)->get()->pluck('id'));
 
-        //dd(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = 5549')[0]->count);
 
-//        if(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = 5549')->count >= 5){
-//            dd('yeah');
-//        }
-//        dd(\DB::select('SELECT COUNT(*) as count FROM s_cart_products WHERE product_id = '.$product_id.'')[0] -> count > 5);
-//        echo(Product::find($product_id)->date_add."\n");
-//        echo(Carbon::now()->timestamp."\n");
-//        echo(Carbon::now()->subDays(7)->timestamp."\n");
-//        echo(Product::find($product_id)->date_add > Carbon::now()->subDays(7)->timestamp);
+        $search = 'din';
+        $order_search = GlobalSearchService::getOrderProductsSearch($search);
+        dd($order_search);
     }
 
 
@@ -548,6 +526,7 @@ class ProductController extends Controller
     }
 
     public function search(Request $request){
+        info($request->name);
         $search = $request->name;
         $formatted_data = [];
 
@@ -583,8 +562,6 @@ class ProductController extends Controller
                 'storage_id' => $storage_id,
             ];
         }
-
-
         return \Response::json($formatted_data);
     }
 
