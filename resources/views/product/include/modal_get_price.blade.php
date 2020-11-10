@@ -18,11 +18,11 @@
                     </div>
                     <div class="form-group m-b-15">
                         <label>@lang('product.quantity_get_price')</label>
-                        <input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_get_price')" value="1" step="1" required/>
+                        <input type="number" name="quantity" class="form-control m-b-5 quantity" placeholder="@lang('product.quantity_get_price')" value="1" step="1" required/>
                     </div>
                     <div class="form-group m-b-15">
                         <label>@lang('product.get_price_comment')</label>
-                        <textarea name="comment" class="form-control m-b-5" cols="30" rows="5" placeholder="@lang('product.get_price_comment')"></textarea>
+                        <textarea name="comment" class="form-control m-b-5 comment" cols="30" rows="5" placeholder="@lang('product.get_price_comment')"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
