@@ -31,7 +31,8 @@
 
     </div>
     <div id="wrap-table" class="row wrap-table">
-        <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-angle-double-left"></i>
+        <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-filter"></i>
+        <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
         <div class="col-xl-12">
             <!-- begin panel -->
             <div class="panel panel-primary">
@@ -205,7 +206,7 @@
                             <i class="fa fa-percent" aria-hidden="true"></i> @lang('product.filters.discount')</a>
                         <i id="discount-checked" class="fas fa-check-circle" style="display: none"></i></h5>
                 </div>
-                <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"><span>Приховати</span></i>
+                
             </div>
         </div>
     </div>
@@ -1200,6 +1201,7 @@
                 //let commentarea = document.querySelector('.form-group.m-b-15 .form-control.m-b-5.comment');
                 //commentarea.innerText = '1';
                 modal.find('.comment').text();
+                console.log(modal)
             });
             //get price single
 
@@ -1646,7 +1648,7 @@
 
         .image-container img {
             max-height: 100%;
-            max-width: 50px;
+            max-width: 30px;
         }
 
         #optionfilters .row {
