@@ -1717,3 +1717,7 @@ body ul.wysihtml5-toolbar .glyphicon {
 .dropdown-menu.inner.show li a.dropdown-item{
     color: #4e5c68;
 }
+
+.breadcrumb.float-xl-right {
+    margin-right: 40px;
+}
