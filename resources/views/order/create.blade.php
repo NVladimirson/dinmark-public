@@ -24,6 +24,7 @@
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
 					<h4 class="panel-title">@lang('order.show_tab_name')</h4>
+					<a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-times"></i></a>
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
@@ -34,9 +35,9 @@
 					<div class="row m-b-15">
 						<div class="col-lg-12">
 							<div class="pull-right">
-								<button type="submit" name="submit" value="save" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_new_request')</button>
-								<button type="submit" name="submit" value="order" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_new_order')</button>
-								<a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5">@lang('order.btn_cancel_order')</a>
+								<button type="submit" name="submit" value="save" class="btn btn-sm btn-green m-b-5 m-r-5" title="@lang('order.btn_new_request')"><i class="fas fa-save"></i></button>
+								<button type="submit" name="submit" value="order" class="btn btn-sm btn-green m-b-5 m-r-5" title="@lang('order.btn_new_order')"><i class="fas fa-shopping-cart"></i></button>
+								<!-- <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-times"></i></a> -->
 							</div>
 						</div>
 					</div>
@@ -91,7 +92,7 @@
 											<input type="hidden" id="storage_id" name="storage_id" value="1">
 										</div>
 										<div class="col-xl-3 col-lg-6">
-											<button type="submit" name="submit" value="add_product" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.add_product_btn')</button>
+											<button type="submit" name="submit" value="add_product" class="btn btn-sm btn-green btn-block m-b-5" title="@lang('wishlist.add_product_btn')"><i class="fas fa-plus"></i></button>
 										</div>
 									</div>
 								</div>
@@ -116,7 +117,7 @@
 											</div>
 										</div>
 										<div class="col-xl-4">
-											<button type="submit" name="submit" value="import_product" class="btn btn-sm btn-primary btn-block m-b-5">@lang('wishlist.import_product_btn')</button>
+											<button type="submit" name="submit" value="import_product" class="btn btn-sm btn-primary btn-block m-b-5" title="@lang('wishlist.import_product_btn')"><i class="fas fa-cloud-upload-alt"></i></button>
 										</div>
 									</div>
 									<p class="m-b-0">@lang('wishlist.import_file_note') <a href="{{asset('import/order_import.xlsx')}}" target="_blank">@lang('wishlist.import_file_example')</a></p>

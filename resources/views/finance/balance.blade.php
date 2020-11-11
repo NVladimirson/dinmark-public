@@ -41,7 +41,7 @@
                                 <input type="hidden" name="date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
                                 <input type="hidden" name="date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
 
-                                <button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block">@lang('order.btn_act_pdf')</button>
+                                <button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block" title="@lang('order.btn_act_pdf')"><i class="fas fa-columns"></i></button>
                             </form>
                         </div>
                     </div>

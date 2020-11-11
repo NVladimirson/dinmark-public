@@ -49,7 +49,7 @@
                                 <a href="#modal-wishlist_new" id="new_wishlist_btn" class="btn btn-sm btn-green m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_new')"><i class="fas fa-plus-circle"></i></a>
                                 <a href="#modal-wishlist_rename" class="btn btn-sm btn-primary m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_rename')"><i class="fas fa-pencil-alt"></i></a>
                                 <a href="#modal-wishlist_price" class="btn  btn-sm btn-primary m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_price')"><i class="fas fa-tag"></i></a>
-                                <a href="#modal-wishlist_delete" id="delete_wishlist_btn" class="btn btn-sm btn-danger m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_delete')"><i class="fas fa-times"></i></a>
+                                <a href="#modal-wishlist_delete" id="delete_wishlist_btn" class="btn btn-sm btn-danger m-r-5 m-b-5" data-toggle="modal" title="@lang('wishlist.btn_delete')"><i class="fas fa-trash-alt"></i></a>
 
 
                         </h4>
@@ -94,8 +94,8 @@
 										</div>
 									</div>
 									<div class="col-lg-4">
-										<button type="submit" class="btn btn-primary" title="@lang('wishlist.import_product_btn')"><i class="fas fa-cloud-download-alt fa-lg"></i></button>
-                                        <a href="{{route('catalogs.download_price',session('current_catalog'))}}" id="download_price" class="btn btn-primary " title="@lang('wishlist.btn_price_excel')"><i class="fas fa-cloud-upload-alt fa-lg"></i></a>
+										<button type="submit" class="btn btn-primary" title="@lang('wishlist.import_product_btn')"><i class="fas fa-cloud-upload-alt fa-lg"></i></button>
+                                        <a href="{{route('catalogs.download_price',session('current_catalog'))}}" id="download_price" class="btn btn-primary " title="@lang('wishlist.btn_price_excel')"><i class="fas fa-cloud-download-alt fa-lg"></i></a>
                                     </div>
 								</div>
 							</form>

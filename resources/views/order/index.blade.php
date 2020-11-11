@@ -81,7 +81,7 @@
 										</div>
 									</div>
 									<div class="col-lg-4">
-										<button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block">@lang('order.btn_act_pdf')</button>
+										<button type="submit" class="btn btn-sm btn-primary m-b-5 btn-block" title="@lang('order.btn_act_pdf')"><i class="fas fa-columns"></i></button>
 									</div>
 								</div>
 							</form>
