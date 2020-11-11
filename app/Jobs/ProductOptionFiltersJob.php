@@ -54,6 +54,28 @@ class ProductOptionFiltersJob implements ShouldQueue
             }
         }
 
+        $sortable = [7,9,26,28,33,266];
+        //$filter_option_map = Cache::get('optionfilters');
+        foreach($filter_option_map as $id => $filtername){
+
+            if(in_array($id,$sortable)){
+                $names_id_map = [];
+                foreach ($filtername["options"] as $option_id => $optiondata){
+                    foreach ($optiondata["data"] as $lang => $data){
+                        $names_id_map[$option_id] = $data['name'];
+                    }
+                }
+                asort ($names_id_map);
+
+                $rekeyd_options = [];
+                foreach ($names_id_map as $rekeyd_id => $name){
+                    $rekeyd_options[$rekeyd_id] = $filter_option_map[$id]['options'][$rekeyd_id];
+                }
+                $filter_option_map[$id]['options'] = $rekeyd_options;
+            }
+
+        }
+
         Cache::put('optionfilters',$filter_option_map);
         Cache::put('productoptions',$product_option_map);
     }
