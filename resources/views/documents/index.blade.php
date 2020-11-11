@@ -106,7 +106,7 @@
                                             @enderror
                                         </div>
 
-                                        <button type="submit" class="btn btn-sm btn-primary m-r-5">@lang('company.document_add')</button>
+                                        <button type="submit" class="btn btn-sm btn-green m-r-5" title="@lang('company.document_add')"><i class="fas fa-cloud-upload-alt"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <button type="submit" id="bill_submit" class="btn btn-sm btn-primary m-r-5" disabled="disabled">@lang('documents.download_btn')</button>
+                                        <button type="submit" id="bill_submit" class="btn btn-sm btn-primary m-r-5" disabled="disabled" title="@lang('documents.download_btn')"><i class="fas fa-cloud-download-alt"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <button type="submit" id="implementation_submit" class="btn btn-sm btn-primary m-r-5" disabled="disabled">@lang('documents.download_btn')</button>
+                                        <button type="submit" id="implementation_submit" class="btn btn-sm btn-primary m-r-5" disabled="disabled" title="@lang('documents.download_btn')"><i class="fas fa-cloud-download-alt"></i></button>
                                     </form>
                                 </div>
                             </div>

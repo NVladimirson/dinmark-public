@@ -58,7 +58,7 @@
 						<div class="btn-group">
 							<a href="javascript:;" class="btn btn-white btn-white-without-border"><i class="fa fa-list"></i></a>
 							<a href="javascript:;" class="btn btn-white btn-white-without-border"><i class="fa fa-th"></i></a>
-							<a href="javascript:;" class="btn btn-white btn-white-without-border"><i class="fa fa-th-large"></i></a>
+							<a href="javascript:;" class="btn btn-white btn-white-without-border"><i class="fa "></i></a>
 						</div>
 						<!-- end btn-group -->
 					</div>

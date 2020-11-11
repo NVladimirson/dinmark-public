@@ -45,6 +45,8 @@
                         </li>
                         @endforeach
                     </ul>
+                    <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
+                                      
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
@@ -106,13 +108,13 @@
                                     <div class="col-md-4">
                                         <div class="pull-right">
                                             @if($order->status == 1 || $order->status == 2)
-                                                <a href="#modal_explanation" class="btn btn-sm btn-green m-b-5 m-r-5" title="@lang('order.btn_explanation')" data-toggle="modal" data-subject="@lang('order.explanation_subject_order'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}}"><i class="fa fa-envelope"></i></a><a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-b-5 m-r-5">@lang('order.btn_pdf_bill')</a>
+                                                <a href="#modal_explanation" class="btn btn-sm btn-green m-b-5 m-r-5" title="@lang('order.btn_explanation')" data-toggle="modal" data-subject="@lang('order.explanation_subject_order'){{$order->id.' / '.(($order->public_number)?$order->public_number:'-')}}"><i class="fa fa-envelope"></i></a><a href="{{ route('orders.pdf_bill',[$order->id]) }}" title="@lang('order.btn_pdf_bill')" class="btn btn-sm btn-primary m-b-5 m-r-5"><i style="font-size: 16px;" class="fas fa-file-pdf"></i></a>
                                             @endif
                                             @if($order->status == 7)
                                                 <a href="{{ route('orders.to_order',[$order->id]) }}" class="btn btn-sm btn-green m-b-5 m-r-5">@lang('order.btn_open_order')</a>
                                             @endif
                                                 <a href="{{route('orders.copy',['id'=>$order->id])}}" class="btn btn-sm btn-primary m-b-5 m-r-5" title="@lang('order.btn_copy')"><i class="far fa-copy"></i></a>
-                                                <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
+                                                <!-- <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a> -->
                                             @if($order->status == 1)
                                                 <a href="{{ route('orders.to_cancel',[$order->id]) }}" class="btn btn-sm btn-danger m-b-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
                                             @endif

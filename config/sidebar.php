@@ -13,7 +13,7 @@ return [
     |
     */
 	'menu' => [[
-			'icon' => 'fa fa-th-large',
+			'icon' => 'fas fa-tachometer-alt',
 			'title' => 'menu.dashboard',
 			'url' => 'home'
 		],[

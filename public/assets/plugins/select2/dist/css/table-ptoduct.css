@@ -27,6 +27,7 @@
 	cursor: pointer;
 	z-index: 9999;
 }
+
 #slide-filter-of span {
 	font-family: "DinPRO", Arial, Helvetica, sans-serif !important;
 }
@@ -121,6 +122,12 @@ td:hover .data-product_name {
 		top: 135px;
 	}
 }
+@media screen and (max-width: 1050px) {
+	#slide-filter-on,
+	#slide-filter-of {
+		top: 250px;
+	}
+
 
 .filter_with_options {
 	display: flex;

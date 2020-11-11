@@ -131,7 +131,7 @@
 				}
 			@endphp
 			<!-- begin sidebar minify button -->
-			<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+			<li><a href="javascript:;" onclick="toggleEnvelope()" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
 			<!-- end sidebar minify button -->
 		</ul>
 		<!-- end sidebar nav -->
@@ -158,7 +158,7 @@
                             <p>{{$manager->email}}</p>
                         @endif
 						<p class="mb-0">
-							<a href="{{route('ticket')}}" class="btn btn-block btn-primary">@lang('sidebar.message') <span class="badge badge-light">{{$countMessage}}</span></a>
+							<a style="position: relative;padding: 5px 10px" href="{{route('ticket')}}" class="btn btn-green" title="@lang('sidebar.message')"><i style="font-size: 24px;" class="fas fa-envelope"></i> <span style="position: absolute;top: -5px;right: -10px;" class="badge badge-light">{{$countMessage}}</span></a>
 						</p>
 					</div>
 				</li>
@@ -170,7 +170,11 @@
 						<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$manager->name}}" />
 					@endif
 					</a>
+					
 				</li>
+				<p id="envelop" class="mb-0">
+							<a style="position: relative;padding: 5px 10px; margin:0 0 5px 5px;" href="{{route('ticket')}}" class="btn btn-green" title="@lang('sidebar.message')"><i style="font-size: 20px;" class="fas fa-envelope"></i> <span style="position: absolute;top: -5px;right: -10px;" class="badge badge-light">{{$countMessage}}</span></a>
+						</p>
 			</ul>
 			@endif
 	</div>
@@ -185,6 +189,13 @@
 		background-color: #eee;
 	}
 </style>
+<script>
+	let flag = true
+	const toggleEnvelope = ()=> {
+		flag = !flag
+		!flag ? document.getElementById('envelop').style.display = 'none' : document.getElementById('envelop').style.display = 'block'
+	}
+</script>
 
 <!-- <div class="sidebar-bg"></div> -->
 <!-- end #sidebar -->

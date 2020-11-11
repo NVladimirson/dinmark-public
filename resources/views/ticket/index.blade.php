@@ -29,7 +29,7 @@
 				<div class="panel-body">
 					<div class="row m-b-15">
 						<div class="col-md-4">
-							<a href="{{route('ticket.create')}}" class="btn btn-primary">@lang('ticket.button_new')</a>
+							<a href="{{route('ticket.create')}}" class="btn btn-green" title="@lang('ticket.button_new')"><i class="fas fa-plus-circle"></i></a>
 						</div>
 						<div class="col-md-8">
 						</div>

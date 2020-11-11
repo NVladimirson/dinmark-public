@@ -45,7 +45,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <a href="#" id="add_product_btn" class="btn btn-mb btn-block btn-primary m-t-25 m-b-5" >@lang('reclamation.add_product')</a>
+                            <a href="#" id="add_product_btn" class="btn btn-mb btn-block btn-green m-t-25 m-b-5" title="@lang('reclamation.add_product')"><i class="fas fa-plus"></i></a>
                         </div>
                         <div class="col-md-12 m-t-15">
                             <div class="table-scroll-container">
