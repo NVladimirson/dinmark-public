@@ -12,3 +12,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea/
+leomark_db2.sql
+composer.lock
+php.txt
+.gitignore

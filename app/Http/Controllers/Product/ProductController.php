@@ -57,7 +57,7 @@ class ProductController extends Controller
         if(!$request_options){
             return $valid_options = ['checked' => [],'available' => []];
         }
-        info(1);
+
         foreach($request_options as $option){
             $key = explode(';',$option)[0];
             $value = explode(';',$option)[1];
@@ -72,7 +72,6 @@ class ProductController extends Controller
                 $product_options[$product_id][$value_id] = $localization;
             }
         }
-
         $request_options_length = count($option_map);
         $available = Array();
         foreach ($product_options as $product_id => $product_info){
@@ -84,7 +83,6 @@ class ProductController extends Controller
             }
 
         }
-
         $valid_options = ['checked' => $option_map,'available' => $available];
         return $valid_options;
 
@@ -268,7 +266,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_1"> - 
+                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_1"> -
                         </span><br><span class="limit_amount_quantity_1"></span></p>';
                 }
             })
@@ -281,7 +279,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2"> - 
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2"> -
                         </span><br><span class="limit_amount_quantity_2"></span></p>';
                 }
 
@@ -305,7 +303,7 @@ class ProductController extends Controller
                             $days = ProductServices::getStingDays($term);
                             $name = CatalogServices::dayrounder($storage->amount).
                             ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-                            $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'" 
+                            $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
                             package_max="'.$storage->amount.'"';
                             if($storage->storage->id == $main_storage){
                                 $value .= 'selected>'.$name.'</option>';
@@ -326,13 +324,13 @@ class ProductController extends Controller
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
                     $package = $storage->package;
                     return '
-                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
+                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
                     value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" max="'.$storage->amount.'"/>';
                 }
                 else{
                     return '
-                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number" 
+                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
                     value="0" min="0" step="10" data-max="1000"/>';
                 }
