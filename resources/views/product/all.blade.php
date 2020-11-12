@@ -28,7 +28,6 @@
     <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
     <!-- begin row -->
     <div id="filters_selected">
-
     </div>
     <div id="wrap-table" class="row wrap-table">
         <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-filter"></i>
