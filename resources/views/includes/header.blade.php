@@ -75,8 +75,8 @@
         <div id="global_search_wrap">
             <select class="form-control m-b-5" id="global_search" name="product_id"></select>
             <div class="more hexa-plus">
-        <i class="fas fa-plus"></i>
-        </div>
+                <i class="fas fa-plus"></i>
+            </div>
         </div>
         
         </div>
@@ -192,7 +192,7 @@
 
 <form action="https://dinmark.com.ua/search/filter" id="filter"
 class="hide" style="display: block;">
-    {{--<div class="container flex">
+    <div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
             <select id="header_filter-64-standart" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
@@ -344,7 +344,7 @@ class="hide" style="display: block;">
                     <span class="dropdown-wrapper" aria-hidden="true"></span>
                 </span>
             </div>
-        </div>--}}
+        </div>
     <div class="submit">
         <button class="hexa">Пошук</button>
     </div>
@@ -709,6 +709,22 @@ class="hide" style="display: block;">
     (function ($) {
         "use strict";
         $(document).ready(function() {
+            const showFilter = (id, el) => {
+                const filter = $(id)
+                const btnFilter = el
+                filter.hasClass("hide") ? filter.removeClass("hide").addClass("show") : filter.removeClass("show").addClass("hide")
+                btnFilter.hasClass("fas fa-plus") ? btnFilter.removeClass("fas fa-plus").addClass("fas fa-minus") : btnFilter.removeClass("fas fa-minus").addClass("fas fa-plus")
+            }
+            $('.more.hexa-plus').click((e) => {
+                if(window.innerWidth > 1050) {
+                    showFilter('#filter', $(e.target).children('.fas'))
+                }
+            })
+            $('.more.hexa-plus').click((e) => {
+                if(window.innerWidth < 1051) {
+                    showFilter('#mobile-filter', $(e.target).children('.fas'))
+                }
+            })
 
             $('#global_search').select2({
                 placeholder: "@lang('global.global_search.placeholder')",

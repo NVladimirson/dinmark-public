@@ -91,11 +91,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-
-
-        $search = 'din';
-        $order_search = GlobalSearchService::getOrderProductsSearch($search);
-        dd($order_search);
+        $this->dispatch(new ProductOptionFiltersJob);
     }
 
 
