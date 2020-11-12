@@ -127,7 +127,7 @@ td:hover .data-product_name {
 	#slide-filter-of {
 		top: 250px;
 	}
-
+}
 
 .filter_with_options {
 	display: flex;
@@ -210,5 +210,5 @@ td {
 }
 .ui-accordion-content {
 	height: 50vh;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
