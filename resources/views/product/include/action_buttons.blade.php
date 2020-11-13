@@ -11,6 +11,7 @@
     {{--@endif--}}
 @if($hasStorage)
     <a href="#modal-order" class="btn btn-sm btn-primary source"
+    data-price="{{\App\Services\Product\Product::getPriceUnformatted($product)}}"
              data-toggle="modal"
        data-product="{{$product->id}}"
              data-product_name="{{$name}}"

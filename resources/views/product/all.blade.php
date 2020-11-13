@@ -769,7 +769,7 @@
                 modal.find('.product_id').val(button.data('product'));
                 modal.find('.storage_id').val(button[0].getAttribute("data-storage"));
                 let amount = button[0].getAttribute("data-amount");
-                modal.find('.amount').val(amount);
+                modal.find('.amount').val(button[0].getAttribute("data-amount"));
                 let order_inputs = document.getElementById("modal_order_inputs");
                 while (order_inputs.firstChild) {
                     order_inputs.removeChild(order_inputs.lastChild);
@@ -838,7 +838,7 @@
                     success: function(resp) {
                         if (resp == "ok") {
                             $.gritter.add({
-                                title: '@lang('order.modal_success ')',
+                                title: '@lang('order.modal_success')',
                             });
                             if (order_id == 0) {
                                 document.location.reload(true);

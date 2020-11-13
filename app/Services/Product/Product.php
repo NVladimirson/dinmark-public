@@ -176,7 +176,7 @@ class Product
     }
 	public static function getPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product,$storage_id );
+		$price = $instance->calcPrice($product,$storage_id);
 		return number_format($price,2,'.',' ');
 	}
 	public static function calcPrice($product,$storage_id = null){
@@ -186,7 +186,7 @@ class Product
 
 		return $price;
 	}
-
+	
 	public static function getPriceLimit1($product){
 		$instance =  static::getInstance();
 		$price = $instance->calcPrice($product) * 0.97;

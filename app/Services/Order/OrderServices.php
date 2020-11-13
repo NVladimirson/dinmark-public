@@ -34,6 +34,7 @@ class OrderServices
 	}
 
 	public static function calcTotal($order){
+    info($order);
 	    $total = 0;
         foreach ($order->products as $orderProduct){
             $koef = 1;
@@ -152,14 +153,14 @@ class OrderServices
                 $orders->doesntHave('payments');
             }elseif ($request->payment == 'partial'){
                 $orders->has('payments')
-                    ->whereRaw(' s_cart.total > ( 
-                              SELECT SUM( b2b_payments.payed ) 
+                    ->whereRaw(' s_cart.total > (
+                              SELECT SUM( b2b_payments.payed )
                               FROM b2b_payments
                               WHERE b2b_payments.cart_id = s_cart.id )');
             }elseif ($request->payment == 'success'){
                 $orders->has('payments')
-                    ->whereRaw(' s_cart.total <= ( 
-                              SELECT SUM( b2b_payments.payed ) 
+                    ->whereRaw(' s_cart.total <= (
+                              SELECT SUM( b2b_payments.payed )
                               FROM b2b_payments
                               WHERE b2b_payments.cart_id = s_cart.id )');
             }

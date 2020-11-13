@@ -93,30 +93,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-         //$this->dispatch(new ProductOptionFiltersJob);
-        // dd('done');
-        $option_map = [2=>'ssd',81=>'sds'];
 
-        $products = ProductOption::whereIn('value',array_keys($option_map))->pluck('product')->toArray();
-
-        $query = 'SELECT DISTINCT s_shopshowcase_product_options.value FROM s_shopshowcase_product_options WHERE product in (';
-
-        foreach ($products as $key => $value) {
-          if($key != array_key_last($products)){
-          $query .= $value.',';
-          }
-          else{
-          $query .= $value.')';
-          }
-        }
-
-        $options = \DB::select($query);
-        foreach ($options as $key => $value) {
-          if(in_array($option_map[$value->value])){
-            continue;
-          }
-          $valid_options[$value->value] = 'opt';
-        }
 
     }
 

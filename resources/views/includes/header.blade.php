@@ -78,7 +78,7 @@
                 <i class="fas fa-plus"></i>
             </div>
         </div>
-        
+
         </div>
         <!-- </li> -->
         <!-- new search -->
@@ -127,10 +127,10 @@
             <li class="dropdown navbar-user">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     @if(auth()->user()->photo)
-                        <img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}"
+                        <img src="https://dinmark.com.ua/images/profile/{{auth()->user()->photo}}"
                         alt="{{auth()->user()->name}}" />
                         @else
-                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                        <img src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{auth()->user()->name}}" />
                     @endif
 
                     <span class="d-none d-md-inline">{{auth()->user()->name}}</span> <b class="caret"></b>

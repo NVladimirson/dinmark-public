@@ -12,6 +12,7 @@
                 </div>
                 <input type="hidden" class="product_id" name="product_id">
                 <input type="hidden" class="storage_id" name="storage_id">
+                <input type="hidden" class="price" name="price">
                 {{--<input type="hidden" class="amount" name="amount">--}}
                 {{--<input class="quantity" name="quantity" placeholder="@lang('product.quantity_order')" disabled>--}}
                 {{--<input class="quantity_request" name="quantity_request" placeholder="@lang('product.quantity_order_request')" disabled>--}}
@@ -48,4 +49,3 @@
         </div>
     </div>
 </div>
-

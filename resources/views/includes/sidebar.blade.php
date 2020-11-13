@@ -143,9 +143,9 @@ $sidebarClass = (!empty($sidebarTransparent)) ? 'sidebar-transparent' : '';
 			<li class="media media-xs nav-profile">
 				<div class="media-left">
 					@if($manager->photo)
-					<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/profile/{{$manager->photo}}" alt="{{$manager->name}}" />
+					<img class="media-object rounded-corner" src="https://dinmark.com.ua/images/profile/{{$manager->photo}}" alt="{{$manager->name}}" />
 					@else
-					<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$manager->name}}" />
+					<img class="media-object rounded-corner" src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{$manager->name}}" />
 					@endif
 				</div>
 				<div class="media-body">
@@ -165,9 +165,9 @@ $sidebarClass = (!empty($sidebarTransparent)) ? 'sidebar-transparent' : '';
 			<li class="media media-xs nav-manager">
 				<a href="{{route('ticket')}}">
 					@if($manager->photo)
-					<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/profile/{{$manager->photo}}" alt="{{$manager->name}}" />
+					<img class="media-object rounded-corner" src="https://dinmark.com.ua/images/profile/{{$manager->photo}}" alt="{{$manager->name}}" />
 					@else
-					<img class="media-object rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$manager->name}}" />
+					<img class="media-object rounded-corner" src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{$manager->name}}" />
 					@endif
 				</a>
 
