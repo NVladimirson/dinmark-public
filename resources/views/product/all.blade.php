@@ -544,8 +544,10 @@
                                 $.each(resp.available, function(index, value) {
                                     let filter_by_id = $("[option_id=" + index + "]");
                                     //console.log(filter_by_id);
-                                    filter_by_id[0].setAttribute("style", "cursor:pointer");
-                                    filter_by_id[0].setAttribute("filter-accessible", "true");
+                                    if(typeof(filter_by_id[0]) !== 'undefined'){
+                                      filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                      filter_by_id[0].setAttribute("filter-accessible", "true");
+                                    }
                                 });
                             }
 
@@ -593,6 +595,7 @@
                             }
 
                             let loaded_filter_categories = document.getElementById('reload').textContent.split(",");
+
                             if (loaded_filter_categories.length > 0 || loaded_filter_categories[0] !== "") {
                                 $.each(loaded_filter_categories, function(index, value) {
                                     let id = value;

@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
 use PhpParser\Node\Expr\Array_;
+use App\Models\Product\ProductOption;
 
 class ProductController extends Controller
 {
@@ -53,7 +54,7 @@ class ProductController extends Controller
 
     public function optionFilters(Request $request){
         $request_options = $request->filter_with_options;
-        info(1);
+        info($request_options);
         if(!$request_options){
             return $valid_options = ['checked' => [],'available' => []];
         }
@@ -63,33 +64,60 @@ class ProductController extends Controller
             $value = explode(';',$option)[1];
             $option_map[$key] = $value;
         }
-
         $language = CategoryServices::getLang();
-        $product_options = Cache::get('productoptions');
-        foreach ($product_options as $product_id => $product_info){
-            foreach ($product_info as $value_id => $valueinfo){
-                $localization = $valueinfo[$language];
-                $product_options[$product_id][$value_id] = $localization;
-            }
-        }
-        $request_options_length = count($option_map);
-        $available = Array();
-        foreach ($product_options as $product_id => $product_info){
 
-            if(count(array_intersect(array_keys($product_info),array_keys($option_map))) == $request_options_length){
-                foreach ($product_info as $value_id => $valueinfo){
-                    $available[$value_id] = $valueinfo['name'];
-                }
-            }
+        $products = ProductOption::whereIn('value',array_keys($option_map))->pluck('product')->toArray();
 
+        $query = 'SELECT DISTINCT s_shopshowcase_product_options.value FROM s_shopshowcase_product_options WHERE product in (';
+
+        foreach ($products as $key => $value) {
+          if($key != array_key_last($products)){
+          $query .= $value.',';
+          }
+          else{
+          $query .= $value.')';
+          }
         }
+
+        $options = \DB::select($query);
+        foreach ($options as $key => $value) {
+          if(in_array($value->value,$option_map)){
+            continue;
+          }
+          $available[$value->value] = 'opt';
+        }
+
         $valid_options = ['checked' => $option_map,'available' => $available];
         return $valid_options;
 
     }
 
     public function test(Request $request){
-        $this->dispatch(new ProductOptionFiltersJob);
+         //$this->dispatch(new ProductOptionFiltersJob);
+        // dd('done');
+        $option_map = [2=>'ssd',81=>'sds'];
+
+        $products = ProductOption::whereIn('value',array_keys($option_map))->pluck('product')->toArray();
+
+        $query = 'SELECT DISTINCT s_shopshowcase_product_options.value FROM s_shopshowcase_product_options WHERE product in (';
+
+        foreach ($products as $key => $value) {
+          if($key != array_key_last($products)){
+          $query .= $value.',';
+          }
+          else{
+          $query .= $value.')';
+          }
+        }
+
+        $options = \DB::select($query);
+        foreach ($options as $key => $value) {
+          if(in_array($option_map[$value->value])){
+            continue;
+          }
+          $valid_options[$value->value] = 'opt';
+        }
+
     }
 
 

@@ -75,9 +75,9 @@ class ProductOptionFiltersJob implements ShouldQueue
             }
 
         }
-
-        Cache::put('optionfilters',$filter_option_map);
-        Cache::put('productoptions',$product_option_map);
+        dd($product_option_map);
+        //Cache::put('optionfilters',$filter_option_map);
+        //Cache::put('productoptions',$product_option_map);
     }
 
     /**
