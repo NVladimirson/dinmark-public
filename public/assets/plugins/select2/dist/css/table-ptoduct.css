@@ -25,7 +25,7 @@
 	color: #fff;
 	border-radius: 20px 0 0 20px;
 	cursor: pointer;
-	z-index: 9999;
+	z-index: 99999;
 }
 
 #slide-filter-of span {
@@ -119,13 +119,13 @@ td:hover .data-product_name {
 @media screen and (max-width: 1050px) {
 	.responsive-width {
 		z-index: 9999;
-		top: 135px;
+		top: 210px;
 	}
 }
 @media screen and (max-width: 1050px) {
 	#slide-filter-on,
 	#slide-filter-of {
-		top: 250px;
+		top: 210px;
 	}
 }
 
