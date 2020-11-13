@@ -29,6 +29,6 @@
         <i class="fas fa-cart-plus"></i></a>
 @else
     <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal"
-        data-product_id="{{$product->id}}" ><i class="fas fa-question-circle"></i></a>
+        data-product_id="{{$product->id}}" ><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
 @endif
 </div>

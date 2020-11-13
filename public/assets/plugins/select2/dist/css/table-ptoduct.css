@@ -202,13 +202,37 @@ td {
 	display: none;
 	transition: scale .3s;
 }
-.datatable_actions_class div a:nth-child(1) {
+.datatable_actions_class div a:nth-child(3) {
+	width: auto;
 	display: block;
 }
-.datatable_actions_class:hover div a {
+.btn-get-price {
+	width: 13px;
+}
+tr:hover .datatable_actions_class div a {
 	display: block;
 }
 .ui-accordion-content {
 	height: 50vh;
 	overflow-y: auto;
+}
+
+.datatable_sum_class p {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.datatable_sum_class p span {
+	padding: 1px;
+	margin: 1px;
+	background-color: silver;
+	border-radius: 3px;
+}
+
+.datatable_weight_class p span {
+	padding: 1px;
+	margin: 1px;
+	background-color: silver;
+	border-radius: 3px;
 }

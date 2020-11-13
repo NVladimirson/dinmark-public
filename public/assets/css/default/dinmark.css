@@ -934,10 +934,19 @@ tbody tr:hover td .product-total{
     color: #000;
 }
 
-
-tbody tr td a {
-    color: #000;
+tbody tr td.datatable_namearticle_class a:nth-child(1) {
     text-decoration: underline;
+    color: #348fe2;
+}
+tbody tr:hover td.datatable_namearticle_class a:nth-child(1) {
+    color: #fff;
+}
+tbody tr td.datatable_namearticle_class a {
+    color: #000;
+    font-weight: bold;
+}
+tbody tr:hover td.datatable_namearticle_class a {
+    color: #fff;
 }
 
 tbody tr:hover a{
@@ -1743,4 +1752,8 @@ body ul.wysihtml5-toolbar .glyphicon {
 
 .breadcrumb.float-xl-right {
     margin-right: 40px;
+}
+
+#product_tab {
+    background: transparent;
 }
