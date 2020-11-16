@@ -72,6 +72,16 @@ td:hover .data-product_name {
 	white-space: normal;
 	overflow: visible;
 }
+
+.datatable_userprice_class {
+	min-width: 100px;
+	max-width: 150px;
+}
+
+.datatable_userprice_class span {
+	white-space: nowrap;
+}
+
 .table-responsive {
 	width: 100% !important;
 	display: table;

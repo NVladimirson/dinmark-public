@@ -194,10 +194,10 @@
 class="hide" style="display: block;">
     <div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-            <select id="header_filter-64-standart" name="64-standart"
+            <select id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
-            aria-hidden="true" data-select2-id="header_filter-64-standart">
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
                 <option data-select2-id="72"></option>
             </select>
             <span class="select2 select2-container select2-container--default"
@@ -224,9 +224,9 @@ class="hide" style="display: block;">
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <select id="header_filter-7-diametr" name="7-diametr[]" multiple=""
+            <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
                 style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
-                aria-hidden="true" data-select2-id="header_filter-7-diametr">
+                aria-hidden="true" data-select2-id="header_filter-7-diametr-d">
             </select>
             <span class="select2 select2-container select2-container--default"
                 dir="ltr" data-select2-id="73" style="width: 100%;">
@@ -250,10 +250,10 @@ class="hide" style="display: block;">
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <select id="header_filter-26-dovzhyna" name="26-dovzhyna[]"
+            <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
                 multiple="" style="width: 100%" tabindex="-1"
                 class="select2-hidden-accessible" aria-hidden="true"
-                data-select2-id="header_filter-26-dovzhyna">
+                data-select2-id="header_filter-26-dovzhyna-d">
             </select>
             <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="74" style="width: 100%;">
@@ -276,9 +276,9 @@ class="hide" style="display: block;">
         </div>
         <div>
             <p>Матеріал </p>
-            <select id="header_filter-11-material" name="11-material[]"
+            <select id="header_filter-11-material-d" name="11-material[]"
             multiple="" style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
-            aria-hidden="true" data-select2-id="header_filter-11-material">
+            aria-hidden="true" data-select2-id="header_filter-11-material-d">
             </select>
             <span class="select2 select2-container select2-container--default" dir="ltr"
             data-select2-id="75" style="width: 100%;">
@@ -299,9 +299,9 @@ class="hide" style="display: block;">
         </div>
         <div>
             <p>Клас міцності </p>
-            <select id="header_filter-28-klas-micnosti" name="28-klas-micnosti[]" multiple=""
+            <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
             style="width: 100%" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
-            data-select2-id="header_filter-28-klas-micnosti">
+            data-select2-id="header_filter-28-klas-micnosti-d">
             </select>
             <span class="select2 select2-container select2-container--default" dir="ltr"
             data-select2-id="76" style="width: 100%;">
@@ -322,9 +322,9 @@ class="hide" style="display: block;">
         </div>
         <div>
             <p>Покриття </p>
-                <select id="header_filter-13-pokryttja" name="13-pokryttja[]" multiple="" style="width: 100%"
+                <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
                 tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
-                data-select2-id="header_filter-13-pokryttja">
+                data-select2-id="header_filter-13-pokryttja-d">
                 </select>
                 <span class="select2 select2-container select2-container--default" dir="ltr"
                 data-select2-id="77" style="width: 100%;">
