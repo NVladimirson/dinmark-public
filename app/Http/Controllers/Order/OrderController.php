@@ -114,6 +114,8 @@ class OrderController extends Controller
             $quantity_request =  explode(':',explode(',', $product_info)[2])[1];
             $res[] = ['product_id' => $product_id, 'storage_id' => $storage, 'quantity' => $quantity,'quantity_request' => $quantity_request];
         }
+
+				info($res);
         $order = null;
         if(!($request->storage_id)){
             $order = Order::create([
@@ -123,14 +125,17 @@ class OrderController extends Controller
                 'total' => 0,
                 'source' => 'b2b',
             ]);
+						info('oops');
         }else{
             $order = Order::find($request->storage_id);
+						info('found order! '.$request->storage_id);
             $order->save();
         }
 
         foreach ($res as $no => $data){
 
             $product = Product::with(['storages'])->find($data['product_id']);
+						info('orderid:'.$order->id);
             OrderProduct::create([
                 'cart' => $order->id,
                 'user' => auth()->user()->id,

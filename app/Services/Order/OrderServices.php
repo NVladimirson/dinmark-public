@@ -34,7 +34,6 @@ class OrderServices
 	}
 
 	public static function calcTotal($order){
-    info($order);
 	    $total = 0;
         foreach ($order->products as $orderProduct){
             $koef = 1;

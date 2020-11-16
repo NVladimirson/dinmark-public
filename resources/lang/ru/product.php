@@ -49,13 +49,16 @@ return [
 	'empty'	=> 'По запросу ничего не найдено',
 
 	'select_term' => 'Выберите срок доставки',
-
+    'table_header_info' => 'Информация',
+    'table_header_price_per_100' => 'Цена(100шт.)',
+    'table_header_calc_price' => 'Калькулятор стоимости',
     'table_header_name/article' => 'Название/Артикул',
     'table_header_name' => 'Название',
     'table_header_photo' => 'Фото',
     'table_header_article' => 'Артикул',
     'table_header_price_retail' => 'Розница',
     'table_header_price' => 'Ваша цена',
+    'table_header_retail_user_prices' => 'Розница/Ваша цена',
     'table_header_price_porog_1' => '  -3%  ',
     'table_header_price_porog_2' => '  -7%  ',
 //    'table_header_price_porog_1' => 'Цена порог 1',

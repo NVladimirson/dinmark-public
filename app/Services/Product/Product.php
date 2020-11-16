@@ -186,7 +186,7 @@ class Product
 
 		return $price;
 	}
-	
+
 	public static function getPriceLimit1($product){
 		$instance =  static::getInstance();
 		$price = $instance->calcPrice($product) * 0.97;
@@ -206,8 +206,8 @@ class Product
 
         $storage = null;
         if(isset($storage_id)){
-            //$storage = $product->storages->firstWhere('id',$storage_id);
-            $storage = $product->storages->firstWhere('storage_id',$storage_id);
+            $storage = $product->storages->firstWhere('id',$storage_id);
+            //$storage = $product->storages->firstWhere('storage_id',$storage_id);
         }else{
             $storage = $product->storages->firstWhere('is_main',1);
         }

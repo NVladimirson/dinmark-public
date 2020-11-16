@@ -93,8 +93,55 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
+      $order = \App\Models\Order\Order::with('products')->where('id',3)->first();
 
-
+      foreach ($order->products as $orderProduct) {
+        $koef = 1;
+              if($orderProduct->product->storages){
+                  $storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
+                  dd($storage);
+                  // if($storage){
+                  //     if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
+                  //         $koef = 0.93;
+                  //     }elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
+                  //         $koef = 0.97;
+                  //     }
+                  // }
+                  // else{
+                  //     continue;
+                  // }
+                  // $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
+                  //             $storage->id)/(float)100) * $koef;
+                  // $orderProduct->price_in = $storage->price;
+                  // $orderProduct->save();
+                  // $total += round($orderProduct->price*$orderProduct->quantity, 2);
+              }
+      }
+      dd($order->products);
+      // $total = 0;
+      //   foreach ($order->products as $orderProduct){
+      //       $koef = 1;
+      //       if($orderProduct->product->storages){
+      //           $storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
+      //           if($storage){
+      //               if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
+      //                   $koef = 0.93;
+      //               }elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
+      //                   $koef = 0.97;
+      //               }
+      //           }
+      //           else{
+      //               continue;
+      //           }
+      //           $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
+      //                       $storage->id)/(float)100) * $koef;
+      //           $orderProduct->price_in = $storage->price;
+      //           $orderProduct->save();
+      //           $total += round($orderProduct->price*$orderProduct->quantity, 2);
+      //       }
+      //   }
+      //   $order->total = $total;
+      //   $order->save();
     }
 
 
@@ -241,26 +288,37 @@ class ProductController extends Controller
             .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
             '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
         })
-//            ->addColumn('name_html', function (Product $product){
-//                $name = \App\Services\Product\Product::getName($product);
-//                return '<a class="data-product_name" href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
-//            })
-//            ->addColumn('article_show_html', function (Product $product) {
-//                return '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
-//            })
-
-            ->addColumn('retail_price', function (Product $product) {
+            // ->addColumn('retail_price', function (Product $product) {
+            //     if(\App\Services\Product\Product::hasAmount($product->storages)){
+            //         return '<p id="retail_price_'.$product->id.'"><span>'.ProductServices::getBasePrice($product).'</span></p>';
+            //     }
+            //     return number_format(0,2,'.',' ');
+            // })
+            // ->addColumn('user_price', function (Product $product) {
+            //     if(\App\Services\Product\Product::hasAmount($product->storages)){
+            //         if($product->old_price){
+            //           return '<p id="user_price_'.$product->id.'"><span><strike>'.ProductServices::getPrice($product).'</strike></span><span style="color:#ee3f3c"> '
+            //           .number_format($product->old_price,2,'.',' ').'</span></p>';
+            //         }else{
+            //           return '<p id="user_price_'.$product->id.'"><span>'.ProductServices::getPrice($product).'</span></p>';
+            //         }
+            //     }
+            //     return number_format(0,2,'.',' ');
+            //     //return '<p id="user_price_'.$product->id.'"><span></span></p>';
+            // })
+            ->addColumn('retail_user_prices', function (Product $product) {
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<p id="retail_price_'.$product->id.'"><span>'.ProductServices::getBasePrice($product).'</span></p>';
+                    $retail = ''.__('product.table_header_price_retail').': <span>'.ProductServices::getBasePrice($product).'</span>';
+                    if($product->old_price){
+                      $user_price = ''.__('product.table_header_price').': <span><strike>'.ProductServices::getPrice($product).'</strike>
+                      </span><span style="color:#ee3f3c"> '
+                      .number_format($product->old_price,2,'.',' ').'</span>';
+                    }else{
+                      $user_price = ''.__('product.table_header_price').': <span>'.ProductServices::getPrice($product).'</span>';
+                    }
+                    return $retail. '<br>'.$user_price;
                 }
                 return number_format(0,2,'.',' ');
-            })
-            ->addColumn('user_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<p id="user_price_'.$product->id.'"><span>'.ProductServices::getPrice($product).'</span></p>';
-                }
-                return number_format(0,2,'.',' ');
-                //return '<p id="user_price_'.$product->id.'"><span></span></p>';
             })
             ->addColumn('html_limit_1', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
@@ -420,7 +478,7 @@ class ProductController extends Controller
                     $product->whereIn('id',$ids);
                 }
             }, true)
-            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price'])
+            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price','retail_user_prices'])
             ->toJson();
     }
 
@@ -451,7 +509,7 @@ class ProductController extends Controller
             $discount = '3%';
         }
         else{
-            $price = ProductServices::getPriceUnformatted($productinfo,$storage_id);
+            $price = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
             $discount = '0%';
         }
 
@@ -468,21 +526,21 @@ class ProductController extends Controller
         $weight = $productinfo->weight * ($amount/$unitnumber);
         //number_format($weight,3,'.',' ')
 
-        $retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
+        //$retail_price = number_format(ProductServices::getBasePriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
 
-        $user_price = number_format(ProductServices::getPriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
+        //$user_price = number_format(ProductServices::getPriceUnformatted($productinfo,$storage_id)*$multiplier,2,'.',' ');
 
         $response = [
             'name' => $name,
-            'retail_price' => $retail_price,
-            'user_price' => $user_price,
+            //'retail_price' => $retail_price,
+            //'user_price' => $user_price,
             'multiplier' => $multiplier,
             'storageamount' => $storageamount,
             'package' => $package,
             'weight' => number_format($weight,3,'.',' '),
             'price' => number_format($multiplier*$price,2,'.',' '),
             'discount' => $discount,
-            'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storage_id) - $multiplier*$price,2,'.',' '),
+            'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storageinfo->id) - $multiplier*$price,2,'.',' '),
             'limit_amount_price_1' => ProductServices::getPriceWithCoef($productinfo,0.97),
             'limit_amount_price_2' => ProductServices::getPriceWithCoef($productinfo,0.93),
             'limit_amount_quantity_1' => $three_percent_discount_limit,
