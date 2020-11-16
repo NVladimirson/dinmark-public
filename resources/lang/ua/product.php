@@ -48,13 +48,16 @@ return [
 	'empty'	=> 'За запитом нічого не знайдено',
 
 	'select_term' => 'Оберіть термін доставки',
-
+  'table_header_info' => 'Інформація',
+  'table_header_price_per_100' => 'Ціна(100 шт.)',
+  'table_header_calc_price' => 'Калькулятор вартості',
     'table_header_name/article' => 'Назва/Артикул',
 	'table_header_name' => 'Назва',
     'table_header_photo' => 'Фото',
 	'table_header_article' => 'Артикул',
     'table_header_price_retail' => 'Роздріб',
     'table_header_price' => 'Ваша ціна',
+    'table_header_retail_user_prices' => 'Роздріб/Ваша ціна',
     'table_header_price_porog_1' => '-3%',
     'table_header_price_porog_2' => '-7%',
 //	'table_header_price_porog_1' => 'Ціна порогу 1',

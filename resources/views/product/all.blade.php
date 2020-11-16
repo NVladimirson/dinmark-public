@@ -85,10 +85,10 @@
                         <table id="data-table-buttons" class="table-responsive table-striped table-bordered table-td-valign-middle">
                             <thead>
                             <tr>
-                                <th colspan="4" class="text-nowrap" style="text-align: center">Інформація</th>
-                                <th colspan="4" class="text-nowrap" style="text-align: center">Ціна(100 шт.)</th>
-                                <th></th>
-                                <th colspan="4" class="text-nowrap" style="text-align: center">Калькулятор вартості</th>
+                                <th colspan="4" class="text-nowrap" style="text-align: center">@lang('product.table_header_info')</th>
+                                <th colspan="4" class="text-nowrap" style="text-align: center">@lang('product.table_header_price_per_100')</th>
+                                <!-- <th></th> -->
+                                <th colspan="4" class="text-nowrap" style="text-align: center">@lang('product.table_header_calc_price')</th>
                             </tr>
                             <tr>
                                 <th style="text-align: center"></th>
@@ -100,9 +100,6 @@
                                 </th>
                                 <th data-orderable="false" style="text-align: center;">@lang('product.table_header_photo')</th>
                                 <th class="text-nowrap" style="text-align: center">@lang('product.table_header_name/article')</th>
-                                {{--<th class="text-nowrap">@lang('product.table_header_name')</th>--}}
-                                {{--<th class="text-nowrap">@lang('product.table_header_article')</th>--}}
-                                <th style="text-align: center;">@lang('product.table_header_price_retail')</th>
                                 <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_price')</th>
                                 <th id="price_porog_1" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_1')</th>
                                 <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
@@ -446,14 +443,18 @@
                             data: 'name_article_html',
                             className: "datatable_namearticle_class"
                         },
+                        // {
+                        //     data: 'retail_price',
+                        //     className: "datatable_retailprice_class"
+                        // },
+                        // {
+                        //     data: 'user_price',
+                        //     className: "datatable_userprice_class"
+                        // },
                         {
-
-                            data: 'retail_price',
-                            className: "datatable_retailprice_class"
-                        },
-                        {
-                            data: 'user_price',
-                            className: "datatable_userprice_class"
+                          "orderable": false,
+                          data: 'retail_user_prices',
+                          className: "datatable_userprice_class"
                         },
                         {
                             "orderable": false,
@@ -840,9 +841,9 @@
                             $.gritter.add({
                                 title: '@lang('order.modal_success')',
                             });
-                            if (order_id == 0) {
-                                document.location.reload(true);
-                            }
+                            // if (order_id == 0) {
+                            //     document.location.reload(true);
+                            // }
                             //window.table.ajax.reload();
                         }
                     },
@@ -901,7 +902,7 @@
                             $('#new_wishlist_name').val('');
 
                             $.gritter.add({
-                                title: '@lang('wishlist.modal_success ')',
+                                title: '@lang('wishlist.modal_success')',
                             });
                         }
                     },
@@ -966,9 +967,9 @@
                             $.gritter.add({
                                 title: '@lang('order.modal_success')',
                             });
-                            if(order_id == 0){
-                                document.location.reload(true);
-                            }
+                            // if(order_id == 0){
+                            //     document.location.reload(true);
+                            // }
                             //window.table.ajax.reload();
                         }
                     },
@@ -993,7 +994,7 @@
                             $('#new_wishlist_name').val('');
 
                             $.gritter.add({
-                                title: '@lang('wishlist.modal_success ')',
+                                title: '@lang('wishlist.modal_success')',
                             });
                         }
                     },
@@ -1212,7 +1213,7 @@
                     success: function(resp) {
                         if (resp == "ok") {
                             $.gritter.add({
-                                title: '@lang('product.get_price_success ')',
+                                title: '@lang('product.get_price_success')',
                             });
                         }
                     },
@@ -1385,11 +1386,11 @@
                     },
                     url: "{!! @route('priceCalc') !!}",
                     success: function(msg){
-                        let retail_price = document.getElementById('retail_price_'+product_id);
-                        retail_price.children[0].innerText = msg['retail_price'];
+                        //let retail_price = document.getElementById('retail_price_'+product_id);
+                        //retail_price.children[0].innerText = msg['retail_price'];
 
-                        let user_price = document.getElementById('user_price_'+product_id);
-                        user_price.children[0].innerText = msg['user_price'];
+                        //let user_price = document.getElementById('user_price_'+product_id);
+                        //user_price.children[0].innerText = msg['user_price'];
 
                         let package_weight = document.getElementById('package_weight_'+product_id);
                         package_weight.children[0].innerText = msg['multiplier'];
@@ -1456,11 +1457,11 @@
                 limit_2.children[0].innerText = '';
                 limit_2.children[2].innerText = '-';
 
-                let retail_price = document.getElementById('retail_price_'+product_id);
-                retail_price.children[0].innerText = '';
+                //let retail_price = document.getElementById('retail_price_'+product_id);
+                //retail_price.children[0].innerText = '';
 
-                let user_price = document.getElementById('user_price_'+product_id);
-                user_price.children[0].innerText = '';
+                //let user_price = document.getElementById('user_price_'+product_id);
+                //user_price.children[0].innerText = '';
 
                 let productbutton = $('#action_buttons_'+product_id);
                 if(productbutton[0].children[2]){
@@ -1486,11 +1487,11 @@
                 },
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
-                    let retail_price = document.getElementById('retail_price_'+product_id);
-                    retail_price.children[0].innerText = msg['retail_price'];
+                    //let retail_price = document.getElementById('retail_price_'+product_id);
+                    //retail_price.children[0].innerText = msg['retail_price'];
 
-                    let user_price = document.getElementById('user_price_'+product_id);
-                    user_price.children[0].innerText = msg['user_price'];
+                    //let user_price = document.getElementById('user_price_'+product_id);
+                    //user_price.children[0].innerText = msg['user_price'];
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
