@@ -37,25 +37,27 @@ class CatalogController extends Controller
 		return view('product.wishlist',compact('wishlists','orders', 'curentWishlist'));
 	}
 
-    public function addToCatalog($id, Request $request){
+    public function addToCatalog($id = 0, Request $request){
         $products = explode( ',', $request->product_id );
+				$group = LikeGroup::find($id);
+				info($group);
+				if($id == 0){
+						$last = LikeGroup::whereHas('user',function ($users){
+								$users->where('company',auth()->user()->company);
+						})->orderBy('id','desc')->first();
+
+						$group = LikeGroup::create([
+								'name' => $request->new_wishlist_name,
+								'is_main' => 0,
+								'user_id' => auth()->user()->id,
+								'group_id' => $last->id+1
+						]);
+				}
+
 
         foreach ($products as $product){
-            $group = LikeGroup::find($id);
-            if($id == 0){
-                $last = LikeGroup::whereHas('user',function ($users){
-                    $users->where('company',auth()->user()->company);
-                })->orderBy('id','desc')->first();
-
-                $group = LikeGroup::create([
-                    'name' => $request->new_wishlist_name,
-                    'is_main' => 0,
-                    'user_id' => auth()->user()->id,
-                    'group_id' => $last->id+1
-                ]);
-            }
-
-            Like::updateOrCreate([
+          Like::updateOrCreate([
+								// 'id' => $group->id,
                 'user' => $group->user_id,
                 'alias' => 8,
                 'content' =>$product,
@@ -68,6 +70,8 @@ class CatalogController extends Controller
 
     	return 'ok';
 	}
+
+
 
 
     public function changeCatalog($id, Request $request){

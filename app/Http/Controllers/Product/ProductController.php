@@ -24,6 +24,7 @@ use Artesaos\SEOTools\Facades\SEOTools;
 use LaravelLocalization;
 use PhpParser\Node\Expr\Array_;
 use App\Models\Product\ProductOption;
+use App\Models\Wishlist\LikeGroup;
 
 class ProductController extends Controller
 {
@@ -93,11 +94,13 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $order = \App\Models\Order\Order::with('products')->where('id',1)->first();
-
-      OrderServices::calcTotal($order);
-
-
+      //SELECT MAX(id) FROM <tablename>
+      $group = LikeGroup::create([
+          'name' => 'adding',
+          'is_main' => 0,
+          'user_id' => auth()->user()->id,
+          'group_id' => 1
+      ]);
     }
 
 
