@@ -246,3 +246,8 @@ tr:hover .datatable_actions_class div a {
 	/* background-color: silver; */
 	border-radius: 3px;
 }
+
+.datatable_quantity_class .hidden {
+	display: none;
+}
+
