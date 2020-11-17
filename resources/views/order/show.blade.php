@@ -608,6 +608,7 @@
 					});
 
 					return false;
+					calcTotalPrice();
 				});
 
 				$('#customer_id').change(function () {
@@ -660,15 +661,19 @@
 					var total = 0
                     $('.product-row').each(function(row){
                     	var count = +$(this).find('.order-product-counter').val();
+											var packages = $(this).find('.order-product-counter')[0].step;
                     	var price = +$(this).find('.order-product-price').data('price');
-                    	if(count >= $(this).find('.order-product-storage select option:selected').data('storage_limit_2')){
+											var limit_2 = $(this).find('.order-product-storage select option:selected').data('storage_limit_2');
+											var limit_1 = $(this).find('.order-product-storage select option:selected').data('storage_limit_1');
+                    	if(count - limit_2 >= 0 && limit_2 > 0){
 							price *= 0.93;
-                        }else if(count >= $(this).find('.order-product-storage select option:selected').data('storage_limit_1')){
+						}else if(count - limit_1 >= 0 && limit_1 > 0){
+													console.log('asdsd');
 							price *= 0.97;
                         }
 
-                    	$(this).find('.order-product-total').text(numberStringFormat(price*count));
-						total += (price*count);
+                    	$(this).find('.order-product-total').text(numberStringFormat(price*count/packages));
+						total += (price*count/packages);
                     });
 					$('.order-total').data('price',total);
 					$('.order-total').text(numberStringFormat(total));
