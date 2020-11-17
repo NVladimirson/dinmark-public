@@ -135,7 +135,7 @@ class OrderController extends Controller
         foreach ($res as $no => $data){
 
             $product = Product::with(['storages'])->find($data['product_id']);
-						info('orderid:'.$order->id);
+						// info('orderid:'.$order->id);
             OrderProduct::create([
                 'cart' => $order->id,
                 'user' => auth()->user()->id,
@@ -150,8 +150,10 @@ class OrderController extends Controller
                 'date' => Carbon::now()->timestamp,
             ]);
 
-            OrderServices::calcTotal($order);
+
         }
+
+				OrderServices::calcTotal($order);
 
         return 'ok';
     }
@@ -394,8 +396,8 @@ class OrderController extends Controller
 
 		foreach($order->products as $orderProduct){
 			$price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
-
-			$total = $price * $orderProduct->quantity;
+			$package = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)->first()->package;
+			$total = $price * $orderProduct->quantity/$package;
 
 			$storageProduct = null;
 			if($orderProduct->storage){
@@ -418,7 +420,8 @@ class OrderController extends Controller
 				'max' => ($storageProduct)?$storageProduct->amount:0,
 				'package' => ($storageProduct)?$orderProduct->quantity/$storageProduct->package:0,
 				'weight' => $orderProduct->product->weight,
-				'price' => number_format($price*100,2,'.', ' '),
+				//'price' => number_format($price*100,2,'.', ' '),
+				'price' => number_format($price,2,'.', ' '),
 				'price_raw' => $price,
                 'storages'  => $orderProduct->product->storages,
                 'storage_prices' => $storage_prices,
@@ -597,7 +600,8 @@ class OrderController extends Controller
 					'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
 					'quantity' => $orderProduct->quantity/100,
 					'package' => 100,
-					'price' => number_format($price*100,2,',', ' '),
+					//'price' => number_format($price*100,2,',', ' '),
+					'price' => number_format($price,2,',', ' '),
 					'total' => number_format($total,2,',', ' '),
 					'storage_termin' => $orderProduct->storage->term,
 				];

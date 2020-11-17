@@ -93,55 +93,11 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $order = \App\Models\Order\Order::with('products')->where('id',3)->first();
+      $order = \App\Models\Order\Order::with('products')->where('id',1)->first();
 
-      foreach ($order->products as $orderProduct) {
-        $koef = 1;
-              if($orderProduct->product->storages){
-                  $storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
-                  dd($storage);
-                  // if($storage){
-                  //     if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
-                  //         $koef = 0.93;
-                  //     }elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
-                  //         $koef = 0.97;
-                  //     }
-                  // }
-                  // else{
-                  //     continue;
-                  // }
-                  // $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
-                  //             $storage->id)/(float)100) * $koef;
-                  // $orderProduct->price_in = $storage->price;
-                  // $orderProduct->save();
-                  // $total += round($orderProduct->price*$orderProduct->quantity, 2);
-              }
-      }
-      dd($order->products);
-      // $total = 0;
-      //   foreach ($order->products as $orderProduct){
-      //       $koef = 1;
-      //       if($orderProduct->product->storages){
-      //           $storage = $orderProduct->product->storages->firstWhere('storage_id',$orderProduct->storage_alias);
-      //           if($storage){
-      //               if($storage->limit_2 > 0 && $orderProduct->quantity >= $storage->limit_2 ){
-      //                   $koef = 0.93;
-      //               }elseif($storage->limit_1 > 0 && $orderProduct->quantity >= $storage->limit_1 ){
-      //                   $koef = 0.97;
-      //               }
-      //           }
-      //           else{
-      //               continue;
-      //           }
-      //           $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
-      //                       $storage->id)/(float)100) * $koef;
-      //           $orderProduct->price_in = $storage->price;
-      //           $orderProduct->save();
-      //           $total += round($orderProduct->price*$orderProduct->quantity, 2);
-      //       }
-      //   }
-      //   $order->total = $total;
-      //   $order->save();
+      OrderServices::calcTotal($order);
+
+
     }
 
 
@@ -414,13 +370,17 @@ class ProductController extends Controller
                     $weight = $product->weight * ($storage->package/$unitnumber);
                     return '
                 <p id="package_weight_'.$product->id.'">
-                <span><span class="multiplier">1</span> x <span class="package">'.$package.'</span></span><br>
+                <span class="multiplier">1</span>
+                <span class="x">x</span>
+                <span class="package">'.$package.'</span>
                 <span class="weight">'.number_format($weight,3,'.',',').'</span>
                 </p>';
                 }else{
                     return '
                 <p id="package_weight_'.$product->id.'">
-                <span><span class="multiplier"></span><span class="package"></span></span><br>
+                <span class="multiplier"></span>
+                <span class="x" style="display:none">x</span>
+                <span class="package"></span>
                 <span class="weight"></span>
                 </p>';
                 }

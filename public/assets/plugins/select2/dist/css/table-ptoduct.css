@@ -226,13 +226,13 @@ tr:hover .datatable_actions_class div a {
 .datatable_sum_class p span {
 	padding: 1px;
 	margin: 1px;
-	background-color: silver;
+	/* background-color: silver; */
 	border-radius: 3px;
 }
 
 .datatable_weight_class p span {
 	padding: 1px;
 	margin: 1px;
-	background-color: silver;
+	/* background-color: silver; */
 	border-radius: 3px;
 }

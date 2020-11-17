@@ -1089,7 +1089,7 @@
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
 
-                                if(data_amount > data_storage_max){
+                                if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
                                     data_amount = data_storage_max;
                                 }
@@ -1370,7 +1370,6 @@
             if(storage_id!=='0'){
                 let min = optionselected[0].getAttribute('package_min');
                 let max = optionselected[0].getAttribute('package_max');
-
                 quantityinput[0].setAttribute('value',min);
                 quantityinput[0].setAttribute('min',min);
                 quantityinput[0].setAttribute('step',min);
@@ -1391,10 +1390,10 @@
 
                         //let user_price = document.getElementById('user_price_'+product_id);
                         //user_price.children[0].innerText = msg['user_price'];
-
                         let package_weight = document.getElementById('package_weight_'+product_id);
+                        //console.log(package_weight);
                         package_weight.children[0].innerText = msg['multiplier'];
-                        package_weight.children[1].innerText = msg['package'];
+                        //package_weight.children[2].innerText = msg['package'];
                         package_weight.children[3].innerText = msg['weight'];
 
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
@@ -1495,14 +1494,13 @@
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
-                    package_weight.children[1].innerText = msg['package'];
+                    package_weight.children[2].innerText = msg['package'];
                     package_weight.children[3].innerText = msg['weight'];
 
                     let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                     sum_w_taxes.children[0].innerText = msg['price'];
 
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
-                        console.log(msg['limit_amount_quantity_2']);
                         sum_w_taxes.children[2].innerText = '';
                         sum_w_taxes.children[3].innerText = '';
                         //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));

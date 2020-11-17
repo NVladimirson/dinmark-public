@@ -49,11 +49,15 @@ class OrderServices
                 else{
                     continue;
                 }
+                // $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
+                //             $storage->id)/(float)100) * $koef;
                 $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
-                            $storage->id)/(float)100) * $koef;
+                            $storage->id)) * $koef;
+                            // info('price: '.$orderProduct->price);
                 $orderProduct->price_in = $storage->price;
                 $orderProduct->save();
-                $total += round($orderProduct->price*$orderProduct->quantity, 2);
+                $package = $storage->package;
+                $total += round($orderProduct->price*$orderProduct->quantity/$package, 2);
             }
         }
         $order->total = $total;
