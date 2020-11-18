@@ -17,9 +17,9 @@
                 <!-- BEGIN profile-header-img -->
                 <div class="profile-header-img">
                     @if(auth()->user()->photo)
-                        <img src="{{env('DINMARK_URL')}}images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
+                        <img src="https://dinmark.com.ua/images/profile/{{auth()->user()->photo}}" alt="{{auth()->user()->name}}" />
                     @else
-                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                        <img src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{auth()->user()->name}}" />
                     @endif
                 </div>
 

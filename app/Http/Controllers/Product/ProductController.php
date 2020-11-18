@@ -9,6 +9,11 @@ use App\Jobs\ProductOptionFiltersJob;
 use App\Models\Content;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
+
+use App\Models\Order\Order;
+use App\User;
+use App\Models\Company\Company;
+
 use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use App\Models\Reclamation\ReclamationProduct;
@@ -94,13 +99,52 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      //SELECT MAX(id) FROM <tablename>
-      $group = LikeGroup::create([
-          'name' => 'adding',
-          'is_main' => 0,
-          'user_id' => auth()->user()->id,
-          'group_id' => 1
-      ]);
+      //ORDER INDEX
+      // $sendersId =  Order::whereHas('getUser', function ($users){
+      //         $users->where('company',auth()->user()->company);
+      //     })
+      //     ->groupBy('sender_id')
+      //     ->pluck('sender_id');
+          //[0=>0]
+      // $senders = User::whereIn('id',$sendersId)->pluck('id','name')->toArray();
+      // if($sendersId->has(0)){
+      //     $senders = array_merge(['Dinmark'=>0],$senders);
+      // }
+      // $customersId =  Order::whereHas('getUser', function ($users){
+      //         $users->where('company',auth()->user()->company);
+      //     })
+      //     ->groupBy('customer_id')
+      //     ->pluck('customer_id');
+      //
+      // $customers = User::whereIn('id',$customersId)->pluck('id','name')->toArray();
+      //
+      // foreach ($customersId as $id){
+      //     if($id < 0){
+      //         $client = Client::find(-$id);
+      //         if($client){
+      //             $customers[$client->name] = $id;
+      //         }
+      //     }
+      // }
+
+      //dd(session('current_company_id'));
+      //ORDER INDEX
+
+      $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
+          $users->whereHas('getCompany',function ($companies){
+              $companies->where([
+                  ['holding', auth()->user()->getCompany->holding],
+                  ['holding', '<>', 0],
+              ])->orWhere([
+                  ['id', auth()->user()->getCompany->id],
+              ]);
+              // $companies->where([['id', auth()->user()->getCompany->id]]);
+          });
+      });
+
+      dd($orders->get());
+
+
     }
 
 

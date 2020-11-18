@@ -1180,12 +1180,11 @@
             $('#modal-get_price').on('show.bs.modal', function(event) {
                 let button = $(event.relatedTarget);
                 let modal = $(this);
+                modal.find('.image').attr("src",button.data('image'));
+                modal.find('.name').text(button.data('name'));
                 modal.find('.product_id').val(button.data('product_id'));
                 modal.find('.quantity').val(1);
-                //let commentarea = document.querySelector('.form-group.m-b-15 .form-control.m-b-5.comment');
-                //commentarea.innerText = '1';
-                modal.find('.comment').text();
-                console.log(modal)
+                modal.find('.comment').val('');
             });
             //get price single
 
@@ -1474,7 +1473,7 @@
             let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
             let storage_id = optionselected.val();
             let amount = obj.value;
-            
+
             $.ajax({
                 type: "GET",
                 data: {
