@@ -120,6 +120,7 @@ class OrderServices
                 ])->orWhere([
                     ['id', auth()->user()->getCompany->id],
                 ]);
+                // $companies->where([['id', auth()->user()->getCompany->id]]);
             });
         });
 

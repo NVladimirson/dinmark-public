@@ -107,7 +107,7 @@ return [
     'modal_get_price_header' => 'Запрос цены',
     'name_get_price' => 'Ваше имя',
     'phone_get_price' => 'Ваш телефон',
-    'quantity_get_price' => 'Желаемое количетсво',
+    'quantity_get_price' => 'Желаемое количество',
     'get_price_comment' => 'Ваш комментарий',
     'modal_get_price_submit' => 'Отправить запрос',
     'show_card_product' =>'Просмотреть карточку товара',
