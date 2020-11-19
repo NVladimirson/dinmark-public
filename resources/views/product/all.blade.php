@@ -1466,16 +1466,16 @@
             }
         }
 
-
+        let text = document.createElement('span')
         function changeamount(obj){
             const td = obj.parentNode
-            let text = document.createElement('span')
-            text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max 
-            td.append(text)
-            if(+obj.value > +obj.max) {
+            if(parseInt(obj.value) > parseInt(obj.max)) {
+                text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max 
+                td.append(text)
                 obj.value = obj.max
                 setTimeout(() => {
-                    text.classList.add('hidden')
+                    text.innerHTML = ''
+                    td.append(text)
                 }, 2000)
             }
 
@@ -1509,7 +1509,7 @@
                     sum_w_taxes.children[0].innerText = msg['price'];
 
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
-                        console.log(msg['limit_amount_quantity_2']);
+                        // console.log(msg['limit_amount_quantity_2']);
                         sum_w_taxes.children[2].innerText = '';
                         sum_w_taxes.children[3].innerText = '';
                         //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
