@@ -1468,6 +1468,16 @@
 
 
         function changeamount(obj){
+            const td = obj.parentNode
+            let text = document.createElement('span')
+            text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max 
+            td.append(text)
+            if(+obj.value > +obj.max) {
+                obj.value = obj.max
+                setTimeout(() => {
+                    text.classList.add('hidden')
+                }, 2000)
+            }
 
             let id = obj.id;
             let product_id = id.substr(14);
@@ -1492,7 +1502,7 @@
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
-                    package_weight.children[1].innerText = msg['package'];
+                    package_weight.children[2].innerText = msg['package'];
                     package_weight.children[3].innerText = msg['weight'];
 
                     let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
