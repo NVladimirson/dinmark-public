@@ -25,7 +25,7 @@ use Ramsey\Uuid\Uuid;
 class CompanyController extends Controller
 {
     public function index(){
-    	$company = auth()->user()->getCompany;
+    	$company = auth()->user();
 
 		SEOTools::setTitle(trans('company.edit_page_name'));
 		return view('company.profile',compact('company'));

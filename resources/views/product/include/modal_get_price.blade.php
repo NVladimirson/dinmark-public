@@ -6,15 +6,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <form id="form_get_price">
+              <div class="row" style="padding-left: 15px">
+                  <div class="col-xl-4"><img class="image" src="https://dinmark.com.ua/images/dinmark_nophoto.jpg" height="80"></div>
+                  <div class="col-xl-8"><p class="name"></p></div>
+              </div>
                 <input type="hidden" id="get_price_product_id" class="product_id" name="product_id">
                 <div class="modal-body">
                     <div class="form-group m-b-15">
-                        <label>@lang('product.name_get_price')</label>
-                        <input type="text" name="name" class="form-control m-b-5" placeholder="@lang('product.name_get_price')" required value="{{auth()->user()->name}}"/>
+                        <!-- <label>@lang('product.name_get_price')</label> -->
+                        <input type="hidden" name="name" class="form-control m-b-5" placeholder="@lang('product.name_get_price')" required value="{{auth()->user()->name}}"/>
                     </div>
                     <div class="form-group m-b-15">
-                        <label>@lang('product.phone_get_price')</label>
-                        <input type="text" name="phone" class="form-control m-b-5" placeholder="@lang('product.phone_get_price')" required value="{{ (auth()->user()->info->firstWhere('field','phone'))? auth()->user()->info->firstWhere('field','phone')->value : '' }}"/>
+                        <!-- <label>@lang('product.phone_get_price')</label> -->
+                        <input type="hidden" name="phone" class="form-control m-b-5" placeholder="@lang('product.phone_get_price')" required value="{{ (auth()->user()->info->firstWhere('field','phone'))? auth()->user()->info->firstWhere('field','phone')->value : '' }}"/>
                     </div>
                     <div class="form-group m-b-15">
                         <label>@lang('product.quantity_get_price')</label>
@@ -33,4 +37,3 @@
         </div>
     </div>
 </div>
-

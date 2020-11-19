@@ -36,6 +36,7 @@ class OrderController extends Controller
             })
             ->groupBy('sender_id')
             ->pluck('sender_id');
+						//[0=>0]
         $senders = User::whereIn('id',$sendersId)->pluck('id','name')->toArray();
         if($sendersId->has(0)){
             $senders = array_merge(['Dinmark'=>0],$senders);
@@ -59,7 +60,7 @@ class OrderController extends Controller
 	}
 
 	public function addToOrder($id, Request $request){
-
+		info($request);
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 
@@ -735,7 +736,7 @@ class OrderController extends Controller
             abort(404);
         }
 
-        if($order->status == 1){
+        if($order->status == 1 || $order->status == 8){
             $order->status = 7;
             $order->save();
         }

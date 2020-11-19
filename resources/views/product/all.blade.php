@@ -946,12 +946,13 @@
 
                 var form = $(this);
                 let list_id = $('#wishlist').val();
-
+                console.log('LISTID:'+list_id);
+                console.log('FORM'+form.serialize());
                 var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
 
                 var form = $(this);
                 var order_id = $('#order_id').val();
-                var route = '{{route('orders')}}/add-to-order/'+order_id;
+                //var route = '{{route('orders')}}/add-to-order/'+order_id;
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -965,12 +966,8 @@
                     {
                         if(resp == "ok"){
                             $.gritter.add({
-                                title: '@lang('order.modal_success')',
+                                title: '@lang('wishlist.modal_success')',
                             });
-                            // if(order_id == 0){
-                            //     document.location.reload(true);
-                            // }
-                            //window.table.ajax.reload();
                         }
                     },
                     error:  function(xhr, str){
@@ -979,30 +976,30 @@
                 });
 
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    method: "GET",
-                    url: route,
-                    data: form.serialize(),
-                    success: function(resp) {
-                        if (resp == "ok") {
-
-                            $('#new_wishlist_name').val('');
-
-                            $.gritter.add({
-                                title: '@lang('wishlist.modal_success')',
-                            });
-                        }
-                    },
-                    error: function(xhr, str) {
-                        console.log(xhr);
-                    }
-
-                });
+                // $.ajaxSetup({
+                //     headers: {
+                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                //     }
+                // });
+                // $.ajax({
+                //     method: "GET",
+                //     url: route,
+                //     data: form.serialize(),
+                //     success: function(resp) {
+                //         if (resp == "ok") {
+                //
+                //             $('#new_wishlist_name').val('');
+                //
+                //             $.gritter.add({
+                //                 title: '@lang('wishlist.modal_success')',
+                //             });
+                //         }
+                //     },
+                //     error: function(xhr, str) {
+                //         console.log(xhr);
+                //     }
+                //
+                // });
                 $('#products_wishlist').val('');
                 return false;
             })
@@ -1183,12 +1180,11 @@
             $('#modal-get_price').on('show.bs.modal', function(event) {
                 let button = $(event.relatedTarget);
                 let modal = $(this);
+                modal.find('.image').attr("src",button.data('image'));
+                modal.find('.name').text(button.data('name'));
                 modal.find('.product_id').val(button.data('product_id'));
                 modal.find('.quantity').val(1);
-                //let commentarea = document.querySelector('.form-group.m-b-15 .form-control.m-b-5.comment');
-                //commentarea.innerText = '1';
-                modal.find('.comment').text();
-                console.log(modal)
+                modal.find('.comment').val('');
             });
             //get price single
 
@@ -1472,12 +1468,13 @@
 
 
         function changeamount(obj){
-            let id = obj.id;
 
+            let id = obj.id;
             let product_id = id.substr(14);
             let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
             let storage_id = optionselected.val();
             let amount = obj.value;
+
             $.ajax({
                 type: "GET",
                 data: {
