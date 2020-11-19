@@ -99,6 +99,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
+      dd(session('current_company_id'));
       //ORDER INDEX
       // $sendersId =  Order::whereHas('getUser', function ($users){
       //         $users->where('company',auth()->user()->company);
@@ -130,19 +131,19 @@ class ProductController extends Controller
       //dd(session('current_company_id'));
       //ORDER INDEX
 
-      $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
-          $users->whereHas('getCompany',function ($companies){
-              $companies->where([
-                  ['holding', auth()->user()->getCompany->holding],
-                  ['holding', '<>', 0],
-              ])->orWhere([
-                  ['id', auth()->user()->getCompany->id],
-              ]);
-              // $companies->where([['id', auth()->user()->getCompany->id]]);
-          });
-      });
-
-      dd($orders->get());
+      // $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
+      //     $users->whereHas('getCompany',function ($companies){
+      //         $companies->where([
+      //             ['holding', auth()->user()->getCompany->holding],
+      //             ['holding', '<>', 0],
+      //         ])->orWhere([
+      //             ['id', auth()->user()->getCompany->id],
+      //         ]);
+      //         // $companies->where([['id', auth()->user()->getCompany->id]]);
+      //     });
+      // });
+      //
+      // dd($orders->get());
 
 
     }
