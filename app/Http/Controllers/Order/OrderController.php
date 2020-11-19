@@ -721,10 +721,18 @@ class OrderController extends Controller
             abort(404);
         }
 
-        if($order->status >= 7){
+        if($order->status == 8){
             $order->status = 1;
             $order->save();
         }
+				//Заявка->Замовлення
+
+				if($order->status == 7){
+					$order->status = 8;
+					$order->save();
+				}
+				//Архів->Заявка
+
 
         return redirect()->route('orders.show',['id'=>$id]);
 	}
