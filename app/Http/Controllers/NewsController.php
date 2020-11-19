@@ -14,7 +14,11 @@ class NewsController extends Controller
 		$newsData = [];
 		$news = News::with(['content'])
 			->where([
-				['target','<>','site'],
+				//['target','<>','site'],
+				['target','=','b2b'],
+				['active',1],
+			])->orWhere([
+				['target','=','both'],
 				['active',1],
 			])
 			->orderBy('position','desc')
@@ -38,6 +42,7 @@ class NewsController extends Controller
 				];
 			}
 		}
+
 
 		SEOTools::setTitle(trans('news.index_page_name'));
 		return view('news.index',compact('news','newsData'));
