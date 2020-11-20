@@ -61,7 +61,7 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row m-b-15">
-                        <div class="col-lg-1">
+                        <div id="new_request_button" class="col-lg-1" style="display:none">
                             <a href="{{route('orders.create')}}" class="btn btn-sm btn-green m-t-5 m-b-5 btn-block" title="@lang('order.btn_add_order')"><i class="fas fa-plus-circle"></i></a>
                         </div>
 							<div class="col-lg-3">
@@ -299,6 +299,15 @@
 						}
 					});
                 }
+
+				$('#tab_order,#tab_request,#tab_archive').click	(function (e) {
+					let id = e.currentTarget.id;
+					if(id === 'tab_request'){
+						$('#new_request_button').show();
+					}else{
+						$('#new_request_button').hide();
+					}
+				});
 
 				$('#order_tab a').click(function (e) {
                     e.preventDefault();

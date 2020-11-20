@@ -3,8 +3,11 @@
   title="@lang('order.btn_new_order')"><i class="fas fa-clipboard-check"></i></a>
 <a href="{{route('orders.copy',['id'=>$order->id])}}" class="btn btn-sm btn-primary m-r-5"
   title="@lang('order.btn_copy')"><i class="far fa-copy"></i></a>
+  @if($order->status == 8)
   <a href="{{ route('orders.to_cancel',[$order->id]) }}"
-  class="btn btn-sm btn-danger m-r-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>@endif
+  class="btn btn-sm btn-danger m-r-5" title="@lang('order.btn_cancel_order')"><i class="fas fa-trash-alt"></i></a>
+  @endif
+  @endif
 @if($order->status == 1)
 <a href="{{ route('orders.pdf_bill',[$order->id]) }}" class="btn btn-sm btn-primary m-r-5"
   title="@lang('order.btn_pdf_bill')"><i class="fas fa-file-invoice-dollar"></i></a><a

@@ -397,6 +397,7 @@ class OrderController extends Controller
 
 		foreach($order->products as $orderProduct){
 			$price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
+			//dd(Product::with('storages')->find($orderProduct->product_id)->storages);
 			$package = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)->first()->package;
 			$total = $price * $orderProduct->quantity/$package;
 
@@ -721,10 +722,18 @@ class OrderController extends Controller
             abort(404);
         }
 
-        if($order->status >= 7){
+        if($order->status == 8){
             $order->status = 1;
             $order->save();
         }
+				//Заявка->Замовлення
+
+				if($order->status == 7){
+					$order->status = 8;
+					$order->save();
+				}
+				//Архів->Заявка
+
 
         return redirect()->route('orders.show',['id'=>$id]);
 	}
