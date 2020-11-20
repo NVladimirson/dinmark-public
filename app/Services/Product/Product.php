@@ -126,7 +126,7 @@ class Product
         return $productPDF;
 	}
 
-	public static function getBasePrice($product){
+	public static function getBasePrice($product,$storage_id = null){
 		$instance =  static::getInstance();
 
 		$storage = $product->storages->firstWhere('is_main',1);
@@ -222,6 +222,8 @@ class Product
             }
         }
 
+
+
         $price *= 0.98; //Знижка 2% на ціни кабінету
 		$priceCoef = auth()->user()->price->price;
 		if($company){
@@ -258,9 +260,9 @@ class Product
 		return number_format($price * $coef,2,'.',' ');
 	}
 
-    public static function getPriceWithCoefUnformatted($product, $coef){
+    public static function getPriceWithCoefUnformatted($product, $storage_id = null, $coef){
         $instance =  static::getInstance();
-        return $coef * ($instance->calcPrice($product));
+        return $coef * ($instance->calcPrice($product, $storage_id));
     }
 
     public static function hasAmount($storages, $storage_id = null)

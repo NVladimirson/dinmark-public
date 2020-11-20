@@ -397,6 +397,7 @@ class OrderController extends Controller
 
 		foreach($order->products as $orderProduct){
 			$price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
+			//dd(Product::with('storages')->find($orderProduct->product_id)->storages);
 			$package = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)->first()->package;
 			$total = $price * $orderProduct->quantity/$package;
 

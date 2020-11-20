@@ -1387,17 +1387,23 @@
 
                         //let user_price = document.getElementById('user_price_'+product_id);
                         //user_price.children[0].innerText = msg['user_price'];
+                        let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+                        retail_user_price.children[4].innerText = msg['user_price'];
+                        if(msg['oldprice'] !== '0'){
+                          retail_user_price.children[3].children[0].show;
+                          retail_user_price.children[3].children[0].innerText = msg['oldprice'];
+                        }
+
 
                         let package_weight = document.getElementById('package_weight_'+product_id);
                         package_weight.children[0].innerText = msg['multiplier'];
-                        package_weight.children[1].innerText = msg['package'];
+                        package_weight.children[2].innerText = msg['package'];
                         package_weight.children[3].innerText = msg['weight'];
 
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                         sum_w_taxes.children[0].innerText = msg['price'];
 
                         if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
-                            console.log(msg['limit_amount_quantity_2']);
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
                             //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
@@ -1470,7 +1476,7 @@
         function changeamount(obj){
             const td = obj.parentNode
             if(parseInt(obj.value) > parseInt(obj.max)) {
-                text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max 
+                text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max
                 td.append(text)
                 obj.value = obj.max
                 setTimeout(() => {
@@ -1499,6 +1505,25 @@
 
                     //let user_price = document.getElementById('user_price_'+product_id);
                     //user_price.children[0].innerText = msg['user_price'];
+                    let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+                    if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
+                        retail_user_price.children[4].innerHTML = '<strike style="color:#f0c674">'+msg['price100']+'</strike> '+msg['user_price'];
+                    }
+                    else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
+                        retail_user_price.children[4].innerHTML = '<strike style="color:#96ca0a">'+msg['price100']+'</strike> '+msg['user_price'];
+                    }
+                    else{
+                        retail_user_price.children[4].innerText = msg['user_price'];
+                    }
+                    // console.log(msg['price100']);
+                    // console.log(msg['user_price']);
+                    // console.log(msg['price100'] - msg['user_price']  > 0);
+                    // if(msg['price100'] - msg['user_price']  > 0){
+                    //   retail_user_price.children[4].innerHtml = '<strike>'+msg['price100']+'</strike>'+msg['user_price'];
+                    // }else{
+                    //   retail_user_price.children[4].innerText = msg['user_price'];
+                    // }
+
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
