@@ -938,10 +938,11 @@ tbody tr td.datatable_namearticle_class a:nth-child(1) {
     text-decoration: underline;
     color: #348fe2;
 }
-tbody tr:hover td.datatable_namearticle_class a:nth-child(1) {
+tbody tr:hover td.datatable_namearticle_class a:nth-child(1),
+tbody tr:hover td.datatable_namearticle_class span {
     color: #fff;
 }
-tbody tr td.datatable_namearticle_class a {
+tbody tr td.datatable_namearticle_class span {
     color: #000;
     font-weight: bold;
 }
@@ -1757,3 +1758,13 @@ body ul.wysihtml5-toolbar .glyphicon {
 #product_tab {
     background: transparent;
 }
+.row.row-space-10 {
+    min-width: 100px;
+}
+.panel-body {
+    position: relative;
+}
+.table-scroll-container.table-scroll-container-xl {
+    min-height: 50vh;
+}
+

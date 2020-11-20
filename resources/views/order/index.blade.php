@@ -71,12 +71,12 @@
 								@csrf
 								<div class="row">
 									<div class="col-lg-8">
-										<div class="row row-space-10">
+										<div style="min-width: 100px;" class="row row-space-10">
 											<div class="col-xs-6 mb-2 mb-sm-0">
-												<input type="hidden" name="date_from" class="form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
+												<input type="hidden" name="date_from" class="date_picker form-control" id="datetimepicker3" placeholder="@lang('order.act_date_from')" required>
 											</div>
 											<div class="col-xs-6">
-												<input type="hidden" name="date_to" class="form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
+												<input type="hidden" name="date_to" class="date_picker form-control" id="datetimepicker4" placeholder="@lang('order.act_date_to')" required>
 											</div>
 										</div>
 									</div>
@@ -96,10 +96,10 @@
 								<th class="text-nowrap" width="120">
                                     <div class="row row-space-10">
                                         <div class="col-xs-12 ">
-                                            <input type="text" name="act_date_from" class="form-control" id="datetimepicker5" placeholder="@lang('order.table_header_date')" required>
+                                            <input type="text" name="act_date_from" class="date_picker form-control" id="datetimepicker5" placeholder="@lang('order.table_header_date')" required>
                                         </div>
                                         <div class="col-xs-12" >
-                                            <input type="text" name="act_date_to" class="form-control m-е-5" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
+                                            <input type="text" name="act_date_to" class="date_picker form-control m-е-5" id="datetimepicker6" placeholder="@lang('order.act_date_to')" required style="display: none">
                                         </div>
                                     </div></th>
 								<th class="text-nowrap">

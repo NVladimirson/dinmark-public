@@ -1,252 +1,264 @@
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 #slide-filter-on {
-	position: fixed;
-	background: #000;
-	width: 45px;
-	height: 40px;
-	right: 0;
-	top: 135px;
-	color: #fff;
-	border-radius: 20px 0 0 20px;
-	cursor: pointer;
-	z-index: 2;
+    position: fixed;
+    background: #000;
+    width: 45px;
+    height: 40px;
+    right: 0;
+    top: 135px;
+    color: #fff;
+    border-radius: 20px 0 0 20px;
+    cursor: pointer;
+    z-index: 2;
 }
 
 #slide-filter-of {
-	position: fixed;
-	background: #000;
-	width: 45px;
-	height: 40px;
-	right: 0;
-	top: 135px;
-	color: #fff;
-	border-radius: 20px 0 0 20px;
-	cursor: pointer;
-	z-index: 99999;
+    position: fixed;
+    background: #000;
+    width: 45px;
+    height: 40px;
+    right: 0;
+    top: 135px;
+    color: #fff;
+    border-radius: 20px 0 0 20px;
+    cursor: pointer;
+    z-index: 99999;
 }
 
 #slide-filter-of span {
-	font-family: "DinPRO", Arial, Helvetica, sans-serif !important;
+    font-family: "DinPRO", Arial, Helvetica, sans-serif !important;
 }
-#slide-filter-of::before{
-	font-size: 20px;
-	position: absolute;
-	top: 10px;
-	right: 10%;
-	cursor: pointer;
+#slide-filter-of::before {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10%;
+    cursor: pointer;
 }
 #slide-filter-on::before {
-	font-size: 20px;
-	position: absolute;
-	top: 25%;
-	right: 20%;
-	cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    top: 25%;
+    right: 20%;
+    cursor: pointer;
 }
 
 .table-scroll-container {
-	height: 100vh;
-	overflow-y: auto;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 td select {
-	max-width: 250px;
+    max-width: 250px;
 }
 
 .responsive-width {
-	z-index: 3;
-	position: fixed;
-	top: 135px;
-	right: 0;
+    z-index: 3;
+    position: fixed;
+    top: 135px;
+    right: 0;
 }
 
 .data-product_name {
-	display: block;
-	max-width: 100%;
-	white-space: nowrap;
-	overflow: hidden;
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
 }
 td:hover .data-product_name {
-	white-space: normal;
-	overflow: visible;
+    white-space: normal;
+    overflow: visible;
 }
 
 .datatable_userprice_class {
-	min-width: 100px;
-	max-width: 150px;
+    min-width: 100px;
+    max-width: 150px;
 }
 
 .datatable_userprice_class span {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .table-responsive {
-	width: 100% !important;
-	display: table;
+    width: 100% !important;
+    display: table;
 }
 
 .panel-heading {
-	position: relative;
+    position: relative;
 }
 
 #price_porog_1 {
-	font-size: 18px;
-	color: #fff;
-	background-color: #96ca0a;
+    font-size: 18px;
+    color: #fff;
+    background-color: #96ca0a;
 }
 #price_porog_2 {
-	font-size: 18px;
-	color: #fff;
-	background-color: #f0c674;
+    font-size: 18px;
+    color: #fff;
+    background-color: #f0c674;
 }
 
 #scroll-filter {
-	overflow: auto;
-	max-height: 85vh;
+    overflow: auto;
+    max-height: 85vh;
 }
 
 #filters_selected {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 .deselect_filter,
 .tesst {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding-left: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 2px;
 }
 .selected_filter {
-	padding: 5px 10px;
-	border: 1px solid #b3b2b2;
-	border-radius: 20px;
-	margin-bottom: 10px;
+    padding: 5px 10px;
+    border: 1px solid #b3b2b2;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
 
 @media screen and (max-width: 1050px) {
-	.responsive-width {
-		z-index: 9999;
-		top: 210px;
-	}
+    .responsive-width {
+        z-index: 9999;
+        top: 210px;
+    }
 }
 @media screen and (max-width: 1050px) {
-	#slide-filter-on,
-	#slide-filter-of {
-		top: 210px;
-	}
+    #slide-filter-on,
+    #slide-filter-of {
+        top: 210px;
+    }
 }
 
 .filter_with_options {
-	display: flex;
-	align-items: center;
-	margin: 0;
+    display: flex;
+    align-items: center;
+    margin: 0;
 }
 
 .image-container {
-	width: 30px;
-	height: 35px;
-	margin-right: 5px;
+    width: 30px;
+    height: 35px;
+    margin-right: 5px;
 }
 
 .image-container img {
-	max-height: 100%;
-	max-width: 100%;
+    max-height: 100%;
+    max-width: 100%;
 }
 td {
-	position: relative;
+    position: relative;
 }
 .wrap-label {
-	display: flex;
-	justify-content: start;
-	flex-wrap: wrap;
-	gap: 2px;
-	position: absolute;
-	bottom: 2px;
-	left: 2px;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    gap: 2px;
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
 }
 .wrap-label span {
-	padding: 3px;
+    padding: 3px;
 }
 
-.bage-default{
-	font-size: 8px;
-	font-weight: 700;
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	position: relative;
-	right:auto;
-	top:-1px;
-	display:inline-block;
+.bage-default {
+    font-size: 8px;
+    font-weight: 700;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: relative;
+    right: auto;
+    top: -1px;
+    display: inline-block;
 }
-.bage-default.bage-sale{
-	background: #ee3f3c;
+.bage-default.bage-sale {
+    background: #ee3f3c;
 }
-.bage-default.bage-hits{
-	background: #ff9f1a;
+.bage-default.bage-hits {
+    background: #ff9f1a;
 }
-.bage-default.bage-new{
-	background: #43d171;
+.bage-default.bage-new {
+    background: #43d171;
 }
 
 /*================== WIDTH td, th =====================*/
 td {
-	padding-left: 5px;
+    padding-left: 5px;
 }
 .datatable_namearticle_class {
-	max-width: 150px;
+    max-width: 150px;
 }
 .datatable_weight_class,
 .datatable_sum_class {
-	min-width: 75px;
-	max-width: 100px;
+    min-width: 75px;
+    max-width: 100px;
 }
 
 .datatable_actions_class div {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
-.datatable_actions_class div a{
-	display: none;
-	transition: scale .3s;
+.datatable_actions_class div a {
+    display: none;
+    transition: scale 0.3s;
 }
 .datatable_actions_class div a:nth-child(3) {
-	width: auto;
-	display: block;
+    width: auto;
+    display: block;
 }
 .btn-get-price {
-	width: 13px;
+    width: 13px;
 }
 tr:hover .datatable_actions_class div a {
-	display: block;
+    display: block;
 }
 .ui-accordion-content {
-	height: 50vh;
-	overflow-y: auto;
+    height: 50vh;
+    overflow-y: auto;
 }
 
 .datatable_sum_class p {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .datatable_sum_class p span {
-	padding: 1px;
-	margin: 1px;
-	/* background-color: silver; */
-	border-radius: 3px;
+	background: #ccc;
+	text-decoration: underline;	
+	margin: 1px 2px;
+  border-radius: 3px;
 }
 
-.datatable_weight_class p span {
-	padding: 1px;
-	margin: 1px;
-	/* background-color: silver; */
-	border-radius: 3px;
+.datatable_weight_class p span:not(:nth-child(2)) {
+	text-decoration: underline;	
+	margin: 1px 2px;
+  border-radius: 3px;
 }
+/* tr:hover .datatable_weight_class p span {
+	text-shadow: 1px 1px 1px #000;
+} */
 
 .datatable_quantity_class .hidden {
-	display: none;
+    display: none;
 }
+/* 
+.multiplier {
+    color: #fbb03b;
+}
+.package {
+    color: #96ca0a;
+}
+.weight {
+    color: #29abe2;
+} */
