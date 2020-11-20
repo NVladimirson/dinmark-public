@@ -421,7 +421,11 @@ class ProductController extends Controller
                 $storage = $product->storages->firstWhere('is_main',1);
 
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
+                  if(isset($storage->package)){
                     $package = $storage->package;
+                  }else{
+                    $package = 1;
+                  }
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
@@ -467,8 +471,8 @@ class ProductController extends Controller
             })
             ->addColumn('sum_w_taxes', function (Product $product) {
                 $storage = $product->storages->first();
-                $package = $storage->package;
                 if(isset($storage)){
+                    $package = $storage->package;
                     //$price = ProductServices::getPriceUnformatted($product);
                     $price = ProductServices::getPriceUnformatted($product,$storage->id);
                     $price = $price/100 * $package;
