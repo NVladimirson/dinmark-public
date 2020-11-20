@@ -1507,10 +1507,10 @@
                     //user_price.children[0].innerText = msg['user_price'];
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                     if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
-                        retail_user_price.children[4].innerHTML = '<strike style="color:#f0c674">'+msg['price100']+'</strike> '+msg['user_price'];
+                        retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
                     }
                     else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
-                        retail_user_price.children[4].innerHTML = '<strike style="color:#96ca0a">'+msg['price100']+'</strike> '+msg['user_price'];
+                        retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
                     }
                     else{
                         retail_user_price.children[4].innerText = msg['user_price'];
