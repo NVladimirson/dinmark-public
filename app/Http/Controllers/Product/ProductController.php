@@ -429,13 +429,13 @@ class ProductController extends Controller
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
-                    value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" max="'.$storage->amount.'"/>';
+                    value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
                 }
                 else{
-                    return '
-                    <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
-                    name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
-                    value="0" min="0" step="10" data-max="1000"/>';
+                    // return '
+                    // <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
+                    // name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
+                    // value="0" min="0" step="10" data-max="1000"/>';
                 }
             })
             ->addColumn('package_weight', function (Product $product) {

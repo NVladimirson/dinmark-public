@@ -1382,11 +1382,6 @@
                     },
                     url: "{!! @route('priceCalc') !!}",
                     success: function(msg){
-                        //let retail_price = document.getElementById('retail_price_'+product_id);
-                        //retail_price.children[0].innerText = msg['retail_price'];
-
-                        //let user_price = document.getElementById('user_price_'+product_id);
-                        //user_price.children[0].innerText = msg['user_price'];
                         let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                         retail_user_price.children[4].innerText = msg['user_price'];
                         if(msg['oldprice'] !== '0'){
@@ -1406,7 +1401,6 @@
                         if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
-                            //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
                         }else{
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
@@ -1459,12 +1453,6 @@
                 limit_2.children[0].innerText = '';
                 limit_2.children[2].innerText = '-';
 
-                //let retail_price = document.getElementById('retail_price_'+product_id);
-                //retail_price.children[0].innerText = '';
-
-                //let user_price = document.getElementById('user_price_'+product_id);
-                //user_price.children[0].innerText = '';
-
                 let productbutton = $('#action_buttons_'+product_id);
                 if(productbutton[0].children[2]){
                     productbutton[0].children[2].remove();
@@ -1478,7 +1466,7 @@
             if(parseInt(obj.value) > parseInt(obj.max)) {
                 text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max
                 td.append(text)
-                obj.value = obj.max
+                obj.value = obj.datamax
                 setTimeout(() => {
                     text.innerHTML = ''
                     td.append(text)
@@ -1490,6 +1478,25 @@
             let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
             let storage_id = optionselected.val();
             let amount = obj.value;
+            let step = obj.step;
+
+            if(amount%step){
+              obj.value = amount - amount%step;
+              amount = obj.value;
+            }
+
+            let getprice = false;
+            if(amount - obj.getAttribute('datamax') > 0){
+              // obj.value = max;
+              text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max
+              td.append(text)
+              obj.value = obj.getAttribute('datamax')
+              setTimeout(() => {
+                  text.innerHTML = ''
+                  td.append(text)
+              }, 2000)
+              getprice = true;
+            }
 
             $.ajax({
                 type: "GET",
@@ -1500,11 +1507,6 @@
                 },
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
-                    //let retail_price = document.getElementById('retail_price_'+product_id);
-                    //retail_price.children[0].innerText = msg['retail_price'];
-
-                    //let user_price = document.getElementById('user_price_'+product_id);
-                    //user_price.children[0].innerText = msg['user_price'];
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                     if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
                         retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
@@ -1515,14 +1517,6 @@
                     else{
                         retail_user_price.children[4].innerText = msg['user_price'];
                     }
-                    // console.log(msg['price100']);
-                    // console.log(msg['user_price']);
-                    // console.log(msg['price100'] - msg['user_price']  > 0);
-                    // if(msg['price100'] - msg['user_price']  > 0){
-                    //   retail_user_price.children[4].innerHtml = '<strike>'+msg['price100']+'</strike>'+msg['user_price'];
-                    // }else{
-                    //   retail_user_price.children[4].innerText = msg['user_price'];
-                    // }
 
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
@@ -1534,10 +1528,8 @@
                     sum_w_taxes.children[0].innerText = msg['price'];
 
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
-                        // console.log(msg['limit_amount_quantity_2']);
                         sum_w_taxes.children[2].innerText = '';
                         sum_w_taxes.children[3].innerText = '';
-                        //console.log('QUA '+typeof(msg['limit_amount_quantity_2']));
                     }else{
                         sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                         sum_w_taxes.children[3].innerText = msg['discountamount'];
@@ -1545,18 +1537,13 @@
 
                     let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
                     add_to_order_button.setAttribute('data-amount',amount);
-                    //$('#action_buttons_'+product_id).children[2].setAttribute('data-amount',amount);
                 }
             });
-        }
-        // $('.custom-select').on('change', function (e) {
-        //     console.log(this);
-        // });
-        // $( "select" ).change(function() {
-        //     alert( "Handler for .change() called." );
-        // });
 
-        //Array.from($('.last')).map(item => item.setAttribute('title', 'ПРИВЕТ'))
+            if(getPrice === true){
+              
+            }
+        }
 
     </script>
 
