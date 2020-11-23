@@ -99,60 +99,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $product = Product::find(65573);
-      $storage = $product->storages->first();
-      dd($storage);
-      if(isset($storage)){
-          //$price = ProductServices::getPriceUnformatted($product);
-          $price = ProductServices::getPriceUnformatted($product,$storage->id);
-          $price = $price/2;
-        }
-      //ORDER INDEX
-      // $sendersId =  Order::whereHas('getUser', function ($users){
-      //         $users->where('company',auth()->user()->company);
-      //     })
-      //     ->groupBy('sender_id')
-      //     ->pluck('sender_id');
-          //[0=>0]
-      // $senders = User::whereIn('id',$sendersId)->pluck('id','name')->toArray();
-      // if($sendersId->has(0)){
-      //     $senders = array_merge(['Dinmark'=>0],$senders);
-      // }
-      // $customersId =  Order::whereHas('getUser', function ($users){
-      //         $users->where('company',auth()->user()->company);
-      //     })
-      //     ->groupBy('customer_id')
-      //     ->pluck('customer_id');
-      //
-      // $customers = User::whereIn('id',$customersId)->pluck('id','name')->toArray();
-      //
-      // foreach ($customersId as $id){
-      //     if($id < 0){
-      //         $client = Client::find(-$id);
-      //         if($client){
-      //             $customers[$client->name] = $id;
-      //         }
-      //     }
-      // }
-
-      //dd(session('current_company_id'));
-      //ORDER INDEX
-
-      // $orders = Order::with(['payments'])->whereHas('getUser', function ($users){
-      //     $users->whereHas('getCompany',function ($companies){
-      //         $companies->where([
-      //             ['holding', auth()->user()->getCompany->holding],
-      //             ['holding', '<>', 0],
-      //         ])->orWhere([
-      //             ['id', auth()->user()->getCompany->id],
-      //         ]);
-      //         // $companies->where([['id', auth()->user()->getCompany->id]]);
-      //     });
-      // });
-      //
-      // dd($orders->get());
-
-
+      $this->dispatch(new ProductOptionFiltersJob());
     }
 
 
