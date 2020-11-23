@@ -1485,7 +1485,7 @@
               amount = obj.value;
             }
 
-            let getprice = false;
+            let getPrice = false;
             if(amount - obj.getAttribute('datamax') > 0){
               // obj.value = max;
               text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max
@@ -1496,6 +1496,10 @@
                   td.append(text)
               }, 2000)
               getprice = true;
+            }
+
+            if(getPrice === true){
+              
             }
 
             $.ajax({
@@ -1540,9 +1544,6 @@
                 }
             });
 
-            if(getPrice === true){
-              
-            }
         }
 
     </script>
