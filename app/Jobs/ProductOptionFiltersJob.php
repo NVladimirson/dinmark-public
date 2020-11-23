@@ -38,7 +38,7 @@ class ProductOptionFiltersJob implements ShouldQueue
 
         // dd($optionfiltermap);
 
-        $product_option_map = Array();
+        //$product_option_map = Array();
         $filter_option_map = Array();
         foreach ($product_options as $no => $data){
 
@@ -47,7 +47,7 @@ class ProductOptionFiltersJob implements ShouldQueue
             if(isset($optionfiltermap[$data['value']])){
                 //148
                 $filter_option_map[$data['option']]['options'][$data['value']]['data'] = $optionfiltermap[$data['value']];
-                $product_option_map[$data['product']][$data['value']] = $optionfiltermap[$data['value']];
+                //$product_option_map[$data['product']][$data['value']] = $optionfiltermap[$data['value']];
             }
             else{
                 unset($filter_option_map[$data['option']]['options'][$data['value']]);
@@ -75,8 +75,8 @@ class ProductOptionFiltersJob implements ShouldQueue
             }
 
         }
-        dd($product_option_map);
-        //Cache::put('optionfilters',$filter_option_map);
+        //dd($product_option_map);
+        Cache::put('optionfilters',$filter_option_map);
         //Cache::put('productoptions',$product_option_map);
     }
 
