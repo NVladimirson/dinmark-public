@@ -27,10 +27,10 @@
        data-name="{{$name}}"
     >
         <i class="fas fa-cart-plus"></i></a>
-        <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal"
+        <a id="get_price_button_{{$product->id}}" href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-amount="1" data-min="1" 
             data-product_id="{{$product->id}}" data-image="{{$src}}" data-name="{{$name}}" style="display:none"><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
 @else
-    <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal"
+    <a id="get_price_button_{{$product->id}}" href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-amount="1" data-min="1" data-step="1"
         data-product_id="{{$product->id}}" data-image="{{$src}}" data-name="{{$name}}"><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
 @endif
 </div>

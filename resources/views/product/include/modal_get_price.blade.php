@@ -22,7 +22,7 @@
                     </div>
                     <div class="form-group m-b-15">
                         <label>@lang('product.quantity_get_price')</label>
-                        <input type="number" name="quantity" class="form-control m-b-5 quantity" placeholder="@lang('product.quantity_get_price')" value="1" step="1" required/>
+                        <input type="number" name="quantity" class="form-control m-b-5 quantity" placeholder="@lang('product.quantity_get_price')" min="1" value="1" step="1" required/>
                     </div>
                     <div class="form-group m-b-15">
                         <label>@lang('product.get_price_comment')</label>

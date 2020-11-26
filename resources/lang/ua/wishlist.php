@@ -18,7 +18,7 @@ return [
     'new_wishlist_placeholder' => 'Введіть назву каталогу',
 	'button_add_to_catalog' => 'Додати до каталога',
     'name_standart' => 'Список бажань: ',
-	'modal_success' => 'Товар успішно доданий у ваш каталог',
+	'modal_success' => 'Каталог поновлено',
     'modal_change_success' => 'Товар успішно перенесено',
 	'article_already_exists' => 'Даний артикул вже існує',
 

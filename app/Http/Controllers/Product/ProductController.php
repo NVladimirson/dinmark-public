@@ -60,7 +60,6 @@ class ProductController extends Controller
 
     public function optionFilters(Request $request){
         $request_options = $request->filter_with_options;
-        info($request_options);
         if(!$request_options){
             return $valid_options = ['checked' => [],'available' => []];
         }
@@ -99,7 +98,35 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $this->dispatch(new ProductOptionFiltersJob());
+      #65572 - 18, 65573 - 20, 65571 - 17
+
+
+      $products = Product::with('storages')->get();
+      // foreach ($products as $product) {
+      //   if($product->storages->isEmpty()){
+      //     $productstorages[] = $product->id;
+      //   }
+      // }
+      $current_key = 0;
+      $current_100 = [];
+      $productstorages = [];
+      do {
+        if($products[$current_key]->storages->isEmpty()){
+          if(count($current_100) <= 100){
+            $current_100[] = $products[$current_key]->id;
+          }
+          else{
+            $sql_query = 'DELETE FROM s_cart_products WHERE product_id IN ('.implode(",", $current_100).')';
+            $productstorages[] = $sql_query;
+            $current_100 = [];
+          }
+        }
+        $current_key++;
+      } while (isset($products[$current_key]));
+
+      //   $options = \DB::select($query);
+
+
     }
 
 
@@ -592,8 +619,8 @@ class ProductController extends Controller
     }
 
     public function search(Request $request){
-        info($request->name);
         $search = $request->name;
+        info($request);
         $formatted_data = [];
 
         $ids = \App\Services\Product\Product::getIdsSearch($search);
@@ -618,6 +645,9 @@ class ProductController extends Controller
                 $min = $storage->package;
                 $max = $storage->amount;
                 $storage_id = $storage->storage_id;
+            }
+            else{
+              continue;
             }
 
             $formatted_data[] = [

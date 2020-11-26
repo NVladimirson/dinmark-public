@@ -865,6 +865,7 @@
                 let multiple_input_div = document.getElementById('multiple_input_div');
                 let multiple_inputs = multiple_input_div.getElementsByClassName('multipleorderinput');
                 let data = String();
+
                 $.each(multiple_inputs, function(key, value) {
                     let product_id = value.id.substr(15);
                     if(product_id.indexOf('_qr') !== -1){
@@ -886,6 +887,8 @@
 
                 });
 
+
+                let orders = multiple_inputs.length/2;
                 let route = '{{route('orders')}}/add-to-order-multiple';
                 $.ajaxSetup({
                     headers: {
@@ -900,9 +903,8 @@
                         if (resp == "ok") {
 
                             $('#new_wishlist_name').val('');
-
                             $.gritter.add({
-                                title: '@lang('wishlist.modal_success')',
+                                title: '@lang("order.modal_success_multiple")'
                             });
                         }
                     },
@@ -981,7 +983,7 @@
                 //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 //     }
                 // });
-                // $.ajax({
+                // $.ajax({$('#modal-get_price').trigger('show.bs.modal')
                 //     method: "GET",
                 //     url: route,
                 //     data: form.serialize(),
@@ -1183,9 +1185,20 @@
                 modal.find('.image').attr("src",button.data('image'));
                 modal.find('.name').text(button.data('name'));
                 modal.find('.product_id').val(button.data('product_id'));
-                modal.find('.quantity').val(1);
+                modal.find('.quantity').val(button.data('amount'));
+                console.log(button.data('min'));
+                modal.find('.quantity')[0].setAttribute('min',button.data('min'));
+                modal.find('.quantity')[0].setAttribute('value',button.data('amount'));
+                modal.find('.quantity')[0].setAttribute('step',button.data('step'));
                 modal.find('.comment').val('');
             });
+
+            // function roundamount(quantity,step){
+            //   if(quantity%step){
+            //     quantity = quantity - quantity%step;
+            //   }
+            //   return quantity;
+            // }
             //get price single
 
             //get_price single submit
@@ -1462,17 +1475,6 @@
 
         let text = document.createElement('span')
         function changeamount(obj){
-            const td = obj.parentNode
-            if(parseInt(obj.value) > parseInt(obj.max)) {
-                text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max
-                td.append(text)
-                obj.value = obj.datamax
-                setTimeout(() => {
-                    text.innerHTML = ''
-                    td.append(text)
-                }, 2000)
-            }
-
             let id = obj.id;
             let product_id = id.substr(14);
             let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
@@ -1486,20 +1488,30 @@
             }
 
             let getPrice = false;
-            if(amount - obj.getAttribute('datamax') > 0){
+            let getPriceRequestAmount = amount - obj.getAttribute('datamax');
+            if(getPriceRequestAmount > 0){
               // obj.value = max;
-              text.innerHTML = 'Значение должно быть <br> &le; ' + obj.max
+              const td = obj.parentNode
+              text.innerHTML = 'Максимум для этого склада <br> &le; ' + obj.getAttribute('datamax')
               td.append(text)
-              obj.value = obj.getAttribute('datamax')
+              // obj.value = obj.getAttribute('datamax')
               setTimeout(() => {
                   text.innerHTML = ''
                   td.append(text)
-              }, 2000)
-              getprice = true;
+              }, 5000)
+              getPrice = true;
             }
 
             if(getPrice === true){
-              
+              //let get_price_button = $('get_price_button_'+product_id);
+              document.getElementById('get_price_button_'+product_id).setAttribute('data-amount',getPriceRequestAmount);
+              document.getElementById('get_price_button_'+product_id).setAttribute('data-step',step);
+              document.getElementById('get_price_button_'+product_id).setAttribute('data-min',step);
+              document.getElementById('get_price_button_'+product_id).click();
+              obj.value = obj.getAttribute('datamax');
+              // docu.click();
+              // get_price_button.attr('data-amount',getPriceRequestAmount);
+              //get_price_button.click();
             }
 
             $.ajax({
@@ -1566,7 +1578,7 @@
             height: auto !important;
             width: 90%;
         }
-
+changeamount
 
         .jstree-default li>ins {
             vertical-align: top;
