@@ -26,7 +26,6 @@ class CompanyController extends Controller
 {
     public function index(){
     	$company = auth()->user();
-
 		SEOTools::setTitle(trans('company.edit_page_name'));
 		return view('company.profile',compact('company'));
 	}
@@ -228,9 +227,9 @@ class CompanyController extends Controller
             ->eloquent($users)
             ->addColumn('image_html', function (User $user) {
                 if($user->photo){
-                  return  '<img src="'.env('DINMARK_URL').'images/profile/'.$user->photo.'" alt="'.$user->name.'" width="60"/>';
+                  return  '<img src="https://dinmark.com.ua/images/profile/'.$user->photo.'" alt="'.$user->name.'" width="60"/>';
                 }else{
-                    return  '<img src="'.env('DINMARK_URL').'images/empty-avatar.png" alt="'.$user->name.'"  width="60"/>';
+                    return  '<img src="https://dinmark.com.ua/images/empty-avatar.png" alt="'.$user->name.'"  width="60"/>';
                 }
             })
             ->addColumn('status_html', function (User $user) {
