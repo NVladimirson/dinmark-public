@@ -261,9 +261,9 @@
 					});
 
 					$('#data-table-buttons').on('draw.dt', function() {
-							Array.from(document.getElementsByClassName('fa-plus')).map(value => value.setAttribute('title', "@lang('reclamation.deploy')"))
-							Array.from(document.getElementsByClassName('fa-minus')).map(value => value.setAttribute('title', "@lang('reclamation.collapse')"))
-						}
+							Array.from(document.getElementsByClassName('fa-plus')).map(value => value.setAttribute('title', "@lang('reclamation.deploy')"));
+							Array.from(document.getElementsByClassName('fa-minus')).map(value => value.setAttribute('title', "@lang('reclamation.collapse')"));
+						});
 						// filters
 
 						function updateAjax() {
@@ -370,8 +370,7 @@
 									if (resp.status == "success") {
 										$('#explanation_message').val('');
 										$.gritter.add({
-											title: '@lang('
-											order.explanation_success ')',
+											title: '@lang('order.explanation_success')',
 										});
 									}
 								},

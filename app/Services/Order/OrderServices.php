@@ -47,6 +47,7 @@ class OrderServices
                     }
                 }
                 else{
+                    info('Error in OrderServices: storage not forund');
                     continue;
                 }
                 // $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
@@ -57,7 +58,7 @@ class OrderServices
                 $orderProduct->price_in = $storage->price;
                 $orderProduct->save();
                 $package = $storage->package;
-                $total += round($orderProduct->price*$orderProduct->quantity/$package, 2);
+                $total += round($orderProduct->price*($orderProduct->quantity/100), 2);
             }
         }
         $order->total = $total;
