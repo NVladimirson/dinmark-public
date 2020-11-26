@@ -20,7 +20,6 @@ class ProductOptions implements ShouldQueue
     public function __construct($language)
     {
         $this->language = $language;
-        info('LANGUAGE '.$this->language);
     }
 
     public function handle()
@@ -36,7 +35,7 @@ class ProductOptions implements ShouldQueue
               FROM s_shopshowcase_products
               LEFT JOIN s_shopshowcase_product_options on s_shopshowcase_product_options.`product` = s_shopshowcase_products.`id`
               LEFT JOIN s_shopshowcase_options_name on s_shopshowcase_product_options.option = s_shopshowcase_options_name.`option`
-              WHERE s_shopshowcase_options_name.`name` IS NOT NULL AND s_shopshowcase_options_name.`language` = \''.$language.'\' 
+              WHERE s_shopshowcase_options_name.`name` IS NOT NULL AND s_shopshowcase_options_name.`language` = \''.$language.'\'
             ');
 
             $vals = DB::select('
@@ -92,7 +91,7 @@ class ProductOptions implements ShouldQueue
             }
 
             \Cache::put('filters_'.$language, $filter_map);
-            info('Job ProductOptions have added language '.$language.' object (filters_'.$language.') 
+            info('Job ProductOptions have added language '.$language.' object (filters_'.$language.')
             in Cache at: '.Carbon::now()."\n");
         }
         else{

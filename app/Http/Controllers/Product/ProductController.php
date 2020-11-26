@@ -446,17 +446,19 @@ class ProductController extends Controller
             ->addColumn('sum_w_taxes', function (Product $product) {
                 $storage = $product->storages->first();
                 if(isset($storage)){
-                    $package = $storage->package;
-                    //$price = ProductServices::getPriceUnformatted($product);
-                    $price = ProductServices::getPriceUnformatted($product,$storage->id);
-                    $price = $price/100 * $package;
-                    // 'discount' => $discount,
-                    //'discountamount' => number_format($multiplier*ProductServices::getPriceUnformatted($productinfo,$storage_id) - $multiplier*$price,2,'.',' '),
+                  $package = $storage->package;
+                  $price = ProductServices::getPriceUnformatted($product,$storage->id);
+                  $price = $price/100 * $package;
+                  if(isset($storage->limit_2) && $storage->limit_2!=0){
                     return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
-                <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p>';
+                      <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p>';
+                  }else{
+                    return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                      <span class="discount"></span> <span class="discountamount"></span> </p>';
+                  }
                 }else{
                     return '<p id="sum_w_taxes_'.$product->id.'"><span class="price"></span> <br>
-                <span class="discount"></span> <span class="discountamount"></span> </p>';
+                      <span class="discount"></span> <span class="discountamount"></span> </p>';
                 }
 
             })
@@ -620,7 +622,6 @@ class ProductController extends Controller
 
     public function search(Request $request){
         $search = $request->name;
-        info($request);
         $formatted_data = [];
 
         $ids = \App\Services\Product\Product::getIdsSearch($search);

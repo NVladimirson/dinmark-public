@@ -16,3 +16,5 @@ leomark_db2.sql
 composer.lock
 php.txt
 .gitignore
+/public/favicon(1).ico
+/public/favicon.ico

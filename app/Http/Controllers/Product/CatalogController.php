@@ -40,7 +40,6 @@ class CatalogController extends Controller
     public function addToCatalog($id = 0, Request $request){
         $products = explode( ',', $request->product_id );
 				$group = LikeGroup::find($id);
-				info($group);
 				if($id == 0){
 						$last = LikeGroup::whereHas('user',function ($users){
 								$users->where('company',auth()->user()->company);

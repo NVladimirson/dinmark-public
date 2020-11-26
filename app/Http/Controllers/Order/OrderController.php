@@ -17,6 +17,7 @@ use App\Models\Product\Product;
 use App\Services\Finance\BalanceServices;
 use App\Services\Order\OrderServices;
 use App\Services\TimeServices;
+use App\Services\Product\Product as ProductServices;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -60,7 +61,6 @@ class OrderController extends Controller
 	}
 
 	public function addToOrder($id, Request $request){
-		info($request);
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 
@@ -115,8 +115,6 @@ class OrderController extends Controller
             $quantity_request =  explode(':',explode(',', $product_info)[2])[1];
             $res[] = ['product_id' => $product_id, 'storage_id' => $storage, 'quantity' => $quantity,'quantity_request' => $quantity_request];
         }
-
-				info($res);
         $order = null;
         if(!($request->storage_id)){
             $order = Order::create([
@@ -126,10 +124,8 @@ class OrderController extends Controller
                 'total' => 0,
                 'source' => 'b2b',
             ]);
-						info('oops');
         }else{
             $order = Order::find($request->storage_id);
-						info('found order! '.$request->storage_id);
             $order->save();
         }
 
@@ -396,10 +392,32 @@ class OrderController extends Controller
 		$weight = 0;
 
 		foreach($order->products as $orderProduct){
-			$price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
+			// $price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
 			//dd(Product::with('storages')->find($orderProduct->product_id)->storages);
-			$package = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)->first()->package;
-			$total = $price * $orderProduct->quantity/$package;
+			//$package = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)->first()->package;
+			 //$total = $price * $orderProduct->quantity/$package;
+
+			 //counting total with discounts
+			$productinfo = $orderProduct->product;
+			$quantity = $orderProduct->quantity;
+			$storageinfo = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)
+			->first();
+			$package = $storageinfo->package;
+			$three_percent_discount_limit = $storageinfo->limit_1;
+			$seven_percent_discount_limit = $storageinfo->limit_2;
+			if (($quantity >= $seven_percent_discount_limit) && $seven_percent_discount_limit){
+					$price = ProductServices::getPriceWithCoefUnformatted($productinfo,$storageinfo->id,0.93);
+			}
+			else if(($quantity >= $three_percent_discount_limit) && $three_percent_discount_limit){
+					$price = ProductServices::getPriceWithCoefUnformatted($productinfo,$storageinfo->id,0.97);
+			}
+			else{
+					$price = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
+			}
+			$total = $price/100*$quantity;
+ 		//counting total with discounts
+
+			//$price_without_discount = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
 
 			$storageProduct = null;
 			if($orderProduct->storage){
@@ -410,7 +428,24 @@ class OrderController extends Controller
 
             $storage_prices = [];
             foreach ($orderProduct->product->storages as $storage){
-                $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($orderProduct->product,$storage->id);
+                $storage_prices[$storage->id]['price'] = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
+								$storage_prices[$storage->id]['limit1'] = $storage->limit_1 ? $storage->limit_1 : 0;
+								$storage_prices[$storage->id]['limit2'] = $storage->limit_2 ? $storage->limit_2 : 0;
+								$storage_prices[$storage->id]['discount3'] = $storage->limit_1 ? ProductServices::getPriceWithCoefUnformatted($productinfo,$storageinfo->id,0.97) : 0;
+								$storage_prices[$storage->id]['discount7'] = $storage->limit_2 ? ProductServices::getPriceWithCoefUnformatted($productinfo,$storageinfo->id,0.93) : 0;
+								//$storage_prices[$storage->id]['discount0'] = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
+
+								// if($three_percent_discount_limit){
+								// 	$storage_prices[$storage->id]['discount3'] = ProductServices::getPriceWithCoefUnformatted($productinfo,$storageinfo->id,0.97);
+								// }else{
+								// 	$storage_prices[$storage->id]['discount3'] = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
+								// }
+								// if($seven_percent_discount_limit){
+								// 	$storage_prices[$storage->id]['discount7'] = ProductServices::getPriceWithCoefUnformatted($productinfo,$storageinfo->id,0.93);
+								// }else{
+								// 	$storage_prices[$storage->id]['discount7'] = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
+								// }
+
             }
             $weight += $orderProduct->product->weight * $orderProduct->quantity/100;
 			$products[] = [
@@ -422,8 +457,9 @@ class OrderController extends Controller
 				'max' => ($storageProduct)?$storageProduct->amount:0,
 				'package' => ($storageProduct)?$orderProduct->quantity/$storageProduct->package:0,
 				'weight' => $orderProduct->product->weight,
-				//'price' => number_format($price*100,2,'.', ' '),
 				'price' => number_format($price,2,'.', ' '),
+				// 'price_without_discount' => number_format($price_without_discount,2,'.',' '),
+				// 'price_without_discount_raw' => $price_without_discount,
 				'price_raw' => $price,
                 'storages'  => $orderProduct->product->storages,
                 'storage_prices' => $storage_prices,

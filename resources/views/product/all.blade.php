@@ -789,7 +789,7 @@
 
                 let quantity_request = modal.find('input[name="quantity_request"]');
 
-                if (amount > button.data('storage_max')) {
+                if (amount - button.data('storage_max') > 0) {
                     quantity.val(button.data('storage_max'));
                     quantity_request.val(amount - button.data('storage_max'));
                 }
@@ -948,8 +948,6 @@
 
                 var form = $(this);
                 let list_id = $('#wishlist').val();
-                console.log('LISTID:'+list_id);
-                console.log('FORM'+form.serialize());
                 var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
 
                 var form = $(this);
@@ -1088,7 +1086,7 @@
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
 
-                                if(data_amount > data_storage_max){
+                                if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
                                     data_amount = data_storage_max;
                                 }
@@ -1186,7 +1184,6 @@
                 modal.find('.name').text(button.data('name'));
                 modal.find('.product_id').val(button.data('product_id'));
                 modal.find('.quantity').val(button.data('amount'));
-                console.log(button.data('min'));
                 modal.find('.quantity')[0].setAttribute('min',button.data('min'));
                 modal.find('.quantity')[0].setAttribute('value',button.data('amount'));
                 modal.find('.quantity')[0].setAttribute('step',button.data('step'));
@@ -1509,6 +1506,7 @@
               document.getElementById('get_price_button_'+product_id).setAttribute('data-min',step);
               document.getElementById('get_price_button_'+product_id).click();
               obj.value = obj.getAttribute('datamax');
+              amount = obj.getAttribute('datamax');
               // docu.click();
               // get_price_button.attr('data-amount',getPriceRequestAmount);
               //get_price_button.click();
@@ -1578,7 +1576,6 @@
             height: auto !important;
             width: 90%;
         }
-changeamount
 
         .jstree-default li>ins {
             vertical-align: top;

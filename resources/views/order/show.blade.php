@@ -411,7 +411,16 @@
 									<td class="text-nowrap text-center order-product-storage">
                                         <select class="form-control selectpicker m-b-5" name="product_storage[{{$product['id']}}]" data-live-search="false" data-style="btn-white">
                                         @foreach($product['storages'] as $storage)
-                                                <option value="{{$storage->storage_id}}" @if($storage->storage_id == $product['storage_id']) selected="selected" @endif data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}" data-storage-price="{{$product['storage_prices'][$storage->id]}}" data-storage_limit_1="{{$storage->limit_1}}" data-storage_limit_2="{{$storage->limit_2}}">{{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}}</option>
+                                                <option value="{{$storage->storage_id}}" @if($storage->storage_id == $product['storage_id']) selected="selected" @endif
+																									data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}"
+																									data-storage-price="{{$product['storage_prices'][$storage->id]['price']}}"
+																									data-storage_limit_1="{{$product['storage_prices'][$storage->id]['limit1']}}"
+																									data-storage_limit_2="{{$product['storage_prices'][$storage->id]['limit2']}}"
+																									data-storage_discount3="{{$product['storage_prices'][$storage->id]['discount3']}}"
+																									data-storage_discount7="{{$product['storage_prices'][$storage->id]['discount7']}}"
+																									>
+																									{{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}}
+																								</option>
                                         @endforeach
                                         </select>
                                     </td>
@@ -426,7 +435,7 @@
 							<tr>
 								<td colspan="5"></td>
                                 <th class="text-nowrap text-center order-weight">{{$weight}} @lang('global.kg')</th>
-								<th class="text-nowrap text-center order-total" data-price="{{$order->total*$koef}}">{{number_format($order->total*$koef,2,'.',' ')}}</th>
+								<th class="text-nowrap text-center order-total" data-price="{{$order->total}}">{{number_format($order->total,2,'.',' ')}}</th>
 								<td></td>
 							</tr>
 						</tfoot>
@@ -661,20 +670,24 @@
 				function calcTotalPrice(){
 					var total = 0
                     $('.product-row').each(function(row){
+
                     	var count = +$(this).find('.order-product-counter').val();
 											var packages = $(this).find('.order-product-counter')[0].step;
-                    	var price = +$(this).find('.order-product-price').data('price');
 											var limit_2 = $(this).find('.order-product-storage select option:selected').data('storage_limit_2');
 											var limit_1 = $(this).find('.order-product-storage select option:selected').data('storage_limit_1');
                     	if(count - limit_2 >= 0 && limit_2 > 0){
-							price *= 0.93;
-						}else if(count - limit_1 >= 0 && limit_1 > 0){
-													console.log('asdsd');
-							price *= 0.97;
-                        }
+												var price = $(this).find('.order-product-storage select option:selected').data('storage_discount7');
+											}
+											else if(count - limit_1 >= 0 && limit_1 > 0){
+												var price = $(this).find('.order-product-storage select option:selected').data('storage_discount3');
+                      }
+											else{
+												var price = $(this).find('.order-product-storage select option:selected').data('storage-price');
 
-                    	$(this).find('.order-product-total').text(numberStringFormat(price*count/packages));
-						total += (price*count/packages);
+											}
+											$(this).find('.order-product-price')[0].innerText = numberStringFormat(price);
+                    	$(this).find('.order-product-total').text(numberStringFormat(price*count/100));
+												total += (price*count/100);
                     });
 					$('.order-total').data('price',total);
 					$('.order-total').text(numberStringFormat(total));
