@@ -19,9 +19,9 @@
                 <!-- BEGIN profile-header-img -->
                 <div class="profile-header-img">
                     @if(auth()->user()->getCompany->logo)
-                        <img src="{{env('DINMARK_URL')}}images/company/{{auth()->user()->getCompany->logo}}" alt="{{auth()->user()->name}}" />
+                        <img src="https://dinmark.com.ua/images/company/{{auth()->user()->getCompany->logo}}" alt="{{auth()->user()->name}}" />
                     @else
-                        <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{auth()->user()->name}}" />
+                        <img src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{auth()->user()->name}}" />
                     @endif
                 </div>
 
@@ -117,7 +117,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($company->type_prices as $type_price)
+                        @if($company->type_prices != null)
+                        @foreach($company->type_prices as $type_price)
                             <tr>
                                 <td>{{$type_price->name}}</td>
                                 <td class="text-center">{{$type_price->koef}}</td>
@@ -128,11 +129,12 @@
                                     </form>
                                 </td>
                             </tr>
-                        @empty
+                        @endforeach
+                        @else
                             <tr>
                                 <td colspan="3" class="text-center">@lang('company.price_empty')</td>
                             </tr>
-                        @endforelse
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -310,7 +312,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($company->documents as $document)
+                        @if($company->documents!= null)
+                        @foreach($company->documents as $document)
                             <tr>
                                 <td>{{$document->name}}</td>
                                 <td>@lang('company.document_'.$document->folder)</td>
@@ -325,11 +328,12 @@
                                     @endif
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="text-center">@lang('company.document_empty')</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
+                        @else
+                        <tr>
+                            <td colspan="3" class="text-center">@lang('company.document_empty')</td>
+                        </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
