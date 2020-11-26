@@ -19,7 +19,7 @@ return [
     'new_wishlist_placeholder' => 'Введите название каталога',
     'button_add_to_catalog' => 'Добавить в каталог',
     'name_standart' => 'Список желаний: ',
-    'modal_success' => 'Товар успешно добавлен в ваш каталог',
+    'modal_success' => 'Каталог обновлён',
     'modal_change_success' => 'Товар успешно перенесён',
     'article_already_exists' => 'Данный артикул уже существует',
 
