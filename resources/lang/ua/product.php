@@ -112,4 +112,9 @@ return [
     'show_card_product' =>'Переглянути картку товара',
     'add_to_wish_list' =>'Додати до списку бажань',
     'add_to_order' =>'Додати до замовлення'
+
+    'storage_filter_name' => [
+      'storage_term' => 'Термін доставки',
+      'category' => 'Категорія'
+    ],
 ];

@@ -37,9 +37,11 @@ class NewsServices
 			['content',$news->id],
 			['position',1],
 		])->first();
-		$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
+		//$src = env('DINMARK_URL').'images/dinmark_nophoto.jpg';
+		$src = 'https://dinmark.com.ua/images/dinmark_nophoto.jpg';
 		if($photo){
-			$src = 	env('DINMARK_URL').'images/'.($photo->alias == 13? 'blog' : 'industry').'/'.$news->id.'/'.$photo->file_name;
+			// $src = 	env('DINMARK_URL').'images/'.($photo->alias == 13? 'blog' : 'industry').'/'.$news->id.'/'.$photo->file_name;
+			$src = 	'https://dinmark.com.ua/images/'.($photo->alias == 13? 'blog' : 'industry').'/'.$news->id.'/'.$photo->file_name;
 		}
 
 		return $src;

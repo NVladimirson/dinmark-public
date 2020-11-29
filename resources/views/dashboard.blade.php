@@ -182,9 +182,11 @@
                         <li class="media media-sm">
                             <a href="javascript:;" class="pull-left">
                                 @if($message->user->photo)
-                                    <img src="{{env('DINMARK_URL')}}images/profile/{{$message->user->photo}}"class="media-object rounded-corner" alt="{{$message->user->name}}" />
+                                    <!-- <img src="{{env('DINMARK_URL')}}images/profile/{{$message->user->photo}}"class="media-object rounded-corner" alt="{{$message->user->name}}" /> -->
+																		<img src="https://dinmark.com.ua/images/profile/{{$message->user->photo}}"class="media-object rounded-corner" alt="{{$message->user->name}}" />
                                 @else
-                                    <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" class="media-object rounded-corner" alt="{{$message->user->name}}" />
+                                    <!-- <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" class="media-object rounded-corner" alt="{{$message->user->name}}" /> -->
+																		<img src="https://dinmark.com.ua/images/empty-avatar.png" class="media-object rounded-corner" alt="{{$message->user->name}}" />
                                 @endif
                             </a>
                             <div class="media-body">

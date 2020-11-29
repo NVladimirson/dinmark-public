@@ -110,14 +110,16 @@
             </div>
         </td>
             @if($company->full_logo)
-                <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$company->full_logo}}" width="200"></td>
+                <!-- <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$company->full_logo}}" width="200"></td> -->
+                <td rowspan="2"><img align="logo" src="https://dinmark.com.ua/images/company/{{$company->full_logo}}" width="200"></td>
                 @else
                 <td rowspan="2" width="200"><span width="200" style="display: inline-block;">&nbsp;</span></td>
             @endif
         {{--
         @if($order->sender_id != 0)
             @if($order->sender->getCompany->full_logo)
-            <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$order->sender->getCompany->full_logo}}" width="200"></td>
+            <!-- <td rowspan="2"><img align="logo" src=" {{env('DINMARK_URL')}}images/company/{{$order->sender->getCompany->full_logo}}" width="200"></td> -->
+            <td rowspan="2"><img align="logo" src="https://dinmark.com.ua/images/company/{{$order->sender->getCompany->full_logo}}" width="200"></td>
             @endif
         @else
             <td rowspan="2"><img align="logo" src=" {{asset('logo.png')}} " width="200"></td>

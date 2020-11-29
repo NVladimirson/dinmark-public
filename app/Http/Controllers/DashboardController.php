@@ -129,10 +129,18 @@ class DashboardController extends Controller
 
         $newsData = [];
         $news = News::with(['content'])
-            ->where([
-                ['target','<>','site'],
-                ['active',1],
-            ])
+            // ->where([
+            //     ['target','<>','site'],
+            //     ['active',1],
+            // ])
+						->where([
+							//['target','<>','site'],
+							['target','=','b2b'],
+							['active',1],
+						])->orWhere([
+							['target','=','both'],
+							['active',1],
+						])
             ->orderBy('date_add','desc')
             ->limit(5)
             ->get();

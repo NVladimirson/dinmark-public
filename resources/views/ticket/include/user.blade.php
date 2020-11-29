@@ -2,9 +2,11 @@
     <div class="widget-list-item widget-list-item_transparent">
         <div class="widget-list-media">
             @if($user->photo)
-                <img class="rounded-corner" src="{{env('DINMARK_URL')}}images/profile/{{$user->photo}}" alt="{{$user->name}}" />
+                <!-- <img class="rounded-corner" src="{{env('DINMARK_URL')}}images/profile/{{$user->photo}}" alt="{{$user->name}}" /> -->
+                <img class="rounded-corner" src="https://dinmark.com.ua/images/profile/{{$user->photo}}" alt="{{$user->name}}" />
             @else
-                <img class="rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$user->name}}" />
+                <!-- <img class="rounded-corner" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$user->name}}" /> -->
+                <img class="rounded-corner" src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{$user->name}}" />
             @endif
         </div>
         <div class="widget-list-content">
