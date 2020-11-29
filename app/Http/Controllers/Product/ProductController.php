@@ -261,7 +261,12 @@ class ProductController extends Controller
             }
 
 
-            return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="60">
+            // return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="60">
+            //             <div class="wrap-label">
+            //             '.$spans.'
+            //             </div>
+            //         </div>';
+            return '<div class="product-image"><img src="'.$src.'" alt="https://dinmark.com.ua/images/dinmark_nophoto.jpg" width="60">
                         <div class="wrap-label">
                         '.$spans.'
                         </div>

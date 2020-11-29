@@ -564,7 +564,7 @@
                             if ($("option:selected", $('#storages')).val() !== '0') {
                                 $('#filters_selected').append($('<div class="selected_filter">' +
                                     '<p class="tesst" id="deselected_filter_storage" style="font-size: 10pt;' +
-                                    'text-align: center;margin: auto;">' +
+                                    'text-align: center;margin: auto;">' + "@lang('product.storage_filter_name.storage_term')" + " : " +
                                     $("option:selected", $('#storages')).text() +
                                     '<a class="deselect_filter" deselectid="deselected_filter_storage" href=#>' +
                                     '<i class="far fa-times-circle" style="float: right;color: red;' +
@@ -608,7 +608,7 @@
                                         }
                                         $('#filters_selected').append($('<div class="selected_filter">' +
                                             '<p class="tesst" id="deselected_filter_categories_' + id + '" style="font-size: 10pt;' +
-                                            'text-align: center;margin: auto;">' + name + '' +
+                                            'text-align: center;margin: auto;">' + "@lang('product.storage_filter_name.category')" + " : " + name + '' +
                                             '<a class="deselect_filter" deselectid="deselected_filter_categories_' + id + '" href=#>' +
                                             '<i class="far fa-times-circle" style="float: right;' +
                                             'color: red;' +
@@ -626,7 +626,7 @@
                                 filter_by_id[0].setAttribute("filter-accessible", "true");
                                 $('#filters_selected').append($('<div class="selected_filter">' +
                                     '<p class="tesst" id="deselected_filter_' + index + '" style="font-size: 10pt;' +
-                                    'text-align: center;margin: auto;">' + value + '' +
+                                    'text-align: center;margin: auto;">' + filter_by_id[0].getAttribute('option_filter_name') + ' : ' + value + '' +
                                     '<a class="deselect_filter" deselectid="deselected_filter_' + index + '" href=#>' +
                                     '<i class="far fa-times-circle" style="float: right;color: red;' +
                                     'text-align: center;"></i></a></p></div>'));

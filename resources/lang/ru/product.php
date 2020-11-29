@@ -30,20 +30,11 @@ return [
     ],
     'filters-with-properties' => 'Фильтры со свойствами',
 
-
     'mass_actions' =>
     [
-      'select'=>'Дії з відміченими',
-      'add-to-wishlist'=>'Додати в "Мій Список"',
-      'add-to-order'=>'Додати до Замовлення',
-    ],
-
-
-    'mass_actions' =>
-    [
-      'select'=>'Дії з відміченими',
-      'add-to-wishlist'=>'Додати в "Мій Список"',
-      'add-to-order'=>'Додати до Замовлення',
+      'select'=>'Действия с отмеченными',
+      'add-to-wishlist'=>'Добавить в "Мой Список"',
+      'add-to-order'=>'Додати в Заказ',
     ],
 
 	'empty'	=> 'По запросу ничего не найдено',
@@ -112,5 +103,10 @@ return [
     'modal_get_price_submit' => 'Отправить запрос',
     'show_card_product' =>'Просмотреть карточку товара',
     'add_to_wish_list' =>'Добавить в список желаний',
-    'add_to_order' =>'Добавить в заказ'
+    'add_to_order' =>'Добавить в заказ',
+
+    'storage_filter_name' => [
+      'storage_term' => 'Срок доставки',
+      'category' => 'Категория'
+    ],
 ];

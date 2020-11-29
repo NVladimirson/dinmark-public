@@ -156,7 +156,8 @@ class ReclamationController extends Controller
 		$reclamation = Reclamation::create([
 			'ttn'		=> $request->ttn,
 			'author'	=> auth()->user()->id,
-            'file'      => env('DINMARK_URL').'documents/'.session('current_company_id').'/different/'.$document
+            //'file'      => env('DINMARK_URL').'documents/'.session('current_company_id').'/different/'.$document
+			'file'      => 'https://dinmark.com.ua/documents/'.session('current_company_id').'/different/'.$document
 		]);
 
 		foreach ($request->product_id as $key => $product){

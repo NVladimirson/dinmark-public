@@ -182,7 +182,7 @@ $sidebarClass = (!empty($sidebarTransparent)) ? 'sidebar-transparent' : '';
 </div>
 <style>
 	#sidebar {
-		background: url("images/cover-sidebar-user.jpg");
+		background: url("https://dinmark.com.ua/images/cover-sidebar-user.jpg");
 		background-repeat: repeat;
 	}
 	#envelop {

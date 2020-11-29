@@ -37,9 +37,11 @@
 								@if($message->user_id != auth()->user()->id)
 								<div class="widget-chat-media">
 									@if($message->user->photo)
-										<img src="{{env('DINMARK_URL')}}images/profile/{{$message->user->photo}}" alt="{{$message->user->name}}" />
+										<!-- <img src="{{env('DINMARK_URL')}}images/profile/{{$message->user->photo}}" alt="{{$message->user->name}}" /> -->
+										<img src="https://dinmark.com.ua/images/profile/{{$message->user->photo}}" alt="{{$message->user->name}}" />
 									@else
-										<img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$message->user->name}}" />
+										<!-- <img src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$message->user->name}}" /> -->
+										<img src="https://dinmark.com.ua/images/profile/images/empty-avatar.png" alt="{{$message->user->name}}" />
 									@endif
 								</div>
 								@endif
@@ -139,6 +141,9 @@
 					],
 				} );
 			});
+			document.querySelector('.custom-select storage-catalog').addEventListener('change',function(e){
+				alert('ssd');
+			})
 		})(jQuery);
 	</script>
 @endpush

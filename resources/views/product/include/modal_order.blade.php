@@ -7,7 +7,8 @@
             </div>
             <form id="form_add_order">
                 <div class="row" style="padding-left: 15px">
-                    <div class="col-xl-4"><img class="image" src="'{{env('DINMARK_URL')}}'images/dinmark_nophoto.jpg" height="80"></div>
+                    <!-- <div class="col-xl-4"><img class="image" src="'{{env('DINMARK_URL')}}'images/dinmark_nophoto.jpg" height="80"></div> -->
+                    <div class="col-xl-4"><img class="image" src="https://dinmark.com.ua/images/dinmark_nophoto.jpg" height="80"></div>
                     <div class="col-xl-8"><p class="name"></p></div>
                 </div>
                 <input type="hidden" class="product_id" name="product_id">

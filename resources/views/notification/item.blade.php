@@ -4,9 +4,11 @@
     <div class="media-left">
         @if(array_key_exists('user', $notification->data))
             @if($notification->data['user']['photo'])
-                <img class="media-object" src="{{env('DINMARK_URL')}}images/profile/{{$notification->data['user']['photo']}}" alt="{{$notification->data['user']['name']}}" />
+                <!-- <img class="media-object" src="{{env('DINMARK_URL')}}images/profile/{{$notification->data['user']['photo']}}" alt="{{$notification->data['user']['name']}}" /> -->
+                <img class="media-object" src="https://dinmark.com.ua/images/profile/{{$notification->data['user']['photo']}}" alt="{{$notification->data['user']['name']}}" />
             @else
-                <img class="media-object" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$notification->data['user']['name']}}" />
+                <img class="media-object" src="https://dinmark.com.ua/images/empty-avatar.png" alt="{{$notification->data['user']['name']}}" />
+                <!-- <img class="media-object" src="{{env('DINMARK_URL')}}images/empty-avatar.png" alt="{{$notification->data['user']['name']}}" /> -->
             @endif
         @endif
 
