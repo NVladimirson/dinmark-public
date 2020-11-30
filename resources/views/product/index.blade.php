@@ -144,36 +144,35 @@
 									<th></th>
 								</tr>
 								@php function getAmount($amount){
-									switch ($amount){
-										case ($amount>10000):
-											echo '>10000';
-											break;
-										case ($amount>5000):
-											echo '>5000';
-											break;
-										case ($amount>1500):
-											echo '>1500';
-											break;
-										case ($amount>500):
-											echo '>500';
-											break;
-										case ($amount>150):
-											echo '>150';
-											break;
-										case ($amount>50):
-										  echo '>50';
-											break;
-										case ($amount>10):
-											echo '>10';
-											break;
-										case ($amount<10):
-											echo '<10';
+									if($amount>10000){
+										return '>10000';
+									}
+									else if($amount>5000){
+										return '>5000';
+									}
+									else if($amount>1500){
+										return '>1500';
+									}
+									else if($amount>500){
+										return '>500';
+									}
+									else if($amount>150){
+										return '>150';
+									}
+									else if($amount>50){
+										return '>50';
+									}
+									else if($amount>10){
+										return '>10';
+									}
+									else if($amount<10){
+										return '<10';
 									}
 								} @endphp
 								@forelse($product->storages as $storage)
 								<tr>
 									<td>@lang('product.storage_name') {{ $storage->storage->term }} @lang('product.storage_term_measure_shortly')</td>
-									<td>@php getAmount($storage->amount) @endphp</td>
+									<td>@php echo(getAmount($storage->amount)) @endphp</td>
 									<td>{{ $storage->package }}</td>
 									<td>{{ $storage_prices[$storage->id] }}</td>
 									<td>{{ $storage->limit_1 }}</td>
