@@ -252,13 +252,14 @@ tr:hover .datatable_actions_class div a {
 .datatable_quantity_class .hidden {
     display: none;
 }
-/* 
-.multiplier {
-    color: #fbb03b;
+.product-image {
+    position: relative;
 }
-.package {
-    color: #96ca0a;
+@media (max-width: 1600px) {
+    .product-image img:hover{
+        z-index: 999999;
+        position: absolute;
+        margin-top: -20px;
+    }
 }
-.weight {
-    color: #29abe2;
-} */
+

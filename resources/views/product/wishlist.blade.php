@@ -574,6 +574,14 @@
 					return false;
 				})
 
+				document.getElementById('data-table-buttons').addEventListener('change', (event) => {
+
+						if(event.target.className === "custom-select storage-catalog") {
+							alert(123)
+						}
+				
+					});
+
 
 
 				document.querySelector('.custom-file-input').addEventListener('change',function(e){
