@@ -24,7 +24,7 @@
 					@foreach($newsData as $newsDatum)
 						<div class="col-lg-4 col-sm-6 m-b-15">
 							<a width="300" href="{{route('news.show',[$newsDatum['id']])}}" class="card bg-dark border-0 text-white">
-								<img class="card-img" src="http://dinmark.com.ua/{{$newsDatum['image']}}" alt="http://dinmark.com.ua/{{$newsDatum['name']}}">
+								<img class="card-img" src="https://dinmark.com.ua/{{$newsDatum['image']}}" alt="http://dinmark.com.ua/{{$newsDatum['name']}}">
 								<div class="card-img-overlay bg-black-transparent-5 rounded">
 									<h4 class="card-title">{{$newsDatum['name']}}</h4>
 									<p class="card-text">{!! mb_strimwidth($newsDatum['text'],0,100,'...') !!}</p>
