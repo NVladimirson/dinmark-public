@@ -587,6 +587,7 @@
 									data: 'product_id='+product_id+'&storage_id='+storage_id,
 									success: function(resp) {
 												document.getElementById('catalog_user_price_'+product_id).innerText = resp;
+												document.getElementById('catalog_catalog_price_'+product_id).innerText = resp;	
 									},
 									error: function(xhr, str) {
 											console.log(xhr);
