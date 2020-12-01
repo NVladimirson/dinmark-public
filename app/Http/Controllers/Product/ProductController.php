@@ -235,12 +235,6 @@ class ProductController extends Controller
                 $spans .= '<span class="bage-default bage-hits">HITS</span>';
             }
 
-
-            // return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="60">
-            //             <div class="wrap-label">
-            //             '.$spans.'
-            //             </div>
-            //         </div>';
             return '<div class="product-image"><img src="'.$src.'" alt="https://dinmark.com.ua/images/dinmark_nophoto.jpg" width="60">
                         <div class="wrap-label">
                         '.$spans.'
@@ -253,36 +247,8 @@ class ProductController extends Controller
             .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
             '<span>'.$product->article_show.'</span>';
         })
-            // ->addColumn('retail_price', function (Product $product) {
-            //     if(\App\Services\Product\Product::hasAmount($product->storages)){
-            //         return '<p id="retail_price_'.$product->id.'"><span>'.ProductServices::getBasePrice($product).'</span></p>';
-            //     }
-            //     return number_format(0,2,'.',' ');
-            // })
-            // ->addColumn('user_price', function (Product $product) {
-            //     if(\App\Services\Product\Product::hasAmount($product->storages)){
-            //         if($product->old_price){
-            //           return '<p id="user_price_'.$product->id.'"><span><strike>'.ProductServices::getPrice($product).'</strike></span><span style="color:#ee3f3c"> '
-            //           .number_format($product->old_price,2,'.',' ').'</span></p>';
-            //         }else{
-            //           return '<p id="user_price_'.$product->id.'"><span>'.ProductServices::getPrice($product).'</span></p>';
-            //         }
-            //     }
-            //     return number_format(0,2,'.',' ');
-            //     //return '<p id="user_price_'.$product->id.'"><span></span></p>';
-            // })
             ->addColumn('retail_user_prices', function (Product $product) {
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    // $stroage_id = $product->storages->first()->id;
-                    // $retail = ''.__('product.table_header_price_retail').': <span>'.ProductServices::getBasePrice($product,$stroage_id).'</span>';
-                    // if($product->old_price){
-                    //   $user_price = ''.__('product.table_header_price').': <span><strike>'.ProductServices::getPrice($product,$stroage_id).'</strike>
-                    //   </span><span style="color:#ee3f3c"> '
-                    //   .number_format($product->old_price,2,'.',' ').'</span>';
-                    // }else{
-                    //   $user_price = ''.__('product.table_header_price').': <span>'.ProductServices::getPrice($product).'</span>';
-                    // }
-                    // return $retail. '<br>'.$user_price;
                     $storage = $product->storages->first();
                     $package = $storage->package;
                     $retail = ProductServices::getBasePrice($product,$storage->storage_id);
@@ -344,7 +310,6 @@ class ProductController extends Controller
                     $storages = $product->storages;
                     if(count($storages)){
                         $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
-                        //$value .= "<option value='0'>$emptyvalue</option>";
                         if(isset($product->storages->firstWhere('is_main',1)->storage_id)){
                             $main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
                         }
@@ -527,7 +492,8 @@ class ProductController extends Controller
         }
 
 
-        $discountamount = intdiv($amount,100)*($pricefor100 - $price);
+        //$discountamount = intdiv($amount,100)*($pricefor100 - $price);
+        $discountamount = ($pricefor100-$price)*($amount/100);
         $price = $price/100*$amount;
         $unit = $productinfo->unit;
         preg_match_all('!\d+!', $unit, $isnumber);
