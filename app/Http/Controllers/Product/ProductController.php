@@ -98,10 +98,9 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      // $productinfo = Product::find(65571);
-      // $product_storage_id = 13;
-      // $storage_id = $productinfo->storages->where('storage_id',$product_storage_id)->first()->id;
-      // dd($storage_id);
+      $productinfo = Product::find(52385);
+      $product_storage_id = 14;
+      dd(ProductServices::getOldBasePrice($productinfo,$product_storage_id));
       //dd($productinfo->storages,ProductServices::getPrice($productinfo),ProductServices::getPrice($productinfo));
     }
 
@@ -286,22 +285,22 @@ class ProductController extends Controller
                     // return $retail. '<br>'.$user_price;
                     $storage = $product->storages->first();
                     $package = $storage->package;
-                    $retail = ProductServices::getBasePrice($product,$storage->id);
+                    $retail = ProductServices::getBasePrice($product,$storage->storage_id);
                     $user_price = ProductServices::getPrice($product,$storage->id);
-                    $old_price = $product->old_price;
-                    if($old_price){
+                    $old_price = ProductServices::getOldBasePrice($product,$storage->storage_id);
+                    if($product->old_price){
                       return '<p id="retail_user_price_'.$product->id.'">
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
                       <span>'.__('product.table_header_price').': </span>
-                      <span class="old_price"><strike>'.number_format($old_price*$package,2,'.',' ').'</strike></span>
+                      <span class="old_price" style="color:red"><strike>'.number_format($old_price,2,'.',' ').'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }else{
                       return '<p id="retail_user_price_'.$product->id.'">
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
                       <span>'.__('product.table_header_price').': </span>
-                      <span class="old_price" style="display:none"><strike>'.number_format($old_price*$package,2,'.',' ').'</strike></span>
+                      <span class="old_price" style="display:none;color:red"><strike>'.number_format($old_price,2,'.',' ').'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }
 
@@ -505,6 +504,7 @@ class ProductController extends Controller
         $three_percent_discount_limit = $storageinfo->limit_1;
         $seven_percent_discount_limit = $storageinfo->limit_2;
 
+        $retail = ProductServices::getBasePrice($productinfo,$storageinfo->storage_id);
         $pricefor100 = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
         $oldprice = number_format($productinfo->oldprice * $package,2,'.',' ');
         $multiplier = $amount/$package - $amount%$package;
@@ -561,6 +561,7 @@ class ProductController extends Controller
             'limit_amount_quantity_1' => $three_percent_discount_limit,
             'limit_amount_quantity_2' => $seven_percent_discount_limit,
             'user_price' => number_format($user_price,2,'.',' '),
+            'retail' => $retail,
             'price100' => number_format($pricefor100,2,'.',' '),
             'oldprice' => $oldprice
         ];

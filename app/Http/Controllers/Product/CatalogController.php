@@ -236,7 +236,7 @@ class CatalogController extends Controller
 					$coef = $group->price->koef;
 				}
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<div id="catalog_user_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
+                    return '<div id="catalog_catalog_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
