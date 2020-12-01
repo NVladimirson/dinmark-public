@@ -293,7 +293,7 @@ class ProductController extends Controller
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
                       <span>'.__('product.table_header_price').': </span>
-                      <span class="old_price" style="color:red"><strike>'.number_format($old_price,2,'.',' ').'</strike></span>
+                      <span class="old_price" style="color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }else{
                       return '<p id="retail_user_price_'.$product->id.'">
