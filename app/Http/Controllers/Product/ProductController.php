@@ -300,7 +300,7 @@ class ProductController extends Controller
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
                       <span>'.__('product.table_header_price').': </span>
-                      <span class="old_price" style="display:none;color:red"><strike>'.number_format($old_price,2,'.',' ').'</strike></span>
+                      <span class="old_price" style="display:none;color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }
 
