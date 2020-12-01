@@ -577,6 +577,7 @@
 				document.getElementById('data-table-buttons').addEventListener('change', (event) => {
 
 						if(event.target.className === "custom-select storage-catalog") {
+
 							let product_id = event.target.attributes['product_id'].value;
 							let storage_id = event.target.options[event.target.selectedIndex].attributes['value'].value;
 							let route = '{{route('catalogs.change_storage')}}';

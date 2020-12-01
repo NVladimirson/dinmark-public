@@ -500,7 +500,7 @@ nav.navbar-grey .container {
 }
 nav.navbar-grey a.shop {
     white-space: nowrap;
-    width: 300px;
+    min-width: 165px;
     margin-left: 8px;
     margin-right: 100px;
     text-transform: uppercase;
@@ -858,9 +858,10 @@ nav.mainmenu > div > a img {
     }
     #close-burger-menu {
         font-size: 25px;
-        right: 0;
-        top: 40px;
-        position: absolute;
+        padding: 10px;
+        left: 10px;
+        top: 50px;
+        position: fixed;
         color: #fff;
         z-index: 99999;
         /* display: none; */
@@ -1767,4 +1768,22 @@ body ul.wysihtml5-toolbar .glyphicon {
 .table-scroll-container.table-scroll-container-xl {
     min-height: 50vh;
 }
+.navbar-header {
+    margin-right: 50px;
+}
+.navbar-header .navbar-brand {
+    padding-right: 0;
+    min-width: 220px;
+}
+.shop.hexa {
+    width: 146px;
+}
+.hide {
+    display: none;
+}
 
+.sidebar-minify-btn.navbar-toggle {
+    position: fixed;
+    left: 10px;
+    top: 50px;
+}
