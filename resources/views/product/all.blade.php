@@ -1393,6 +1393,7 @@
                     url: "{!! @route('priceCalc') !!}",
                     success: function(msg){
                         let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+                        retail_user_price.children[1].innerText = msg['retail'];
                         retail_user_price.children[4].innerText = msg['user_price'];
                         if(msg['oldprice'] !== '0'){
                           retail_user_price.children[3].children[0].show;
@@ -1439,6 +1440,9 @@
                         let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
                         add_to_order_button.setAttribute('data-storage',storage_id);
 
+                    },
+                    error: function(xhr, str) {
+                        console.log(xhr);
                     }
                 });
 

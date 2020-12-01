@@ -98,35 +98,10 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      #65572 - 18, 65573 - 20, 65571 - 17
-
-
-      $products = Product::with('storages')->get();
-      // foreach ($products as $product) {
-      //   if($product->storages->isEmpty()){
-      //     $productstorages[] = $product->id;
-      //   }
-      // }
-      $current_key = 0;
-      $current_100 = [];
-      $productstorages = [];
-      do {
-        if($products[$current_key]->storages->isEmpty()){
-          if(count($current_100) <= 100){
-            $current_100[] = $products[$current_key]->id;
-          }
-          else{
-            $sql_query = 'DELETE FROM s_cart_products WHERE product_id IN ('.implode(",", $current_100).')';
-            $productstorages[] = $sql_query;
-            $current_100 = [];
-          }
-        }
-        $current_key++;
-      } while (isset($products[$current_key]));
-
-      //   $options = \DB::select($query);
-
-
+      $productinfo = Product::find(52385);
+      $product_storage_id = 14;
+      dd(ProductServices::getOldBasePrice($productinfo,$product_storage_id));
+      //dd($productinfo->storages,ProductServices::getPrice($productinfo),ProductServices::getPrice($productinfo));
     }
 
 
@@ -260,12 +235,6 @@ class ProductController extends Controller
                 $spans .= '<span class="bage-default bage-hits">HITS</span>';
             }
 
-
-            // return '<div class="product-image"><img src="'.$src.'" alt="'.env('DINMARK_URL').'images/dinmark_nophoto.jpg" width="60">
-            //             <div class="wrap-label">
-            //             '.$spans.'
-            //             </div>
-            //         </div>';
             return '<div class="product-image"><img src="'.$src.'" alt="https://dinmark.com.ua/images/dinmark_nophoto.jpg" width="60">
                         <div class="wrap-label">
                         '.$spans.'
@@ -278,54 +247,26 @@ class ProductController extends Controller
             .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
             '<span>'.$product->article_show.'</span>';
         })
-            // ->addColumn('retail_price', function (Product $product) {
-            //     if(\App\Services\Product\Product::hasAmount($product->storages)){
-            //         return '<p id="retail_price_'.$product->id.'"><span>'.ProductServices::getBasePrice($product).'</span></p>';
-            //     }
-            //     return number_format(0,2,'.',' ');
-            // })
-            // ->addColumn('user_price', function (Product $product) {
-            //     if(\App\Services\Product\Product::hasAmount($product->storages)){
-            //         if($product->old_price){
-            //           return '<p id="user_price_'.$product->id.'"><span><strike>'.ProductServices::getPrice($product).'</strike></span><span style="color:#ee3f3c"> '
-            //           .number_format($product->old_price,2,'.',' ').'</span></p>';
-            //         }else{
-            //           return '<p id="user_price_'.$product->id.'"><span>'.ProductServices::getPrice($product).'</span></p>';
-            //         }
-            //     }
-            //     return number_format(0,2,'.',' ');
-            //     //return '<p id="user_price_'.$product->id.'"><span></span></p>';
-            // })
             ->addColumn('retail_user_prices', function (Product $product) {
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    // $stroage_id = $product->storages->first()->id;
-                    // $retail = ''.__('product.table_header_price_retail').': <span>'.ProductServices::getBasePrice($product,$stroage_id).'</span>';
-                    // if($product->old_price){
-                    //   $user_price = ''.__('product.table_header_price').': <span><strike>'.ProductServices::getPrice($product,$stroage_id).'</strike>
-                    //   </span><span style="color:#ee3f3c"> '
-                    //   .number_format($product->old_price,2,'.',' ').'</span>';
-                    // }else{
-                    //   $user_price = ''.__('product.table_header_price').': <span>'.ProductServices::getPrice($product).'</span>';
-                    // }
-                    // return $retail. '<br>'.$user_price;
                     $storage = $product->storages->first();
                     $package = $storage->package;
-                    $retail = ProductServices::getBasePrice($product,$storage->id);
+                    $retail = ProductServices::getBasePrice($product,$storage->storage_id);
                     $user_price = ProductServices::getPrice($product,$storage->id);
-                    $old_price = $product->old_price;
-                    if($old_price){
+                    $old_price = ProductServices::getOldBasePrice($product,$storage->storage_id);
+                    if($product->old_price){
                       return '<p id="retail_user_price_'.$product->id.'">
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
                       <span>'.__('product.table_header_price').': </span>
-                      <span class="old_price"><strike>'.number_format($old_price*$package,2,'.',' ').'</strike></span>
+                      <span class="old_price" style="color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }else{
                       return '<p id="retail_user_price_'.$product->id.'">
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
                       <span>'.__('product.table_header_price').': </span>
-                      <span class="old_price" style="display:none"><strike>'.number_format($old_price*$package,2,'.',' ').'</strike></span>
+                      <span class="old_price" style="display:none;color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }
 
@@ -369,7 +310,6 @@ class ProductController extends Controller
                     $storages = $product->storages;
                     if(count($storages)){
                         $value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
-                        //$value .= "<option value='0'>$emptyvalue</option>";
                         if(isset($product->storages->firstWhere('is_main',1)->storage_id)){
                             $main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
                         }
@@ -529,6 +469,7 @@ class ProductController extends Controller
         $three_percent_discount_limit = $storageinfo->limit_1;
         $seven_percent_discount_limit = $storageinfo->limit_2;
 
+        $retail = ProductServices::getBasePrice($productinfo,$storageinfo->storage_id);
         $pricefor100 = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
         $oldprice = number_format($productinfo->oldprice * $package,2,'.',' ');
         $multiplier = $amount/$package - $amount%$package;
@@ -551,7 +492,8 @@ class ProductController extends Controller
         }
 
 
-        $discountamount = intdiv($amount,100)*($pricefor100 - $price);
+        //$discountamount = intdiv($amount,100)*($pricefor100 - $price);
+        $discountamount = ($pricefor100-$price)*($amount/100);
         $price = $price/100*$amount;
         $unit = $productinfo->unit;
         preg_match_all('!\d+!', $unit, $isnumber);
@@ -585,6 +527,7 @@ class ProductController extends Controller
             'limit_amount_quantity_1' => $three_percent_discount_limit,
             'limit_amount_quantity_2' => $seven_percent_discount_limit,
             'user_price' => number_format($user_price,2,'.',' '),
+            'retail' => $retail,
             'price100' => number_format($pricefor100,2,'.',' '),
             'oldprice' => $oldprice
         ];

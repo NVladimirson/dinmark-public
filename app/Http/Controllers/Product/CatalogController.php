@@ -226,7 +226,7 @@ class CatalogController extends Controller
 			->addColumn('user_price', function (Product $product) {
                 if(\App\Services\Product\Product::hasAmount($product->storages))
                 {
-                    return \App\Services\Product\Product::getPrice($product);
+                    return '<div id="catalog_user_price_'.$product->id.'">'.\App\Services\Product\Product::getPrice($product).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -236,7 +236,7 @@ class CatalogController extends Controller
 					$coef = $group->price->koef;
 				}
                 if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return \App\Services\Product\Product::getPriceWithCoef($product,$coef);
+                    return '<div id="catalog_catalog_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -354,7 +354,7 @@ class CatalogController extends Controller
 					$product->whereIn('id',$ids);
 				}
 			}, true)
-			->rawColumns(['name_article_html','image_html','check_html','actions','article_holding','storage_html'])
+			->rawColumns(['name_article_html','image_html','check_html','actions','article_holding','storage_html','user_price','catalog_price'])
 			->toJson();
 	}
 
@@ -408,6 +408,13 @@ class CatalogController extends Controller
 		$likeGroup->save();
 
 		return redirect()->back()->with('status', trans('wishlist.modal_price_success'));
+	}
+
+	public function changeStorage(Request $request){
+		$product_storage_id = $request->storage_id;
+		$product_info = Product::with('storages')->find($request->product_id);
+		$storage_id = $product_info->storages->where('storage_id',$product_storage_id)->first()->id;
+		return ProductServices::getPrice($product_info,$storage_id);
 	}
 
 	public function destroy(Request $request, $id){

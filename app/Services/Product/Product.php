@@ -126,10 +126,34 @@ class Product
         return $productPDF;
 	}
 
+	public static function getOldBasePrice($product,$storage_id = null){
+		$instance =  static::getInstance();
+		if($storage_id != null){
+				$storage = $product->storages->firstWhere('storage_id',$storage_id);
+		}else{
+				$storage = $product->storages->firstWhere('is_main',1);
+		}
+
+				$oldprice = 0;
+				if($storage){
+						$currency = $instance->currencies->firstWhere('code',$storage->currency);
+						$oldprice = $product->old_price;
+						if($currency){
+								$oldprice *= $currency->currency;
+						}
+				}
+		$oldprice *= 1.2 * 2;
+
+		return number_format($oldprice,2,'.',' ');
+	}
+
 	public static function getBasePrice($product,$storage_id = null){
 		$instance =  static::getInstance();
-
-		$storage = $product->storages->firstWhere('is_main',1);
+		if($storage_id != null){
+				$storage = $product->storages->firstWhere('storage_id',$storage_id);
+		}else{
+				$storage = $product->storages->firstWhere('is_main',1);
+		}
 
         $price = 0;
         if($storage){
