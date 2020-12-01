@@ -6,6 +6,11 @@
 	<link href="/assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
 	<link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<style>
+		.nav-link {
+			height: 55px;
+		} 
+	</style>
 @endpush
 
 @section('content')
@@ -111,9 +116,11 @@
         <div class="col-lg-6">
             <ul class="nav nav-tabs nav-tabs-inverse nav-tabs-primary nav-justified nav-justified-mobile">
                 <li class="nav-item">
-                    <a href="#latest-actions" data-toggle="tab" class="nav-link active"><i class="fas fa-user-clock fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_actions')</span></a></li>
-                <li class="nav-item"><a href="#last_orders" data-toggle="tab" class="nav-link"><i class="fas fa-shopping-cart fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_orders')</span></a></li>
-                <li class="nav-item"><a href="#last_messages" data-toggle="tab" class="nav-link"><i class="fa fa-envelope fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_messages')</span></a></li>
+                    <a href="#latest-actions" data-toggle="tab"  class="nav-link active"><i class="fas fa-user-clock fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_actions')</span></a></li>
+                <li class="nav-item">
+									<a href="#last_orders" data-toggle="tab"  class="nav-link"><i class="fas fa-shopping-cart fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_orders')</span></a></li>
+                <li class="nav-item">
+									<a href="#last_messages" data-toggle="tab"  class="nav-link"><i class="fa fa-envelope fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_messages')</span></a></li>
             </ul>
             <div class="tab-content" >
                 <div class="tab-pane fade active show" id="latest-actions">
@@ -205,9 +212,9 @@
         <div class="col-lg-6">
             <ul class="nav nav-tabs nav-tabs-inverse nav-tabs-primary nav-justified nav-justified-mobile">
                 <li class="nav-item">
-                    <a href="#top_price_products" data-toggle="tab" class="nav-link active"><i class="fa fa-shopping-bag fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_top_price_products')</span></a></li>
-                <li class="nav-item"><a href="#top_popular_products" data-toggle="tab" class="nav-link"><i class="fa fa-shopping-bag fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_top_popular_products')</span></a></li>
-                <li class="nav-item"><a href="#last_news" data-toggle="tab" class="nav-link"><i class="far fa-newspaper fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_news')</span></a></li>
+                    <a href="#top_price_products" data-toggle="tab"  class="nav-link active"><i class="fa fa-shopping-bag fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_top_price_products')</span></a></li>
+                <li class="nav-item"><a href="#top_popular_products" data-toggle="tab"  class="nav-link"><i class="fa fa-shopping-bag fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_top_popular_products')</span></a></li>
+                <li class="nav-item"><a href="#last_news" data-toggle="tab"  class="nav-link"><i class="far fa-newspaper fa-lg m-r-5"></i> <span class="d-none d-md-inline">@lang('dashboard.tab_name_last_news')</span></a></li>
             </ul>
             <div class="tab-content" >
                 <div class="tab-pane fade active show" id="top_price_products">

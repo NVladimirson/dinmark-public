@@ -78,7 +78,7 @@ $('.navbar-toggle').click(function (e) {
     } else {
         $('#close-burger-menu').toggleClass('hide');
         $('.sidebar').css('left', '0');
-        $('.sidebar').css('z-index', '9999');
+        $('.sidebar').css('z-index', '1000');
     }
     // $('#close-burger-menu').toggleClass('hide');
 
@@ -155,11 +155,11 @@ $('#show-catalog-menu').click(function (e) {
 $(window).scroll(function() {
     if ($(this).scrollTop() > 1) {
         // $('.navbar-grey').addClass('hide');
-        $('.sidebar').css('padding-top', '89px')
+        $('.sidebar').css('padding-top', '89px');
         $('.navbar-grey').css('z-index', '1015');
     } else {
         // $('.navbar-grey').removeClass('hide');
-        $('.sidebar').css('padding-top', '135px')
+        $('.sidebar').css('padding-top', '135px');
         $('.navbar-grey').css('z-index', '1019');
     }
 });

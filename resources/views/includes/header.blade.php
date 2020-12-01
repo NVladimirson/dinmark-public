@@ -438,23 +438,23 @@ class="hide" style="display: block;">
                 </div>
             </div>
             <div class="col">
-                <div class="navbar-mobile-header">
+                <div class="navbar-mobile-header ml-5">
                     @if ($sidebarTwo)
-                    <a href="javascript:;"class="sidebar-minify-btn navbar-toggle pull-left" data-click="sidebar-minify">
+                    <a  href="javascript:;"class="sidebar-minify-btn navbar-toggle pull-left" data-click="sidebar-minify">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
                     @endif
                     @if (!$sidebarHide && !$headerTopMenu)
-                    <a href="javascript:;"class="sidebar-minify-btn navbar-toggle" data-click="sidebar-minify">
+                    <a  href="javascript:;"class="sidebar-minify-btn navbar-toggle" data-click="sidebar-minify">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
                     @endif
                     @if ($headerTopMenu)
-                        <a href="javascript:;"class="sidebar-minify-btn navbar-toggle" data-click="sidebar-minify">
+                        <a  href="javascript:;"class="sidebar-minify-btn navbar-toggle" data-click="sidebar-minify">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -705,6 +705,21 @@ class="hide" style="display: block;">
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+
+<script>
+    const burger = document.querySelector(".sidebar-minify-btn.navbar-toggle");
+    const closeBurger = document.querySelector("#close-burger-menu");
+    const toggleBurger = (el) => {
+        el.classList.toggle("hide");  
+    }
+    const listenClick1 = burger.addEventListener('click', ()=> {
+        toggleBurger(burger);
+    })
+    const listenClick2 = closeBurger.addEventListener('click', ()=> {
+        toggleBurger(burger);
+    })
+</script>
+
 <script>
     (function ($) {
         "use strict";

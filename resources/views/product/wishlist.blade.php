@@ -577,7 +577,7 @@
 				document.getElementById('data-table-buttons').addEventListener('change', (event) => {
 
 						if(event.target.className === "custom-select storage-catalog") {
-							alert(123)
+							console.log(event.target)
 						}
 				
 					});
