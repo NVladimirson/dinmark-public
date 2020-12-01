@@ -577,9 +577,22 @@
 				document.getElementById('data-table-buttons').addEventListener('change', (event) => {
 
 						if(event.target.className === "custom-select storage-catalog") {
-							alert(123)
+							let product_id = event.target.attributes['product_id'].value;
+							let storage_id = event.target.options[event.target.selectedIndex].attributes['value'].value;
+							let route = '{{route('catalogs.change_storage')}}';
+
+							$.ajax({
+									method: "GET",
+									url: route,
+									data: 'product_id='+product_id+'&storage_id='+storage_id,
+									success: function(resp) {
+												document.getElementById('catalog_user_price_'+product_id).innerText = resp;
+									},
+									error: function(xhr, str) {
+											console.log(xhr);
+									}
+							});
 						}
-				
 					});
 
 

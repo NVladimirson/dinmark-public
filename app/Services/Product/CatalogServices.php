@@ -31,37 +31,33 @@ class CatalogServices
 	}
 
     public static function dayrounder($days){
-
         if($days) {
-            switch ($days) {
-                case $days > 10000:
-                    $days = '>10000';
-                    break;
-                case $days > 5000:
-                    $days = '>5000';
-                    break;
-                case $days > 1500:
-                    $days = '>1500';
-                    break;
-                case $days > 500:
-                    $days = '>500';
-                    break;
-                case $days > 150:
-                    $days = '>150';
-                    break;
-                case $days > 50:
-                    $days = '>50';
-                    break;
-                case $days > 10:
-                    $days = '>10';
-                    break;
-                case $days < 10:
-                    $days = '<10';
-                    break;
-            }
+					if($days>10000){
+						return '>10000';
+					}
+					else if($days>5000){
+						return '>5000';
+					}
+					else if($days>1500){
+						return '>1500';
+					}
+					else if($days>500){
+						return '>500';
+					}
+					else if($days>150){
+						return '>150';
+					}
+					else if($days>50){
+						return '>50';
+					}
+					else if($days>10){
+						return '>10';
+					}
+					else if($days<10){
+						return '<10';
+					}
         }
         return $days;
-
     }
 
 	private static $instance;

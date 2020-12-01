@@ -65,7 +65,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/catalogs/destroy/{id}','Product\CatalogController@destroy')->name('catalogs.destroy');
 		Route::post('/catalogs/change-article/{id}','Product\CatalogController@changeArticle')->name('catalogs.change_article');
 		Route::post('/catalogs/set-price/{id}','Product\CatalogController@setPrice')->name('catalogs.change_article');
-      Route::get('/catalogs/add-to-catalog/{ids}','Product\CatalogController@addToCatalogMultiple')->name('catalogs.add_to_catalog_multiple');
+    Route::get('/catalogs/add-to-catalog/{ids}','Product\CatalogController@addToCatalogMultiple')->name('catalogs.add_to_catalog_multiple');
+		Route::get('/catalogs/change-storage/','Product\CatalogController@changeStorage')->name('catalogs.change_storage');
 
 		Route::get('/orders','Order\OrderController@index')->name('orders');
 		Route::get('/orders/create','Order\OrderController@create')->name('orders.create');
