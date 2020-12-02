@@ -1382,7 +1382,6 @@
                 let max = optionselected[0].getAttribute('package_max');
 
                 if(max !== '0'){
-                  // quantityinput[0].setAttribute('style','max-width: 80px;margin-bottom: 0px!important;display:auto');
 
                   quantityinput[0].setAttribute('value',min);
                   quantityinput[0].setAttribute('min',min);
@@ -1394,19 +1393,17 @@
                   orderbutton.toggle(true);
                   getpricebutton.toggle(false);
 
-                  packageweight.toggle(true);
-                  sumwithtaxes.toggle(true);
-
+                  packageweight[0].parentElement.setAttribute('style','display:auto');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:auto');
                 }
                 else{
                   quantityinput.toggle(false);
 
                   orderbutton.toggle(false);
                   getpricebutton.toggle(true);
-                
-                packageweight[0].css( "display", "none" )
-                //   packageweight.toggle(false);
-                //   sumwithtaxes.toggle(false);
+
+                  packageweight[0].parentElement.setAttribute('style','display:none');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:none');
                 }
 
                 $.ajax({
