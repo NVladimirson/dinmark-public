@@ -375,7 +375,7 @@ class ProductController extends Controller
 
                     $weight = $product->weight * ($storage->package/$unitnumber);
                     return '
-                <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;display:auto">
+                <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
                 <span class="multiplier">1</span>
                 <span class="x">x</span>
                 <span class="package">'.$package.'</span>
@@ -383,7 +383,7 @@ class ProductController extends Controller
                 </p>';
                 }else{
                     return '
-                <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;display:auto">
+                <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
                 <span class="multiplier"></span>
                 <span class="x" style="display:none">x</span>
                 <span class="package"></span>
