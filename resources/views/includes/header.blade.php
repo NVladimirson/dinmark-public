@@ -156,30 +156,30 @@
             </li>
             @endif
         </div>
-        <div class="actions flex ">
+        <div class="actions flex right-upper-counters">
 
         @if( $wishlists_count > 0)
-                            <a href="#" class="likes-active">
+                            <a href="{{route('catalogs')}}" class="likes-active">
                         @else
-                            <a href="#" class="likes">
+                            <a href="{{route('catalogs')}}" class="likes">
                         @endif
-                            <i>{{$wishlists_count}}</i>
+                            <i class="catalog-count">{{$wishlists_count}}</i>
                         </a>
                         <!--  -->
                         @if( $implementation_count > 0)
-                            <a href="#" class="comparison-active">
+                            <a href="{{route('implementations')}}" class="comparison-active">
                         @else
-                            <a href="#" class="comparison">
+                            <a href="{{route('implementations')}}" class="comparison">
                         @endif
-                            <i>{{$implementation_count}}</i>
+                            <i class="implementation-count">{{$implementation_count}}</i>
                         </a>
                         <!--  -->
                         @if( $orders_count > 0)
-                            <a href="#" class="cart-active">
+                            <a href="{{route('orders')}}" class="cart-active">
                         @else
-                            <a href="#" class="cart">
+                            <a href="{{route('orders')}}" class="cart">
                         @endif
-                            <i>{{$orders_count}} </i>
+                            <i class="order-count">{{$orders_count}}</i>
                         </a>
             <!-- <a href="#" class="likes"><i>{{$wishlists_count}}</i></a>
             <a href="#" class="comparison"><i>{{$implementation_count}}</i></a>
@@ -710,7 +710,7 @@ class="hide" style="display: block;">
     const burger = document.querySelector(".sidebar-minify-btn.navbar-toggle");
     const closeBurger = document.querySelector("#close-burger-menu");
     const toggleBurger = (el) => {
-        el.classList.toggle("hide");  
+        el.classList.toggle("hide");
     }
     const listenClick1 = burger.addEventListener('click', ()=> {
         toggleBurger(burger);

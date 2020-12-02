@@ -504,6 +504,11 @@
                 content: '.content1'
             });
 
+            function changeCounter(action,increase){
+               //catalog-count,implementation-count,order-count
+               console.log($('.right-upper-counters').children);
+             }
+
             function initOptionFilters() {
                     let filter_selected_map = $("[filter-selected=true]");
                     let all_filters = $(".filter_with_options");
@@ -1227,6 +1232,7 @@
                             $.gritter.add({
                                 title: '@lang('product.get_price_success')',
                             });
+
                         }
                     },
                     error: function(xhr, str) {
@@ -1373,6 +1379,8 @@
         }
 
         function initCalc(obj){
+            changeCounter('action','increase');
+
             let optionselected = $("option:selected", obj);
             let product_id = obj.getAttribute('product_id');
 
