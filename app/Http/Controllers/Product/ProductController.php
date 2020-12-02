@@ -98,9 +98,11 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $productinfo = Product::find(52385);
-      $product_storage_id = 14;
-      dd(ProductServices::getOldBasePrice($productinfo,$product_storage_id));
+      //120637,163378
+      $productinfo = Product::find(65571);
+      //$price = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
+      //$product_storage_id = 14;
+      dd(ProductServices::getPriceUnformatted($productinfo,120637),ProductServices::getPriceUnformatted($productinfo,163378));
       //dd($productinfo->storages,ProductServices::getPrice($productinfo),ProductServices::getPrice($productinfo));
     }
 

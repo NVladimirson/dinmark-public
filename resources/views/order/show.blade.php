@@ -698,6 +698,7 @@
 					var selectedStorage = $(this).find("option:selected");
 					var min = +selectedStorage.data('storage_min');
 					var max = +selectedStorage.data('storage_max');
+					console.log($(this).find("option:selected").data('storage-price'));
                     row.find('.order-product-price').data('price',selectedStorage.data('storage-price')/100);
                     row.find('.order-product-price').text(numberStringFormat(+selectedStorage.data('storage-price')));
 					var count = row.find('.order-product-counter').val();
@@ -707,6 +708,8 @@
 					row.find('.order-product-counter').attr('min',min);
 					row.find('.order-product-counter').attr('step',min);
 					row.find('.order-product-counter').attr('max',max);
+
+					//row.find('.order-product-price').attr('data-price','test');
 
 					row.find('.order-product-counter').change();
                 });
