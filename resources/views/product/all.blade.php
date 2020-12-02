@@ -1088,6 +1088,9 @@
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
                                 //console.log(data_storage_max);
+                                if(data_storage_max === '0' || data_storage_max-data_storage_min<0){
+                                    return;
+                                }
 
                                 if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
@@ -1384,8 +1387,8 @@
                 let min = optionselected[0].getAttribute('package_min');
                 let max = optionselected[0].getAttribute('package_max');
 
-                if(max !== '0'){
-
+                if(max !== '0' && (max - min > 0)){
+                  //console.log('> min: '+min+', max: '+max);
                   quantityinput[0].setAttribute('value',min);
                   quantityinput[0].setAttribute('min',min);
                   quantityinput[0].setAttribute('step',min);
@@ -1400,6 +1403,7 @@
                   sumwithtaxes[0].parentElement.setAttribute('style','display:auto');
                 }
                 else{
+                  //console.log('min: '+min+', max: '+max);
                   quantityinput.toggle(false);
 
                   orderbutton.toggle(false);
