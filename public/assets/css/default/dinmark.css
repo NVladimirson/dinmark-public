@@ -1766,7 +1766,7 @@ body ul.wysihtml5-toolbar .glyphicon {
     position: relative;
 }
 .table-scroll-container.table-scroll-container-xl {
-    min-height: 50vh;
+    min-height: 60vh;
 }
 .navbar-header {
     margin-right: 50px;
@@ -1782,8 +1782,3 @@ body ul.wysihtml5-toolbar .glyphicon {
     display: none;
 }
 
-.sidebar-minify-btn.navbar-toggle {
-    position: fixed;
-    left: 10px;
-    top: 50px;
-}
