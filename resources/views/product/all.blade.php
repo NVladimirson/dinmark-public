@@ -1088,6 +1088,9 @@
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
                                 //console.log(data_storage_max);
+                                if(data_storage_max === '0'){
+                                    return;
+                                }
 
                                 if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
