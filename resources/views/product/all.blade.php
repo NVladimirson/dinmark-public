@@ -1052,7 +1052,9 @@
                             $.each(map, function(key, value) {
                                 let id = value.attributes['data-product'].value;
                                 if (window.products.indexOf(id) !== -1) {
-                                    multiple_order_map.push(id + '_:_' + value.attributes['data-product_name'].value +
+                                    multiple_order_map.push(
+                                      id +
+                                        '_:_' + value.attributes['data-product_name'].value +
                                         '_:_' + value.attributes['data-storage'].value +
                                         '_:_' + value.attributes['data-storage_min'].value +
                                         '_:_' + value.attributes['data-storage_max'].value +
@@ -1085,6 +1087,7 @@
                                 let data_amount = value.split('_:_')[5];
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
+                                //console.log(data_storage_max);
 
                                 if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
@@ -1462,6 +1465,8 @@
 
                         let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
                         add_to_order_button.setAttribute('data-storage',storage_id);
+                        orderbutton[0].setAttribute('data-storage_max',optionselected[0].getAttribute('package_max'));
+                        orderbutton[0].setAttribute('data-storage_min',optionselected[0].getAttribute('package_min'));
 
                     },
                     error: function(xhr, str) {
