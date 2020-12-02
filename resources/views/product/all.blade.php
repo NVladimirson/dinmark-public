@@ -1369,19 +1369,44 @@
         function initCalc(obj){
             let optionselected = $("option:selected", obj);
             let product_id = obj.getAttribute('product_id');
+
             let quantityinput = $('#calc_quantity_'+product_id);
             let packageweight = $('#package_weight_'+product_id);
             let sumwithtaxes = $('#sum_w_taxes_'+product_id);
+
+            let orderbutton = $('#to_order_button_'+product_id);
+            let getpricebutton = $('#get_price_button_'+product_id);
             let storage_id = optionselected.val();
             if(storage_id!=='0'){
                 let min = optionselected[0].getAttribute('package_min');
                 let max = optionselected[0].getAttribute('package_max');
 
-                quantityinput[0].setAttribute('value',min);
-                quantityinput[0].setAttribute('min',min);
-                quantityinput[0].setAttribute('step',min);
-                quantityinput[0].setAttribute('max',max);
-                quantityinput.css("display","");
+                if(max !== '0'){
+                  // quantityinput[0].setAttribute('style','max-width: 80px;margin-bottom: 0px!important;display:auto');
+
+                  quantityinput[0].setAttribute('value',min);
+                  quantityinput[0].setAttribute('min',min);
+                  quantityinput[0].setAttribute('step',min);
+                  quantityinput[0].setAttribute('max',max);
+
+                  quantityinput.toggle(true);
+
+                  orderbutton.toggle(true);
+                  getpricebutton.toggle(false);
+
+                  packageweight.toggle(true);
+                  sumwithtaxes.toggle(true);
+
+                }
+                else{
+                  quantityinput.toggle(false);
+
+                  orderbutton.toggle(false);
+                  getpricebutton.toggle(true);
+
+                  packageweight.toggle(false);
+                  sumwithtaxes.toggle(false);
+                }
 
                 $.ajax({
                     type: "GET",
