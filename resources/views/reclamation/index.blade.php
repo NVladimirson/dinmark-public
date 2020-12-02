@@ -235,8 +235,7 @@
 						if (resp.status == "success") {
 							$('#explanation_message').val('');
 							$.gritter.add({
-								title: '@lang('
-								order.explanation_success ')',
+								title: '@lang('order.explanation_success')',
 							});
 						}
 					},
