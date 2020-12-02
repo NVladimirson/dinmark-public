@@ -1404,9 +1404,8 @@
                   orderbutton.toggle(false);
                   getpricebutton.toggle(true);
                 
-                packageweight[0].css( "display", "none" )
-                //   packageweight.toggle(false);
-                //   sumwithtaxes.toggle(false);
+                  packageweight.toggle(false)
+                  sumwithtaxes.toggle(false);
                 }
 
                 $.ajax({
