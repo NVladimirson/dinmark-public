@@ -428,6 +428,7 @@ class OrderController extends Controller
 
             $storage_prices = [];
             foreach ($orderProduct->product->storages as $storage){
+							info($storage);
                 $storage_prices[$storage->id]['price'] = ProductServices::getPriceUnformatted($productinfo,$storage->id);
 								$storage_prices[$storage->id]['limit1'] = $storage->limit_1 ? $storage->limit_1 : 0;
 								$storage_prices[$storage->id]['limit2'] = $storage->limit_2 ? $storage->limit_2 : 0;

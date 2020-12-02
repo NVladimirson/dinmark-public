@@ -301,7 +301,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
+                    return '<p id="limit_2_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
                         </span><br><span class="limit_amount_quantity_2"></span></p>';
                 }
 
