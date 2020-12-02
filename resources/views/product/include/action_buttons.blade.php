@@ -10,7 +10,7 @@
         {{----}}
     {{--@endif--}}
 @if($hasStorage)
-    <a href="#modal-order" class="btn btn-sm btn-primary source"
+    <a id="to_order_button_{{$product->id}}" href="#modal-order" class="btn btn-sm btn-primary source"
     data-price="{{\App\Services\Product\Product::getPriceUnformatted($product)}}"
              data-toggle="modal"
        data-product="{{$product->id}}"
@@ -27,10 +27,10 @@
        data-name="{{$name}}"
     >
         <i class="fas fa-cart-plus"></i></a>
-        <a id="get_price_button_{{$product->id}}" href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-amount="1" data-min="1" 
-            data-product_id="{{$product->id}}" data-image="{{$src}}" data-name="{{$name}}" style="display:none"><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
+        <a id="get_price_button_{{$product->id}}" href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-amount="1" data-min="1"
+            data-product_id="{{$product->id}}" data-image="{{$src}}" data-name="{{$name}}" style="width: auto;display:none"><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
 @else
     <a id="get_price_button_{{$product->id}}" href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-amount="1" data-min="1" data-step="1"
-        data-product_id="{{$product->id}}" data-image="{{$src}}" data-name="{{$name}}"><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
+        data-product_id="{{$product->id}}" data-image="{{$src}}" data-name="{{$name}}" style="width: auto"><i style="width: 13.5px;" class="fas fa-question-circle"></i></a>
 @endif
 </div>

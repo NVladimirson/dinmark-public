@@ -99,11 +99,12 @@ class ProductController extends Controller
 
     public function test(Request $request){
       //120637,163378
-      $productinfo = Product::find(65571);
+      $productinfo = Product::find(65525);
       //$price = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
       //$product_storage_id = 14;
-      dd(ProductServices::getPriceUnformatted($productinfo,120637),ProductServices::getPriceUnformatted($productinfo,163378));
+      //dd(ProductServices::getPriceUnformatted($productinfo,120637),ProductServices::getPriceUnformatted($productinfo,163378));
       //dd($productinfo->storages,ProductServices::getPrice($productinfo),ProductServices::getPrice($productinfo));
+      dd($productinfo->storages);
     }
 
 
@@ -282,11 +283,11 @@ class ProductController extends Controller
                     //$price_limit = ProductServices::getPriceWithCoef($product,0.97);
                     $price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.97),2,'.',' ');
                     $limit = $storage->limit_1;
-                    return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a" ><span class="limit_amount_price_1">'.$price_limit.
+                    return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1">'.$price_limit.
                         '</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_1"> -
+                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
                         </span><br><span class="limit_amount_quantity_1"></span></p>';
                 }
             })
@@ -296,11 +297,11 @@ class ProductController extends Controller
                     //$price_limit = ProductServices::getPriceWithCoef($product,0.93);
                     $price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.93),2,'.',' ');
                     $limit = $storage->limit_2;
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2">'.$price_limit.
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2">'.$price_limit.
                         '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674" ><span class="limit_amount_price_2"> -
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
                         </span><br><span class="limit_amount_quantity_2"></span></p>';
                 }
 
@@ -374,7 +375,7 @@ class ProductController extends Controller
 
                     $weight = $product->weight * ($storage->package/$unitnumber);
                     return '
-                <p id="package_weight_'.$product->id.'">
+                <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;display:auto">
                 <span class="multiplier">1</span>
                 <span class="x">x</span>
                 <span class="package">'.$package.'</span>
@@ -382,7 +383,7 @@ class ProductController extends Controller
                 </p>';
                 }else{
                     return '
-                <p id="package_weight_'.$product->id.'">
+                <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;display:auto">
                 <span class="multiplier"></span>
                 <span class="x" style="display:none">x</span>
                 <span class="package"></span>
@@ -397,14 +398,14 @@ class ProductController extends Controller
                   $price = ProductServices::getPriceUnformatted($product,$storage->id);
                   $price = $price/100 * $package;
                   if(isset($storage->limit_2) && $storage->limit_2!=0){
-                    return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                    return '<p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
                       <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p>';
                   }else{
-                    return '<p id="sum_w_taxes_'.$product->id.'"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                    return '<p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
                       <span class="discount"></span> <span class="discountamount"></span> </p>';
                   }
                 }else{
-                    return '<p id="sum_w_taxes_'.$product->id.'"><span class="price"></span> <br>
+                    return '<p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price"></span> <br>
                       <span class="discount"></span> <span class="discountamount"></span> </p>';
                 }
 
