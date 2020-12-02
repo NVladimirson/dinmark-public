@@ -1393,6 +1393,7 @@
                   quantityinput[0].setAttribute('min',min);
                   quantityinput[0].setAttribute('step',min);
                   quantityinput[0].setAttribute('max',max);
+                  quantityinput[0].setAttribute('datamax',max);
 
                   quantityinput.toggle(true);
 
@@ -1471,7 +1472,7 @@
                         add_to_order_button.setAttribute('data-storage',storage_id);
                         orderbutton[0].setAttribute('data-storage_max',optionselected[0].getAttribute('package_max'));
                         orderbutton[0].setAttribute('data-storage_min',optionselected[0].getAttribute('package_min'));
-
+                        orderbutton[0].setAttribute('data-amount',optionselected[0].getAttribute('package_max'));
                     },
                     error: function(xhr, str) {
                         console.log(xhr);

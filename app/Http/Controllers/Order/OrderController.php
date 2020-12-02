@@ -428,7 +428,9 @@ class OrderController extends Controller
 
             $storage_prices = [];
             foreach ($orderProduct->product->storages as $storage){
-							info($storage);
+								if($storage->amount == 0 || ($storage->amount < $storage->package)){
+									continue;
+								}
                 $storage_prices[$storage->id]['price'] = ProductServices::getPriceUnformatted($productinfo,$storage->id);
 								$storage_prices[$storage->id]['limit1'] = $storage->limit_1 ? $storage->limit_1 : 0;
 								$storage_prices[$storage->id]['limit2'] = $storage->limit_2 ? $storage->limit_2 : 0;
@@ -446,9 +448,11 @@ class OrderController extends Controller
 								// }else{
 								// 	$storage_prices[$storage->id]['discount7'] = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
 								// }
-
+								// ->where([['target','=','b2b'],['active',1]])
             }
             $weight += $orderProduct->product->weight * $orderProduct->quantity/100;
+
+
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
@@ -462,7 +466,11 @@ class OrderController extends Controller
 				// 'price_without_discount' => number_format($price_without_discount,2,'.',' '),
 				// 'price_without_discount_raw' => $price_without_discount,
 				'price_raw' => $price,
-                'storages'  => $orderProduct->product->storages,
+                'storages'  => $orderProduct->product->storages->filter(function ($value, $key) {
+										if($value->amount > 0 && $value->amount - $value->package > 0){
+											return $value;
+										}
+									}),
                 'storage_prices' => $storage_prices,
                 'storage_id' => $orderProduct->storage_alias,
 				'total' => number_format($total,2,'.', ' '),
