@@ -1052,7 +1052,9 @@
                             $.each(map, function(key, value) {
                                 let id = value.attributes['data-product'].value;
                                 if (window.products.indexOf(id) !== -1) {
-                                    multiple_order_map.push(id + '_:_' + value.attributes['data-product_name'].value +
+                                    multiple_order_map.push(
+                                      id +
+                                        '_:_' + value.attributes['data-product_name'].value +
                                         '_:_' + value.attributes['data-storage'].value +
                                         '_:_' + value.attributes['data-storage_min'].value +
                                         '_:_' + value.attributes['data-storage_max'].value +
@@ -1085,6 +1087,10 @@
                                 let data_amount = value.split('_:_')[5];
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
+                                //console.log(data_storage_max);
+                                if(data_storage_max === '0' || data_storage_max-data_storage_min<0){
+                                    return;
+                                }
 
                                 if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
@@ -1381,31 +1387,31 @@
                 let min = optionselected[0].getAttribute('package_min');
                 let max = optionselected[0].getAttribute('package_max');
 
-                if(max !== '0'){
-                  // quantityinput[0].setAttribute('style','max-width: 80px;margin-bottom: 0px!important;display:auto');
-
+                if(max !== '0' && (max - min > 0)){
+                  //console.log('> min: '+min+', max: '+max);
                   quantityinput[0].setAttribute('value',min);
                   quantityinput[0].setAttribute('min',min);
                   quantityinput[0].setAttribute('step',min);
                   quantityinput[0].setAttribute('max',max);
+                  quantityinput[0].setAttribute('datamax',max);
 
                   quantityinput.toggle(true);
 
                   orderbutton.toggle(true);
                   getpricebutton.toggle(false);
 
-                  packageweight.toggle(true);
-                  sumwithtaxes.toggle(true);
-
+                  packageweight[0].parentElement.setAttribute('style','display:auto');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:auto');
                 }
                 else{
+                  //console.log('min: '+min+', max: '+max);
                   quantityinput.toggle(false);
 
                   orderbutton.toggle(false);
                   getpricebutton.toggle(true);
-                
-                  packageweight.toggle(false)
-                  sumwithtaxes.toggle(false);
+
+                  packageweight[0].parentElement.setAttribute('style','display:none');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:none');
                 }
 
                 $.ajax({
@@ -1464,7 +1470,9 @@
 
                         let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
                         add_to_order_button.setAttribute('data-storage',storage_id);
-
+                        orderbutton[0].setAttribute('data-storage_max',optionselected[0].getAttribute('package_max'));
+                        orderbutton[0].setAttribute('data-storage_min',optionselected[0].getAttribute('package_min'));
+                        orderbutton[0].setAttribute('data-amount',optionselected[0].getAttribute('package_max'));
                     },
                     error: function(xhr, str) {
                         console.log(xhr);

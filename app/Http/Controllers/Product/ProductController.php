@@ -301,7 +301,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
+                    return '<p id="limit_2_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
                         </span><br><span class="limit_amount_quantity_2"></span></p>';
                 }
 
@@ -374,21 +374,21 @@ class ProductController extends Controller
                     }//сори
 
                     $weight = $product->weight * ($storage->package/$unitnumber);
-                    return '
+                    return '<div>
                 <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
                 <span class="multiplier">1</span>
                 <span class="x">x</span>
                 <span class="package">'.$package.'</span>
                 <span class="weight">'.number_format($weight,3,'.',',').'</span>
-                </p>';
+                </p></div>';
                 }else{
-                    return '
+                    return '<div>
                 <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
                 <span class="multiplier"></span>
                 <span class="x" style="display:none">x</span>
                 <span class="package"></span>
                 <span class="weight"></span>
-                </p>';
+                </p></div>';
                 }
             })
             ->addColumn('sum_w_taxes', function (Product $product) {
@@ -398,15 +398,15 @@ class ProductController extends Controller
                   $price = ProductServices::getPriceUnformatted($product,$storage->id);
                   $price = $price/100 * $package;
                   if(isset($storage->limit_2) && $storage->limit_2!=0){
-                    return '<p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
-                      <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p>';
+                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                      <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p></div>';
                   }else{
-                    return '<p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
-                      <span class="discount"></span> <span class="discountamount"></span> </p>';
+                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                      <span class="discount"></span> <span class="discountamount"></span> </p></div>';
                   }
                 }else{
-                    return '<p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price"></span> <br>
-                      <span class="discount"></span> <span class="discountamount"></span> </p>';
+                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price"></span> <br>
+                      <span class="discount"></span> <span class="discountamount"></span> </p></div>';
                 }
 
             })
