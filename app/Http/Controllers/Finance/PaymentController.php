@@ -32,7 +32,7 @@ class PaymentController extends Controller
                     ]);
                 });
             });
-        })->orderBy('date_edit', 'desc');
+        })->orderBy('date_add', 'desc');
 
         if($request->has('date_from')){
             $payments->where('date_add','>=',$request->date_from);
