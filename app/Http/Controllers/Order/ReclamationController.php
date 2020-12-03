@@ -34,7 +34,13 @@ class ReclamationController extends Controller
                 return '';
             })
 			->addColumn('implementation',function (Reclamation $reclamation){
-				return $reclamation->products->first()->product->implementation->public_number;
+				if(isset($reclamation->products->first()->product->implementation->public_number)){
+					return $reclamation->products->first()->product->implementation->public_number;
+				}
+				else{
+					return '';
+				}
+
 			})
             ->addColumn('status_html',function (Reclamation $reclamation){
                 $class = '';
