@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Excel;
 use Illuminate\Support\Facades\DB;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class OrderController extends Controller
 {
@@ -672,9 +672,7 @@ class OrderController extends Controller
 				'client'	=> $client,
 				'company'	=> $company,
 			]);
-			$pdf->setOption('enable-smart-shrinking', true);
-			$pdf->setOption('no-stop-slow-scripts', true);
-			return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
+			 return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
 		}
 
 
@@ -713,8 +711,8 @@ class OrderController extends Controller
 			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
 			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
 		]);
-		$pdf->setOption('enable-smart-shrinking', true);
-		$pdf->setOption('no-stop-slow-scripts', true);
+		//$pdf->setOption('enable-smart-shrinking', true);
+		//$pdf->setOption('no-stop-slow-scripts', true);
 		return $pdf->download(($order->sender?$order->sender->getCompany->prefix.'_':'').'bill_'.$order->id.'.pdf');
 	}
 
