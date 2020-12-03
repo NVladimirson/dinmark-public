@@ -239,7 +239,7 @@
                                 <h6><a href="{{route('products.show',[$product['id']])}}" class="text-inverse">{{$product['name']}}</a></h6>
                             </td>
                             <td class="text-nowrap"><a href="javascript:;" class="text-inverse">{{$product['article']}}</a></td>
-                            <td class="text-blue f-w-600">{{$product['price']}}</td>
+                            <td class="text-blue f-w-600" style="white-space: nowrap;">{{$product['price']}}</td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -267,7 +267,7 @@
                                     <h6><a href="{{route('products.show',[$product['id']])}}" class="text-inverse">{{$product['name']}}</a></h6>
                                 </td>
                                 <td class="text-nowrap"><a href="javascript:;" class="text-inverse">{{$product['article']}}</a></td>
-                                <td class="text-blue f-w-600">{{$product['price']}}</td>
+                                <td class="text-blue f-w-600" style="white-space: nowrap;">{{$product['price']}}</td>
                             </tr>
                         @endforeach
                         </tbody>

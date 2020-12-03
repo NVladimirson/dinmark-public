@@ -10,7 +10,7 @@
     <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/select2/dist/css/table-ptoduct.css" rel="stylesheet" />
+    <link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -315,6 +315,21 @@
 
                 }
                 $('#select_all_products').prop('checked', false);
+
+                
+
+                const rows = document.querySelectorAll('tr');
+                const headerRow = Array.from(rows[1].children);
+                const productRow = Array.from(rows[4].children);
+   
+                for (let i = 0; i < headerRow.length; i++) {
+                    // console.log(headerRow[i])
+                    headerRow[i].style.width = productRow[i].offsetWidth + 'px';
+                    // console.log(productRow[i])
+                }
+
+
+
             });
 
             $('#data-table-buttons').on('click', 'tr', function() {
@@ -348,8 +363,8 @@
 
             window.table =
                 $('#data-table-buttons').DataTable({
-                    "fixedHeader": true,
                     //  scrollY: "100vh",
+                    //  fixedColumns: true,
                     deferRender: true,
                     //  scroller: true,
                     "language": {

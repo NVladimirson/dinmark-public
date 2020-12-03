@@ -4,7 +4,7 @@ $sidebarClass = (!empty($sidebarTransparent)) ? 'sidebar-transparent' : '';
 <!-- begin #sidebar -->
 <div style="padding-top: 134px;" id="sidebar" class="sidebar {{ $sidebarClass }}">
 	<!-- begin sidebar scrollbar -->
-	<div data-scrollbar="true" data-height="100%">
+	<div class="scrollbar-sidebar" data-scrollbar="true" data-height="100%">
 		@if (!$sidebarSearch)
 		<!-- begin sidebar user -->
 		<ul class="nav">
