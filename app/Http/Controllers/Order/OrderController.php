@@ -402,7 +402,12 @@ class OrderController extends Controller
 			$quantity = $orderProduct->quantity;
 			$storageinfo = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)
 			->first();
-			$package = $storageinfo->package;
+			if($storageinfo){
+				$package = $storageinfo->package;
+			}
+			else{
+				continue;
+			}
 			$three_percent_discount_limit = $storageinfo->limit_1;
 			$seven_percent_discount_limit = $storageinfo->limit_2;
 			if (($quantity >= $seven_percent_discount_limit) && $seven_percent_discount_limit){

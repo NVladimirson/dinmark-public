@@ -721,6 +721,20 @@ class="hide" style="display: block;">
 </script>
 
 <script>
+		function changeUpperCounter(action){
+			//catalog-count,implementation-count,order-count
+			let UpperCounter = document.getElementsByClassName('right-upper-counters')[0];
+
+			if(action === 'catalog'){
+				UpperCounter.children[0].children[0].innerText = parseInt(UpperCounter.children[2].children[0].innerText) + 1;
+			}
+			if(action === 'implementation'){
+				UpperCounter.children[1].children[0].innerText = parseInt(UpperCounter.children[2].children[0].innerText) + 1;
+			}
+			if(action === 'order'){
+				UpperCounter.children[2].children[0].innerText = parseInt(UpperCounter.children[2].children[0].innerText) + 1;
+			}
+		}
     (function ($) {
         "use strict";
         $(document).ready(function() {
