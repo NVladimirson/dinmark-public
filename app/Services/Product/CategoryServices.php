@@ -78,7 +78,7 @@ class CategoryServices
     }
 
 public static function getNextFilters($option_map){
-	
+
 }
 
 	public static function getTermsForSelect(){
@@ -90,7 +90,7 @@ public static function getNextFilters($option_map){
             }
         }else{
             foreach ($storages as $key => $term){
-                $terms[$term->term] = $term->term . ' роб.дн.';
+                $terms[$term->term] = $term->term . ' роб.діб';
             }
         }
         ksort($terms);

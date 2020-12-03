@@ -32,7 +32,7 @@ class PaymentController extends Controller
                     ]);
                 });
             });
-        });
+        })->orderBy('date_edit', 'desc');
 
         if($request->has('date_from')){
             $payments->where('date_add','>=',$request->date_from);
@@ -42,6 +42,8 @@ class PaymentController extends Controller
         if($request->has('date_to')){
             $payments->where('date_add','<=',$request->date_to);
         }
+
+
 
         return datatables()
             ->eloquent($payments)
