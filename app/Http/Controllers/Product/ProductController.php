@@ -256,7 +256,7 @@ class ProductController extends Controller
                     $package = $storage->package;
                     $retail = ProductServices::getBasePrice($product,$storage->storage_id);
                     $user_price = ProductServices::getPrice($product,$storage->id);
-                    $old_price = ProductServices::getOldBasePrice($product,$storage->storage_id);
+                    $old_price = ProductServices::getOldPrice($product,$storage->storage_id);
                     if($product->old_price){
                       return '<p id="retail_user_price_'.$product->id.'">
                       <span>'.__('product.table_header_price_retail').': </span>
@@ -474,7 +474,7 @@ class ProductController extends Controller
 
         $retail = ProductServices::getBasePrice($productinfo,$storageinfo->storage_id);
         $pricefor100 = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
-        $oldprice = number_format($productinfo->oldprice * $package,2,'.',' ');
+        $oldprice = ProductServices::getOldPrice($productinfo,$storageinfo->storage_id);
         $multiplier = $amount/$package - $amount%$package;
 
 

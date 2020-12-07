@@ -126,7 +126,7 @@ class Product
         return $productPDF;
 	}
 
-	public static function getOldBasePrice($product,$storage_id = null){
+	public static function getOldPrice($product,$storage_id = null){
 		$instance =  static::getInstance();
 		if($storage_id != null){
 				$storage = $product->storages->firstWhere('storage_id',$storage_id);
@@ -192,21 +192,24 @@ class Product
         return $price;
     }
 
-    public static function getPriceUnformatted($product,$storage_id = null)
+    public static function getPriceUnformatted($product,$id_storage = null)
     {
         $instance = static::getInstance();
-        return $instance->calcPrice($product, $storage_id);
+        return $instance->calcPrice($product, $id_storage);
 
     }
-	public static function getPrice($product,$storage_id = null){
+
+	public static function getPrice($product,$id_storage = null){
 		$instance =  static::getInstance();
-		$price = $instance->calcPrice($product,$storage_id);
+		$price = $instance->calcPrice($product,$id_storage);
 		return number_format($price,2,'.',' ');
 	}
-	public static function calcPrice($product,$storage_id = null){
+
+
+	public static function calcPrice($product,$id_storage = null){
 		$instance =  static::getInstance();
 
-		$price = $instance->calcPriceWithoutPDV($product,$storage_id) * 1.2;
+		$price = $instance->calcPriceWithoutPDV($product,$id_storage) * 1.2;
 
 		return $price;
 	}
@@ -223,14 +226,14 @@ class Product
 		return $price;
 	}
 
-	public static function calcPriceWithoutPDV($product,$storage_id = null){
+	public static function calcPriceWithoutPDV($product,$id_storage = null){
 		$instance =  static::getInstance();
 
         $company = $instance->company;
 
         $storage = null;
-        if(isset($storage_id)){
-            $storage = $product->storages->firstWhere('id',$storage_id);
+        if(isset($id_storage)){
+            $storage = $product->storages->firstWhere('id',$id_storage);
             //$storage = $product->storages->firstWhere('storage_id',$storage_id);
         }else{
             $storage = $product->storages->firstWhere('is_main',1);
