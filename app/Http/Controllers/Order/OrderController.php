@@ -672,7 +672,18 @@ class OrderController extends Controller
 				'client'	=> $client,
 				'company'	=> $company,
 			]);
+
+			// dd('https://dinmark.com.ua/images/company/'.$company->full_logo);
+			// $date = TimeServices::getFromTime($order->date_add);
+			// $total = number_format($orderTotal, 2, ',', ' ');
+			// $pdv = number_format($orderTotal*0.2, 2, ',', ' ');
+			// $totalPdv = number_format($orderTotal * 1.2, 2, ',', ' ');
+			// $pdv_text = \App\Services\Product\Product::getStringPrice($orderTotal*0.2);
+			// $totalPdv_text = \App\Services\Product\Product::getStringPrice($orderTotal*1.2);
+			//$pdf->setOption('enable-smart-shrinking', true);
+		//	$pdf->setOption('no-stop-slow-scripts', true);
 			 return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
+			//return view('order.pdf',compact('order', 'date', 'products', 'total', 'pdv', 'totalPdv', 'pdv_text', 'totalPdv_text', 'client', 'company'));
 		}
 
 

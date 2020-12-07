@@ -60,4 +60,6 @@ return [
 	'log_tab_name'				=> 'Список ваших дій',
 	'log_date'					=> 'Дата и час',
 	'log_action'				=> 'Дія',
+
+  'addresses' => 'Адреси доставки',
 ];
