@@ -474,7 +474,7 @@ class ProductController extends Controller
 
         $retail = ProductServices::getBasePrice($productinfo,$storageinfo->storage_id);
         $pricefor100 = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
-        $oldprice = ProductServices::getOldPrice($productinfo,$storageinfo->storage_id);
+        //$oldprice = ProductServices::getOldPrice($productinfo,$storageinfo->storage_id);
         $multiplier = $amount/$package - $amount%$package;
 
 
@@ -532,7 +532,7 @@ class ProductController extends Controller
             'user_price' => number_format($user_price,2,'.',' '),
             'retail' => $retail,
             'price100' => number_format($pricefor100,2,'.',' '),
-            'oldprice' => $oldprice
+            //'oldprice' => $oldprice
         ];
 
         return $response;
