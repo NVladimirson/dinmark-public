@@ -315,21 +315,6 @@
 
                 }
                 $('#select_all_products').prop('checked', false);
-
-                
-
-                const rows = document.querySelectorAll('tr');
-                const headerRow = Array.from(rows[1].children);
-                const productRow = Array.from(rows[4].children);
-   
-                for (let i = 0; i < headerRow.length; i++) {
-                    // console.log(headerRow[i])
-                    headerRow[i].style.width = productRow[i].offsetWidth + 'px';
-                    // console.log(productRow[i])
-                }
-
-
-
             });
 
 
