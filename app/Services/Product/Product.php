@@ -126,22 +126,16 @@ class Product
         return $productPDF;
 	}
 
-	public static function getOldPrice($product,$storage_id = null){
+	public static function getOldPrice($product){
 		$instance =  static::getInstance();
-		if($storage_id != null){
-				$storage = $product->storages->firstWhere('storage_id',$storage_id);
-		}else{
-				$storage = $product->storages->firstWhere('is_main',1);
+		$currency = $instance->currencies->firstWhere('code',$product->currency);
+
+	  $oldprice = 0;
+		$oldprice = $product->old_price;
+		if($currency){
+			$oldprice *= $currency->currency;
 		}
 
-				$oldprice = 0;
-				if($storage){
-						$currency = $instance->currencies->firstWhere('code',$storage->currency);
-						$oldprice = $product->old_price;
-						if($currency){
-								$oldprice *= $currency->currency;
-						}
-				}
 		$oldprice *= 1.2 * 2;
 
 		return number_format($oldprice,2,'.',' ');
