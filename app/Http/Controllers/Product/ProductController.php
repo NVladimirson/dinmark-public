@@ -257,6 +257,7 @@ class ProductController extends Controller
                     $retail = ProductServices::getBasePrice($product,$storage->storage_id);
                     $user_price = ProductServices::getPrice($product,$storage->id);
                     $old_price = ProductServices::getOldPrice($product,$storage->storage_id);
+                    // <span style="color:#f0c674">
                     if($product->old_price){
                       return '<p id="retail_user_price_'.$product->id.'">
                       <span>'.__('product.table_header_price_retail').': </span>
@@ -348,10 +349,15 @@ class ProductController extends Controller
                   }else{
                     $package = 1;
                   }
+                    // return '
+                    // <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
+                    // name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
+                    // value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
+
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
                     name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
-                    value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
+                    value="0" min="0" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
                 }
                 else{
                     // return '
@@ -376,10 +382,10 @@ class ProductController extends Controller
                     $weight = $product->weight * ($storage->package/$unitnumber);
                     return '<div>
                 <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
-                <span class="multiplier">1</span>
+                <span class="multiplier">0</span>
                 <span class="x">x</span>
                 <span class="package">'.$package.'</span>
-                <span class="weight">'.number_format($weight,3,'.',',').'</span>
+                <span class="weight">'.number_format(0,3,'.',',').'</span>
                 </p></div>';
                 }else{
                     return '<div>
@@ -398,10 +404,10 @@ class ProductController extends Controller
                   $price = ProductServices::getPriceUnformatted($product,$storage->id);
                   $price = $price/100 * $package;
                   if(isset($storage->limit_2) && $storage->limit_2!=0){
-                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
                       <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p></div>';
                   }else{
-                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format($price,2,'.',' ').'</span> <br>
+                    return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
                       <span class="discount"></span> <span class="discountamount"></span> </p></div>';
                   }
                 }else{
