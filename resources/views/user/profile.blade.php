@@ -37,10 +37,8 @@
 
     <h1 class="page-header">@lang('user.edit_page_name')</h1>
     <div class="profile-content p-t-0">
-    <!-- begin row -->
         <div class="row">
-        <!-- begin col-6 -->
-        <div class="col-xl-6">
+          <div class="col-xl-6">
             <!-- begin panel -->
 
             <div class="panel panel-primary">
@@ -97,51 +95,9 @@
                     </form>
                 </div>
             </div>
-
-            <div class="panel panel-primary">
-                <!-- begin panel-heading -->
-                <div class="panel-heading">
-                    <h4 class="panel-title">@lang('user.edit_send_request_data')</h4>
-                </div>
-                <!-- end panel-heading -->
-                <!-- begin panel-body -->
-                <div class="panel-body">
-                    <form action="{{route('user.profile.change_request')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group row m-b-15">
-                            <label class="col-form-label col-md-3">@lang('user.edit_email')</label>
-                            <div class="col-md-9">
-                                <input type="email" name="email" class="form-control m-b-5 @error('email') is-invalid @enderror" placeholder="@lang('user.edit_email')" value="{{auth()->user()->email}}"/>
-                                <small class="f-s-12 text-grey-darker">@lang('user.edit_email_note')</small>
-                                @error('email')
-                                <span class="invalid-feedback " role="alert">
-                                     <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row m-b-15">
-                            <label class="col-form-label col-md-3">@lang('user.edit_phone')</label>
-                            <div class="col-md-9">
-                                <input type="text" name="phone" class="form-control m-b-5 @error('phone') is-invalid @enderror" placeholder="@lang('user.edit_phone')"  value="{{ (auth()->user()->info->firstWhere('field','phone'))? auth()->user()->info->firstWhere('field','phone')->value : '' }}"/>
-                                @error('phone')
-                                <span class="invalid-feedback " role="alert">
-                                     <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-sm btn-primary m-r-5 m-b-15">@lang('user.edit_request')</button>
-                    </form>
-                </div>
-            </div>
             <!-- end panel -->
         </div>
-        <!-- end col-6 -->
-        <!-- begin col-6 -->
-        <div class="col-xl-6">
+          <div class="col-xl-6">
             <div class="panel panel-primary">
                 <!-- begin panel-heading -->
                 <div class="panel-heading">
@@ -175,6 +131,64 @@
                     </form>
                 </div>
             </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="panel panel-primary">
+              <!-- begin panel-heading -->
+              <div class="panel-heading">
+                  <h4 class="panel-title">@lang('user.edit_send_request_data')</h4>
+              </div>
+              <!-- end panel-heading -->
+              <!-- begin panel-body -->
+              <div class="panel-body">
+                  <form action="{{route('user.profile.change_request')}}" method="post" enctype="multipart/form-data">
+                      @csrf
+                      <div class="form-group row m-b-15">
+                          <label class="col-form-label col-md-3">@lang('user.edit_email')</label>
+                          <div class="col-md-9">
+                              <input type="email" name="email" class="form-control m-b-5 @error('email') is-invalid @enderror" placeholder="@lang('user.edit_email')" value="{{auth()->user()->email}}"/>
+                              <small class="f-s-12 text-grey-darker">@lang('user.edit_email_note')</small>
+                              @error('email')
+                              <span class="invalid-feedback " role="alert">
+                                   <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="form-group row m-b-15">
+                          <label class="col-form-label col-md-3">@lang('user.edit_phone')</label>
+                          <div class="col-md-9">
+                              <input type="text" name="phone" class="form-control m-b-5 @error('phone') is-invalid @enderror" placeholder="@lang('user.edit_phone')"  value="{{ (auth()->user()->info->firstWhere('field','phone'))? auth()->user()->info->firstWhere('field','phone')->value : '' }}"/>
+                              @error('phone')
+                              <span class="invalid-feedback " role="alert">
+                                   <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <button type="submit" class="btn btn-sm btn-primary m-r-5 m-b-15">@lang('user.edit_request')</button>
+                  </form>
+              </div>
+          </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="panel panel-primary">
+              <!-- begin panel-heading -->
+              <div class="panel-heading">
+                  <h4 class="panel-title">@lang('user.addresses')</h4>
+              </div>
+            </div>
+            <div class="panel-body">
+              
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
             @if(auth()->user()->export_key)
             <div class="panel panel-primary">
                 <!-- begin panel-heading -->
@@ -190,10 +204,8 @@
                 </div>
             </div>
             @endif
+          </div>
         </div>
-        <!-- end col-6 -->
-    </div>
-    <!-- end row -->
     </div>
     @endsection
 
