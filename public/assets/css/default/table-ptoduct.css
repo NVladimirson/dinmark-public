@@ -231,21 +231,21 @@ tr:hover .datatable_actions_class div a {
     overflow-y: auto;
 }
 
-.datatable_sum_class p {
+/* .datatable_sum_class p {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-}
+} */
 
 .datatable_sum_class p span {
-	background: #ccc;
-	text-decoration: underline;	
+	/* background: #ccc; */
+	text-decoration: underline;
 	margin: 1px 2px;
   border-radius: 3px;
 }
 
 .datatable_weight_class p span:not(:nth-child(2)) {
-	text-decoration: underline;	
+	text-decoration: underline;
 	margin: 1px 2px;
   border-radius: 3px;
 }
@@ -266,4 +266,3 @@ tr:hover .datatable_actions_class div a {
         margin-top: -20px;
     }
 }
-

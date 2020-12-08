@@ -145,10 +145,13 @@ class ProductController extends Controller
         }
 
         if($request->hits){
-            $order_products = \DB::select('SELECT product_id, COUNT(*)
-              FROM s_cart_products
-              GROUP BY product_id
-              HAVING COUNT(*) >= 5
+            $order_products = \DB::select('
+            SELECT s_cart_products.product_id AS `product_id`,COUNT(*)
+            FROM s_cart
+            INNER JOIN s_cart_products ON s_cart.id = s_cart_products.cart
+            WHERE `status` NOT IN (6,7,8)
+            GROUP BY `product_id`
+            HAVING COUNT(*) >= 5
               ');
 
             $filtered = array();
@@ -356,7 +359,7 @@ class ProductController extends Controller
 
                     return '
                     <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
-                    name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
+                    name="quantity" class="form-control m-b-15" style="max-width: 100px;margin-bottom: 0px!important;"
                     value="0" min="0" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
                 }
                 else{
@@ -385,6 +388,7 @@ class ProductController extends Controller
                 <span class="multiplier">0</span>
                 <span class="x">x</span>
                 <span class="package">'.$package.'</span>
+                <br>
                 <span class="weight">'.number_format(0,3,'.',',').'</span>
                 </p></div>';
                 }else{
@@ -408,7 +412,9 @@ class ProductController extends Controller
                       <span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p></div>';
                   }else{
                     return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
-                      <span class="discount"></span> <span class="discountamount"></span> </p></div>';
+                      <span class="discount" style="display:none">-0%</span> <span class="discountamount" style="display:none">'.number_format(0,2,'.',' ').'</span> </p></div>';
+                    // return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
+                    //   <span class="discount"></span> <span class="discountamount"></span> </p></div>';
                   }
                 }else{
                     return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price"></span> <br>

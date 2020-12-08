@@ -103,8 +103,8 @@
                                 <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_price')</th>
                                 <th id="price_porog_1" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_1')</th>
                                 <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
-                                <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_storage')</th>
-                                <th style="text-align: center">
+                                <th class="text-nowrap" style="max-width: 252px;text-align: center;">@lang('product.table_header_storage')</th>
+                                <th style="max-width: 82px;text-align: center">
                                     Кількість
                                 </th>
                                 <th style="text-align: center">
@@ -113,7 +113,7 @@
                                 <th style="text-align: center">
                                     Сума з ПДВ
                                 </th>
-                                <th style="max-width: 25px"></th>
+                                <th style="max-width: 25px;text-align: center"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -1404,7 +1404,7 @@
                         let package_weight = document.getElementById('package_weight_'+product_id);
                         package_weight.children[0].innerText = msg['multiplier'];
                         package_weight.children[2].innerText = msg['package'];
-                        package_weight.children[3].innerText = msg['weight'];
+                        package_weight.children[4].innerText = msg['weight'];
 
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                         sum_w_taxes.children[0].innerText = msg['price'];
@@ -1412,9 +1412,15 @@
                         if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
+
+                            sum_w_taxes.children[2].setAttribute('style','display:none');
+                            sum_w_taxes.children[3].setAttribute('style','display:none');
                         }else{
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
+
+                            sum_w_taxes.children[2].setAttribute('style','display:auto');
+                            sum_w_taxes.children[3].setAttribute('style','display:auto');
                         }
 
                         if(msg['limit_amount_quantity_1'] === '0' || msg['limit_amount_quantity_1'] === 0){
@@ -1476,7 +1482,8 @@
             }
         }
 
-        let text = document.createElement('span')
+        // let text = document.createElement('span');
+
         function changeamount(obj){
             let id = obj.id;
             let product_id = id.substr(14);
@@ -1527,24 +1534,34 @@
                 },
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
+                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                     if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
                         retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
+                        sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
+                        sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
+                        sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
                     }
                     else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
                         retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
+                        sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
+                        sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
+                        sum_w_taxes.children[3].setAttribute('style',"background: #96ca0a");
                     }
                     else{
                         retail_user_price.children[4].innerText = msg['user_price'];
+                        sum_w_taxes.children[0].setAttribute('style','');
+                        sum_w_taxes.children[2].setAttribute('style','');
+                        sum_w_taxes.children[3].setAttribute('style','');
                     }
 
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
                     package_weight.children[2].innerText = msg['package'];
-                    package_weight.children[3].innerText = msg['weight'];
+                    package_weight.children[4].innerText = msg['weight'];
 
-                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                     sum_w_taxes.children[0].innerText = msg['price'];
 
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
