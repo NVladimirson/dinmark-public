@@ -42,7 +42,8 @@ return [
     'explanation_submit'    => 'Надіслати',
     'explanation_subject_order'    => 'Уточнення по замовленню ',
     'explanation_subject_implementation'    => 'Уточнення по реалізації ',
-    'explanation_subject_reclamation'    => 'Уточнение по поверненню ',
+    'explanation_subject_reclamation'    => 'Уточнення по поверненню ',
+    'explanation_edit_reclamation'    => 'Змінити повернення',
     'explanation_success'    => 'Запит на уточнення успішно відправлено',
 
     'btn_add_order'                 => 'Створити заявку',

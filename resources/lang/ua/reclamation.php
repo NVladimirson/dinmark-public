@@ -15,9 +15,10 @@ return [
 
 
     'page_list' => 'Рекламації',
-	'page_create' => 'Нова Рекламация',
-    'all_tab_name' 	=> 'Список Рекламацій',
-	'create_tab_name' 	=> 'Інформація про Рекламацію',
+	  'page_create' => 'Нова Рекламация',
+    'page_update' => 'Змінити Реламацию',
+    'all_tab_name' => 'Список Рекламацій',
+	  'create_tab_name' => 'Інформація про Рекламацію',
 
     'btn_new_reclamation'               => 'Створити повернення',
     'table_header_number' 				=> 'Номер',
@@ -48,7 +49,7 @@ return [
 	'comment'				=> 'Причина рекламації',
     'document_type'			=> 'Тільки: jpeg,png,pdf,jpg,doc,docx,xls,xlsx',
     'btn_submit'			=> 'Створити рекламацію',
-    
+
     'download_file' => 'Завантажити',
     'deploy' => 'Розгорнути',
     'collapse' => 'Згорнути'

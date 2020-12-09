@@ -18,6 +18,7 @@ use App\Services\Finance\BalanceServices;
 use App\Services\Order\OrderServices;
 use App\Services\TimeServices;
 use App\Services\Product\Product as ProductServices;
+use App\Services\Product\CategoryServices;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -57,7 +58,9 @@ class OrderController extends Controller
             }
         }
 
-		return view('order.index',compact('statuses', 'senders','customers'));
+				$locale = CategoryServices::getLang();
+
+		return view('order.index',compact('statuses', 'senders','customers','locale'));
 	}
 
 	public function addToOrder($id, Request $request){

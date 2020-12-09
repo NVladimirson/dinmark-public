@@ -7,6 +7,7 @@ use App\Models\Company\Company;
 use App\Models\Order\Implementation;
 use App\Models\Order\Payment;
 use App\Services\Finance\BalanceServices;
+use App\Services\Product\CategoryServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -16,7 +17,8 @@ class BalanceController extends Controller
     public function index()
     {
         SEOTools::setTitle(trans('finance.page_balance'));
-        return view('finance.balance');
+        $locale = CategoryServices::getLang();
+        return view('finance.balance',compact('locale'));
     }
 
     public function ajax(Request $request){
