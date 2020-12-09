@@ -43,7 +43,7 @@
 								<th class="text-nowrap">@lang('reclamation.table_header_ttn')</th>
 								<th class="text-nowrap text-center">@lang('reclamation.table_header_status')</th>
 								<th class="text-nowrap">@lang('reclamation.table_header_author')</th>
-								<th class="text-nowrap" style="width: 50px; min-width: 50px"></th>
+								<th class="text-nowrap" style="width: 80px"></th>
 							</tr>
 						</thead>
 						<tbody>

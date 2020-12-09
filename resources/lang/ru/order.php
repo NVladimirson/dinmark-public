@@ -44,6 +44,7 @@ return [
     'explanation_subject_order'    => 'Уточнение по заказу ',
     'explanation_subject_implementation'    => 'Уточнение по реализации ',
     'explanation_subject_reclamation'    => 'Уточнение по возврату ',
+    'explanation_edit_reclamation'    => 'Изменение возврата',
     'explanation_success'    => 'Запрос на уточнение успешно отправлен ',
 
     'btn_add_order'                 => 'Создать заявку',

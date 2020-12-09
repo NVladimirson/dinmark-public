@@ -105,13 +105,13 @@
                                 <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
                                 <th class="text-nowrap" style="max-width: 252px;text-align: center;">@lang('product.table_header_storage')</th>
                                 <th style="max-width: 82px;text-align: center">
-                                    Кількість
+                                    @lang('product.table_header_quantity')
                                 </th>
                                 <th style="text-align: center">
-                                    Упак./Вага
+                                    @lang('product.table_header_package_weight')
                                 </th>
                                 <th style="text-align: center">
-                                    Сума з ПДВ
+                                    @lang('product.table_header_sum_w_taxes')
                                 </th>
                                 <th style="max-width: 25px;text-align: center"></th>
                             </tr>

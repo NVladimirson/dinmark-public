@@ -16,6 +16,7 @@ return [
 
     'page_list' => 'Рекламации',
     'page_create' => 'Новая Рекламация',
+    'page_update' => 'Изменить Реламацию',
     'all_tab_name' 	=> 'Список Рекламаций',
     'create_tab_name' 	=> 'Информация о Рекламации',
 
@@ -48,7 +49,7 @@ return [
 	'comment'				=> 'Причина рекламации',
 	'document_type'			=> 'Только: jpeg,png,pdf,jpg,doc,docx,xls,xlsx',
     'btn_submit'			=> 'Создать рекламацию',
-    
+
     'download_file' => 'Загрузить',
     'deploy' => 'Развернуть',
     'collapse' => 'Свернуть'

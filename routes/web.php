@@ -65,7 +65,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::post('/catalogs/destroy/{id}','Product\CatalogController@destroy')->name('catalogs.destroy');
 		Route::post('/catalogs/change-article/{id}','Product\CatalogController@changeArticle')->name('catalogs.change_article');
 		Route::post('/catalogs/set-price/{id}','Product\CatalogController@setPrice')->name('catalogs.change_article');
-    Route::get('/catalogs/add-to-catalog/{ids}','Product\CatalogController@addToCatalogMultiple')->name('catalogs.add_to_catalog_multiple');
+    // Route::get('/catalogs/add-to-catalog/{ids}','Product\CatalogController@addToCatalogMultiple')->name('catalogs.add_to_catalog_multiple');
 		Route::get('/catalogs/change-storage/','Product\CatalogController@changeStorage')->name('catalogs.change_storage');
 
 		Route::get('/orders','Order\OrderController@index')->name('orders');
@@ -95,6 +95,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/reclamations/ajax','Order\ReclamationController@ajax')->name('reclamations.ajax');
         Route::get('/reclamations/total-data-ajax/','Order\ReclamationController@totalDataAjax')->name('reclamations.total_data_ajax');
 		Route::get('/reclamations/create','Order\ReclamationController@create')->name('reclamations.create');
+		Route::get('/reclamations/update/{reclamation_id}','Order\ReclamationController@update')->name('reclamations.update');
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
 		Route::get('/reclamations/create/{implementation_id}','Order\ReclamationController@createByImplementation')->name('reclamations.store_implementation');
 

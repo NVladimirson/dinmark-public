@@ -89,6 +89,8 @@
 
 @push('scripts')
     <script src="/assets/plugins/moment/moment.js"></script>
+    <script src="/assets/plugins/moment/locale/ru.js"></script>
+    <script src="/assets/plugins/moment/locale/uk.js"></script>
 
     <script src="/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -280,10 +282,12 @@
 				}
 
 				$('#datetimepicker3').datetimepicker({
-					format: 'DD.MM.YYYY'
+					format: 'DD.MM.YYYY',
+					locale: '{{$locale}}'
 				});
 				$('#datetimepicker4').datetimepicker({
-					format: 'DD.MM.YYYY'
+					format: 'DD.MM.YYYY',
+					locale: '{{$locale}}'
 				});
 				$("#datetimepicker3").on("dp.change", function (e) {
 					$('#datetimepicker4').data("DateTimePicker").minDate(e.date);
@@ -293,10 +297,12 @@
 				});
 
 				$('#datetimepicker5').datetimepicker({
-					format: 'DD.MM.YYYY'
+					format: 'DD.MM.YYYY',
+					locale: '{{$locale}}'
 				});
 				$('#datetimepicker6').datetimepicker({
-					format: 'DD.MM.YYYY'
+					format: 'DD.MM.YYYY',
+					locale: '{{$locale}}'
 				});
 
 				function changeDate(){

@@ -60,7 +60,7 @@
 					<div class="row">
 						<div class="col-lg-6 m-b-15">
 							<p class="m-b-5">@lang('wishlist.add_hand_message')</p>
-							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="get">
+							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="post">
 								@csrf
 								<div class="row m-b-15">
 									<div class="col-lg-8 m-b-5">
@@ -588,7 +588,7 @@
 									data: 'product_id='+product_id+'&storage_id='+storage_id,
 									success: function(resp) {
 												document.getElementById('catalog_user_price_'+product_id).innerText = resp;
-												document.getElementById('catalog_catalog_price_'+product_id).innerText = resp;	
+												document.getElementById('catalog_catalog_price_'+product_id).innerText = resp;
 									},
 									error: function(xhr, str) {
 											console.log(xhr);
