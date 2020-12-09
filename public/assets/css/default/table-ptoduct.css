@@ -231,11 +231,11 @@ tr:hover .datatable_actions_class div a {
     overflow-y: auto;
 }
 
-.datatable_sum_class p {
+/* .datatable_sum_class p {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-}
+} */
 
 .datatable_sum_class p span {
     background: #ccc;

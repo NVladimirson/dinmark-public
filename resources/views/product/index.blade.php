@@ -155,8 +155,8 @@
 									<td>
                                         @if($storage->amount > 0)
 										<input id="input_{{$product->id}}_{{$storage->storage_id}}" type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')"
-                                               value="{{$storage->package}}"
-                                               min="{{$storage->package}}"
+                                               value="0"
+                                               min="0"
                                                step="{{$storage->package}}"
                                                data-max="{{$storage->amount-($storage->amount%$storage->package)}}"
                                                data-price="{{$storage_raw_prices[$storage->id]}}"
