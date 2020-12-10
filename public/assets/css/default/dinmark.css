@@ -905,16 +905,16 @@ nav.mainmenu > div > a img {
 
 /* end header */
 tbody img:hover {
-    transform: scale(1.875);
+    transform: scale(1.5);
     transition: all 0.5s ease-out;
     -webkit-transition: all 0.5s ease-out;
     -moz-transition: all 0.5s ease-out;
     -ms-transition: all 0.5s ease-out;
     -o-transition: all 0.5s ease-out;
-    -webkit-transform: scale(1.875);
-    -moz-transform: scale(1.875);
-    -ms-transform: scale(1.875);
-    -o-transform: scale(1.875);
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -o-transform: scale(1.5);
 }
 
 tbody img {

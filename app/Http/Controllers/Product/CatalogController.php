@@ -205,7 +205,8 @@ class CatalogController extends Controller
                 $name = \App\Services\Product\Product::getName($product);
                 return '<a class="data-product_name" href="'
                     .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
-                    '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+                    // '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
+                    '<span>'.$product->article_show.'</span>';
             })
 //			->addColumn('name_html', function (Product $product){
 //				$name = \App\Services\Product\Product::getName($product);
