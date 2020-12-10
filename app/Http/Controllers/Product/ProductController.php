@@ -43,7 +43,6 @@ class ProductController extends Controller
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getOptionFilters();
         $dinmark_url = \Config::get('values.dinmarkurl');
-        dd($filters);
         return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
 
@@ -98,13 +97,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      //120637,163378
-      $productinfo = Product::find(65525);
-      //$price = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
-      //$product_storage_id = 14;
-      //dd(ProductServices::getPriceUnformatted($productinfo,120637),ProductServices::getPriceUnformatted($productinfo,163378));
-      //dd($productinfo->storages,ProductServices::getPrice($productinfo),ProductServices::getPrice($productinfo));
-      dd($productinfo->storages);
+
     }
 
 
