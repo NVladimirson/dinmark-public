@@ -9,7 +9,7 @@
 	<style>
 		.nav-link {
 			height: 55px;
-		} 
+		}
 	</style>
 @endpush
 
@@ -224,7 +224,7 @@
                             <th class="hidden-sm text-center">@lang('product.table_header_name')</th>
                             <th></th>
                             <th>@lang('product.table_header_article')</th>
-                            <th>@lang('product.table_header_price')</th>
+                            <th>@lang('product.table_header_top_price')</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -252,7 +252,7 @@
                             <th class="hidden-sm text-center">@lang('product.table_header_name')</th>
                             <th></th>
                             <th>@lang('product.table_header_article')</th>
-                            <th>@lang('product.table_header_price')</th>
+                            <th>@lang('product.table_header_times_in_orders')</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -267,7 +267,7 @@
                                     <h6><a href="{{route('products.show',[$product['id']])}}" class="text-inverse">{{$product['name']}}</a></h6>
                                 </td>
                                 <td class="text-nowrap"><a href="javascript:;" class="text-inverse">{{$product['article']}}</a></td>
-                                <td class="text-blue f-w-600" style="white-space: nowrap;">{{$product['price']}}</td>
+                                <td class="text-blue f-w-600" style="white-space: nowrap;">{{$product['product_count']}}</td>
                             </tr>
                         @endforeach
                         </tbody>
