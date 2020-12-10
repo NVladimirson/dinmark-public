@@ -48,4 +48,10 @@ return [
         'reclamation' => 'в Рекламации',
         'nothing_to_show' => 'ничего нет...'
     ],
+
+    'upper_right_butons' => [
+      'likes' => 'Каталоги',
+      'comparison' => 'Реализации',
+      'cart' => 'Заказы',
+    ]
 ];

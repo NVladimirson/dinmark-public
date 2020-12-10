@@ -100,7 +100,7 @@
                                 </th>
                                 <th data-orderable="false" style="text-align: center;">@lang('product.table_header_photo')</th>
                                 <th class="text-nowrap" style="text-align: center">@lang('product.table_header_name/article')</th>
-                                <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_price')</th>
+                                <th class="text-nowrap" style="min-width: 200px;max-width: 200px;text-align: center;">@lang('product.table_header_price')</th>
                                 <th id="price_porog_1" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_1')</th>
                                 <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
                                 <th class="text-nowrap" style="max-width: 252px;text-align: center;">@lang('product.table_header_storage')</th>
@@ -110,10 +110,10 @@
                                 <th style="text-align: center">
                                     @lang('product.table_header_package_weight')
                                 </th>
-                                <th style="text-align: center">
+                                <th style="min-width: 100px; max-width: 100px; text-align: center" >
                                     @lang('product.table_header_sum_w_taxes')
                                 </th>
-                                <th style="max-width: 25px;text-align: center"></th>
+                                <th style="max-width: 25px;min-width: 25px;text-align: center"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -1394,7 +1394,7 @@
                     success: function(msg){
                         let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                         retail_user_price.children[1].innerText = msg['retail'];
-                        retail_user_price.children[4].innerText = msg['user_price'];
+                        retail_user_price.children[5].innerText = msg['user_price'];
                         // if(msg['oldprice'] !== '0'){
                         //   retail_user_price.children[3].children[0].show;
                         //   retail_user_price.children[3].children[0].innerText = msg['oldprice'];
@@ -1538,19 +1538,19 @@
 
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                     if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
-                        retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
+                        retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
                     }
                     else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
-                        retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
+                        retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
                         sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
                         sum_w_taxes.children[3].setAttribute('style',"background: #96ca0a");
                     }
                     else{
-                        retail_user_price.children[4].innerText = msg['user_price'];
+                        retail_user_price.children[5].innerText = msg['user_price'];
                         sum_w_taxes.children[0].setAttribute('style','');
                         sum_w_taxes.children[2].setAttribute('style','');
                         sum_w_taxes.children[3].setAttribute('style','');

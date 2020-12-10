@@ -43,7 +43,7 @@ class ProductController extends Controller
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getOptionFilters();
         $dinmark_url = \Config::get('values.dinmarkurl');
-        //dd($filters);
+        dd($filters);
         return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
 
@@ -262,16 +262,18 @@ class ProductController extends Controller
                     $old_price = ProductServices::getOldPrice($product,$storage->storage_id);
                     // <span style="color:#f0c674">
                     if($product->old_price){
-                      return '<p id="retail_user_price_'.$product->id.'">
+                      return '<p id="retail_user_price_'.$product->id.'" style="margin-bottom:0px">
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
+                      <br>
                       <span>'.__('product.table_header_price').': </span>
                       <span class="old_price" style="color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }else{
-                      return '<p id="retail_user_price_'.$product->id.'">
+                      return '<p id="retail_user_price_'.$product->id.'" style="margin-bottom:0px">
                       <span>'.__('product.table_header_price_retail').': </span>
                       <span class="retail_price">'.$retail.'</span>
+                      <br>
                       <span>'.__('product.table_header_price').': </span>
                       <span class="old_price" style="display:none;color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
