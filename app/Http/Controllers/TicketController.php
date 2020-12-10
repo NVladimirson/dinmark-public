@@ -9,6 +9,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
+use App\Services\Product\CategoryServices;
 
 class TicketController extends Controller
 {
@@ -33,9 +34,9 @@ class TicketController extends Controller
 
         $managers = User::whereIn('id',$managersId)->get();
 
+        $locale = CategoryServices::getLang();
 
-
-    	return view('ticket.index',compact('users','managers'));
+    	return view('ticket.index',compact('users','managers','locale'));
 	}
 
     public function ajax(Request $request){

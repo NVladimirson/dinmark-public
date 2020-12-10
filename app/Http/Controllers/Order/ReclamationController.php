@@ -135,6 +135,11 @@ class ReclamationController extends Controller
 		return view('reclamation.create');
 	}
 
+	public function update($reclamation_id){
+		$reclamation = Reclamation::where('id',$reclamation_id)->first();
+		return view('reclamation.update',compact('reclamation'));
+	}
+
 	public function createByImplementation($implementation_id){
 	    $implementation = Implementation::find($implementation_id);
 		SEOTools::setTitle(trans('reclamation.page_create'));

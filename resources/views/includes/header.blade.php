@@ -159,25 +159,25 @@
         <div class="actions flex right-upper-counters">
 
         @if( $wishlists_count > 0)
-                            <a href="{{route('catalogs')}}" class="likes-active">
+                            <a href="{{route('catalogs')}}" class="likes-active" title="@lang('global.upper_right_butons.likes')">
                         @else
-                            <a href="{{route('catalogs')}}" class="likes">
+                            <a href="{{route('catalogs')}}" class="likes" title="@lang('global.upper_right_butons.likes')">
                         @endif
                             <i class="catalog-count">{{$wishlists_count}}</i>
                         </a>
                         <!--  -->
                         @if( $implementation_count > 0)
-                            <a href="{{route('implementations')}}" class="comparison-active">
+                            <a href="{{route('implementations')}}" class="comparison-active" title="@lang('global.upper_right_butons.comparison')">
                         @else
-                            <a href="{{route('implementations')}}" class="comparison">
+                            <a href="{{route('implementations')}}" class="comparison" title="@lang('global.upper_right_butons.comparison')">
                         @endif
                             <i class="implementation-count">{{$implementation_count}}</i>
                         </a>
                         <!--  -->
                         @if( $orders_count > 0)
-                            <a href="{{route('orders')}}" class="cart-active">
+                            <a href="{{route('orders')}}" class="cart-active" title="@lang('global.upper_right_butons.cart')">
                         @else
-                            <a href="{{route('orders')}}" class="cart">
+                            <a href="{{route('orders')}}" class="cart" title="@lang('global.upper_right_butons.cart')">
                         @endif
                             <i class="order-count">{{$orders_count}}</i>
                         </a>

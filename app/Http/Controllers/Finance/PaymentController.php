@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Finance;
 use App\Http\Controllers\Controller;
 use App\Models\Order\Payment;
 use Carbon\Carbon;
+use App\Services\Product\CategoryServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -13,7 +14,10 @@ class PaymentController extends Controller
     public function index()
     {
         SEOTools::setTitle(trans('finance.page_payment'));
-        return view('finance.payment');
+
+        $locale = CategoryServices::getLang();
+
+        return view('finance.payment', compact('locale'));
     }
 
     public function ajax(Request $request)

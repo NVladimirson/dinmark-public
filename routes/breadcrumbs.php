@@ -102,6 +102,11 @@ Breadcrumbs::for('reclamation.create', function ($trail) {
 	$trail->push(trans('reclamation.page_create'), route('reclamations.create'));
 });
 
+Breadcrumbs::for('reclamations.update', function ($trail, $reclamation) {
+	$trail->parent('home');
+	$trail->push('№ '.$reclamation->id, route('reclamations.update',[$reclamation->id]));
+});
+
 Breadcrumbs::for('payments', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('finance.page_payment'), route('payments'));

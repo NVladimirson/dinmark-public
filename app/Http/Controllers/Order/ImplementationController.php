@@ -9,6 +9,7 @@ use App\Models\Order\ImplementationProduct;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Services\Order\ImplementationServices;
+use App\Services\Product\CategoryServices;
 use App\Services\TimeServices;
 use App\User;
 use Illuminate\Http\Request;
@@ -42,7 +43,9 @@ class ImplementationController extends Controller
             }
         }
 
-		return view('order.implementation',compact('senders','customers'));
+        $locale = CategoryServices::getLang();
+
+		return view('order.implementation',compact('senders','customers','locale'));
 	}
 
 	public function ajax(Request $request)
