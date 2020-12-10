@@ -67,8 +67,23 @@ class CategoryServices
                         $object[$optionid]['options'][$branchid]['data'][$key] = $value;
                     }
                 }
-            }
 
+            }
+						//sorting by name
+						foreach ($object as $key => $main) {
+							foreach ($main['options'] as $id => $option) {
+								$collected = collect($main['options']);
+								$sorted = $collected->sortBy(function ($data, $id) {
+									if(!isset($data['data']['name'])){
+										dd($data['data']['name']);
+									}
+									return $data['data']['name'];
+								});
+								$sorted = $sorted->toArray();
+								$object[$key]['options'] = $sorted;
+							}
+						}
+						//sorting by name
         return $object;
 
     }
