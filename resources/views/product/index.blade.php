@@ -154,9 +154,9 @@
 									<td>{{ $storage->storage->term }}</td>
 									<td>
                                         @if($storage->amount > 0)
-										<input type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')"
-                                               value="{{$storage->package}}"
-                                               min="{{$storage->package}}"
+										<input id="input_{{$product->id}}_{{$storage->storage_id}}" type="number" name="quantity" class="form-control m-b-5" placeholder="@lang('product.quantity_order')"
+                                               value="0"
+                                               min="0"
                                                step="{{$storage->package}}"
                                                data-max="{{$storage->amount-($storage->amount%$storage->package)}}"
                                                data-price="{{$storage_raw_prices[$storage->id]}}"
@@ -186,7 +186,9 @@
                                     </td>
 									<td>
                                         @if($storage->amount > 0)
-										<a href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}" data-product_name="{{$productName}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}" data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}"><i class="fas fa-cart-plus"></i></a>
+										<a id="{{$product->id}}_{{$storage->storage_id}}" href="#modal-order" class="btn btn-sm btn-primary" data-toggle="modal" data-product="{{$product->id}}"
+											data-product_name="{{$productName}}" data-storage="{{$storage->storage_id}}" data-storage_min="{{$storage->package}}"
+											data-storage_max="{{$storage->amount-($storage->amount%$storage->package)}}" data-amount="{{$storage->package}}" data-image={{\App\Services\Product\Product::getImagePath($product)}}><i class="fas fa-cart-plus"></i></a>
 									    @else
                                             <a href="#modal-get_price" class="btn btn-sm btn-primary btn-get-price" data-toggle="modal" data-product_id="{{$product->id}}" ><i class="fas fa-question-circle"></i></a>
                                         @endif
@@ -275,50 +277,48 @@
 				$('#modal-order').on('show.bs.modal', function (event) {
 					var button = $(event.relatedTarget);
 					var modal = $(this);
-					var quntity_el = button.parent().prev().find('input[name="quantity"');
+					modal.find('.image').attr("src",button.data('image'));
+					modal.find('.name').text(button.data('name'));
+
 					modal.find('.product-name').text(button.data('product_name'));
 					modal.find('.product_id').val(button.data('product'));
-					modal.find('.storage_id').val(button.data('storage'));
-
-					var modalQuantity = modal.find('input[name="quantity"');
-					var quantity = +quntity_el.val();
-					var request = 0;
-
-					if(quantity > quntity_el.data('max')){
-						quntity_el.val(quntity_el.data('max'));
-						request = quantity - (+quntity_el.data('max'));
-						quantity = +quntity_el.data('max');
-					}else if(quantity < quntity_el.attr('min')){
-						quntity_el.val(quntity_el.attr('min'));
-						quantity = +quntity_el.data('min');
+					modal.find('.storage_id').val(button[0].getAttribute("data-storage"));
+					let amount = button[0].getAttribute("data-amount");
+					modal.find('.amount').val(button[0].getAttribute("data-amount"));
+					let order_inputs = document.getElementById("modal_order_inputs");
+					while (order_inputs.firstChild) {
+							order_inputs.removeChild(order_inputs.lastChild);
 					}
 
-					if((quantity % quntity_el.attr('step')) != 0){
-                        quantity = quantity - quantity % (+quntity_el.attr('step')) + (+quntity_el.attr('step'));
-                        quntity_el.val(quantity);
+					$('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order')</label>"+
+							"<input type=\"number\" name=\"quantity\" class=\"form-control m-b-5 quantity\" " +
+							"placeholder=\"@lang('product.quantity_order')\" disabled/>"+
+							"</div>"));
+					$('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order_request')</label>"+
+							"<input type=\"number\" name=\"quantity_request\" class=\"form-control m-b-5 quantity_request\" " +
+							"placeholder=\"@lang('product.quantity_order_request')\" disabled/>"+
+							"</div>"));
+
+					let quantity = modal.find('input[name="quantity"]');
+
+					let quantity_request = modal.find('input[name="quantity_request"]');
+
+					if (amount - button.data('storage_max') > 0) {
+							quantity.val(button.data('storage_max'));
+							quantity_request.val(amount - button.data('storage_max'));
+					}
+					else {
+							if (amount % button.data('storage_min')) {
+									quantity.val(amount -
+											button.data('amount') % button.data('storage_min'));
+									quantity_request.val(amount
+											% button.data('storage_min'));
+							} else {
+									quantity.val(amount);
+									quantity_request.val(0);
+							}
 					}
 
-					modalQuantity.val(quntity_el.val());
-					modalQuantity.attr('min',quntity_el.attr('min'));
-					modalQuantity.attr('step',quntity_el.attr('step'));
-					modalQuantity.data('max',quntity_el.data('max'));
-					modalQuantity.parent().hide(0);
-
-					var quantity_request = modal.find('input[name="quantity_request"]');
-					quantity_request.val(request);
-					quantity_request.attr('min',0);
-					quantity_request.attr('step',button.data('storage_min'));
-					quantity_request.attr('max',button.data('storage_max'));
-
-					$('.order-storage-amount').text(button.data('storage_max'));
-                    if(request > 0){
-                    	$('.storage-limit-info').show();
-                    	$('.storage-limit-request').show();
-                    }else{
-						$('.storage-limit-info').hide();
-						$('.storage-limit-request').hide();
-                    }
-					$('input[name="quantity_request"]').change();
 				})
 
 				$('input[name="quantity_request"]').change(function (e) {
@@ -363,42 +363,47 @@
 					return false;
 				});
 
-				$('#form_add_order').submit(function (e) {
-					e.preventDefault();
+				$('#form_add_order').submit(function(e) {
+						e.preventDefault();
 
-					$('#modal-order').modal('hide');
+						$('#modal-order').modal('hide');
 
-					var form = $(this);
+						var form = $(this);
 
-					var order_id = $('#order_id').val();
-					var route = '{{route('orders')}}/add-to-order/'+order_id;
+						let product_id_input = form[0].getElementsByClassName('product_id')[0].value;
+						let storage_id_input = form[0].getElementsByClassName('storage_id')[0].value;
+						let quantity_input = form[0].getElementsByClassName('form-control m-b-5 quantity')[0].value;
+						let quantity_request_input = form[0].getElementsByClassName('form-control m-b-5 quantity_request')[0].value;
 
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "POST",
-						url: route,
-						data: form.serialize(),
-						success: function(resp)
-						{
-							if(resp == "ok"){
-								$.gritter.add({
-									title: '@lang('order.modal_success')',
-								});
-								if(order_id == 0){
-									document.location.reload(true);
+						var order_id = $('#order_id').val();
+						var route = '{{route('orders')}}/add-to-order/' + order_id;
+
+						$.ajaxSetup({
+								headers: {
+										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								}
-							}
-						},
-						error:  function(xhr, str){
-							console.log(xhr);
-						}
-					});
+						});
 
-					return false;
+
+						$.ajax({
+								method: "POST",
+								url: route,
+								data: 'product_id='+product_id_input+'&storage_id='+storage_id_input+
+								'&quantity='+quantity_input+'&quantity_request='+quantity_request_input,
+								success: function(resp) {
+										if (resp == "ok") {
+												$.gritter.add({
+														title: '@lang('order.modal_success')',
+												});
+												changeUpperCounter('order');
+										}
+								},
+								error: function(xhr, str) {
+										console.log(xhr);
+								}
+						});
+
+						return false;
 				});
 
 				$('#form_get_price').submit(function (e) {
@@ -449,7 +454,7 @@
 				}
 
 				$('input[name="quantity"]').change(calcTotal);
-				$('input[name="quantity"]').each(calcTotal);
+			  $('input[name="quantity"]').each(calcTotal);
 
 				function calcTotal(){
 
@@ -485,6 +490,13 @@
 					total_price_el.text(numberStringFormat(total));
 					total_price_procent.text(procent);
 					total_price_discount.text(numberStringFormat(discount));
+
+					let id = $(this)[0].id;
+					if(id !== ''){
+						let button_id = id.substring(6);
+						document.getElementById(button_id).setAttribute('data-amount',quantity);
+					}
+					//{{$product->id}}_{{$storage->id}}
                 }
 			});
 		})(jQuery);

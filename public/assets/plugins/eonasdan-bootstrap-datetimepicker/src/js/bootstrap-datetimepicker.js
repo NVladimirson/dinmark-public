@@ -422,14 +422,14 @@
                 }
 
                 // Top and bottom logic
-                if (vertical === 'auto') {
-                    if (offset.top + widget.height() * 1.5 >= $(window).height() + $(window).scrollTop() &&
-                        widget.height() + element.outerHeight() < offset.top) {
-                        vertical = 'top';
-                    } else {
-                        vertical = 'bottom';
-                    }
-                }
+                // if (vertical === 'auto') {
+                //     if (offset.top + widget.height() * 1.5 >= $(window).height() + $(window).scrollTop() &&
+                //         widget.height() + element.outerHeight() < offset.top) {
+                //         vertical = 'top';
+                //     } else {
+                //         vertical = 'bottom';
+                //     }
+                // }
 
                 // Left and right logic
                 if (horizontal === 'auto') {

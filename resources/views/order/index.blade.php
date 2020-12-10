@@ -37,7 +37,7 @@
 			<!-- begin panel -->
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
-				<div class="panel-heading">
+				<div class="panel-heading" style="z-index: 9999;">
                     <ul id="order_tab" class="nav nav-tabs nav-tabs-panel panel-title">
                         <li class="nav-item">
                             <a href="#" data-toggle="tab" id="tab_order" class="nav-link active">
@@ -196,6 +196,7 @@
 
 
 
+
 	{{--<script src="/assets/js/demo/table-manage-buttons.demo.js"></script>--}}
 
 	<script>
@@ -299,7 +300,6 @@
 						}
 					});
                 }
-
 				$('#tab_order,#tab_request,#tab_archive').click	(function (e) {
 					let id = e.currentTarget.id;
 					if(id === 'tab_request'){
@@ -394,7 +394,6 @@
 				} );
 
 				updateTableData();
-
 				$('#datetimepicker3').datetimepicker({
 					format: 'DD.MM.YYYY'
 				});
@@ -407,7 +406,6 @@
 				$("#datetimepicker4").on("dp.change", function (e) {
 					$('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
 				});
-
 				$('#datetimepicker5').datetimepicker({
 					format: 'DD.MM.YYYY'
 				});

@@ -10,7 +10,7 @@
     <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/select2/dist/css/table-ptoduct.css" rel="stylesheet" />
+    <link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -103,8 +103,8 @@
                                 <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_price')</th>
                                 <th id="price_porog_1" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_1')</th>
                                 <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
-                                <th class="text-nowrap" style="text-align: center;">@lang('product.table_header_storage')</th>
-                                <th style="text-align: center">
+                                <th class="text-nowrap" style="max-width: 252px;text-align: center;">@lang('product.table_header_storage')</th>
+                                <th style="max-width: 82px;text-align: center">
                                     Кількість
                                 </th>
                                 <th style="text-align: center">
@@ -113,7 +113,7 @@
                                 <th style="text-align: center">
                                     Сума з ПДВ
                                 </th>
-                                <th style="max-width: 25px"></th>
+                                <th style="max-width: 25px;text-align: center"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -317,39 +317,11 @@
                 $('#select_all_products').prop('checked', false);
             });
 
-            $('#data-table-buttons').on('click', 'tr', function() {
-                // console.log( table.row( this ).data() );
-
-                // table.cell({row:1, column:7}).data('New value for row 1 column 7');
-
-                // var rData = [
-                // ];
-
-                // rData['id'] = 100500;
-                // rData['check_html'] = '';
-                // rData['image_html'] = '';
-                // rData['name_article_html'] = '';
-                // rData['retail_price'] = '';
-                // rData['user_price'] = '';
-                // rData['html_limit_1'] = '';
-                // rData['html_limit_2'] = '';
-                // rData['storage_html'] = '';
-                // rData['calc_quantity'] = '';
-                // rData['package_weight'] = '';
-                // rData['sum_w_taxes'] = '';
-                // rData['actions'] = '';
-                //
-                // table.row( this )
-                //     .data(rData)
-                //     .draw();
-            });
-
-
 
             window.table =
                 $('#data-table-buttons').DataTable({
-                    "fixedHeader": true,
                     //  scrollY: "100vh",
+                    //  fixedColumns: true,
                     deferRender: true,
                     //  scroller: true,
                     "language": {
@@ -503,6 +475,7 @@
                 heightStyle: "content",
                 content: '.content1'
             });
+
 
             function initOptionFilters() {
                     let filter_selected_map = $("[filter-selected=true]");
@@ -841,10 +814,7 @@
                             $.gritter.add({
                                 title: '@lang('order.modal_success')',
                             });
-                            // if (order_id == 0) {
-                            //     document.location.reload(true);
-                            // }
-                            //window.table.ajax.reload();
+                            changeUpperCounter('order');
                         }
                     },
                     error: function(xhr, str) {
@@ -906,6 +876,7 @@
                             $.gritter.add({
                                 title: '@lang("order.modal_success_multiple")'
                             });
+                            changeUpperCounter('order');
                         }
                     },
                     error: function(xhr, str) {
@@ -968,6 +939,7 @@
                             $.gritter.add({
                                 title: '@lang('wishlist.modal_success')',
                             });
+                            changeUpperCounter('catalog');
                         }
                     },
                     error:  function(xhr, str){
@@ -1052,7 +1024,9 @@
                             $.each(map, function(key, value) {
                                 let id = value.attributes['data-product'].value;
                                 if (window.products.indexOf(id) !== -1) {
-                                    multiple_order_map.push(id + '_:_' + value.attributes['data-product_name'].value +
+                                    multiple_order_map.push(
+                                      id +
+                                        '_:_' + value.attributes['data-product_name'].value +
                                         '_:_' + value.attributes['data-storage'].value +
                                         '_:_' + value.attributes['data-storage_min'].value +
                                         '_:_' + value.attributes['data-storage_max'].value +
@@ -1085,6 +1059,10 @@
                                 let data_amount = value.split('_:_')[5];
                                 let data_image = value.split('_:_')[6];
                                 let quantity_amount = 0;
+                                //console.log(data_storage_max);
+                                if(data_storage_max === '0' || data_storage_max-data_storage_min<0){
+                                    return;
+                                }
 
                                 if(data_amount - data_storage_max > 0){
                                     quantity_amount = data_amount - data_storage_max;
@@ -1190,12 +1168,6 @@
                 modal.find('.comment').val('');
             });
 
-            // function roundamount(quantity,step){
-            //   if(quantity%step){
-            //     quantity = quantity - quantity%step;
-            //   }
-            //   return quantity;
-            // }
             //get price single
 
             //get_price single submit
@@ -1221,6 +1193,7 @@
                             $.gritter.add({
                                 title: '@lang('product.get_price_success')',
                             });
+
                         }
                     },
                     error: function(xhr, str) {
@@ -1348,6 +1321,8 @@
             });
             //удаление фильтров из списка
 
+
+
         });
     </script>
     <script>
@@ -1381,32 +1356,31 @@
                 let min = optionselected[0].getAttribute('package_min');
                 let max = optionselected[0].getAttribute('package_max');
 
-                if(max !== '0'){
-                  // quantityinput[0].setAttribute('style','max-width: 80px;margin-bottom: 0px!important;display:auto');
-
+                if(max !== '0' && (max - min > 0)){
+                  //console.log('> min: '+min+', max: '+max);
                   quantityinput[0].setAttribute('value',min);
                   quantityinput[0].setAttribute('min',min);
                   quantityinput[0].setAttribute('step',min);
                   quantityinput[0].setAttribute('max',max);
+                  quantityinput[0].setAttribute('datamax',max);
 
                   quantityinput.toggle(true);
 
                   orderbutton.toggle(true);
                   getpricebutton.toggle(false);
 
-                  packageweight.toggle(true);
-                  sumwithtaxes.toggle(true);
-
+                  packageweight[0].parentElement.setAttribute('style','display:auto');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:auto');
                 }
                 else{
+                  //console.log('min: '+min+', max: '+max);
                   quantityinput.toggle(false);
 
                   orderbutton.toggle(false);
                   getpricebutton.toggle(true);
-                
-                packageweight[0].css( "display", "none" )
-                //   packageweight.toggle(false);
-                //   sumwithtaxes.toggle(false);
+
+                  packageweight[0].parentElement.setAttribute('style','display:none');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:none');
                 }
 
                 $.ajax({
@@ -1421,16 +1395,16 @@
                         let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                         retail_user_price.children[1].innerText = msg['retail'];
                         retail_user_price.children[4].innerText = msg['user_price'];
-                        if(msg['oldprice'] !== '0'){
-                          retail_user_price.children[3].children[0].show;
-                          retail_user_price.children[3].children[0].innerText = msg['oldprice'];
-                        }
+                        // if(msg['oldprice'] !== '0'){
+                        //   retail_user_price.children[3].children[0].show;
+                        //   retail_user_price.children[3].children[0].innerText = msg['oldprice'];
+                        // }
 
 
                         let package_weight = document.getElementById('package_weight_'+product_id);
                         package_weight.children[0].innerText = msg['multiplier'];
                         package_weight.children[2].innerText = msg['package'];
-                        package_weight.children[3].innerText = msg['weight'];
+                        package_weight.children[4].innerText = msg['weight'];
 
                         let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                         sum_w_taxes.children[0].innerText = msg['price'];
@@ -1438,9 +1412,15 @@
                         if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
+
+                            sum_w_taxes.children[2].setAttribute('style','display:none');
+                            sum_w_taxes.children[3].setAttribute('style','display:none');
                         }else{
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
+
+                            sum_w_taxes.children[2].setAttribute('style','display:auto');
+                            sum_w_taxes.children[3].setAttribute('style','display:auto');
                         }
 
                         if(msg['limit_amount_quantity_1'] === '0' || msg['limit_amount_quantity_1'] === 0){
@@ -1465,7 +1445,9 @@
 
                         let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
                         add_to_order_button.setAttribute('data-storage',storage_id);
-
+                        orderbutton[0].setAttribute('data-storage_max',optionselected[0].getAttribute('package_max'));
+                        orderbutton[0].setAttribute('data-storage_min',optionselected[0].getAttribute('package_min'));
+                        orderbutton[0].setAttribute('data-amount',optionselected[0].getAttribute('package_max'));
                     },
                     error: function(xhr, str) {
                         console.log(xhr);
@@ -1500,7 +1482,8 @@
             }
         }
 
-        let text = document.createElement('span')
+        // let text = document.createElement('span');
+
         function changeamount(obj){
             let id = obj.id;
             let product_id = id.substr(14);
@@ -1551,24 +1534,34 @@
                 },
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
+                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                     if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
                         retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
+                        sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
+                        sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
+                        sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
                     }
                     else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
                         retail_user_price.children[4].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
+                        sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
+                        sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
+                        sum_w_taxes.children[3].setAttribute('style',"background: #96ca0a");
                     }
                     else{
                         retail_user_price.children[4].innerText = msg['user_price'];
+                        sum_w_taxes.children[0].setAttribute('style','');
+                        sum_w_taxes.children[2].setAttribute('style','');
+                        sum_w_taxes.children[3].setAttribute('style','');
                     }
 
 
                     let package_weight = document.getElementById('package_weight_'+product_id);
                     package_weight.children[0].innerText = msg['multiplier'];
                     package_weight.children[2].innerText = msg['package'];
-                    package_weight.children[3].innerText = msg['weight'];
+                    package_weight.children[4].innerText = msg['weight'];
 
-                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
                     sum_w_taxes.children[0].innerText = msg['price'];
 
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){

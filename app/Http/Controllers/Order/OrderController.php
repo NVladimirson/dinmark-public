@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Excel;
 use Illuminate\Support\Facades\DB;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class OrderController extends Controller
 {
@@ -61,6 +61,9 @@ class OrderController extends Controller
 	}
 
 	public function addToOrder($id, Request $request){
+		info($id);
+		info($request);
+
 		$order = null;
 		$product = Product::with(['storages'])->find($request->product_id);
 
@@ -402,7 +405,12 @@ class OrderController extends Controller
 			$quantity = $orderProduct->quantity;
 			$storageinfo = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)
 			->first();
-			$package = $storageinfo->package;
+			if($storageinfo){
+				$package = $storageinfo->package;
+			}
+			else{
+				continue;
+			}
 			$three_percent_discount_limit = $storageinfo->limit_1;
 			$seven_percent_discount_limit = $storageinfo->limit_2;
 			if (($quantity >= $seven_percent_discount_limit) && $seven_percent_discount_limit){
@@ -428,6 +436,9 @@ class OrderController extends Controller
 
             $storage_prices = [];
             foreach ($orderProduct->product->storages as $storage){
+								if($storage->amount == 0 || ($storage->amount < $storage->package)){
+									continue;
+								}
                 $storage_prices[$storage->id]['price'] = ProductServices::getPriceUnformatted($productinfo,$storage->id);
 								$storage_prices[$storage->id]['limit1'] = $storage->limit_1 ? $storage->limit_1 : 0;
 								$storage_prices[$storage->id]['limit2'] = $storage->limit_2 ? $storage->limit_2 : 0;
@@ -445,9 +456,11 @@ class OrderController extends Controller
 								// }else{
 								// 	$storage_prices[$storage->id]['discount7'] = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
 								// }
-
+								// ->where([['target','=','b2b'],['active',1]])
             }
             $weight += $orderProduct->product->weight * $orderProduct->quantity/100;
+
+
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
@@ -461,7 +474,11 @@ class OrderController extends Controller
 				// 'price_without_discount' => number_format($price_without_discount,2,'.',' '),
 				// 'price_without_discount_raw' => $price_without_discount,
 				'price_raw' => $price,
-                'storages'  => $orderProduct->product->storages,
+                'storages'  => $orderProduct->product->storages->filter(function ($value, $key) {
+										if($value->amount > 0 && $value->amount - $value->package > 0){
+											return $value;
+										}
+									}),
                 'storage_prices' => $storage_prices,
                 'storage_id' => $orderProduct->storage_alias,
 				'total' => number_format($total,2,'.', ' '),
@@ -658,9 +675,18 @@ class OrderController extends Controller
 				'client'	=> $client,
 				'company'	=> $company,
 			]);
-			$pdf->setOption('enable-smart-shrinking', true);
-			$pdf->setOption('no-stop-slow-scripts', true);
-			return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
+
+			// dd('https://dinmark.com.ua/images/company/'.$company->full_logo);
+			// $date = TimeServices::getFromTime($order->date_add);
+			// $total = number_format($orderTotal, 2, ',', ' ');
+			// $pdv = number_format($orderTotal*0.2, 2, ',', ' ');
+			// $totalPdv = number_format($orderTotal * 1.2, 2, ',', ' ');
+			// $pdv_text = \App\Services\Product\Product::getStringPrice($orderTotal*0.2);
+			// $totalPdv_text = \App\Services\Product\Product::getStringPrice($orderTotal*1.2);
+			//$pdf->setOption('enable-smart-shrinking', true);
+		//	$pdf->setOption('no-stop-slow-scripts', true);
+			 return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
+			//return view('order.pdf',compact('order', 'date', 'products', 'total', 'pdv', 'totalPdv', 'pdv_text', 'totalPdv_text', 'client', 'company'));
 		}
 
 
@@ -699,8 +725,8 @@ class OrderController extends Controller
 			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
 			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
 		]);
-		$pdf->setOption('enable-smart-shrinking', true);
-		$pdf->setOption('no-stop-slow-scripts', true);
+		//$pdf->setOption('enable-smart-shrinking', true);
+		//$pdf->setOption('no-stop-slow-scripts', true);
 		return $pdf->download(($order->sender?$order->sender->getCompany->prefix.'_':'').'bill_'.$order->id.'.pdf');
 	}
 

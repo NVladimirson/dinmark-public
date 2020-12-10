@@ -71,10 +71,10 @@ body {
 	background: #ee3f3c;
 }
 .bage-default.bage-hits{
-	background: #ff9f1a;
+	background: #43d171;
 }
 .bage-default.bage-new{
-	background: #43d171;
+  background: #ff9f1a;
 }
 
 .hexa {
@@ -1766,7 +1766,7 @@ body ul.wysihtml5-toolbar .glyphicon {
     position: relative;
 }
 .table-scroll-container.table-scroll-container-xl {
-    min-height: 50vh;
+    min-height: 60vh;
 }
 .navbar-header {
     margin-right: 50px;
@@ -1782,8 +1782,10 @@ body ul.wysihtml5-toolbar .glyphicon {
     display: none;
 }
 
-.sidebar-minify-btn.navbar-toggle {
-    position: fixed;
-    left: 10px;
-    top: 50px;
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+    vertical-align: middle;
+    text-align: center;
+}
+.scrollbar-sidebar {
+   background-color: #B3B2B2;
 }
