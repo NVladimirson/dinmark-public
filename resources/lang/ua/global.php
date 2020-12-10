@@ -49,4 +49,10 @@ return [
         'reclamation' => 'в Рекламації',
         'nothing_to_show' => 'нічого немає...'
     ],
+
+    'upper_right_butons' => [
+      'likes' => 'Каталоги',
+      'comparison' => 'Реалізації',
+      'cart' => 'Замовлення',
+    ]
 ];
