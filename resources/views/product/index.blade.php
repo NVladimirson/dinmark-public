@@ -118,11 +118,13 @@
                                 <span>@lang('product.header_storage')</span>
                             </a>
                         </li>
+												@if($productVideo || $productPDF)
                         <li class="nav-item">
                             <a href="#detail-tab" data-toggle="tab" class="nav-link">
                                 <span>@lang('product.header_detail')</span>
                             </a>
                         </li>
+												@endif
                     </ul>
 				</div>
 				<!-- end panel-heading -->
@@ -205,6 +207,7 @@
                         </div>
                             </div>
                         </div>
+												@if($productVideo || $productPDF)
                         <div class="tab-pane fade show" id="detail-tab">
                             <div class="row">
 															<div class="col-md-6">
@@ -228,6 +231,7 @@
                                 </div>
                             </div>
                         </div>
+												@endif
 					</div>
 				</div>
 				<!-- end panel-body -->
