@@ -37,11 +37,13 @@
                                     </div>
                                 @endforeach
                                 @if($productVideo)
+																@foreach($productVideo as $key => $link)
                                     <div class="col-sm-4">
-                                        <a href="#modal-video" class="to-modal flex video" data-toggle="modal">
+                                        <a href="#modal-video_{{$key}}" class="to-modal flex video" data-toggle="modal">
                                             <img src="https://dinmark.com.ua/images/video-thumbnail.svg" alt="video svg thumbnail" class="w50">
                                         </a>
                                     </div>
+																@endforeach
                                 @endif
                             </div>
                             @if($productPDF)
@@ -205,14 +207,18 @@
                         </div>
                         <div class="tab-pane fade show" id="detail-tab">
                             <div class="row">
-                                <div class="col-md-6">
+															<div class="col-md-6">
+																@foreach($productVideo as $key => $link)
+                                <div class="col-md-12">
                                     {!! str_replace('<p>&nbsp;</p>','',html_entity_decode($productText,ENT_QUOTES)) !!}
-                                    @if($productVideo)
+                                    @if($productVideo[0])
                                     <p>
-                                        <iframe width="737" height="415" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <iframe width="737" height="415" src="https://www.youtube.com/embed/{{$productVideo[0]}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </p>
                                     @endif
                                 </div>
+																@endforeach
+															</div>
                                 <div class="col-md-6">
                                     @if($productPDF)
                                         <a href="{{$productPDF}}" target="_blank" class="preview">
@@ -234,7 +240,8 @@
 	@include('product.include.modal_wishlist')
 	@include('product.include.modal_order')
     @include('product.include.modal_get_price')
-    <div class="modal fade" id="modal-video" style="display: none;" aria-hidden="true">
+		@foreach($productVideo as $key => $link)
+    <div class="modal fade" id="modal-video_{{$key}}" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -242,15 +249,14 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    @if($productVideo)
                         <p>
-                            <iframe width="466" height="300" src="https://www.youtube.com/embed/{{$productVideo}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="466" height="300" src="https://www.youtube.com/embed/{{$productVideo[$key]}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </p>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
+		@endforeach
 @endsection
 
 @push('scripts')
