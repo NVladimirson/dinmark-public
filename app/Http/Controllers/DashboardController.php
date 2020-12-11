@@ -209,20 +209,20 @@ class DashboardController extends Controller
 
 			$data = $request->toArray();
 		// 	$data = [
-		// 		'standart' => NULL,
-		// 		'diametr' =>  NULL,
-		// 		'dovzhyna' =>  '40',
-		// 		'material' =>  '',
-		// 		'klas_micnosti' =>  '',
-		// 		'pokryttja' =>  '',
-		// 		'active' => 'standart'
+		// 'standart' => NULL,
+	  // 'diametr' => NULL,
+	  // 'dovzhyna' => '27',
+	  // 'material' => NULL,
+	  // 'klas_micnosti' => NULL,
+	  // 'pokryttja' => NULL,
+	  // 'active' => 'standart'
 		// ];
 
 		$activefilter = $data['active'];
 		$allowed_filters = ['standart','diametr','dovzhyna','material',
 		'klas_micnosti','pokryttja','active'];
 		if(!in_array($activefilter,$allowed_filters)){
-			return '';
+			return [];
 		}
 		unset($data['active']);
 
@@ -258,12 +258,21 @@ class DashboardController extends Controller
 				}
 			}
 		}
-		info('ACTIVEFILTER: '.$activefilter.'END');
 		$result = json_decode(json_encode(\DB::select($query)),true);
+		$response = [];
     foreach ($result as $key => $value) {
       $response[] = $value[$activefilter];
     }
-		// sort($response);
-    return $response;
+		if($response){
+					foreach ($response as $value) {
+						if(in_array($value,$data[$activefilter])){
+							unset($response[array_search($value, $response)]);
+						}
+					}
+					sort($response);
+			    return $response;
+		}else{
+			return [];
+		}
 		}
 }
