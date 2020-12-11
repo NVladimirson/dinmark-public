@@ -9,11 +9,10 @@ use App\Jobs\ProductOptionFiltersJob;
 use App\Models\Content;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
-
 use App\Models\Order\Order;
 use App\User;
 use App\Models\Company\Company;
-
+use App\Models\Company\CompanyPrice;
 use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use App\Models\Reclamation\ReclamationProduct;
@@ -99,7 +98,6 @@ class ProductController extends Controller
     public function test(Request $request){
 
     }
-
 
     public function allAjax(Request $request){
         $products = Product::with(['storages','content','options']);
@@ -321,7 +319,9 @@ class ProductController extends Controller
                         foreach ($storages as $key => $storage) {
                             $term = $storage->storage->term;
                             $days = ProductServices::getStingDays($term);
-                            $name = CatalogServices::dayrounder($storage->amount).
+                            // $name = CatalogServices::dayrounder($storage->amount).
+                            // ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
+                            $name = __('product.storage_name'). ' '. $storage->storage->term . ' '. __('product.storage_term_measure_shortly').
                             ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
                             $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
                             package_max="'.$storage->amount.'"';

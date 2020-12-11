@@ -26,8 +26,10 @@ class CompanyController extends Controller
 {
     public function index(){
     	$company = auth()->user();
+      $company_prices = CompanyPrice::where('company_id',
+      auth()->user()->getCompany()->first()->id)->get();
 		SEOTools::setTitle(trans('company.edit_page_name'));
-		return view('company.profile',compact('company'));
+		return view('company.profile',compact('company','company_prices'));
 	}
 
 	public function updateData(Request $request){
