@@ -206,32 +206,32 @@ class DashboardController extends Controller
     }
 
 		public function extendedSearch(Request $request){
-			$request = [
-				'standart' => [
-					'active'=> false,
-					'options' =>[]
-				],
-				'diametr' =>  [
-					'active'=>true,
-					'options' =>[]
-				],
-				'dovzhyna' =>  [
-					'active'=>false,
-					'options' =>[40]
-				],
-				'material' =>  [
-					'active'=>false,
-					'options' =>[]
-				],
-				'klas_micnosti' =>  [
-					'active'=>false,
-					'options' =>[]
-				],
-				'pokryttja' =>  [
-					'active'=>false,
-					'options' =>[]
-				],
-		];
+		// 	$request = [
+		// 		'standart' => [
+		// 			'active'=> false,
+		// 			'options' =>[]
+		// 		],
+		// 		'diametr' =>  [
+		// 			'active'=>true,
+		// 			'options' =>[]
+		// 		],
+		// 		'dovzhyna' =>  [
+		// 			'active'=>false,
+		// 			'options' =>[40]
+		// 		],
+		// 		'material' =>  [
+		// 			'active'=>false,
+		// 			'options' =>[]
+		// 		],
+		// 		'klas_micnosti' =>  [
+		// 			'active'=>false,
+		// 			'options' =>[]
+		// 		],
+		// 		'pokryttja' =>  [
+		// 			'active'=>false,
+		// 			'options' =>[]
+		// 		],
+		// ];
 		$notemptyoptionrequest = 0;
 		foreach ($request as $filter => $value) {
 			if($value['active'] == true){
@@ -263,6 +263,11 @@ class DashboardController extends Controller
 			}
 		}
 
-		return json_decode(json_encode(\DB::select($query)),true);
+		$result = json_decode(json_encode(\DB::select($query)),true);
+    foreach ($result as $key => $value) {
+      $response[] = $value[$activefilter];
+    }
+
+    return $response;
 		}
 }

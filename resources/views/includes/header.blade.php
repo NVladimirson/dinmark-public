@@ -193,12 +193,12 @@
 <form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-        <input @input="handlerSubmit" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
-            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+        <input  @input="handlerSubmit(event)" v-model="data.standart.options" style="width: 276px;border-radius:5px;height:34px;" type="text" list="standart">
+            <datalist  id="standart"  id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+                <option  v-for="item of info.standart" data-select2-id="72" :value="item"></option>
             </datalist>
             <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
@@ -224,12 +224,12 @@
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <input @input="handlerSubmit" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
-            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            <input @input="handlerSubmit" v-model="data.diametr.options" style="width: 276px;border-radius:5px;height:34px;" type="text" list="diametr">
+            <datalist  id="diametr"  id="header_filter-64-standart-d" name="diametr"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+                <option  v-for="item of info.diametr" data-select2-id="72" :value="item"></option>
             </datalist>
             <!-- <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
                 style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
@@ -257,12 +257,12 @@
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <input @input="handlerSubmit" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
-            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            <input @input="handlerSubmit" v-model="data.dovzhyna.options" style="width: 276px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
+            <datalist  id="dovzhyna"  id="header_filter-64-standart-d" name="dovzhyna"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+                <option  v-for="item of info.dovzhyna" data-select2-id="72" :value="item"></option>
             </datalist>
             <!-- <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
                 multiple="" style="width: 100%" tabindex="-1"
@@ -290,12 +290,12 @@
         </div>
         <div>
             <p>Матеріал </p>
-            <input @input="handlerSubmit" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
-            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            <input @input="handlerSubmit" v-model="data.material.options" style="width: 276px;border-radius:5px;height:34px;" type="text" list="material">
+            <datalist  id="material"  id="header_filter-64-standart-d" name="material"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+                <option  v-for="item of info.material" data-select2-id="72" :value="item"></option>
             </datalist>
             <!-- <select id="header_filter-11-material-d" name="11-material[]"
             multiple="" style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
@@ -320,12 +320,12 @@
         </div>
         <div>
             <p>Клас міцності </p>
-            <input @input="handlerSubmit" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
-            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            <input @input="handlerSubmit" v-model="data.klas_micnosti.options" style="width: 276px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
+            <datalist  id="klas_micnosti"  id="header_filter-64-standart-d" name="klas_micnosti"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+                <option  v-for="item of info.klas_micnosti" data-select2-id="72" :value="item"></option>
             </datalist>
             <!-- <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
             style="width: 100%" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
@@ -350,12 +350,12 @@
         </div>
         <div>
             <p>Покриття </p>
-            <input @input="handlerSubmit" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
-            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            <input @input="handlerSubmit" v-model="data.pokryttja.options" style="width: 276px;border-radius:5px;height:34px;" type="text" list="pokryttja">
+            <datalist  id="pokryttja"  id="header_filter-64-standart-d" name="pokryttja"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+                <option  v-for="item of info.pokryttja" data-select2-id="72" :value="item"></option>
             </datalist>
                 <!-- <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
                 tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
@@ -746,23 +746,55 @@ class="hide" style="display: block;">
         el: "#header",
         data() {
             return {
-               	info: ['DIN','None',333,444,555,666,777,888,999,'DIN','None',333,444,555,666,777,888,999,'DIN','None',333,444,555,666,777,888,999],
-                //val: ''
-								data: {
-									standart: '',
-									diametr: '',
-									dovzhyna: '',
-									material: '',
-									klas_micnosti: '',
-									pokryttja: '',
-								}
+               	info: {
+                    standart: [],
+					diametr: [],
+					dovzhyna:[],
+					material: [],
+					klas_micnosti: [],
+					pokryttja: []
+                   },
+				data: {
+					standart: {
+                        active: false,
+                        options: ''
+                    },
+					diametr: {
+                        active: false,
+                        options: ''
+                    },
+					dovzhyna: {
+                        active: false,
+                        options: ''
+                    },
+					material: {
+                        active: false,
+                        options: ''
+                    },
+					klas_micnosti: {
+                        active: false,
+                        options: ''
+                    },
+					pokryttja: {
+                        active: false,
+                        options: ''
+                    }
+                }
             }
         },
         methods: {
-            handlerSubmit() {
-							//console.log(this.data);
-								let data = JSON.stringify(this.data);
-								fetch('{{route('extendedSearch')}}'+'?'+data).then(res => console.log(data)) ;
+            handlerSubmit(event) {
+				const id = event.target.list.id;
+                for (const key in this.data) {
+                    if (key === id) {
+                            this.data[key].active = true;
+                    } else {
+                            this.data[key].active = false; 
+                    }
+                }
+				let data = JSON.stringify(this.data);
+				fetch('{{route('extendedSearch')}}'+'?'+data).then(res => res.json()).then(array => array.map(item => this.info[id].push(item)));
+                console.log(this.info)
             }
         }
     });
