@@ -232,6 +232,7 @@
                             </div>
                         </div>
 												@endif
+												
 					</div>
 				</div>
 				<!-- end panel-body -->

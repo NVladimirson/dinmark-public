@@ -193,7 +193,7 @@
 <form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
         <div class="column flex-wrap"><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-        <p class="listChoice">
+        <p class="listChoice d-flex flex-wrap">
           <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
         <input @click="handlerSubmit(event)" @change="addQuery(data.standart, 'standart'); data.standart = ''"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 225px;border-radius:5px;height:34px;" type="text" list="standart">
@@ -203,6 +203,7 @@
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
                 <option id="index" v-for="(item, index) of info.standart" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
+            
             <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
                 <span class="selection">
