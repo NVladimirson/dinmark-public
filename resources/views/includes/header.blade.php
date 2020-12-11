@@ -193,7 +193,7 @@
 <form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-        <input  @input="handlerSubmit(event)" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="standart">
+        <input @click="handlerSubmit(event)"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="standart">
             <datalist  id="standart"  id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -224,7 +224,7 @@
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <input @input="handlerSubmit" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="diametr">
+            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="diametr">
             <datalist  id="diametr"  id="header_filter-64-standart-d" name="diametr"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -257,7 +257,7 @@
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <input @input="handlerSubmit" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
+            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
             <datalist  id="dovzhyna"  id="header_filter-64-standart-d" name="dovzhyna"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -290,7 +290,7 @@
         </div>
         <div>
             <p>Матеріал </p>
-            <input @input="handlerSubmit" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="material">
+            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="material">
             <datalist  id="material"  id="header_filter-64-standart-d" name="material"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -320,7 +320,7 @@
         </div>
         <div>
             <p>Клас міцності </p>
-            <input @input="handlerSubmit" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
+            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
             <datalist  id="klas_micnosti"  id="header_filter-64-standart-d" name="klas_micnosti"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -350,7 +350,7 @@
         </div>
         <div>
             <p>Покриття </p>
-            <input @input="handlerSubmit" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="pokryttja">
+            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="pokryttja">
             <datalist  id="pokryttja"  id="header_filter-64-standart-d" name="pokryttja"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -767,13 +767,12 @@ class="hide" style="display: block;">
         },
         methods: {
             handlerSubmit(event) {
-                console.log(event.target.list.id)
-				this.data.active = event.target.list.id;
+				        this.data.active = event.target.list.id;
                 const param = this.data;
-                let queryStr = `?standart=${param.standart}?diametr=${param.diametr}?dovzhyna=${param.dovzhyna}?material=${param.material}?=klas_micnosti${param.klas_micnosti}?pokryttja=${param.pokryttja}?active=${param.active}`;
+                let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&=klas_micnosti${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
                 console.log(queryStr);
 
-				fetch('{{route('extendedSearch')}}' + queryStr);
+				fetch('{{route('extendedSearch')}}' + queryStr).then(res => console.log(res));
             }
         }
     });
