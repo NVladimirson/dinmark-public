@@ -762,7 +762,7 @@ class="hide" style="display: block;">
             handlerSubmit() {
 							//console.log(this.data);
 								let data = JSON.stringify(this.data);
-								fetch('{{route('extendedSeach')}}'+'?'+data).then(res => console.log(data)) ;
+								fetch('{{route('extendedSearch')}}'+'?'+data).then(res => console.log(data)) ;
             }
         }
     });
