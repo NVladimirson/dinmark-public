@@ -192,13 +192,16 @@
 
 <form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
-        <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-        <input @click="handlerSubmit(event)"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="standart">
-            <datalist  id="standart"  id="header_filter-64-standart-d" name="64-standart"
+        <div class="column flex-wrap"><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
+        <p class="listChoice">
+          <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.standart, 'standart')"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="standart">
+            <datalist   id="standart"  id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info.standart" data-select2-id="72" :value="item"></option>
+                <option id="index" v-for="(item, index) of info.standart" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
             <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
@@ -224,13 +227,17 @@
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="diametr">
-            <datalist  id="diametr"  id="header_filter-64-standart-d" name="diametr"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.diametr, 'diametr')"  @input="handlerSubmit(event)" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="diametr">
+            <datalist   id="diametr"  id="header_filter-64-standart-d" name="diametr"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info.diametr" data-select2-id="72" :value="item"></option>
+                <option v-for="(item, index) of info.diametr" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
+            
             <!-- <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
                 style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
                 aria-hidden="true" data-select2-id="header_filter-7-diametr-d">
@@ -257,12 +264,15 @@
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
-            <datalist  id="dovzhyna"  id="header_filter-64-standart-d" name="dovzhyna"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.dovzhyna, 'dovzhyna')"  @input="handlerSubmit(event)" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
+            <datalist   id="dovzhyna"  id="header_filter-64-standart-d" name="dovzhyna"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info.dovzhyna" data-select2-id="72" :value="item"></option>
+                <option v-for="(item, index) of info.dovzhyna" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
             <!-- <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
                 multiple="" style="width: 100%" tabindex="-1"
@@ -290,12 +300,15 @@
         </div>
         <div>
             <p>Матеріал </p>
-            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="material">
-            <datalist  id="material"  id="header_filter-64-standart-d" name="material"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.material, 'material')"  @input="handlerSubmit(event)" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="material">
+            <datalist   id="material"  id="header_filter-64-standart-d" name="material"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info.material" data-select2-id="72" :value="item"></option>
+                <option v-for="(item, index) of info.material" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
             <!-- <select id="header_filter-11-material-d" name="11-material[]"
             multiple="" style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
@@ -320,13 +333,17 @@
         </div>
         <div>
             <p>Клас міцності </p>
-            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
-            <datalist  id="klas_micnosti"  id="header_filter-64-standart-d" name="klas_micnosti"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'klas_micnosti')" v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.klas_micnosti, 'klas_micnosti')"  @input="handlerSubmit(event)" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
+            <datalist   id="klas_micnosti"  id="header_filter-64-standart-d" name="klas_micnosti"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info.klas_micnosti" data-select2-id="72" :value="item"></option>
+                <option v-for="(item, index) of info.klas_micnosti" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
+
             <!-- <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
             style="width: 100%" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
             data-select2-id="header_filter-28-klas-micnosti-d">
@@ -350,12 +367,15 @@
         </div>
         <div>
             <p>Покриття </p>
-            <input @click="handlerSubmit(event)" @input="handlerSubmit" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="pokryttja">
-            <datalist  id="pokryttja"  id="header_filter-64-standart-d" name="pokryttja"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.pokryttja, 'pokryttja')"  @input="handlerSubmit(event)" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="pokryttja">
+            <datalist   id="pokryttja"  id="header_filter-64-standart-d" name="pokryttja"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option  v-for="item of info.pokryttja" data-select2-id="72" :value="item"></option>
+                <option v-for="(item, index) of info.pokryttja" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
                 <!-- <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
                 tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
@@ -746,33 +766,57 @@ class="hide" style="display: block;">
         el: "#header",
         data() {
             return {
-               	info: {
-                    standart: [],
-					diametr: [],
-					dovzhyna:[],
-					material: [],
-					klas_micnosti: [],
-					pokryttja: []
-                   },
-				data: {
-					standart: '',
-					diametr: '',
-					dovzhyna: '',
-					material: '',
-					klas_micnosti: '',
-					pokryttja: '',
-                    active: ''
-                }
+              info: {
+                standart: [1,2,3,4,5],
+                diametr: [],
+                dovzhyna:[],
+                material: [],
+                klas_micnosti: [],
+                pokryttja: []
+              },
+              data: {
+                standart: '',
+                diametr: '',
+                dovzhyna: '',
+                material: '',
+                klas_micnosti: '',
+                pokryttja: '',
+                active: ''
+              },
+              queryList: {
+                standart: [],
+                diametr: [],
+                dovzhyna: [],
+                material: [],
+                klas_micnosti: [],
+                pokryttja: [],
+                active: ''
+              }
             }
         },
         methods: {
+            removeQuery(index, array) {
+              this.queryList[array].splice(index)
+            },
+            addQuery(param, prop) {
+              let array = this.queryList[prop];
+              let flag = 0;
+              let hasParam = false;
+              array.forEach(item => {
+                  item == param ? flag++ : false;
+                });
+
+              if(param.length) {    
+                flag === 0 ? array.push(param) : false;
+              }
+              console.log(array)
+            },
             handlerSubmit(event) {
 				        this.data.active = event.target.list.id;
                 const param = this.data;
                 let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
-                console.log(queryStr);
 
-				fetch('{{route('extendedSearch')}}' + queryStr).then(res => console.log(res));
+				fetch('{{route('extendedSearch')}}' + queryStr).then(res => res);
             }
         }
     });
