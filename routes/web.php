@@ -20,6 +20,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/', 'DashboardController@index')->name('home');
         Route::get('/globalSearch', 'DashboardController@globalSearch')->name('globalsearch');
+				Route::get('/extendedSearch', 'DashboardController@extendedSearch')->name('extendedSearch');
 
 		Route::get('/profile','UserController@profile')->name('user.profile');
 		Route::post('/profile/data','UserController@updateData')->name('user.profile.update_data');
@@ -41,12 +42,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::post('/company/users/add','CompanyController@addUser')->name('company.users_add');
         Route::get('/company/login-as-user/{id}','CompanyController@loginAsUser')->name('company.login_as_user');
 
+		Route::get('/products/test','Product\ProductController@test')->name('products.test');
 		Route::get('/products','Product\ProductController@index')->name('products');
 		Route::get('/products/category/{id}','Product\ProductController@category')->name('products.category');
 		Route::get('/products/all-ajax','Product\ProductController@allAjax')->name('products.all_ajax');
 		Route::get('/get-node-ajax/{id}', 'Product\ProductController@getNode')->name('getnode');
 		Route::get('/products/option-filters','Product\ProductController@optionFilters')->name('products.optionfilters');
-        Route::get('/products/test','Product\ProductController@test')->name('products.test');
 		Route::get('/products/search','Product\ProductController@search')->name('products.search');
 		Route::get('/products/find','Product\ProductController@find')->name('products.find');
 		Route::get('/products/{id}','Product\ProductController@show')->name('products.show');

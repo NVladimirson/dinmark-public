@@ -194,31 +194,73 @@ class DashboardController extends Controller
 
         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search);
 
-  $res = [
-      'products' =>
-      $product_search,
-//          [
-//              'text' => '...empty',
-//          ],
-
-      'orders' =>
-      $order_search,
-//                  [
-//                      'text' => '...empty',
-//                  ],
-
-      'reclamations' =>
-      $reclamation_search,
-//          [
-//              'text' => '...empty',
-//          ],
-      'implementations' =>
-        $implementation_search,
-//          [
-//              'text' => '...empty',
-//          ],
-
-  ];
+  			$res = [
+      		'products' => $product_search,
+      		'orders' => $order_search,
+      		'reclamations' => $reclamation_search,
+      		'implementations' => $implementation_search,
+  			 ];
         return \Response::json($res);
     }
+
+		public function extendedSearch(Request $request){
+			$request = [
+				'standart' => [
+					'active'=> false,
+					'options' =>[]
+				],
+				'diametr' =>  [
+					'active'=>true,
+					'options' =>[]
+				],
+				'dovzhyna' =>  [
+					'active'=>false,
+					'options' =>[40]
+				],
+				'material' =>  [
+					'active'=>false,
+					'options' =>[]
+				],
+				'klas_micnosti' =>  [
+					'active'=>false,
+					'options' =>[]
+				],
+				'pokryttja' =>  [
+					'active'=>false,
+					'options' =>[]
+				],
+		];
+		$notemptyoptionrequest = 0;
+		foreach ($request as $filter => $value) {
+			if($value['active'] == true){
+				$activefilter = $filter;
+			}
+			if(!empty($value['options'])){
+				$notemptyoptionrequest++;
+			}
+		}
+
+		$query = 'SELECT DISTINCT products_filter.`'.$activefilter.'` FROM products_filter';
+
+		if($notemptyoptionrequest){
+			$whereIn = false;
+			foreach ($request as $filter => $value) {
+				if(count($value['options']) == 0){
+					continue;
+				}
+				if(!$whereIn){
+					$query .= ' WHERE '.$filter.' IN (';
+					$query .= implode(",", $value['options']);
+					$query .= ')';
+					$whereIn = true;
+				}else{
+					$query .= ' AND '.$filter.' IN (';
+					$query .= implode(",", $value['options']);
+					$query .= ')';
+				}
+			}
+		}
+
+		return json_decode(json_encode(\DB::select($query)),true);
+		}
 }

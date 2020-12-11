@@ -190,17 +190,17 @@
     </div>
 
 
-<form action="https://dinmark.com.ua/search/filter" id="filter"
-class="hide" style="display: block;">
+<form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
         <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-            <select id="header_filter-64-standart-d" name="64-standart"
+        <input @input="handlerSubmit" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
+            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option data-select2-id="72"></option>
-            </select>
-            <span class="select2 select2-container select2-container--default"
+                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+            </datalist>
+            <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
                 <span class="selection">
                     <span class="select2-selection select2-selection--single"
@@ -220,11 +220,18 @@ class="hide" style="display: block;">
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
+            <input @input="handlerSubmit" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
+            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+            </datalist>
+            <!-- <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
                 style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
                 aria-hidden="true" data-select2-id="header_filter-7-diametr-d">
             </select>
@@ -240,17 +247,24 @@ class="hide" style="display: block;">
                                     tabindex="0" autocomplete="off" autocorrect="off"
                                     autocapitalize="none" spellcheck="false"
                                     role="searchbox" aria-autocomplete="list"
-                                    placeholder="" style="width: 0.75em;">
+                                    placeholder="" style="">
                             </li>
                         </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
+            <input @input="handlerSubmit" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
+            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+            </datalist>
+            <!-- <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
                 multiple="" style="width: 100%" tabindex="-1"
                 class="select2-hidden-accessible" aria-hidden="true"
                 data-select2-id="header_filter-26-dovzhyna-d">
@@ -266,17 +280,24 @@ class="hide" style="display: block;">
                         <input class="select2-search__field" type="search" tabindex="0"
                         autocomplete="off" autocorrect="off" autocapitalize="none"
                         spellcheck="false" role="searchbox" aria-autocomplete="list"
-                        placeholder="" style="width: 0.75em;">
+                        placeholder="" style="">
                         </li>
                     </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Матеріал </p>
-            <select id="header_filter-11-material-d" name="11-material[]"
+            <input @input="handlerSubmit" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
+            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+            </datalist>
+            <!-- <select id="header_filter-11-material-d" name="11-material[]"
             multiple="" style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-11-material-d">
             </select>
@@ -289,17 +310,24 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Клас міцності </p>
-            <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
+            <input @input="handlerSubmit" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
+            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+            </datalist>
+            <!-- <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
             style="width: 100%" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
             data-select2-id="header_filter-28-klas-micnosti-d">
             </select>
@@ -312,17 +340,24 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Покриття </p>
-                <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
+            <input @input="handlerSubmit" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="first">
+            <datalist  id="first"  id="header_filter-64-standart-d" name="64-standart"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option  v-for="item of info" data-select2-id="72" :value="item"></option>
+            </datalist>
+                <!-- <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
                 tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
                 data-select2-id="header_filter-13-pokryttja-d">
                 </select>
@@ -336,13 +371,13 @@ class="hide" style="display: block;">
                                 <input class="select2-search__field" type="search" tabindex="0"
                                 autocomplete="off" autocorrect="off" autocapitalize="none"
                                 spellcheck="false" role="searchbox" aria-autocomplete="list"
-                                placeholder="" style="width: 0.75em;">
+                                placeholder="" style="">
                             </li>
                         </ul>
                         </span>
                     </span>
                     <span class="dropdown-wrapper" aria-hidden="true"></span>
-                </span>
+                </span> -->
             </div>
         </div>
     <div class="submit">
@@ -593,7 +628,7 @@ class="hide" style="display: block;">
                                     tabindex="0" autocomplete="off" autocorrect="off"
                                     autocapitalize="none" spellcheck="false"
                                     role="searchbox" aria-autocomplete="list"
-                                    placeholder="" style="width: 0.75em;">
+                                    placeholder="" style="">
                             </li>
                         </ul>
                     </span>
@@ -619,7 +654,7 @@ class="hide" style="display: block;">
                         <input class="select2-search__field" type="search" tabindex="0"
                         autocomplete="off" autocorrect="off" autocapitalize="none"
                         spellcheck="false" role="searchbox" aria-autocomplete="list"
-                        placeholder="" style="width: 0.75em;">
+                        placeholder="" style="">
                         </li>
                     </ul>
                     </span>
@@ -642,7 +677,7 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
@@ -665,7 +700,7 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
@@ -689,7 +724,7 @@ class="hide" style="display: block;">
                                 <input class="select2-search__field" type="search" tabindex="0"
                                 autocomplete="off" autocorrect="off" autocapitalize="none"
                                 spellcheck="false" role="searchbox" aria-autocomplete="list"
-                                placeholder="" style="width: 0.75em;">
+                                placeholder="" style="">
                             </li>
                         </ul>
                         </span>
@@ -705,7 +740,33 @@ class="hide" style="display: block;">
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
-
+<script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
+<script>
+    let filter = new Vue({
+        el: "#header",
+        data() {
+            return {
+               	info: ['DIN','None',333,444,555,666,777,888,999,'DIN','None',333,444,555,666,777,888,999,'DIN','None',333,444,555,666,777,888,999],
+                //val: ''
+								data: {
+									standart: '',
+									diametr: '',
+									dovzhyna: '',
+									material: '',
+									klas_micnosti: '',
+									pokryttja: '',
+								}
+            }
+        },
+        methods: {
+            handlerSubmit() {
+							//console.log(this.data);
+								let data = JSON.stringify(this.data);
+								fetch('{{route('extendedSeach')}}'+'?'+data).then(res => console.log(data)) ;
+            }
+        }
+    });
+</script>
 <script>
     const burger = document.querySelector(".sidebar-minify-btn.navbar-toggle");
     const closeBurger = document.querySelector("#close-burger-menu");
