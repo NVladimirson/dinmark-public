@@ -203,7 +203,7 @@
 					"processing": true,
 					"serverSide": true,
 					"ajax": ajaxRoute,
-					"order": [[ 0, "desc" ]],
+					"order": [[ 3, "asc" ]],
 					"columns": [
 						{
 							className: 'text-center',
@@ -221,7 +221,7 @@
 							data: 'image_html',
 						},
 						{
-							"orderable":      false,
+							"orderable":      true,
 							data: 'name_article_html',
 						},
 						// {
