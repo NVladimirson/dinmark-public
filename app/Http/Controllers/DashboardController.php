@@ -225,7 +225,6 @@ $activefilter = $data['active'];
       return [];
     }
     unset($data['active']);
-
     $notemptyoptionrequest = 0;
     foreach ($data as $filter => $value) {
 
@@ -276,3 +275,4 @@ $activefilter = $data['active'];
     }
     }
 }
+
