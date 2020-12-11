@@ -263,7 +263,6 @@ class DashboardController extends Controller
     foreach ($result as $key => $value) {
       $response[] = $value[$activefilter];
     }
-		// sort($response);
 		if($response){
 					foreach ($response as $value) {
 						if(in_array($value,$data[$activefilter])){
@@ -275,6 +274,5 @@ class DashboardController extends Controller
 		}else{
 			return [];
 		}
-
 		}
 }

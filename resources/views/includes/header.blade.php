@@ -196,7 +196,7 @@
         <p class="listChoice">
           <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
-        <input @click="handlerSubmit(event)" @change="addQuery(data.standart, 'standart')"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 276px;border-radius:5px;height:34px;" type="text" list="standart">
+        <input @click="handlerSubmit(event)" @change="addQuery(data.standart, 'standart'); data.standart = ''"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 225px;border-radius:5px;height:34px;" type="text" list="standart">
             <datalist   id="standart"  id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -230,7 +230,7 @@
             <p class="listChoice">
           <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
-        <input @click="handlerSubmit(event)" @change="addQuery(data.diametr, 'diametr')"  @input="handlerSubmit(event)" v-model="data.diametr" style="width: 276px;border-radius:5px;height:34px;" type="text" list="diametr">
+        <input @click="handlerSubmit(event)" @change="addQuery(data.diametr, 'diametr'); data.diametr=''"  @input="handlerSubmit(event)" v-model="data.diametr" style="width: 225px;border-radius:5px;height:34px;" type="text" list="diametr">
             <datalist   id="diametr"  id="header_filter-64-standart-d" name="diametr"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -267,7 +267,7 @@
             <p class="listChoice">
           <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
-        <input @click="handlerSubmit(event)" @change="addQuery(data.dovzhyna, 'dovzhyna')"  @input="handlerSubmit(event)" v-model="data.dovzhyna" style="width: 276px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
+        <input @click="handlerSubmit(event)" @change="addQuery(data.dovzhyna, 'dovzhyna'); data.dovzhyna =''"  @input="handlerSubmit(event)" v-model="data.dovzhyna" style="width: 225px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
             <datalist   id="dovzhyna"  id="header_filter-64-standart-d" name="dovzhyna"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -303,7 +303,7 @@
             <p class="listChoice">
           <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
-        <input @click="handlerSubmit(event)" @change="addQuery(data.material, 'material')"  @input="handlerSubmit(event)" v-model="data.material" style="width: 276px;border-radius:5px;height:34px;" type="text" list="material">
+        <input @click="handlerSubmit(event)" @change="addQuery(data.material, 'material'); data.material=''"  @input="handlerSubmit(event)" v-model="data.material" style="width: 225px;border-radius:5px;height:34px;" type="text" list="material">
             <datalist   id="material"  id="header_filter-64-standart-d" name="material"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -336,7 +336,7 @@
             <p class="listChoice">
           <span @click="removeQuery(index, 'klas_micnosti')" v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
-        <input @click="handlerSubmit(event)" @change="addQuery(data.klas_micnosti, 'klas_micnosti')"  @input="handlerSubmit(event)" v-model="data.klas_micnosti" style="width: 276px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
+        <input @click="handlerSubmit(event)" @change="addQuery(data.klas_micnosti, 'klas_micnosti'); data.klas_micnosti=''"  @input="handlerSubmit(event)" v-model="data.klas_micnosti" style="width: 225px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
             <datalist   id="klas_micnosti"  id="header_filter-64-standart-d" name="klas_micnosti"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -370,7 +370,7 @@
             <p class="listChoice">
           <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
-        <input @click="handlerSubmit(event)" @change="addQuery(data.pokryttja, 'pokryttja')"  @input="handlerSubmit(event)" v-model="data.pokryttja" style="width: 276px;border-radius:5px;height:34px;" type="text" list="pokryttja">
+        <input @click="handlerSubmit(event)" @change="addQuery(data.pokryttja, 'pokryttja'); data.pokryttja=''"  @input="handlerSubmit(event)" v-model="data.pokryttja" style="width: 225px;border-radius:5px;height:34px;" type="text" list="pokryttja">
             <datalist   id="pokryttja"  id="header_filter-64-standart-d" name="pokryttja"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
@@ -401,7 +401,7 @@
             </div>
         </div>
     <div class="submit">
-        <button class="hexa">Пошук</button>
+        <button @click="handlerSubmit" class="hexa">Пошук</button>
     </div>
 </form>
 
@@ -767,7 +767,7 @@ class="hide" style="display: block;">
         data() {
             return {
               info: {
-                standart: [1,2,3,4,5],
+                standart: [],
                 diametr: [],
                 dovzhyna:[],
                 material: [],
@@ -796,7 +796,7 @@ class="hide" style="display: block;">
         },
         methods: {
             removeQuery(index, array) {
-              this.queryList[array].splice(index)
+              this.queryList[array].splice(index);
             },
             addQuery(param, prop) {
               let array = this.queryList[prop];
@@ -809,14 +809,14 @@ class="hide" style="display: block;">
               if(param.length) {    
                 flag === 0 ? array.push(param) : false;
               }
-              console.log(array)
             },
             handlerSubmit(event) {
-				        this.data.active = event.target.list.id;
-                const param = this.data;
+                let input = event.target.value;
+				let active = this.queryList.active = event.target.list.id;
+                const param = this.queryList;
                 let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
 
-				fetch('{{route('extendedSearch')}}' + queryStr).then(res => res);
+				fetch('{{route('extendedSearch')}}' + queryStr).then(res => !!res ? res.json() : false).then(arr => this.info[active] = arr);
             }
         }
     });
