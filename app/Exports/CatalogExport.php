@@ -4,11 +4,11 @@ namespace App\Exports;
 
 use App\Models\Product\Product;
 use Maatwebsite\Excel\Concerns\Exportable;
-
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use App\Services\Product\Product as ProductServices;
 
 class CatalogExport implements  WithTitle, FromQuery, WithMapping,WithHeadings
 {
@@ -53,7 +53,7 @@ class CatalogExport implements  WithTitle, FromQuery, WithMapping,WithHeadings
     public function map($product): array
     {
         $row = [];
-        $row[] = \App\Services\Product\Product::getName($product);
+        $row[] = ProductServices::getName($product);
         $row[] = $product->article_show;
 
         $article = '';
@@ -65,16 +65,16 @@ class CatalogExport implements  WithTitle, FromQuery, WithMapping,WithHeadings
         $row[] = $article;
 
         $price = number_format(0,2,'.',' ');
-        if(\App\Services\Product\Product::hasAmount($product->storages))
+        if(ProductServices::hasAmount($product->storages))
         {
-            $price = \App\Services\Product\Product::getPrice($product);
+            $price = ProductServices::getPrice($product);
         }
 
         $row[] = $price;
 
         $price = number_format(0,2,'.',' ');
-        if(\App\Services\Product\Product::hasAmount($product->storages)){
-            $price = \App\Services\Product\Product::getPriceWithCoef($product,$this->coef);
+        if(ProductServices::hasAmount($product->storages)){
+            $price = ProductServices::getPriceWithCoef($product,$this->coef);
         }
 
         $row[] = $price;

@@ -15,7 +15,7 @@ use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use App\Models\Reclamation\ReclamationProduct;
 use LaravelLocalization;
-use App\Services\Product\Product as ProductService;
+use App\Services\Product\Product as ProductServices;
 
 class GlobalSearchService
 

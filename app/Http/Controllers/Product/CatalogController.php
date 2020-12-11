@@ -6,7 +6,7 @@ use App\Exports\CatalogExport;
 use App\Http\Controllers\Controller;
 use App\Imports\CatalogImport;
 use App\Models\Product\CompanyProductArticle;
-use App\Models\Product\Product;
+use App\Models\Product\ProductShopStorage;
 use App\Models\Wishlist\Like;
 use Illuminate\Support\Str;
 use App\Models\Wishlist\LikeGroup;
@@ -124,7 +124,7 @@ class CatalogController extends Controller
 			}
 		}
 		$group = LikeGroup::find(session('current_catalog'));
-		$count = Product::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
+		$count = ProductShopStorage::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
 			$likes->where([
 				['alias',8],
 				['group_id',$group->group_id],
@@ -134,7 +134,7 @@ class CatalogController extends Controller
 
 		Excel::import(new CatalogImport(), request()->file('import'));
 
-		$count = Product::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
+		$count = ProductShopStorage::with(['storages','holdingArticles'])->whereHas('likes',function($likes) use ($group){
 			$likes->where([
 				['alias',8],
 				['group_id',$group->group_id],
@@ -175,7 +175,7 @@ class CatalogController extends Controller
 		$group = LikeGroup::with(['price'])->find($request->group);
 
 		session(['current_catalog' => $group->id]);
-		$products = Product::with(['storages','holdingArticles','content'])->whereHas('likes',function($likes) use ($group){
+		$products = ProductShopStorage::with(['storages','holdingArticles','content'])->whereHas('likes',function($likes) use ($group){
 			$likes->where([
 				['alias',8],
 				['group_id',$group->group_id],
@@ -185,7 +185,7 @@ class CatalogController extends Controller
 		$holdingId = auth()->user()->getCompany->holding;
 		$ids = null;
 		if($request->has('search')){
-			$ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
+			$ids = ProductServicesShopStorage::getIdsSearch(request('search')['value']);
 		}
 
 		return datatables()
@@ -197,19 +197,19 @@ class CatalogController extends Controller
 						</div>';
 			})
 			->addColumn('image_html', function (Product $product) {
-				$src = \App\Services\Product\Product::getImagePath($product);
+				$src = ProductServicesShopStorage::getImagePath($product);
 
 				return '<img src="'.$src.'" width="80">';
 			})
             ->addColumn('name_article_html', function (Product $product){
-                $name = \App\Services\Product\Product::getName($product);
+                $name = ProductServicesShopStorage::getName($product);
                 return '<a class="data-product_name" href="'
                     .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
                     // '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
                     '<span>'.$product->article_show.'</span>';
             })
 //			->addColumn('name_html', function (Product $product){
-//				$name = \App\Services\Product\Product::getName($product);
+//				$name = ProductServicesShopStorage::getName($product);
 //				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
 //			})
 //			->addColumn('article_show_html', function (Product $product) {
@@ -225,9 +225,9 @@ class CatalogController extends Controller
 				return view('product.include.holding_article', compact('product','article'));
 			})
 			->addColumn('user_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages))
+                if(ProductServicesShopStorage::hasAmount($product->storages))
                 {
-                    return '<div id="catalog_user_price_'.$product->id.'">'.\App\Services\Product\Product::getPrice($product).'</div>';
+                    return '<div id="catalog_user_price_'.$product->id.'">'.ProductServicesShopStorage::getPrice($product).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -236,8 +236,8 @@ class CatalogController extends Controller
 				if($group->price){
 					$coef = $group->price->koef;
 				}
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<div id="catalog_catalog_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
+                if(ProductServicesShopStorage::hasAmount($product->storages)){
+                    return '<div id="catalog_catalog_price_'.$product->id.'">'.ProductServicesShopStorage::getPriceWithCoef($product,$coef).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -318,8 +318,8 @@ class CatalogController extends Controller
 
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
-                $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                $name = \App\Services\Product\Product::getName($product);
+                $hasStorage = ProductServicesShopStorage::hasAmount($product->storages);
+                $name = ProductServicesShopStorage::getName($product);
 
                 return view('product.include.wishlist_action_buttons',compact('product','storage', 'name', 'hasStorage'));
 			})
@@ -413,7 +413,7 @@ class CatalogController extends Controller
 
 	public function changeStorage(Request $request){
 		$product_storage_id = $request->storage_id;
-		$product_info = Product::with('storages')->find($request->product_id);
+		$product_info = ProductShopStorage::with('storages')->find($request->product_id);
 		$storage_id = $product_info->storages->where('storage_id',$product_storage_id)->first()->id;
 		return ProductServices::getPrice($product_info,$storage_id);
 	}

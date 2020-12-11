@@ -182,7 +182,7 @@ class ProductController extends Controller
         $ids = null;
 
         if($request->has('search')){
-            $ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
+            $ids = ProductServices::getIdsSearch(request('search')['value']);
         }
 
         return datatables()
@@ -216,7 +216,7 @@ class ProductController extends Controller
             </div>';
         })
         ->addColumn('image_html', function (Product $product) {
-            $src = \App\Services\Product\Product::getImagePath($product);
+            $src = ProductServices::getImagePath($product);
 
             $spans = '';
 
@@ -239,13 +239,13 @@ class ProductController extends Controller
                     </div>';
         })
         ->addColumn('name_article_html', function (Product $product){
-            $name = \App\Services\Product\Product::getName($product);
+            $name = ProductServices::getName($product);
             return '<a class="data-product_name" href="'
             .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
             '<span>'.$product->article_show.'</span>';
         })
             ->addColumn('retail_user_prices', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                if(ProductServices::hasAmount($product->storages)){
                     $storage = $product->storages->first();
                     $package = $storage->package;
                     $retail = ProductServices::getBasePrice($product,$storage->storage_id);
@@ -284,7 +284,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
+                    return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
                         </span><br><span class="limit_amount_quantity_1"></span></p>';
                 }
             })
@@ -298,7 +298,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_2_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
                         </span><br><span class="limit_amount_quantity_2"></span></p>';
                 }
 
@@ -341,7 +341,7 @@ class ProductController extends Controller
             ->addColumn('calc_quantity', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
 
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                if(ProductServices::hasAmount($product->storages)){
                   if(isset($storage->package)){
                     $package = $storage->package;
                   }else{
@@ -419,9 +419,9 @@ class ProductController extends Controller
             })
             ->addColumn('actions', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                $src = \App\Services\Product\Product::getImagePath($product);
-                $name = \App\Services\Product\Product::getName($product);
+                $hasStorage = ProductServices::hasAmount($product->storages);
+                $src = ProductServices::getImagePath($product);
+                $name = ProductServices::getName($product);
                 return view('product.include.action_buttons',compact('product','hasStorage','name','src','storage'));
             })
             ->orderColumn('storage_html','storage_1 $1')
@@ -548,19 +548,19 @@ class ProductController extends Controller
     public function show($id){
         $product = Product::find($id);
 
-        $productName = \App\Services\Product\Product::getName($product);
-        $productText = \App\Services\Product\Product::getText($product);
-        $imagePath = \App\Services\Product\Product::getImagePathThumb($product);
-        $imagePathFull = \App\Services\Product\Product::getImagePath($product);
-        $productPhotos = \App\Services\Product\Product::getImagePathThumbs($product);
-        $productVideo = \App\Services\Product\Product::getVideo($product);
-        $productPDF = \App\Services\Product\Product::getPDF($product);
-        $price = \App\Services\Product\Product::getPrice($product);
-        $limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
-        $limit2 = ($product->limit_2 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
+        $productName = ProductServices::getName($product);
+        $productText = ProductServices::getText($product);
+        $imagePath = ProductServices::getImagePathThumb($product);
+        $imagePathFull = ProductServices::getImagePath($product);
+        $productPhotos = ProductServices::getImagePathThumbs($product);
+        $productVideo = ProductServices::getVideo($product);
+        $productPDF = ProductServices::getPDF($product);
+        $price = ProductServices::getPrice($product);
+        $limit1 = ($product->limit_1 > 0)? (ProductServices::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
+        $limit2 = ($product->limit_2 > 0)? (ProductServices::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
 
         $orders = OrderServices::getByCompany();
-        $basePrice = \App\Services\Product\Product::getBasePrice($product);
+        $basePrice = ProductServices::getBasePrice($product);
 
         $wishlists = CatalogServices::getByCompany();
 
@@ -568,8 +568,8 @@ class ProductController extends Controller
         $storage_raw_prices = [];
 
         foreach ($product->storages as $storage){
-            $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($product,$storage->id);
-            $storage_raw_prices[$storage->id] = \App\Services\Product\Product::calcPrice($product,$storage->id);
+            $storage_prices[$storage->id] = ProductServices::getPrice($product,$storage->id);
+            $storage_raw_prices[$storage->id] = ProductServices::calcPrice($product,$storage->id);
         }
         SEOTools::setTitle($productName);
         //dd($basePrice);
@@ -582,7 +582,7 @@ class ProductController extends Controller
         $search = $request->name;
         $formatted_data = [];
 
-        $ids = \App\Services\Product\Product::getIdsSearch($search);
+        $ids = ProductServices::getIdsSearch($search);
 
         $products = Product::whereIn('id',$ids)
         ->orWhere([
@@ -595,7 +595,7 @@ class ProductController extends Controller
         ->get();
 
         foreach ($products as $product) {
-            $name = \App\Services\Product\Product::getName($product);
+            $name = ProductServices::getName($product);
             $storage = $product->storages->firstWhere('is_main',1);
             $min = 0;
             $max = 0;
@@ -625,7 +625,7 @@ class ProductController extends Controller
         $search = $request->search;
         $formatted_data = [];
 
-        $ids = \App\Services\Product\Product::getIdsSearch($search);
+        $ids = ProductServices::getIdsSearch($search);
 
         $products = Product::with(['content'])->whereIn('id',$ids)
         ->orWhere([
@@ -638,7 +638,7 @@ class ProductController extends Controller
         ->get();
 
         foreach ($products as $product) {
-            $name = \App\Services\Product\Product::getName($product);
+            $name = ProductServices::getName($product);
 
             $formatted_data[] = [
                 'id' => $product->id,
@@ -656,7 +656,7 @@ class ProductController extends Controller
             'phone' => $request->phone,
             'comment' => $request->comment,
         ];
-        \App\Services\Product\Product::getPriceRequest($id, $request->quantity, $data);
+        ProductServices::getPriceRequest($id, $request->quantity, $data);
 
         return 'ok';
     }

@@ -8,6 +8,7 @@ use App\Models\Order\Implementation;
 use App\Models\Reclamation\Reclamation;
 use App\Models\Reclamation\ReclamationProduct;
 use App\Services\Order\ReclamationServices;
+use App\Services\Product\Product as ProductServices;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Support\Facades\Redirect;
@@ -75,7 +76,7 @@ class ReclamationController extends Controller
                         if($reclamationProduct->product->orderProduct){
                             if($reclamationProduct->product->orderProduct->product){
                                 $id = $reclamationProduct->product->orderProduct->product->id;
-                                $name = \App\Services\Product\Product::getName($reclamationProduct->product->orderProduct->product);
+                                $name = ProductServices::getName($reclamationProduct->product->orderProduct->product);
 
                             }
                         }
