@@ -193,7 +193,7 @@
 <form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
         <div class="column flex-wrap"><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-        <p class="listChoice">
+        <p class="listChoice d-flex flex-wrap">
           <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
         </p>
         <input @click="handlerSubmit(event)" @change="addQuery(data.standart, 'standart'); data.standart = ''"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 225px;border-radius:5px;height:34px;" type="text" list="standart">

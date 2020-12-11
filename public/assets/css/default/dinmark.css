@@ -1790,11 +1790,12 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
    background-color: #B3B2B2;
 }
 
-.listChoice {
+p.listChoice {
     display: flex;
     gap: 5px;
     flex-direction: row;
     flex-wrap: wrap;
+    min-height: 24px;
 }
 
 .choice {
@@ -1803,7 +1804,6 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
     color: #000;
     cursor: pointer;
     border-radius: 15px;
-    height: 24px;
 }
 .times {
     color: red;
