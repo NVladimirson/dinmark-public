@@ -117,13 +117,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @if($company->type_prices != null)
-                        @foreach($company->type_prices as $type_price)
+                        @if(!empty($company_prices))
+                        @foreach($company_prices as $company_price)
                             <tr>
-                                <td>{{$type_price->name}}</td>
-                                <td class="text-center">{{$type_price->koef}}</td>
+                                <td>{{$company_price->name}}</td>
+                                <td class="text-center">{{$company_price->koef}}</td>
                                 <td class="text-center">
-                                    <form action="{{route('company.destroy_price',[$type_price->id])}}" method="post">
+                                    <form action="{{route('company.destroy_price',[$company_price->id])}}" method="post">
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-block btn-danger"><i class="fas fa-times"></i></button>
                                     </form>
