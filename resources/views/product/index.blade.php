@@ -210,19 +210,19 @@
 												@if($productVideo || $productPDF)
                         <div class="tab-pane fade show" id="detail-tab">
                             <div class="row">
-															<div class="col-md-6">
+															<div class="col-lg-6">
 																@foreach($productVideo as $key => $link)
-                                <div class="col-md-12">
+                                <div class="col-lg-12">
                                     {!! str_replace('<p>&nbsp;</p>','',html_entity_decode($productText,ENT_QUOTES)) !!}
                                     @if($productVideo[0])
                                     <p>
-                                        <iframe width="737" height="415" src="https://www.youtube.com/embed/{{$productVideo[0]}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <iframe style="width: 100%;" height="415" src="https://www.youtube.com/embed/{{$productVideo[0]}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </p>
                                     @endif
                                 </div>
 																@endforeach
 															</div>
-                                <div class="col-md-6">
+                                <div class="col-lg-6">
                                     @if($productPDF)
                                         <a href="{{$productPDF}}" target="_blank" class="preview">
                                             <img src="https://dinmark.com.ua/images/file_preview.jpg" width="100%">
