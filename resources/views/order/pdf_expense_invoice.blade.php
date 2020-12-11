@@ -5,10 +5,11 @@
 
     <style>
         body {
-            font-family: Arial;
+            /* font-family: Arial; */
             /* A4 ФОРМАТ */
             /* width: 210mm;
              height: 297mm;*/
+             font-family: DejaVu Sans;
         }
 
         table {
@@ -102,7 +103,7 @@
                 код за ЄДРПОУ 23266835, ІПН 232668313332
             </div>
         </td>
-        <td rowspan="2"><img align="logo" src=" {{asset('logo.png')}} " width="200"></td>
+        <td rowspan="2"><img align="logo" src="{{asset('logo.png')}}" width="200"></td>
     </tr>
     <tr>
         <td class="f-u f8-5 td-v-b">Покупець:</td>

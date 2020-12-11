@@ -103,11 +103,11 @@ class Product
 
     public static function getVideo($product)
     {
-        $content = WlVideo::where([
+        $productVideo = WlVideo::where([
             ['alias',$product->wl_alias],
             ['content',-$product->group],
-        ])->first();
-        $productVideo = $content?$content->link:'';
+        ])->get()->pluck('link')->toArray();
+
         return $productVideo;
 
 	}

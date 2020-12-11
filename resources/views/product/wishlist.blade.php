@@ -60,7 +60,7 @@
 					<div class="row">
 						<div class="col-lg-6 m-b-15">
 							<p class="m-b-5">@lang('wishlist.add_hand_message')</p>
-							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="post">
+							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="get">
 								@csrf
 								<div class="row m-b-15">
 									<div class="col-lg-8 m-b-5">

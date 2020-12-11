@@ -5,7 +5,8 @@
 
     <style>
         body {
-            font-family: Arial;
+            /* font-family: Arial; */
+            font-family: DejaVu Sans;
         }
         table {
             width: 100%;

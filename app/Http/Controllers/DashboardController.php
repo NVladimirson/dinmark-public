@@ -101,7 +101,8 @@ class DashboardController extends Controller
                 'name'      => \App\Services\Product\Product::getName($order_product->product),
                 'article'   => $order_product->product->article_show,
                 'image'     => \App\Services\Product\Product::getImagePathThumb($order_product->product),
-                'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+                //'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+								'price' => number_format($order_product->total,2,'.',' ')
             ];
         }
 
@@ -123,7 +124,8 @@ class DashboardController extends Controller
                 'name'      => \App\Services\Product\Product::getName($order_product->product),
                 'article'   => $order_product->product->article_show,
                 'image'     => \App\Services\Product\Product::getImagePathThumb($order_product->product),
-                'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+                //'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+								'product_count' => $order_product->product_count
             ];
         }
 
