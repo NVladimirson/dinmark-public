@@ -8,7 +8,7 @@ use App\Models\Order\OrderProduct;
 use App\Models\Order\Payment;
 use App\Models\Product\Product;
 use App\Services\Miscellenous\GlobalSearchService;
-use App\Services\Product\Product as ProductService;
+use App\Services\Product\Product as ProductServices;
 use App\Models\Ticket\TicketMessage;
 use App\Services\News\NewsServices;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -98,10 +98,10 @@ class DashboardController extends Controller
         foreach ($top_price_order_products as $order_product){
             $topOrderProducts [] = [
                 'id'        => $order_product->product->id,
-                'name'      => \App\Services\Product\Product::getName($order_product->product),
+                'name'      => ProductServices::getName($order_product->product),
                 'article'   => $order_product->product->article_show,
-                'image'     => \App\Services\Product\Product::getImagePathThumb($order_product->product),
-                //'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+                'image'     => ProductServices::getImagePathThumb($order_product->product),
+                //'price'     => ProductServices::getPrice($order_product->product),
 								'price' => number_format($order_product->total,2,'.',' ')
             ];
         }
@@ -121,10 +121,10 @@ class DashboardController extends Controller
         foreach ($most_popular_order_products as $order_product){
             $mostPopularOrderProducts [] = [
                 'id'        => $order_product->product->id,
-                'name'      => \App\Services\Product\Product::getName($order_product->product),
+                'name'      => ProductServices::getName($order_product->product),
                 'article'   => $order_product->product->article_show,
-                'image'     => \App\Services\Product\Product::getImagePathThumb($order_product->product),
-                //'price'     => \App\Services\Product\Product::getPrice($order_product->product),
+                'image'     => ProductServices::getImagePathThumb($order_product->product),
+                //'price'     => ProductServices::getPrice($order_product->product),
 								'product_count' => $order_product->product_count
             ];
         }
@@ -206,38 +206,34 @@ class DashboardController extends Controller
     }
 
 		public function extendedSearch(Request $request){
-		// 	$request = [
-		// 		'standart' => [
-		// 			'active'=> false,
-		// 			'options' =>[]
-		// 		],
-		// 		'diametr' =>  [
-		// 			'active'=>true,
-		// 			'options' =>[]
-		// 		],
-		// 		'dovzhyna' =>  [
-		// 			'active'=>false,
-		// 			'options' =>[40]
-		// 		],
-		// 		'material' =>  [
-		// 			'active'=>false,
-		// 			'options' =>[]
-		// 		],
-		// 		'klas_micnosti' =>  [
-		// 			'active'=>false,
-		// 			'options' =>[]
-		// 		],
-		// 		'pokryttja' =>  [
-		// 			'active'=>false,
-		// 			'options' =>[]
-		// 		],
+
+			$data = $request->toArray();
+		// 	$data = [
+		// 		'standart' => NULL,
+		// 		'diametr' =>  NULL,
+		// 		'dovzhyna' =>  '40',
+		// 		'material' =>  '',
+		// 		'klas_micnosti' =>  '',
+		// 		'pokryttja' =>  '',
+		// 		'active' => 'standart'
 		// ];
+
+		$activefilter = $data['active'];
+		$allowed_filters = ['standart','diametr','dovzhyna','material',
+		'klas_micnosti','pokryttja','active'];
+		if(!in_array($activefilter,$allowed_filters)){
+			return '';
+		}
+		unset($data['active']);
+
 		$notemptyoptionrequest = 0;
-		foreach ($request as $filter => $value) {
-			if($value['active'] == true){
-				$activefilter = $filter;
+		foreach ($data as $filter => $value) {
+
+			if($value == null || $value == ''){
+				$data[$filter] = [];
 			}
-			if(!empty($value['options'])){
+			else{
+				$data[$filter] = explode(",",$data[$filter]);
 				$notemptyoptionrequest++;
 			}
 		}
@@ -246,28 +242,28 @@ class DashboardController extends Controller
 
 		if($notemptyoptionrequest){
 			$whereIn = false;
-			foreach ($request as $filter => $value) {
-				if(count($value['options']) == 0){
+			foreach ($data as $filter => $value) {
+				if(count($value) == 0){
 					continue;
 				}
 				if(!$whereIn){
 					$query .= ' WHERE '.$filter.' IN (';
-					$query .= implode(",", $value['options']);
+					$query .= implode(",", $value);
 					$query .= ')';
 					$whereIn = true;
 				}else{
 					$query .= ' AND '.$filter.' IN (';
-					$query .= implode(",", $value['options']);
+					$query .= implode(",", $value);
 					$query .= ')';
 				}
 			}
 		}
-
+		info('ACTIVEFILTER: '.$activefilter.'END');
 		$result = json_decode(json_encode(\DB::select($query)),true);
     foreach ($result as $key => $value) {
       $response[] = $value[$activefilter];
     }
-
+		sort($response);
     return $response;
 		}
 }

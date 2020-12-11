@@ -10,6 +10,7 @@ namespace App\Services\Order;
 
 use App\Models\Company\Client;
 use App\Models\Order\Order;
+use App\Services\Product\Product as ProductServices;
 
 class OrderServices
 {
@@ -50,9 +51,9 @@ class OrderServices
                     info('Error in OrderServices: storage not forund');
                     continue;
                 }
-                // $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
+                // $orderProduct->price = abs(ProductServices::calcPrice($orderProduct->product,
                 //             $storage->id)/(float)100) * $koef;
-                $orderProduct->price = abs(\App\Services\Product\Product::calcPrice($orderProduct->product,
+                $orderProduct->price = abs(ProductServices::calcPrice($orderProduct->product,
                             $storage->id)) * $koef;
                             // info('price: '.$orderProduct->price);
                 $orderProduct->price_in = $storage->price;

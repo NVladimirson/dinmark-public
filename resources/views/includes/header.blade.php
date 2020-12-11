@@ -769,7 +769,7 @@ class="hide" style="display: block;">
             handlerSubmit(event) {
 				        this.data.active = event.target.list.id;
                 const param = this.data;
-                let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&=klas_micnosti${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
+                let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
                 console.log(queryStr);
 
 				fetch('{{route('extendedSearch')}}' + queryStr).then(res => console.log(res));

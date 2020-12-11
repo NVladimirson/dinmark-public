@@ -6,6 +6,7 @@ use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Services\Product\Product as ProductServices;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 
@@ -66,7 +67,7 @@ class OrderImport implements OnEachRow
 									$koef = 0.97;
 								}
 
-								$price = abs(\App\Services\Product\Product::calcPrice($product)/(float)100) * $koef;
+								$price = abs(ProductServices::calcPrice($product)/(float)100) * $koef;
 								$total = round($price * $quantity,2);
 
 								$this->order->total += $total;
