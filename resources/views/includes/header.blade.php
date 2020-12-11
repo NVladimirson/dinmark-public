@@ -203,6 +203,7 @@
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
                 <option id="index" v-for="(item, index) of info.standart" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
+            
             <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
                 <span class="selection">

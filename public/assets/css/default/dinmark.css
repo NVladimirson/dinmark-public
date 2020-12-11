@@ -1795,7 +1795,7 @@ p.listChoice {
     gap: 5px;
     flex-direction: row;
     flex-wrap: wrap;
-    min-height: 24px;
+    height: 24px;
 }
 
 .choice {
