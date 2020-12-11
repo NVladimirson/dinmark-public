@@ -263,7 +263,7 @@ class DashboardController extends Controller
     foreach ($result as $key => $value) {
       $response[] = $value[$activefilter];
     }
-		sort($response);
+		// sort($response);
     return $response;
 		}
 }
