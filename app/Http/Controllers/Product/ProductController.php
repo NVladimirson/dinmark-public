@@ -36,13 +36,12 @@ class ProductController extends Controller
 
     public function index(){
         SEOTools::setTitle(trans('product.all_tab_name'));
-        $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
         $orders = OrderServices::getByCompany();
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getOptionFilters();
         $dinmark_url = \Config::get('values.dinmarkurl');
-        return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters','dinmark_url'));
+        return view('product.all',compact('wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
 
     public function category($id){
@@ -96,7 +95,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-
+      $this->dispatch(new ProductOptionFiltersJob());
     }
 
     public function allAjax(Request $request){
