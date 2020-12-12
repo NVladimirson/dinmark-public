@@ -423,6 +423,7 @@ class ProductController extends Controller
                 $name = ProductServices::getName($product);
                 return view('product.include.action_buttons',compact('product','hasStorage','name','src','storage'));
             })
+            // ->orderColumn('name_article_html',false)
             ->orderColumn('storage_html','storage_1 $1')
             ->orderColumn('article_show_html','article_show $1')
             ->orderColumn('user_price', function ($product, $order){
@@ -437,7 +438,7 @@ class ProductController extends Controller
             ->filterColumn('article_show_html', function($product, $keyword) {
                 $product->where('article_show', 'like',["%{$keyword}%"]);
             })
-            ->filterColumn('name_html', function($product, $keyword) use($ids) {
+            ->filterColumn('name_article_html', function($product, $keyword) use($ids) {
                 if($ids){
                     $product->whereIn('id',$ids);
                 }else{
@@ -451,7 +452,7 @@ class ProductController extends Controller
                 if (request()->has('article_show_html')) {
                     $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
                 }
-                if(request()->has('name_html')){
+                if(request()->has('name_article_html')){
                     $product->whereIn('id',$ids);
                 }
             }, true)
