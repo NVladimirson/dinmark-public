@@ -46,7 +46,7 @@
                         @endforeach
                     </ul>
                     <a href="{{route('orders')}}" class="btn btn-sm btn-danger m-b-5 m-r-5" title="@lang('order.btn_cancel_close')"><i class="fas fa-times"></i></a>
-                                      
+
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
@@ -225,7 +225,7 @@
                                                 <td class="text-nowrap text-center order-product-storage">
                                                     @foreach($product['storages'] as $storage)
                                                         @if($storage->storage_id == $product['storage_id'])
-                                                            {{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}}
+                                                            {{$storage->storage->name.' дн.'}} / {{ \App\Services\Product\CatalogServices::dayrounder($storage->amount).' шт.' }}
                                                         @endif
                                                     @endforeach
                                                 </td>
@@ -533,6 +533,6 @@
 		})(jQuery);
     </script>
     <style>
-        
+
     </style>
 @endpush
