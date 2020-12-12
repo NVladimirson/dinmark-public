@@ -392,7 +392,7 @@
 
                     },
                     "order": [
-                        [0, "desc"]
+                        [3, "asc"]
                     ],
                     "columns": [{
                         data: 'id',
@@ -411,7 +411,7 @@
                             className: "datatable_image_class"
                         },
                         {
-                            "orderable": false,
+                            "orderable": true,
                             data: 'name_article_html',
                             className: "datatable_namearticle_class"
                         },
