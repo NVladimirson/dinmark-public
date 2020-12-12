@@ -315,25 +315,32 @@ class ProductController extends Controller
                         else{
                             $main_storage = 0;
                         }
+                        $emptystorages = true;
                         foreach ($storages as $key => $storage) {
-                            $term = $storage->storage->term;
-                            $days = ProductServices::getStingDays($term);
-                            // $name = CatalogServices::dayrounder($storage->amount).
-                            // ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-                            $name = __('product.storage_name'). ' '. $storage->storage->term . ' '. __('product.storage_term_measure_shortly').
-                            ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-                            $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
-                            package_max="'.$storage->amount.'"';
-                            if($storage->storage->id == $main_storage){
-                                $value .= 'selected>'.$name.'</option>';
-                            }
-                            else{
-                                $value .= '>'.$name.'</option>';
+                            if($storage->amount!=0){
+                              $emptystorages = false;
+                              $term = $storage->storage->term;
+                              $days = ProductServices::getStingDays($term);
+                              // $name = CatalogServices::dayrounder($storage->amount).
+                              // ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
+                              $name = __('product.storage_name'). ' '. $storage->storage->term . ' '. __('product.storage_term_measure_shortly').
+                              ' / '.CatalogServices::dayrounder($storage->amount) . ' шт.';
+                              $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
+                              package_max="'.$storage->amount.'"';
+                              if($storage->storage->id == $main_storage){
+                                  $value .= 'selected>'.$name.'</option>';
+                              }
+                              else{
+                                  $value .= '>'.$name.'</option>';
+                              }
                             }
                         }
                         $value .= '</select>';
                     }
                     $value .= '</select>';
+                }
+                if($emptystorages){
+                  $value = trans('product.storage_empty');
                 }
                 return $value;
             })
@@ -426,12 +433,12 @@ class ProductController extends Controller
             // ->orderColumn('name_article_html',false)
             ->orderColumn('storage_html','storage_1 $1')
             ->orderColumn('article_show_html','article_show $1')
-            ->orderColumn('user_price', function ($product, $order){
-                $product
-                    ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
-                    ->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
-                    ->orderBy("price_with_currency", $order);
-            })
+            // ->orderColumn('user_price', function ($product, $order){
+            //         ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
+            //         //->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
+            //         ->select('s_shopstorage_products.*', \DB::raw('s_shopstorage_products.price * s_currency.currency AS price_with_currency'))
+            //         ->orderBy("price_with_currency", $order);
+            // })
             ->filterColumn('storage_html', function($product, $keyword) {
                 $product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
             })
@@ -547,7 +554,6 @@ class ProductController extends Controller
 
     public function show($id){
         $product = Product::find($id);
-
         $productName = ProductServices::getName($product);
         $productText = ProductServices::getText($product);
         $imagePath = ProductServices::getImagePathThumb($product);
@@ -555,6 +561,7 @@ class ProductController extends Controller
         $productPhotos = ProductServices::getImagePathThumbs($product);
         $productVideo = ProductServices::getVideo($product);
         $productPDF = ProductServices::getPDF($product);
+        //$priceproduct = ProductShopStorage::find($id);
         $price = ProductServices::getPrice($product);
         $limit1 = ($product->limit_1 > 0)? (ProductServices::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
         $limit2 = ($product->limit_2 > 0)? (ProductServices::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
