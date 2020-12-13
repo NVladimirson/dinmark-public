@@ -1309,6 +1309,9 @@
                         //     return false;
                         // }
                     });
+                    if(labels === ''){
+                      labels = '@lang('product.select_term')';
+                    }
                     console.log(document.getElementsByClassName('btn dropdown-toggle btn-white')[0]);
                     document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title',labels);
                     document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = labels;
