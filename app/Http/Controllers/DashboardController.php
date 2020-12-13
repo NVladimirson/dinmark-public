@@ -232,17 +232,18 @@ $activefilter = $data['active'];
         $data[$filter] = [];
       }
       else{
+        if($filter != $activefilter){
+          $notemptyoptionrequest++;
+        }
         $data[$filter] = explode(",",$data[$filter]);
-        $notemptyoptionrequest++;
       }
     }
-
     $query = 'SELECT DISTINCT products_filter.'.$activefilter.' FROM products_filter';
 
     if($notemptyoptionrequest){
       $whereIn = false;
       foreach ($data as $filter => $value) {
-        if(count($value) == 0){
+        if((count($value) == 0) || $filter == $activefilter){
           continue;
         }
         if(!$whereIn){
@@ -263,11 +264,11 @@ $activefilter = $data['active'];
       $response[] = $value[$activefilter];
     }
     if($response){
-          foreach ($response as $value) {
-            if(in_array($value,$data[$activefilter])){
-              unset($response[array_search($value, $response)]);
-            }
-          }
+          // foreach ($response as $value) {
+          //   if(in_array($value,$data[$activefilter])){
+          //     unset($response[array_search($value, $response)]);
+          //   }
+          // }
           sort($response);
           return $response;
     }else{
@@ -275,4 +276,3 @@ $activefilter = $data['active'];
     }
     }
 }
-
