@@ -47,7 +47,70 @@ class PaymentController extends Controller
             $payments->where('date_add','<=',$request->date_to);
         }
 
-
+        // if($request->has('search')){
+        //     $searchstr = request('search')['value'];
+        //     // $payment = collect();
+        //     $search = explode('/',$searchstr);
+        //     info('SEARCH');
+        //     info($search);
+        //     foreach ($search as $key => $value) {
+        //       $search[$key] = trim($value);
+        //     }
+        //     info('SEARCHTR');
+        //     info($search);
+        //     if(count($search)>1){
+        //       //search payment or number
+        //
+        //       if(isset($search[0])){
+        //         $search_number = $search[0];
+        //       }else{
+        //         $search_number = '';
+        //       }
+        //
+        //       if(isset($search[1])){
+        //         $search_payment = $search[1];
+        //       }else{
+        //         $search_payment = '';
+        //       }
+        //
+        //       $found_number = false;
+        //       if($search_number){
+        //         $payments->whereHas('order', function($orders) use($search_number){
+        //           $orders->where('id','like',"%" . $search_number . "%");
+        //         });
+        //         // $found_number = true;
+        //       }
+        //
+        //       if($search_payment){
+        //             $payments->whereHas('order', function($orders) use($search_payment){
+        //               $orders->where('public_number','like',"%" . $search_payment . "%");
+        //             });
+        //       //   if($found_number){
+        //       //     $payment = $payment->whereHas('order', function($orders) use($search_payment){
+        //       //       $orders->where('public_number','like',"%" . $search_payment . "%");
+        //       //     });
+        //       //     $payment = $payment->get();
+        //       //   }else{
+        //       //     $payment = \App\Models\Order\Payment::whereHas('order', function($orders) use($search_payment){
+        //       //       $orders->where('public_number','like',"%" . $search_payment . "%");
+        //       //     });
+        //       //   }
+        //       // }
+        //     }
+        //   }
+        //     else{
+        //       //search payment and number
+        //       $searchstr = $search[0];
+        //       if(trim($searchstr)){
+        //         $payments->whereHas('order', function($orders) use($searchstr){
+        //           $orders->where('id','like',"%" . $searchstr . "%")
+        //           ->orWhere('public_number','like',"%" . $searchstr . "%");
+        //         });
+        //       }
+        //     }
+        //     info('SO');
+        //     info(count($payments->get()));
+        // }
 
         return datatables()
             ->eloquent($payments)

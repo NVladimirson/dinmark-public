@@ -178,11 +178,13 @@ class ProductController extends Controller
             }
         }
 
-        $ids = null;
+        //$ids = null;
+        $search_article = null;
 
         if($request->has('search')){
-            $ids = ProductServices::getIdsSearch(request('search')['value']);
+            $search_article = request('search')['value'];
         }
+
 
         return datatables()
         ->eloquent($products)
@@ -431,8 +433,8 @@ class ProductController extends Controller
                 return view('product.include.action_buttons',compact('product','hasStorage','name','src','storage'));
             })
             // ->orderColumn('name_article_html',false)
-            ->orderColumn('storage_html','storage_1 $1')
-            ->orderColumn('article_show_html','article_show $1')
+            // ->orderColumn('storage_html','storage_1 $1')
+            // ->orderColumn('article_show_html','article_show $1')
             // ->orderColumn('user_price', function ($product, $order){
             //         ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
             //         //->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
@@ -445,25 +447,47 @@ class ProductController extends Controller
             ->filterColumn('article_show_html', function($product, $keyword) {
                 $product->where('article_show', 'like',["%{$keyword}%"]);
             })
-            ->filterColumn('name_article_html', function($product, $keyword) use($ids) {
-                if($ids){
-                    $product->whereIn('id',$ids);
-                }else{
-                    $product->select();
-                }
+            ->filterColumn('name_article_html', function($product, $keyword) use($search_article) {
+              if($search_article){
+               $language = CategoryServices::getLang();
+                $product->whereHas('content', function($content) use($search_article,$language){
+                  $content->where([
+                    ['language',$language],
+                    ['alias', 8],
+                    ['name', 'like',"%" . $search_article . "%"]
+                  ]);
+                });
+              }else{
+                  $product->select();
+              }
             })
-            ->filter(function ($product) use ($request,$ids) {
-                if (request()->has('storage_html')) {
-                    $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
-                }
-                if (request()->has('article_show_html')) {
-                    $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
-                }
-                if(request()->has('name_article_html')){
-                    $product->whereIn('id',$ids);
-                }
-            }, true)
-            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price','retail_user_prices'])
+            ->orderColumn('name_article_html', 'date_add $1')
+            // $top_price_order_products = OrderProduct::with('product')->whereHas('getCart',function ($order){
+            //         $order->whereHas('getUser', function ($users){
+            //             $users->where('company',auth()->user()->company);
+            //         });
+            //     })
+            //     ->groupBy('product_id')
+            //     ->selectRaw('(price*quantity) as total, product_id')
+            //     ->orderByRaw('price*quantity desc')
+            //     ->limit(5)
+            //     ->get();
+
+
+
+            // ->filter(function ($product) use ($request) {
+            //     if (request()->has('storage_html')) {
+            //         $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
+            //     }
+            //     if (request()->has('article_show_html')) {
+            //         $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
+            //     }
+            //     // if(request()->has('name_article_html')){
+            //     //     $product->whereIn('id',$ids);
+            //     // }
+            // }, true)
+            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html',
+            'check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price','retail_user_prices'])
             ->toJson();
     }
 
