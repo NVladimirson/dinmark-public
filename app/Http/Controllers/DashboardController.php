@@ -188,14 +188,17 @@ $most_popular_order_products = OrderProduct::with('product')->whereHas('getCart'
     {
         $search = $request->name;
 
-        $product_search = GlobalSearchService::getProductsSearch($search);
+         $product_search = GlobalSearchService::getProductsSearch($search);
 
-        $order_search = GlobalSearchService::getOrderProductsSearch($search);
-
-        $implementation_search = GlobalSearchService::getImplementationProductsSearch($search);
-
-        $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search);
-
+         $order_search = GlobalSearchService::getOrderProductsSearch($search);
+        //
+         $implementation_search = GlobalSearchService::getImplementationProductsSearch($search);
+        //
+         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search);
+        //$product_search = [];
+        //$order_search = [];
+        //$reclamation_search = [];
+        //$implementation_search = [];
         $res = [
           'products' => $product_search,
           'orders' => $order_search,

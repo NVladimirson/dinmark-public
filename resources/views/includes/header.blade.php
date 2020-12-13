@@ -203,7 +203,7 @@
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
                 <option id="index" v-for="(item, index) of info.standart" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
-            
+
             <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
                 <span class="selection">
@@ -238,7 +238,7 @@
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
                 <option v-for="(item, index) of info.diametr" data-select2-id="72" :value="item">@{{item}}</option>
             </datalist>
-            
+
             <!-- <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
                 style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
                 aria-hidden="true" data-select2-id="header_filter-7-diametr-d">
@@ -807,7 +807,7 @@ class="hide" style="display: block;">
                   item == param ? flag++ : false;
                 });
 
-              if(param.length) {    
+              if(param.length) {
                 flag === 0 ? array.push(param) : false;
               }
             },
@@ -879,38 +879,76 @@ class="hide" style="display: block;">
                         return '{{route('globalsearch')}}'
                     },
                     dataType: 'json',
-                    data: function (params) {
-                        return {
-                            name: params.term,
-														onlywithstorage: '0'
-                        };
-                    },
+                    // data: function (params) {
+                    //     return {
+                    //         name: params.term,
+										// 				onlywithstorage: '0'
+                    //     };
+                    // },
                     processResults: function (data) {
+											let results = [];
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.article')",
+														"children" : data['products'],
+												});
+												// results.push({
+												// 	"text": "LINK PRODUCTS...",
+												// });
+											}
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.order')",
+														"children" : data['orders']
+												});
+											}
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.implementation')",
+														"children" : data['implementations']
+												});
+											}
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.reclamation')",
+														"children" : data['reclamations']
+												});
+											}
                         return {
-                            results: [
-                                {
-                                    "text": "@lang('global.global_search.article')",
-                                    "children" : data['products']
-                                },
-                                {
-                                    "text": "@lang('global.global_search.order')",
-                                    "children" : data['orders']
-                                },
-                                {
-                                    "text": "@lang('global.global_search.implementation')",
-                                    "children" : data['implementations']
-                                },
-                                {
-                                    "text": "@lang('global.global_search.reclamation')",
-                                    "children" : data['reclamations']
-                                },
-
-                            ],
+													results : results,
+														// "pagination": {
+														// 		"more": true
+														// }
+                            // results: [
+                            //     {
+                            //         "text": "@lang('global.global_search.article')",
+                            //         "children" : data['products']
+                            //     },
+                            //     {
+                            //         "text": "@lang('global.global_search.order')",
+                            //         "children" : data['orders']
+                            //     },
+                            //     {
+                            //         "text": "@lang('global.global_search.implementation')",
+                            //         "children" : data['implementations']
+                            //     },
+                            //     {
+                            //         "text": "@lang('global.global_search.reclamation')",
+                            //         "children" : data['reclamations']
+                            //     },
+														//
+                            // ],
                         };
                     },
                     cache: true
                 },
             });
+
+						$('#global_search').on('select2:select', function (e) {
+								console.log($('#global_search').val());
+								let product_id = $('#global_search').val();
+								window.location = '{{route('products')}}/' + product_id;
+						});
         });
     })(jQuery);
 </script>
