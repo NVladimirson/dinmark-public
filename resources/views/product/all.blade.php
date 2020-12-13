@@ -1453,8 +1453,9 @@
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
 
-                            sum_w_taxes.children[2].setAttribute('style','display:none');
-                            sum_w_taxes.children[3].setAttribute('style','display:none');
+                            sum_w_taxes.children[0].setAttribute('style','');
+                            sum_w_taxes.children[2].setAttribute('style','');
+                            sum_w_taxes.children[3].setAttribute('style','');
                         }else{
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
@@ -1539,18 +1540,18 @@
 
             let getPrice = false;
             let getPriceRequestAmount = amount - obj.getAttribute('datamax');
-            if(getPriceRequestAmount > 0){
-              // obj.value = max;
-              const td = obj.parentNode
-              text.innerHTML = 'Максимум для этого склада <br> &le; ' + obj.getAttribute('datamax')
-              td.append(text)
-              // obj.value = obj.getAttribute('datamax')
-              setTimeout(() => {
-                  text.innerHTML = ''
-                  td.append(text)
-              }, 5000)
-              getPrice = true;
-            }
+            // if(getPriceRequestAmount > 0){
+            //   // obj.value = max;
+            //   const td = obj.parentNode
+            //   text.innerHTML = 'Максимум для этого склада <br> &le; ' + obj.getAttribute('datamax')
+            //   td.append(text)
+            //   // obj.value = obj.getAttribute('datamax')
+            //   setTimeout(() => {
+            //       text.innerHTML = ''
+            //       td.append(text)
+            //   }, 5000)
+            //   getPrice = true;
+            // }
 
             if(getPrice === true){
               //let get_price_button = $('get_price_button_'+product_id);
@@ -1574,16 +1575,17 @@
                 },
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
+                    console.log(msg);
                     let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
 
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
-                    if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
+                    if( (msg['price100_raw'] - msg['user_price_raw']) > (msg['price100_raw']*0.05) ){
                         retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
                     }
-                    else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
+                    else if( (msg['price100_raw'] - msg['user_price_raw']) < (msg['price100_raw']*0.05) && ((msg['price100_raw'] -  msg['user_price_raw'])>0) ){
                         retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
                         sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
@@ -1607,6 +1609,9 @@
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
                         sum_w_taxes.children[2].innerText = '';
                         sum_w_taxes.children[3].innerText = '';
+                        sum_w_taxes.children[0].setAttribute('style','');
+                        sum_w_taxes.children[2].setAttribute('style','');
+                        sum_w_taxes.children[3].setAttribute('style','');
                     }else{
                         sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                         sum_w_taxes.children[3].innerText = msg['discountamount'];

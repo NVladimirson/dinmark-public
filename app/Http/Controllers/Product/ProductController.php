@@ -544,8 +544,10 @@ class ProductController extends Controller
             'limit_amount_quantity_1' => $three_percent_discount_limit,
             'limit_amount_quantity_2' => $seven_percent_discount_limit,
             'user_price' => number_format($user_price,2,'.',' '),
+            'user_price_raw'=>$user_price,
             'retail' => $retail,
             'price100' => number_format($pricefor100,2,'.',' '),
+            'price100_raw' => $pricefor100
             //'oldprice' => $oldprice
         ];
 
