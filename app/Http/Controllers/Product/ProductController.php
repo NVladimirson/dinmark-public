@@ -114,11 +114,11 @@ class ProductController extends Controller
             $products = $products->whereIn('group', $res);
         }
 
-        if($request->term){
-            $term = $request->term;
-            $products = $products->whereHas('storages', function($storages) use($term){
-                $storages->whereHas('storage',function($storage) use($term){
-                    $storage->where('term',$term);
+        if(isset($request->term)){
+            $terms = explode(',',$request->term);
+            $products = $products->whereHas('storages', function($storages) use($terms){
+                $storages->where('amount','>',0)->whereHas('storage',function($storage) use($terms){
+                    $storage->whereIn('term',$terms);
                 });
             });
         }
@@ -305,6 +305,7 @@ class ProductController extends Controller
             ->addColumn('storage_html', function (Product $product) {
                 $value = trans('product.storage_empty');
                 $emptyvalue = trans('product.storage_choose');
+                $emptystorages = true;
                 if($product->storages){
                     $storages = $product->storages;
                     if(count($storages)){
@@ -315,7 +316,6 @@ class ProductController extends Controller
                         else{
                             $main_storage = 0;
                         }
-                        $emptystorages = true;
                         foreach ($storages as $key => $storage) {
                             if($storage->amount!=0){
                               $emptystorages = false;
@@ -544,8 +544,10 @@ class ProductController extends Controller
             'limit_amount_quantity_1' => $three_percent_discount_limit,
             'limit_amount_quantity_2' => $seven_percent_discount_limit,
             'user_price' => number_format($user_price,2,'.',' '),
+            'user_price_raw'=>$user_price,
             'retail' => $retail,
             'price100' => number_format($pricefor100,2,'.',' '),
+            'price100_raw' => $pricefor100
             //'oldprice' => $oldprice
         ];
 

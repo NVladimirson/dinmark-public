@@ -69,11 +69,17 @@
                         <div class="col-xl-5">
                             <div class="right-align m-b-15">
                                 @if(isset($terms))
-                                    <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
+                                    <!-- <select class="form-control selectpicker" id="storages" data-size="10" data-live-search="true" data-style="btn-white">
                                         <option value="0">@lang('product.select_term')</option>
                                         @foreach($terms as $key => $term)
                                             <option value="{{$key}}">{!! $term !!}</option>
                                         @endforeach
+                                    </select> -->
+                                    <select class="form-control selectpicker" id="storages" data-style="btn-white" multiple="multiple">
+                                        <!-- <option value="0">@lang('product.select_term')</option> -->
+                                      @foreach($terms as $key => $term)
+                                          <option value="{{$key}}">{!! $term !!}</option>
+                                      @endforeach
                                     </select>
                                 @endif
                             </div>
@@ -317,6 +323,9 @@
                 $('#select_all_products').prop('checked', false);
             });
 
+            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
+            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].style.color = "#4e5c68";
+            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = '@lang('product.select_term')';
 
             window.table =
                 $('#data-table-buttons').DataTable({
@@ -349,7 +358,9 @@
                             },
                             "term": function() {
                                 var optionSelected = $("option:selected", $('#storages')).val();
-                                return optionSelected;
+                                if(optionSelected !== 'undefined'){
+                                    return optionSelected;
+                                }
                             },
                             "new": function() {
                                 if ($('#new-checked').css("display") === 'none') {
@@ -385,7 +396,9 @@
                                     }
                                 });
                                 //console.log('filter_with_options: ' + filter_selected_ids)
-                                return filter_selected_ids;
+                                if(filter_selected_map.length){
+                                  return filter_selected_ids;
+                                }
 
                             }
                         }
@@ -492,7 +505,7 @@
                             //filter_selected_ids.option_id = option_name;
                         }
                     });
-                    let route = 'products/option-filters';
+                    let route = '{{route("products.optionfilters")}}';
 
                     $.ajax({
                         method: "GET",
@@ -535,14 +548,16 @@
                                     'text-align: center;"></i></a></p></div>'));
                             }
                             if ($("option:selected", $('#storages')).val() !== '0') {
+                              $.each($("option:selected", $('#storages')), function(index, value) {
                                 $('#filters_selected').append($('<div class="selected_filter">' +
-                                    '<p class="tesst" id="deselected_filter_storage" style="font-size: 10pt;' +
+                                    '<p class="tesst" id="deselected_filter_storage" deselected-value="'+value.value+'" style="font-size: 10pt;' +
                                     'text-align: center;margin: auto;">' + "@lang('product.storage_filter_name.storage_term')" + " : " +
-                                    $("option:selected", $('#storages')).text() +
+                                    value.innerText +
                                     '<a class="deselect_filter" deselectid="deselected_filter_storage" href=#>' +
                                     '<i class="far fa-times-circle" style="float: right;color: red;' +
                                     'text-align: center;"></i></a></p></div>'));
-                            }
+                              });
+                          }
                             if (!($('#new-checked').css("display") === 'none')) {
                                 $('#filters_selected').append($('<div class="selected_filter">' +
                                     '<p class="tesst" id="deselected_filter_new" style="font-size: 10pt;' +
@@ -1274,8 +1289,33 @@
                     }
                     var myobj = document.getElementById(id);
                 } else if (id === 'deselected_filter_storage') {
-                    $('#storages option[value=0]').prop('selected', true);
                     var myobj = document.getElementById(id);
+                    let deselected_value = myobj.getAttribute('deselected-value');
+                    var wanted_option = $('#storages option[value="'+ deselected_value +'"]');
+                    wanted_option.prop('selected', false);
+                    let labels = '';
+                    $.each($('#storages option'), function(key, option) {
+                      if(option.selected === true){
+                        if(labels !== ''){
+                          labels = labels + ', ' + option.label;
+                        }
+                        else{
+                          labels = option.label;
+                        }
+                      }
+                        // if (value.getAttribute("option_id") === id) {
+                        //     value.setAttribute("style", "cursor:pointer");
+                        //     value.setAttribute("filter-selected", "false");
+                        //     return false;
+                        // }
+                    });
+                    if(labels === ''){
+                      labels = '@lang('product.select_term')';
+                    }
+                    console.log(document.getElementsByClassName('btn dropdown-toggle btn-white')[0]);
+                    document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title',labels);
+                    document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = labels;
+                     //$('#storages').trigger('change.select2');
                 } else if (id === 'deselected_filter_new') {
                     if ($('#new-checked').css("display") === 'none') {
                         $('#new-checked').css("display", "");
@@ -1413,8 +1453,9 @@
                             sum_w_taxes.children[2].innerText = '';
                             sum_w_taxes.children[3].innerText = '';
 
-                            sum_w_taxes.children[2].setAttribute('style','display:none');
-                            sum_w_taxes.children[3].setAttribute('style','display:none');
+                            sum_w_taxes.children[0].setAttribute('style','');
+                            sum_w_taxes.children[2].setAttribute('style','');
+                            sum_w_taxes.children[3].setAttribute('style','');
                         }else{
                             sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                             sum_w_taxes.children[3].innerText = msg['discountamount'];
@@ -1499,18 +1540,18 @@
 
             let getPrice = false;
             let getPriceRequestAmount = amount - obj.getAttribute('datamax');
-            if(getPriceRequestAmount > 0){
-              // obj.value = max;
-              const td = obj.parentNode
-              text.innerHTML = 'Максимум для этого склада <br> &le; ' + obj.getAttribute('datamax')
-              td.append(text)
-              // obj.value = obj.getAttribute('datamax')
-              setTimeout(() => {
-                  text.innerHTML = ''
-                  td.append(text)
-              }, 5000)
-              getPrice = true;
-            }
+            // if(getPriceRequestAmount > 0){
+            //   // obj.value = max;
+            //   const td = obj.parentNode
+            //   text.innerHTML = 'Максимум для этого склада <br> &le; ' + obj.getAttribute('datamax')
+            //   td.append(text)
+            //   // obj.value = obj.getAttribute('datamax')
+            //   setTimeout(() => {
+            //       text.innerHTML = ''
+            //       td.append(text)
+            //   }, 5000)
+            //   getPrice = true;
+            // }
 
             if(getPrice === true){
               //let get_price_button = $('get_price_button_'+product_id);
@@ -1534,16 +1575,17 @@
                 },
                 url: "{!! @route('priceCalc') !!}",
                 success: function(msg){
+                    console.log(msg);
                     let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
 
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
-                    if(parseInt(msg['price100']) - parseInt(msg['user_price']) > parseInt(msg['price100'])*0.05){
+                    if( (msg['price100_raw'] - msg['user_price_raw']) > (msg['price100_raw']*0.05) ){
                         retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
                     }
-                    else if(parseInt(msg['price100']) - parseInt(msg['user_price']) < (parseInt(msg['price100'])*0.05) && (parseInt(msg['price100']) - parseInt(msg['user_price']))>0){
+                    else if( (msg['price100_raw'] - msg['user_price_raw']) < (msg['price100_raw']*0.05) && ((msg['price100_raw'] -  msg['user_price_raw'])>0) ){
                         retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
                         sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
@@ -1567,6 +1609,9 @@
                     if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
                         sum_w_taxes.children[2].innerText = '';
                         sum_w_taxes.children[3].innerText = '';
+                        sum_w_taxes.children[0].setAttribute('style','');
+                        sum_w_taxes.children[2].setAttribute('style','');
+                        sum_w_taxes.children[3].setAttribute('style','');
                     }else{
                         sum_w_taxes.children[2].innerText = '-'+msg['discount'];
                         sum_w_taxes.children[3].innerText = msg['discountamount'];
@@ -1577,6 +1622,9 @@
                 }
             });
 
+            // $("#storages").select2({
+            //   language: "ru"
+            // });
         }
 
     </script>
