@@ -15,13 +15,13 @@
 			<div class="panel panel-primary">
 				<!-- begin panel-heading -->
 				<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.search_tab_name')</h4>
+					<h4 class="panel-title">product_search</h4>
 				</div>
 				<!-- end panel-heading -->
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-					@forelse($formatted_data as $formatted_datum)
+					@forelse($product_search as $formatted_datum)
 						<div class="col-12 m-b-15">
 							<a href="{{route('products.show',[$formatted_datum['id']])}}">{{$formatted_datum['text']}}</a>
 						</div>
@@ -33,7 +33,80 @@
 				<!-- end panel-body -->
 			</div>
 			<!-- end panel -->
-		</div>
+        </div>
+        <div class="col-xl-12">
+			<!-- begin panel -->
+			<div class="panel panel-primary">
+				<!-- begin panel-heading -->
+				<div class="panel-heading">
+					<h4 class="panel-title">oder_search</h4>
+				</div>
+				<!-- end panel-heading -->
+				<!-- begin panel-body -->
+				<div class="panel-body">
+					<div class="row">
+					@forelse($implementation_search as $formatted_datum)
+						<div class="col-12 m-b-15">
+							<a href="{{route('products.show',[$formatted_datum['id']])}}">{{$formatted_datum['text']}}</a>
+						</div>
+					@empty
+						<div class="alert alert-light fade show">@lang('product.empty')</div>
+					@endforelse
+				</div>
+				</div>
+				<!-- end panel-body -->
+			</div>
+			<!-- end panel -->
+        </div>
+        <div class="col-xl-12">
+			<!-- begin panel -->
+			<div class="panel panel-primary">
+				<!-- begin panel-heading -->
+				<div class="panel-heading">
+					<h4 class="panel-title">implementation_search </h4>
+				</div>
+				<!-- end panel-heading -->
+				<!-- begin panel-body -->
+				<div class="panel-body">
+					<div class="row">
+					@forelse($implementation_search as $formatted_datum)
+						<div class="col-12 m-b-15">
+							<a href="{{route('products.show',[$formatted_datum['id']])}}">{{$formatted_datum['text']}}</a>
+						</div>
+					@empty
+						<div class="alert alert-light fade show">@lang('product.empty')</div>
+					@endforelse
+				</div>
+				</div>
+				<!-- end panel-body -->
+			</div>
+			<!-- end panel -->
+        </div>
+        <div class="col-xl-12">
+			<!-- begin panel -->
+			<div class="panel panel-primary">
+				<!-- begin panel-heading -->
+				<div class="panel-heading">
+					<h4 class="panel-title">reclamation_search</h4>
+				</div>
+				<!-- end panel-heading -->
+				<!-- begin panel-body -->
+				<div class="panel-body">
+					<div class="row">
+					@forelse($reclamation_search as $formatted_datum)
+						<div class="col-12 m-b-15">
+							<a href="{{route('products.show',[$formatted_datum['id']])}}">{{$formatted_datum['text']}}</a>
+						</div>
+					@empty
+						<div class="alert alert-light fade show">@lang('product.empty')</div>
+					@endforelse
+				</div>
+				</div>
+				<!-- end panel-body -->
+			</div>
+			<!-- end panel -->
+        </div>
+
 		<!-- end col-10 -->
 	</div>
 	<!-- end row -->
