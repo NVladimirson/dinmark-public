@@ -23,8 +23,22 @@
 					<div class="row">
 					@forelse($product_search as $formatted_datum)
 						<div class="col-3 m-b-15">
-                        <img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
-                        <a href="{{route('products.show',[$formatted_datum->id])}}">{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+							<div class="row">
+							<div class="col-12 m-b-15">
+								<img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100%">
+							</div>
+            	<div class="col-12 m-b-15">
+								<div class="row">
+									<div class="col-4">
+										<b>Название</b>
+									</div>
+									<div class="col-8">
+										<a href="{{route('products.show',[$formatted_datum->id])}}">
+											{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+									</div>
+								</div>
+							</div>
+							</div>
 						</div>
 					@empty
 						<div class="alert alert-light fade show">@lang('product.empty')</div>
@@ -106,7 +120,7 @@
 				<div class="panel-body">
 					<div class="row">
 					@forelse($reclamation_search as $formatted_datum)
-						<<div class="col-3 m-b-15">
+						<div class="col-3 m-b-15">
                             <img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
                             <a href="{{route('products.show',[$formatted_datum->id])}}">{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
                             </div>

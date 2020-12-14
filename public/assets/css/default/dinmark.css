@@ -1790,12 +1790,27 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
    background-color: #B3B2B2;
 }
 
-p.listChoice {
+.extend-search {
+    background-color: #fff;
+    padding: 0!important;
+    max-width: 250px;
+    min-height: 34px;
+    border-radius: 5px;
     display: flex;
-    gap: 5px;
     flex-direction: row;
     flex-wrap: wrap;
-    height: 24px;
+    position: relative;
+}
+
+input#standart,
+input#diametr,
+input#dovzhyna,
+input#material,
+input#klas_micnosti,
+input#pokryttja{
+    margin-top: 2px;
+    width: 100%;
+    border-radius: 5px;
 }
 
 .choice {
@@ -1803,9 +1818,32 @@ p.listChoice {
     background-color: #fff;
     color: #000;
     cursor: pointer;
+    border: 1px solid  #B3B2B2;
     border-radius: 15px;
+    display: inline;
+    margin: 3px 0;
+}
+
+.form-select {
+    height: 300px!important;
+    overflow: auto;
+    position: absolute;
+    top: 100%;
+    background-color: #fff;
+    z-index: 9999;
+}
+.select-item {
+    padding: 2px 5px;
+}
+.select-item:hover {
+    background-color: #29ABE2;
+    cursor: pointer;
 }
 .times {
     color: red;
     font-weight: bold;
+}
+
+div.selected {
+    background-color: silver;
 }
