@@ -656,30 +656,16 @@ class ProductController extends Controller
     public function find(Request $request)
     {
         $search = $request->search;
-        $formatted_data = [];
 
-        $ids = ProductServices::getIdsSearch($search);
+        $product_search = GlobalSearchService::getProductsSearch($search, true);
 
-        $products = Product::with(['content'])->whereIn('id',$ids)
-        ->orWhere([
-            ['article','like',"%".$search."%"],
-        ])->orWhere([
-            ['article_show','like',"%".$search."%"],
-        ])
-        ->orderBy('article')
-        ->limit(20)
-        ->get();
+         $order_search = GlobalSearchService::getOrderProductsSearch($search, true);
+        //
+         $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, true);
+        //
+         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, true);
 
-        foreach ($products as $product) {
-            $name = ProductServices::getName($product);
-
-            $formatted_data[] = [
-                'id' => $product->id,
-                'text' => $name.' ('.$product->article_show.')',
-            ];
-        }
-
-        return view('product.search',compact('formatted_data'));
+        return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
     }
 
     public function getPrice($id, Request $request)
