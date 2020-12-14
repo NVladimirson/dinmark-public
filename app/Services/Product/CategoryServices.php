@@ -38,7 +38,12 @@ class CategoryServices
 		$categories_ids = ProductCategory::where([
 			['parent',$parent],
 			['active',1],
-		])->pluck('id')->toArray();
+			['hide',0],
+		])->pluck('position','id')->toArray();
+
+		asort($categories_ids);
+		$categories_ids = array_keys($categories_ids);
+
 		foreach ($categories_ids as $key => $categories_id){
 			$categories_ids[$key] = '-'.$categories_id;
 		}
@@ -47,6 +52,7 @@ class CategoryServices
 			->where('language',$instance->lang)
 			->where('alias', 8)
 			->get();
+		//dd(Content::where('content',1167)->where('language','ru')->where('alias',8)->first());
 	}
 
 	public static function getOptionFilters(){
@@ -69,22 +75,33 @@ class CategoryServices
                 }
 
             }
-						//sorting by name
+						$sortmap = [];
 						foreach ($object as $key => $main) {
-							foreach ($main['options'] as $id => $option) {
-								$collected = collect($main['options']);
-								$sorted = $collected->sortBy(function ($data, $id) {
-									if(!isset($data['data']['name'])){
-										dd($data['data']['name']);
-									}
-									return $data['data']['name'];
-								});
-								$sorted = $sorted->toArray();
-								$object[$key]['options'] = $sorted;
-							}
+							$sortmap[$key] = $object[$key]['data']['position'];
 						}
+
+						asort($sortmap);
+
+						foreach ($sortmap as $id => $poisition) {
+							$response[$id] = $object[$id];
+						}
+
 						//sorting by name
-        return $object;
+						// foreach ($object as $key => $main) {
+						// 	foreach ($main['options'] as $id => $option) {
+						// 		$collected = collect($main['options']);
+						// 		$sorted = $collected->sortBy(function ($data, $id) {
+						// 			if(!isset($data['data']['name'])){
+						// 				dd($data['data']['name']);
+						// 			}
+						// 			return $data['data']['name'];
+						// 		});
+						// 		$sorted = $sorted->toArray();
+						// 		$object[$key]['options'] = $sorted;
+						// 	}
+						// }
+						//sorting by name
+        return $response;
 
     }
 
@@ -172,7 +189,7 @@ public static function getNodeAjax($id = 0){
 
 	private static function getChilds($id){
 
-	  $childs = ProductCategory::where([['parent', $id],['active',1]])->get()->keyBy('id')->toArray();
+	  $childs = ProductCategory::where([['parent', $id],['active',1],['hide',0]])->get()->keyBy('id')->toArray();
 	  return $childs;
 	}
 

@@ -8,6 +8,7 @@
 	<link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+	<link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <style>
         .panel-title-control{
@@ -108,7 +109,7 @@
                     <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
-                        <tr>
+                        <!-- <tr>
                             <th>
 
                             </th>
@@ -118,7 +119,7 @@
                             <th>
 
                             </th>
-                        </tr>
+                        </tr> -->
 							<tr>
 								<th></th>
 								<th width="30"></th>
@@ -223,6 +224,7 @@
 						{
 							"orderable":      true,
 							data: 'name_article_html',
+							class: 'datatable_namearticle_class'
 						},
 						// {
 						// 	data: 'article_show_html',
