@@ -23,7 +23,7 @@
 					<div class="row">
 					@forelse($product_search as $formatted_datum)
 						<div class="col-3 m-b-15">
-                        <img src="https://dinmark.com.ua/{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
+                        <img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
                         <a href="{{route('products.show',[$formatted_datum->id])}}">{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
 						</div>
 					@empty
@@ -49,7 +49,7 @@
 					<div class="row">
 					@forelse($order_search as $formatted_datum)
                     <div class="col-3 m-b-15">
-                        <img src="https://dinmark.com.ua/{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
+                        <img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
                         <a href="{{route('products.show',[$formatted_datum->id])}}">{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
 						</div>
 					@empty
@@ -77,7 +77,7 @@
 					<div class="row">
 					@forelse($implementation_search as $formatted_datum)
                     <div class="col-3 m-b-15">
-                        <img src="https://dinmark.com.ua/{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
+                        <img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
                         <a href="{{route('products.show',[$formatted_datum->id])}}">{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
 
 						</div>
@@ -107,7 +107,7 @@
 					<div class="row">
 					@forelse($reclamation_search as $formatted_datum)
 						<<div class="col-3 m-b-15">
-                            <img src="https://dinmark.com.ua/{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
+                            <img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100px">
                             <a href="{{route('products.show',[$formatted_datum->id])}}">{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
                             </div>
 					@empty
