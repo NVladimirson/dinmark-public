@@ -311,7 +311,7 @@
             </div>
         </div>
     <div class="submit">
-        <button @click="handlerSubmit" class="hexa">Пошук</button>
+        <button @click="handlerSubmitGo" class="hexa">Пошук</button>
     </div>
 </form>
 
@@ -758,6 +758,11 @@ class="hide" style="display: block;">
                 let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
 
 				fetch('{{route('extendedSearch')}}' + queryStr).then(res => !!res ? res.json() : false).then(arr => this.info[active] = arr);
+            },
+            handlerSubmitGo() {
+                const param = this.queryList;
+                let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}`;
+                window.location = '{{route('products.find')}}/' + queryStr;
             }
         }
     });
