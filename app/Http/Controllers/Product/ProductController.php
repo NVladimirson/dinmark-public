@@ -657,13 +657,13 @@ class ProductController extends Controller
     {
         $search = $request->search;
 
-        $product_search = GlobalSearchService::getProductsSearch($search, true);
+        $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(25);
 
-         $order_search = GlobalSearchService::getOrderProductsSearch($search, true);
+         $order_search = GlobalSearchService::getOrderProductsSearch($search, false)->paginate(25);
         //
-         $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, true);
+         $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, false)->paginate(25);
         //
-         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, true);
+         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, false)->paginate(25);
 
         return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
     }

@@ -65,20 +65,25 @@ class GlobalSearchService
         });
         if($limited){
           $products = $products->limit(5);
+          $products = $products->get();
+
+          $product_info = [];
+          foreach ($products as $key => $product) {
+            $product_info[] = [
+              'id' => $product->id,
+              'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
+              // 'url' => route('products.show', ['id' => $product->id]),
+              // 'min' => $min,
+              // 'max' => $max,
+              // 'storage_id' => $storage_id,
+            ];
+          }
+        return $product_info;
         }
-        $products = $products->get();
-        $product_info = [];
-        foreach ($products as $key => $product) {
-          $product_info[] = [
-            'id' => $product->id,
-            'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
-            'url' => route('products.show', ['id' => $product->id]),
-            // 'min' => $min,
-            // 'max' => $max,
-            // 'storage_id' => $storage_id,
-          ];
+        else{
+          return $products;
         }
-      return $product_info;
+
       }
 
       public static function getOrderProductsSearch($search,$limited = true){
@@ -104,20 +109,20 @@ class GlobalSearchService
 
         if($limited){
           $products = $products->limit(5);
-        }
-        $products = $products->get();
+          $products = $products->get();
 
-        foreach ($products as $key => $product) {
-          $product_info[] = [
-            'id' => $product->id,
-            'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
-            // 'min' => $min,
-            // 'max' => $max,
-            // 'storage_id' => $storage_id,
-          ];
-        }
-
+          $product_info = [];
+          foreach ($products as $key => $product) {
+            $product_info[] = [
+              'id' => $product->id,
+              'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
+            ];
+          }
         return $product_info;
+        }
+        else{
+          return $products;
+        }
       }
 
       public static function getReclamationProductsSearch($search,$limited = true){
@@ -142,19 +147,20 @@ class GlobalSearchService
         });
         if($limited){
           $products = $products->limit(5);
-        }
-        $products = $products->get();
+          $products = $products->get();
 
-        foreach ($products as $key => $product) {
-          $product_info[] = [
-            'id' => $product->id,
-            'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
-            // 'min' => $min,
-            // 'max' => $max,
-            // 'storage_id' => $storage_id,
-          ];
-        }
+          $product_info = [];
+          foreach ($products as $key => $product) {
+            $product_info[] = [
+              'id' => $product->id,
+              'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
+            ];
+          }
         return $product_info;
+        }
+        else{
+          return $products;
+        }
       }
 
       public static function getImplementationProductsSearch($search, $limited = true){
@@ -187,19 +193,20 @@ class GlobalSearchService
           });
           if($limited){
             $products = $products->limit(5);
-          }
-          $products = $products->get();
+            $products = $products->get();
 
-          foreach ($products as $key => $product) {
-            $product_info[] = [
-              'id' => $product->id,
-              'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
-              // 'min' => $min,
-              // 'max' => $max,
-              // 'storage_id' => $storage_id,
-            ];
-          }
+            $product_info = [];
+            foreach ($products as $key => $product) {
+              $product_info[] = [
+                'id' => $product->id,
+                'text' => ProductServices::getName($product,$instance->lang).' ('.$product->article_show.')',
+              ];
+            }
           return $product_info;
+          }
+          else{
+            return $products;
+          }
       }
 
     // public static function getReclamationProductsSearch($search){
