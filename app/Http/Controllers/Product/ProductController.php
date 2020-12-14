@@ -9,11 +9,10 @@ use App\Jobs\ProductOptionFiltersJob;
 use App\Models\Content;
 use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
-
 use App\Models\Order\Order;
 use App\User;
 use App\Models\Company\Company;
-
+use App\Models\Company\CompanyPrice;
 use App\Models\Order\OrderProduct;
 use App\Models\Product\Product;
 use App\Models\Reclamation\ReclamationProduct;
@@ -37,14 +36,12 @@ class ProductController extends Controller
 
     public function index(){
         SEOTools::setTitle(trans('product.all_tab_name'));
-        $categories = CategoryServices::getNames(0);
         $wishlists = CatalogServices::getByCompany();
         $orders = OrderServices::getByCompany();
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getOptionFilters();
         $dinmark_url = \Config::get('values.dinmarkurl');
-        dd($filters);
-        return view('product.all',compact('categories','wishlists', 'orders', 'terms','filters','dinmark_url'));
+        return view('product.all',compact('wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
 
     public function category($id){
@@ -98,15 +95,8 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      //120637,163378
-      $productinfo = Product::find(65525);
-      //$price = ProductServices::getPriceUnformatted($productinfo,$storageinfo->id);
-      //$product_storage_id = 14;
-      //dd(ProductServices::getPriceUnformatted($productinfo,120637),ProductServices::getPriceUnformatted($productinfo,163378));
-      //dd($productinfo->storages,ProductServices::getPrice($productinfo),ProductServices::getPrice($productinfo));
-      dd($productinfo->storages);
+      $this->dispatch(new ProductOptionFiltersJob());
     }
-
 
     public function allAjax(Request $request){
         $products = Product::with(['storages','content','options']);
@@ -124,11 +114,11 @@ class ProductController extends Controller
             $products = $products->whereIn('group', $res);
         }
 
-        if($request->term){
-            $term = $request->term;
-            $products = $products->whereHas('storages', function($storages) use($term){
-                $storages->whereHas('storage',function($storage) use($term){
-                    $storage->where('term',$term);
+        if(isset($request->term)){
+            $terms = explode(',',$request->term);
+            $products = $products->whereHas('storages', function($storages) use($terms){
+                $storages->where('amount','>',0)->whereHas('storage',function($storage) use($terms){
+                    $storage->whereIn('term',$terms);
                 });
             });
         }
@@ -188,11 +178,13 @@ class ProductController extends Controller
             }
         }
 
-        $ids = null;
+        //$ids = null;
+        $search_article = null;
 
         if($request->has('search')){
-            $ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
+            $search_article = request('search')['value'];
         }
+
 
         return datatables()
         ->eloquent($products)
@@ -225,7 +217,7 @@ class ProductController extends Controller
             </div>';
         })
         ->addColumn('image_html', function (Product $product) {
-            $src = \App\Services\Product\Product::getImagePath($product);
+            $src = ProductServices::getImagePath($product);
 
             $spans = '';
 
@@ -248,13 +240,13 @@ class ProductController extends Controller
                     </div>';
         })
         ->addColumn('name_article_html', function (Product $product){
-            $name = \App\Services\Product\Product::getName($product);
+            $name = ProductServices::getName($product);
             return '<a class="data-product_name" href="'
             .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
             '<span>'.$product->article_show.'</span>';
         })
             ->addColumn('retail_user_prices', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                if(ProductServices::hasAmount($product->storages)){
                     $storage = $product->storages->first();
                     $package = $storage->package;
                     $retail = ProductServices::getBasePrice($product,$storage->storage_id);
@@ -293,7 +285,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_1_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
+                    return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
                         </span><br><span class="limit_amount_quantity_1"></span></p>';
                 }
             })
@@ -307,7 +299,7 @@ class ProductController extends Controller
                         '</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
                 }
                 else{
-                    return '<p id="limit_2_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
+                    return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
                         </span><br><span class="limit_amount_quantity_2"></span></p>';
                 }
 
@@ -315,6 +307,7 @@ class ProductController extends Controller
             ->addColumn('storage_html', function (Product $product) {
                 $value = trans('product.storage_empty');
                 $emptyvalue = trans('product.storage_choose');
+                $emptystorages = true;
                 if($product->storages){
                     $storages = $product->storages;
                     if(count($storages)){
@@ -326,29 +319,37 @@ class ProductController extends Controller
                             $main_storage = 0;
                         }
                         foreach ($storages as $key => $storage) {
-                            $term = $storage->storage->term;
-                            $days = ProductServices::getStingDays($term);
-                            $name = CatalogServices::dayrounder($storage->amount).
-                            ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-                            $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
-                            package_max="'.$storage->amount.'"';
-                            if($storage->storage->id == $main_storage){
-                                $value .= 'selected>'.$name.'</option>';
-                            }
-                            else{
-                                $value .= '>'.$name.'</option>';
+                            if($storage->amount!=0){
+                              $emptystorages = false;
+                              $term = $storage->storage->term;
+                              $days = ProductServices::getStingDays($term);
+                              // $name = CatalogServices::dayrounder($storage->amount).
+                              // ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
+                              $name = __('product.storage_name'). ' '. $storage->storage->term . ' '. __('product.storage_term_measure_shortly').
+                              ' / '.CatalogServices::dayrounder($storage->amount) . ' шт.';
+                              $value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
+                              package_max="'.$storage->amount.'"';
+                              if($storage->storage->id == $main_storage){
+                                  $value .= 'selected>'.$name.'</option>';
+                              }
+                              else{
+                                  $value .= '>'.$name.'</option>';
+                              }
                             }
                         }
                         $value .= '</select>';
                     }
                     $value .= '</select>';
                 }
+                if($emptystorages){
+                  $value = trans('product.storage_empty');
+                }
                 return $value;
             })
             ->addColumn('calc_quantity', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
 
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
+                if(ProductServices::hasAmount($product->storages)){
                   if(isset($storage->package)){
                     $package = $storage->package;
                   }else{
@@ -426,44 +427,67 @@ class ProductController extends Controller
             })
             ->addColumn('actions', function (Product $product) {
                 $storage = $product->storages->firstWhere('is_main',1);
-                $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                $src = \App\Services\Product\Product::getImagePath($product);
-                $name = \App\Services\Product\Product::getName($product);
+                $hasStorage = ProductServices::hasAmount($product->storages);
+                $src = ProductServices::getImagePath($product);
+                $name = ProductServices::getName($product);
                 return view('product.include.action_buttons',compact('product','hasStorage','name','src','storage'));
             })
-            ->orderColumn('storage_html','storage_1 $1')
-            ->orderColumn('article_show_html','article_show $1')
-            ->orderColumn('user_price', function ($product, $order){
-                $product
-                    ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
-                    ->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
-                    ->orderBy("price_with_currency", $order);
-            })
+            // ->orderColumn('name_article_html',false)
+            // ->orderColumn('storage_html','storage_1 $1')
+            // ->orderColumn('article_show_html','article_show $1')
+            // ->orderColumn('user_price', function ($product, $order){
+            //         ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
+            //         //->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
+            //         ->select('s_shopstorage_products.*', \DB::raw('s_shopstorage_products.price * s_currency.currency AS price_with_currency'))
+            //         ->orderBy("price_with_currency", $order);
+            // })
             ->filterColumn('storage_html', function($product, $keyword) {
                 $product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
             })
             ->filterColumn('article_show_html', function($product, $keyword) {
                 $product->where('article_show', 'like',["%{$keyword}%"]);
             })
-            ->filterColumn('name_html', function($product, $keyword) use($ids) {
-                if($ids){
-                    $product->whereIn('id',$ids);
-                }else{
-                    $product->select();
-                }
+            ->filterColumn('name_article_html', function($product, $keyword) use($search_article) {
+              if($search_article){
+               $language = CategoryServices::getLang();
+                $product->whereHas('content', function($content) use($search_article,$language){
+                  $content->where([
+                    ['language',$language],
+                    ['alias', 8],
+                    ['name', 'like',"%" . $search_article . "%"]
+                  ]);
+                });
+              }else{
+                  $product->select();
+              }
             })
-            ->filter(function ($product) use ($request,$ids) {
-                if (request()->has('storage_html')) {
-                    $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
-                }
-                if (request()->has('article_show_html')) {
-                    $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
-                }
-                if(request()->has('name_html')){
-                    $product->whereIn('id',$ids);
-                }
-            }, true)
-            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html','check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price','retail_user_prices'])
+            ->orderColumn('name_article_html', 'date_add $1')
+            // $top_price_order_products = OrderProduct::with('product')->whereHas('getCart',function ($order){
+            //         $order->whereHas('getUser', function ($users){
+            //             $users->where('company',auth()->user()->company);
+            //         });
+            //     })
+            //     ->groupBy('product_id')
+            //     ->selectRaw('(price*quantity) as total, product_id')
+            //     ->orderByRaw('price*quantity desc')
+            //     ->limit(5)
+            //     ->get();
+
+
+
+            // ->filter(function ($product) use ($request) {
+            //     if (request()->has('storage_html')) {
+            //         $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
+            //     }
+            //     if (request()->has('article_show_html')) {
+            //         $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
+            //     }
+            //     // if(request()->has('name_article_html')){
+            //     //     $product->whereIn('id',$ids);
+            //     // }
+            // }, true)
+            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html',
+            'check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price','retail_user_prices'])
             ->toJson();
     }
 
@@ -544,8 +568,10 @@ class ProductController extends Controller
             'limit_amount_quantity_1' => $three_percent_discount_limit,
             'limit_amount_quantity_2' => $seven_percent_discount_limit,
             'user_price' => number_format($user_price,2,'.',' '),
+            'user_price_raw'=>$user_price,
             'retail' => $retail,
             'price100' => number_format($pricefor100,2,'.',' '),
+            'price100_raw' => $pricefor100
             //'oldprice' => $oldprice
         ];
 
@@ -554,20 +580,20 @@ class ProductController extends Controller
 
     public function show($id){
         $product = Product::find($id);
-
-        $productName = \App\Services\Product\Product::getName($product);
-        $productText = \App\Services\Product\Product::getText($product);
-        $imagePath = \App\Services\Product\Product::getImagePathThumb($product);
-        $imagePathFull = \App\Services\Product\Product::getImagePath($product);
-        $productPhotos = \App\Services\Product\Product::getImagePathThumbs($product);
-        $productVideo = \App\Services\Product\Product::getVideo($product);
-        $productPDF = \App\Services\Product\Product::getPDF($product);
-        $price = \App\Services\Product\Product::getPrice($product);
-        $limit1 = ($product->limit_1 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
-        $limit2 = ($product->limit_2 > 0)? (\App\Services\Product\Product::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
+        $productName = ProductServices::getName($product);
+        $productText = ProductServices::getText($product);
+        $imagePath = ProductServices::getImagePathThumb($product);
+        $imagePathFull = ProductServices::getImagePath($product);
+        $productPhotos = ProductServices::getImagePathThumbs($product);
+        $productVideo = ProductServices::getVideo($product);
+        $productPDF = ProductServices::getPDF($product);
+        //$priceproduct = ProductShopStorage::find($id);
+        $price = ProductServices::getPrice($product);
+        $limit1 = ($product->limit_1 > 0)? (ProductServices::getPriceWithCoef($product,0.97).' '.trans('product.table_header_price_from',['quantity' => $product->limit_1])) : '-';
+        $limit2 = ($product->limit_2 > 0)? (ProductServices::getPriceWithCoef($product,0.93).' '.trans('product.table_header_price_from',['quantity' => $product->limit_2])) : '-';
 
         $orders = OrderServices::getByCompany();
-        $basePrice = \App\Services\Product\Product::getBasePrice($product);
+        $basePrice = ProductServices::getBasePrice($product);
 
         $wishlists = CatalogServices::getByCompany();
 
@@ -575,8 +601,8 @@ class ProductController extends Controller
         $storage_raw_prices = [];
 
         foreach ($product->storages as $storage){
-            $storage_prices[$storage->id] = \App\Services\Product\Product::getPrice($product,$storage->id);
-            $storage_raw_prices[$storage->id] = \App\Services\Product\Product::calcPrice($product,$storage->id);
+            $storage_prices[$storage->id] = ProductServices::getPrice($product,$storage->id);
+            $storage_raw_prices[$storage->id] = ProductServices::calcPrice($product,$storage->id);
         }
         SEOTools::setTitle($productName);
         //dd($basePrice);
@@ -589,7 +615,7 @@ class ProductController extends Controller
         $search = $request->name;
         $formatted_data = [];
 
-        $ids = \App\Services\Product\Product::getIdsSearch($search);
+        $ids = ProductServices::getIdsSearch($search);
 
         $products = Product::whereIn('id',$ids)
         ->orWhere([
@@ -602,7 +628,7 @@ class ProductController extends Controller
         ->get();
 
         foreach ($products as $product) {
-            $name = \App\Services\Product\Product::getName($product);
+            $name = ProductServices::getName($product);
             $storage = $product->storages->firstWhere('is_main',1);
             $min = 0;
             $max = 0;
@@ -632,7 +658,7 @@ class ProductController extends Controller
         $search = $request->search;
         $formatted_data = [];
 
-        $ids = \App\Services\Product\Product::getIdsSearch($search);
+        $ids = ProductServices::getIdsSearch($search);
 
         $products = Product::with(['content'])->whereIn('id',$ids)
         ->orWhere([
@@ -645,7 +671,7 @@ class ProductController extends Controller
         ->get();
 
         foreach ($products as $product) {
-            $name = \App\Services\Product\Product::getName($product);
+            $name = ProductServices::getName($product);
 
             $formatted_data[] = [
                 'id' => $product->id,
@@ -663,7 +689,7 @@ class ProductController extends Controller
             'phone' => $request->phone,
             'comment' => $request->comment,
         ];
-        \App\Services\Product\Product::getPriceRequest($id, $request->quantity, $data);
+        ProductServices::getPriceRequest($id, $request->quantity, $data);
 
         return 'ok';
     }

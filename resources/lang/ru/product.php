@@ -49,6 +49,8 @@ return [
     'table_header_article' => 'Артикул',
     'table_header_price_retail' => 'Розница',
     'table_header_price' => 'Ваша цена',
+    'table_header_top_price' => 'Сумма',
+    'table_header_times_in_orders' => 'Раз в Заказах',
     'table_header_retail_user_prices' => 'Розница/Ваша цена',
     'table_header_quantity' => 'Количество',
     'table_header_package_weight' => 'Упак./Вес',

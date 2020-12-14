@@ -8,6 +8,7 @@
 	<link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+	<link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <style>
         .panel-title-control{
@@ -60,7 +61,7 @@
 					<div class="row">
 						<div class="col-lg-6 m-b-15">
 							<p class="m-b-5">@lang('wishlist.add_hand_message')</p>
-							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="post">
+							<form id="wishlist_add_product_form" action="{{route('catalogs.store')}}" method="get">
 								@csrf
 								<div class="row m-b-15">
 									<div class="col-lg-8 m-b-5">
@@ -108,7 +109,7 @@
                     <div class="table-scroll-container">
 					<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 						<thead>
-                        <tr>
+                        <!-- <tr>
                             <th>
 
                             </th>
@@ -118,7 +119,7 @@
                             <th>
 
                             </th>
-                        </tr>
+                        </tr> -->
 							<tr>
 								<th></th>
 								<th width="30"></th>
@@ -203,7 +204,7 @@
 					"processing": true,
 					"serverSide": true,
 					"ajax": ajaxRoute,
-					"order": [[ 0, "desc" ]],
+					"order": [[ 3, "asc" ]],
 					"columns": [
 						{
 							className: 'text-center',
@@ -221,8 +222,9 @@
 							data: 'image_html',
 						},
 						{
-							"orderable":      false,
+							"orderable":      true,
 							data: 'name_article_html',
+							class: 'datatable_namearticle_class'
 						},
 						// {
 						// 	data: 'article_show_html',

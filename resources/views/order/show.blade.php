@@ -419,7 +419,8 @@
 																									data-storage_discount3="{{$product['storage_prices'][$storage->id]['discount3']}}"
 																									data-storage_discount7="{{$product['storage_prices'][$storage->id]['discount7']}}"
 																									>
-																									{{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}}
+																									{{$storage->storage->name.' дн.'}} / {{ \App\Services\Product\CatalogServices::dayrounder($storage->amount).' шт.' }}
+																									<!-- {{$storage->storage->name}} - {{$storage->amount-($storage->amount%$storage->package)}} - {{$storage->storage->term}} -->
 																								</option>
                                         @endforeach
                                         </select>

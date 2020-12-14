@@ -22,7 +22,7 @@ class ProductOptionFiltersJob implements ShouldQueue
     {
         $optionfilters = json_decode(json_encode(DB::select('
           SELECT s_shopshowcase_options_name.`id`,s_shopshowcase_options_name.`option`,s_shopshowcase_options_name.`language`,s_shopshowcase_options_name.`name`,
-          s_shopshowcase_options.`alias`,s_shopshowcase_options.`photo`
+          s_shopshowcase_options.`alias`,s_shopshowcase_options.`photo`,s_shopshowcase_options.`position`
           FROM s_shopshowcase_options
           LEFT JOIN s_shopshowcase_options_name on s_shopshowcase_options_name.`option` = s_shopshowcase_options.id')),true);
 
@@ -54,11 +54,11 @@ class ProductOptionFiltersJob implements ShouldQueue
             }
         }
 
-        $sortable = [7,9,26,28,33,266];
+        //$sortable = [7,9,26,28,33,266];
         //$filter_option_map = Cache::get('optionfilters');
         foreach($filter_option_map as $id => $filtername){
 
-            if(in_array($id,$sortable)){
+            //if(in_array($id,$sortable)){
                 $names_id_map = [];
                 foreach ($filtername["options"] as $option_id => $optiondata){
                     foreach ($optiondata["data"] as $lang => $data){
@@ -72,7 +72,7 @@ class ProductOptionFiltersJob implements ShouldQueue
                     $rekeyd_options[$rekeyd_id] = $filter_option_map[$id]['options'][$rekeyd_id];
                 }
                 $filter_option_map[$id]['options'] = $rekeyd_options;
-            }
+            //}
 
         }
         //dd($product_option_map);

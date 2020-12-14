@@ -1789,3 +1789,23 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 .scrollbar-sidebar {
    background-color: #B3B2B2;
 }
+
+p.listChoice {
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 24px;
+}
+
+.choice {
+    padding: 3px 10px;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 15px;
+}
+.times {
+    color: red;
+    font-weight: bold;
+}

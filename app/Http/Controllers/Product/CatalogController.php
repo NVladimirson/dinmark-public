@@ -185,7 +185,7 @@ class CatalogController extends Controller
 		$holdingId = auth()->user()->getCompany->holding;
 		$ids = null;
 		if($request->has('search')){
-			$ids = \App\Services\Product\Product::getIdsSearch(request('search')['value']);
+			$ids = ProductServices::getIdsSearch(request('search')['value']);
 		}
 
 		return datatables()
@@ -197,19 +197,19 @@ class CatalogController extends Controller
 						</div>';
 			})
 			->addColumn('image_html', function (Product $product) {
-				$src = \App\Services\Product\Product::getImagePath($product);
+				$src = ProductServices::getImagePath($product);
 
 				return '<img src="'.$src.'" width="80">';
 			})
             ->addColumn('name_article_html', function (Product $product){
-                $name = \App\Services\Product\Product::getName($product);
+                $name = ProductServices::getName($product);
                 return '<a class="data-product_name" href="'
                     .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
                     // '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
                     '<span>'.$product->article_show.'</span>';
             })
 //			->addColumn('name_html', function (Product $product){
-//				$name = \App\Services\Product\Product::getName($product);
+//				$name = ProductServices::getName($product);
 //				return '<a href="'.route('products.show',[$product->id]).'">'.$name.'</a>';
 //			})
 //			->addColumn('article_show_html', function (Product $product) {
@@ -225,9 +225,9 @@ class CatalogController extends Controller
 				return view('product.include.holding_article', compact('product','article'));
 			})
 			->addColumn('user_price', function (Product $product) {
-                if(\App\Services\Product\Product::hasAmount($product->storages))
+                if(ProductServices::hasAmount($product->storages))
                 {
-                    return '<div id="catalog_user_price_'.$product->id.'">'.\App\Services\Product\Product::getPrice($product).'</div>';
+                    return '<div id="catalog_user_price_'.$product->id.'">'.ProductServices::getPrice($product).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
@@ -236,90 +236,58 @@ class CatalogController extends Controller
 				if($group->price){
 					$coef = $group->price->koef;
 				}
-                if(\App\Services\Product\Product::hasAmount($product->storages)){
-                    return '<div id="catalog_catalog_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
+                if(ProductServices::hasAmount($product->storages)){
+                    return '<div id="catalog_catalog_price_'.$product->id.'">'.ProductServices::getPriceWithCoef($product,$coef).'</div>';
                 }
                 return number_format(0,2,'.',' ');
 			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
+				$emptyvalue = trans('product.storage_choose');
 				if($product->storages){
-					$storages = $product->storages;
-					if(count($storages)){
-							$value = '<select class="custom-select storage-catalog" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
-							//$value .= "<option value='0'>$emptyvalue</option>";
-							if(isset($product->storages->firstWhere('is_main',1)->storage_id)){
-									$main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
-							}
-							else{
-									$main_storage = 0;
-							}
-							foreach ($storages as $key => $storage) {
-									$term = $storage->storage->term;
-									$days = ProductServices::getStingDays($term);
-									$name = CatalogServices::dayrounder($storage->amount).
-									' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-									$value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
-									package_max="'.$storage->amount.'"';
-									if($storage->storage->id == $main_storage){
-											$value .= 'selected>'.$name.'</option>';
-									}
-									else{
-											$value .= '>'.$name.'</option>';
-									}
-							}
-							$value .= '</select>';
-					}
-					$value .= '</select>';
-
-					// $storages = $product->storages;
-					// if($storages){
-					// 	$value = '';
-					// 	//dd($storages);
-					// 	foreach ($storages as $key => $storage) {
-					// 		$term = $storage->storage->term;
-					// 		if(Str::length($term) == 1){
-					// 				if(intval($term) == 1){
-					// 					$days =  'роб. доба';
-					// 				}
-					// 				else if((intval($term) <= 4) && intval($term) >= 2){
-					// 					$days =  'роб. доби';
-					// 				}
-					// 				else{
-					// 					$days =  'роб. діб';
-					// 				}
-					// 		}
-					// 		else{
-					// 			$tens = substr($term,-2);
-					// 			$ones = substr($term,-1);
-					// 			if($tens == 1){
-					// 				$days =  'роб. діб';
-					// 			}
-					// 			else{
-					// 				if(intval($ones) == 1){
-					// 					$days =  'роб. доба';
-					// 				}
-					// 				else if((intval($term) <= 4) && intval($term) >= 2){
-					// 					$days =  'роб. доби';
-					// 				}
-					// 				else{
-					// 					$days =  'роб. діб';
-					// 				}
-					// 			}
-					// 		}
-					//
-					// 	 $value .= $storage->storage->name.': '.CatalogServices::dayrounder($storage->amount).' / '.$term.' '.$days."<br>";
-					// 	}
-					// 	//$value = substr($value,0,-2);
-					// }
+						$storages = $product->storages;
+						if(count($storages)){
+								$value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
+								if(isset($product->storages->firstWhere('is_main',1)->storage_id)){
+										$main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
+								}
+								else{
+										$main_storage = 0;
+								}
+								$emptystorages = true;
+								foreach ($storages as $key => $storage) {
+										if($storage->amount!=0){
+											$emptystorages = false;
+											$term = $storage->storage->term;
+											$days = ProductServices::getStingDays($term);
+											// $name = CatalogServices::dayrounder($storage->amount).
+											// ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
+											$name = __('product.storage_name'). ' '. $storage->storage->term . ' '. __('product.storage_term_measure_shortly').
+											' / '.CatalogServices::dayrounder($storage->amount) . ' шт.';
+											$value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
+											package_max="'.$storage->amount.'"';
+											if($storage->storage->id == $main_storage){
+													$value .= 'selected>'.$name.'</option>';
+											}
+											else{
+													$value .= '>'.$name.'</option>';
+											}
+										}
+								}
+								$value .= '</select>';
+						}
+						$value .= '</select>';
+				}
+				if($emptystorages){
+					$value = trans('product.storage_empty');
 				}
 				return $value;
 			})
 
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
-                $hasStorage = \App\Services\Product\Product::hasAmount($product->storages);
-                $name = \App\Services\Product\Product::getName($product);
+                $hasStorage = ProductServices::hasAmount($product->storages);
+                $name = ProductServices::getName($product);
 
                 return view('product.include.wishlist_action_buttons',compact('product','storage', 'name', 'hasStorage'));
 			})

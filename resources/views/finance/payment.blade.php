@@ -107,7 +107,7 @@
 					"ajax": ajaxRouteBase,
 					"order": [[ 0, "desc" ]],
 					"ordering": false,
-					"searching": false,
+					"searching": true,
 					dom: 'lBfrtip',
 					buttons: [
 						{
@@ -125,16 +125,20 @@
 					"columns": [
 						{
 							data: 'date_html',
+							"searchable": false
 						},
 						{
 							data: 'public_number',
+							"searchable": true
 						},
 						{
 							data: 'order_html',
+							"searchable": true
 						},
 						{
 							className: 'text-center',
 							data: 'sum_html',
+							"searchable": false
 						},
 					],
 				} );

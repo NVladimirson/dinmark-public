@@ -190,17 +190,22 @@
     </div>
 
 
-<form action="https://dinmark.com.ua/search/filter" id="filter"
-class="hide" style="display: block;">
+<form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
     <div class="container flex">
-        <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-            <select id="header_filter-64-standart-d" name="64-standart"
+        <div class="column flex-wrap"><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
+        <p class="listChoice d-flex flex-wrap">
+            <div>
+          <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+          </div>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.standart, 'standart'); data.standart = ''"  @input="handlerSubmit(event)" v-model="data.standart" style="width: 225px;border-radius:5px;height:34px;" type="text" list="standart">
+            <datalist   id="standart"  id="header_filter-64-standart-d" name="64-standart"
             style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
             data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-64-standart-d">
-                <option data-select2-id="72"></option>
-            </select>
-            <span class="select2 select2-container select2-container--default"
+                <option id="index" v-for="(item, index) of info.standart" data-select2-id="72" :value="item">@{{item}}</option>
+            </datalist>
+            </p>
+            <!-- <span class="select2 select2-container select2-container--default"
             dir="ltr" data-select2-id="71" style="width: 100%;">
                 <span class="selection">
                     <span class="select2-selection select2-selection--single"
@@ -220,11 +225,22 @@ class="hide" style="display: block;">
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.diametr, 'diametr'); data.diametr=''"  @input="handlerSubmit(event)" v-model="data.diametr" style="width: 225px;border-radius:5px;height:34px;" type="text" list="diametr">
+            <datalist   id="diametr"  id="header_filter-64-standart-d" name="diametr"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option v-for="(item, index) of info.diametr" data-select2-id="72" :value="item">@{{item}}</option>
+            </datalist>
+
+            <!-- <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
                 style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
                 aria-hidden="true" data-select2-id="header_filter-7-diametr-d">
             </select>
@@ -240,17 +256,27 @@ class="hide" style="display: block;">
                                     tabindex="0" autocomplete="off" autocorrect="off"
                                     autocapitalize="none" spellcheck="false"
                                     role="searchbox" aria-autocomplete="list"
-                                    placeholder="" style="width: 0.75em;">
+                                    placeholder="" style="">
                             </li>
                         </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.dovzhyna, 'dovzhyna'); data.dovzhyna =''"  @input="handlerSubmit(event)" v-model="data.dovzhyna" style="width: 225px;border-radius:5px;height:34px;" type="text" list="dovzhyna">
+            <datalist   id="dovzhyna"  id="header_filter-64-standart-d" name="dovzhyna"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option v-for="(item, index) of info.dovzhyna" data-select2-id="72" :value="item">@{{item}}</option>
+            </datalist>
+            <!-- <select id="header_filter-26-dovzhyna-d" name="26-dovzhyna[]"
                 multiple="" style="width: 100%" tabindex="-1"
                 class="select2-hidden-accessible" aria-hidden="true"
                 data-select2-id="header_filter-26-dovzhyna-d">
@@ -266,17 +292,27 @@ class="hide" style="display: block;">
                         <input class="select2-search__field" type="search" tabindex="0"
                         autocomplete="off" autocorrect="off" autocapitalize="none"
                         spellcheck="false" role="searchbox" aria-autocomplete="list"
-                        placeholder="" style="width: 0.75em;">
+                        placeholder="" style="">
                         </li>
                     </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Матеріал </p>
-            <select id="header_filter-11-material-d" name="11-material[]"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.material, 'material'); data.material=''"  @input="handlerSubmit(event)" v-model="data.material" style="width: 225px;border-radius:5px;height:34px;" type="text" list="material">
+            <datalist   id="material"  id="header_filter-64-standart-d" name="material"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option v-for="(item, index) of info.material" data-select2-id="72" :value="item">@{{item}}</option>
+            </datalist>
+            <!-- <select id="header_filter-11-material-d" name="11-material[]"
             multiple="" style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
             aria-hidden="true" data-select2-id="header_filter-11-material-d">
             </select>
@@ -289,17 +325,28 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Клас міцності </p>
-            <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'klas_micnosti')" v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.klas_micnosti, 'klas_micnosti'); data.klas_micnosti=''"  @input="handlerSubmit(event)" v-model="data.klas_micnosti" style="width: 225px;border-radius:5px;height:34px;" type="text" list="klas_micnosti">
+            <datalist   id="klas_micnosti"  id="header_filter-64-standart-d" name="klas_micnosti"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option v-for="(item, index) of info.klas_micnosti" data-select2-id="72" :value="item">@{{item}}</option>
+            </datalist>
+
+            <!-- <select id="header_filter-28-klas-micnosti-d" name="28-klas-micnosti[]" multiple=""
             style="width: 100%" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
             data-select2-id="header_filter-28-klas-micnosti-d">
             </select>
@@ -312,17 +359,27 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
                 </span>
                 <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            </span> -->
         </div>
         <div>
             <p>Покриття </p>
-                <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
+            <p class="listChoice">
+          <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+        </p>
+        <input @click="handlerSubmit(event)" @change="addQuery(data.pokryttja, 'pokryttja'); data.pokryttja=''"  @input="handlerSubmit(event)" v-model="data.pokryttja" style="width: 225px;border-radius:5px;height:34px;" type="text" list="pokryttja">
+            <datalist   id="pokryttja"  id="header_filter-64-standart-d" name="pokryttja"
+            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
+            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
+            aria-hidden="true" data-select2-id="header_filter-64-standart-d">
+                <option v-for="(item, index) of info.pokryttja" data-select2-id="72" :value="item">@{{item}}</option>
+            </datalist>
+                <!-- <select id="header_filter-13-pokryttja-d" name="13-pokryttja[]" multiple="" style="width: 100%"
                 tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
                 data-select2-id="header_filter-13-pokryttja-d">
                 </select>
@@ -336,17 +393,17 @@ class="hide" style="display: block;">
                                 <input class="select2-search__field" type="search" tabindex="0"
                                 autocomplete="off" autocorrect="off" autocapitalize="none"
                                 spellcheck="false" role="searchbox" aria-autocomplete="list"
-                                placeholder="" style="width: 0.75em;">
+                                placeholder="" style="">
                             </li>
                         </ul>
                         </span>
                     </span>
                     <span class="dropdown-wrapper" aria-hidden="true"></span>
-                </span>
+                </span> -->
             </div>
         </div>
     <div class="submit">
-        <button class="hexa">Пошук</button>
+        <button @click="handlerSubmit" class="hexa">Пошук</button>
     </div>
 </form>
 
@@ -593,7 +650,7 @@ class="hide" style="display: block;">
                                     tabindex="0" autocomplete="off" autocorrect="off"
                                     autocapitalize="none" spellcheck="false"
                                     role="searchbox" aria-autocomplete="list"
-                                    placeholder="" style="width: 0.75em;">
+                                    placeholder="" style="">
                             </li>
                         </ul>
                     </span>
@@ -619,7 +676,7 @@ class="hide" style="display: block;">
                         <input class="select2-search__field" type="search" tabindex="0"
                         autocomplete="off" autocorrect="off" autocapitalize="none"
                         spellcheck="false" role="searchbox" aria-autocomplete="list"
-                        placeholder="" style="width: 0.75em;">
+                        placeholder="" style="">
                         </li>
                     </ul>
                     </span>
@@ -642,7 +699,7 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
@@ -665,7 +722,7 @@ class="hide" style="display: block;">
                         <li class="select2-search select2-search--inline">
                         <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
                         autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="width: 0.75em;">
+                        aria-autocomplete="list" placeholder="" style="">
                         </li>
                     </ul>
                     </span>
@@ -689,7 +746,7 @@ class="hide" style="display: block;">
                                 <input class="select2-search__field" type="search" tabindex="0"
                                 autocomplete="off" autocorrect="off" autocapitalize="none"
                                 spellcheck="false" role="searchbox" aria-autocomplete="list"
-                                placeholder="" style="width: 0.75em;">
+                                placeholder="" style="">
                             </li>
                         </ul>
                         </span>
@@ -705,7 +762,67 @@ class="hide" style="display: block;">
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+<script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
+<script>
+    let filter = new Vue({
+        el: "#header",
+        data() {
+            return {
+              info: {
+                standart: [],
+                diametr: [],
+                dovzhyna:[],
+                material: [],
+                klas_micnosti: [],
+                pokryttja: []
+              },
+              data: {
+                standart: '',
+                diametr: '',
+                dovzhyna: '',
+                material: '',
+                klas_micnosti: '',
+                pokryttja: '',
+                active: ''
+              },
+              queryList: {
+                standart: [],
+                diametr: [],
+                dovzhyna: [],
+                material: [],
+                klas_micnosti: [],
+                pokryttja: [],
+                active: ''
+              }
+            }
+        },
+        methods: {
+            removeQuery(index, array) {
+              this.queryList[array].splice(index);
+            },
+            addQuery(param, prop) {
+              let array = this.queryList[prop];
+              let flag = 0;
+              let hasParam = false;
+              array.forEach(item => {
+                  item == param ? flag++ : false;
+                });
 
+              if(param.length) {
+                flag === 0 ? array.push(param) : false;
+              }
+            },
+            handlerSubmit(event) {
+                let input = event.target.value;
+				let active = this.queryList.active = event.target.list.id;
+                const param = this.queryList;
+                let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
+
+				fetch('{{route('extendedSearch')}}' + queryStr).then(res => !!res ? res.json() : false).then(arr => this.info[active] = arr);
+            }
+        }
+    });
+</script>
 <script>
     const burger = document.querySelector(".sidebar-minify-btn.navbar-toggle");
     const closeBurger = document.querySelector("#close-burger-menu");
@@ -763,38 +880,76 @@ class="hide" style="display: block;">
                         return '{{route('globalsearch')}}'
                     },
                     dataType: 'json',
-                    data: function (params) {
-                        return {
-                            name: params.term,
-														onlywithstorage: '0'
-                        };
-                    },
+                    // data: function (params) {
+                    //     return {
+                    //         name: params.term,
+										// 				onlywithstorage: '0'
+                    //     };
+                    // },
                     processResults: function (data) {
+											let results = [];
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.article')",
+														"children" : data['products'],
+												});
+												// results.push({
+												// 	"text": "LINK PRODUCTS...",
+												// });
+											}
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.order')",
+														"children" : data['orders']
+												});
+											}
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.implementation')",
+														"children" : data['implementations']
+												});
+											}
+											if(data['products'].length>0){
+												results.push({
+														"text": "@lang('global.global_search.reclamation')",
+														"children" : data['reclamations']
+												});
+											}
                         return {
-                            results: [
-                                {
-                                    "text": "@lang('global.global_search.article')",
-                                    "children" : data['products']
-                                },
-                                {
-                                    "text": "@lang('global.global_search.order')",
-                                    "children" : data['orders']
-                                },
-                                {
-                                    "text": "@lang('global.global_search.implementation')",
-                                    "children" : data['implementations']
-                                },
-                                {
-                                    "text": "@lang('global.global_search.reclamation')",
-                                    "children" : data['reclamations']
-                                },
-
-                            ],
+													results : results,
+														// "pagination": {
+														// 		"more": true
+														// }
+                            // results: [
+                            //     {
+                            //         "text": "@lang('global.global_search.article')",
+                            //         "children" : data['products']
+                            //     },
+                            //     {
+                            //         "text": "@lang('global.global_search.order')",
+                            //         "children" : data['orders']
+                            //     },
+                            //     {
+                            //         "text": "@lang('global.global_search.implementation')",
+                            //         "children" : data['implementations']
+                            //     },
+                            //     {
+                            //         "text": "@lang('global.global_search.reclamation')",
+                            //         "children" : data['reclamations']
+                            //     },
+														//
+                            // ],
                         };
                     },
                     cache: true
                 },
             });
+
+						$('#global_search').on('select2:select', function (e) {
+								console.log($('#global_search').val());
+								let product_id = $('#global_search').val();
+								window.location = '{{route('products')}}/' + product_id;
+						});
         });
     })(jQuery);
 </script>

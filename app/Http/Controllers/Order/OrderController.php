@@ -100,7 +100,7 @@ class OrderController extends Controller
         OrderServices::calcTotal($order);
 
         if($request->quantity_request > 0){
-            \App\Services\Product\Product::getPriceRequest($request->product_id, $request->quantity_request);
+            ProductServices::getPriceRequest($request->product_id, $request->quantity_request);
         }
 
 		return 'ok';
@@ -398,7 +398,7 @@ class OrderController extends Controller
 		$weight = 0;
 
 		foreach($order->products as $orderProduct){
-			// $price = $orderProduct->price;//\App\Services\Product\Product::calcPrice($orderProduct->product)/100 * 1;
+			// $price = $orderProduct->price;//ProductServices::calcPrice($orderProduct->product)/100 * 1;
 			//dd(Product::with('storages')->find($orderProduct->product_id)->storages);
 			//$package = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)->first()->package;
 			 //$total = $price * $orderProduct->quantity/$package;
@@ -467,7 +467,7 @@ class OrderController extends Controller
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
-				'name' => \App\Services\Product\Product::getName($orderProduct->product),
+				'name' => ProductServices::getName($orderProduct->product),
 				'quantity' => $orderProduct->quantity,
 				'min' => ($storageProduct)?$storageProduct->package:0,
 				'max' => ($storageProduct)?$storageProduct->amount:0,
@@ -521,7 +521,7 @@ class OrderController extends Controller
                         {
                             $implProducts[] = [
                                 'product_id' => $implementationProduct->orderProduct->product->id,
-                                'name' => \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
+                                'name' => ProductServices::getName($implementationProduct->orderProduct->product),
                                 'quantity' => $implementationProduct->quantity,
                                 'total' => number_format($implementationProduct->total, 2, ',', ' '),
                                 'order' => $implementationProduct->orderProduct->getCart ? $implementationProduct->orderProduct->getCart->id : '?',
@@ -648,14 +648,14 @@ class OrderController extends Controller
 			$client = Client::find($request->cp_client_id);
             $company = Company::where('id',session('current_company_id'))->first();
 			foreach($order->products as $orderProduct){
-				//$price = \App\Services\Product\Product::calcPriceWithoutPDV($orderProduct->product)/100 * (($companyPrice)?$companyPrice->koef:1);
+				//$price = ProductServices::calcPriceWithoutPDV($orderProduct->product)/100 * (($companyPrice)?$companyPrice->koef:1);
 				$price = $orderProduct->price/120 * 100;
 				$total = round($price * $orderProduct->quantity,2);
 				$orderTotal += $total;
 
 				$products[] = [
 					'id'	=> $orderProduct->id,
-					'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
+					'name' => ProductServices::getName($orderProduct->product,'uk'),
 					'quantity' => $orderProduct->quantity/100,
 					'package' => 100,
 					//'price' => number_format($price*100,2,',', ' '),
@@ -673,8 +673,8 @@ class OrderController extends Controller
 				'total' => number_format($orderTotal, 2, ',', ' '),
 				'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
 				'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
-				'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
-				'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+				'pdv_text' => ProductServices::getStringPrice($orderTotal*0.2),
+				'totalPdv_text' => ProductServices::getStringPrice($orderTotal*1.2),
 				'client'	=> $client,
 				'company'	=> $company,
 			]);
@@ -684,8 +684,8 @@ class OrderController extends Controller
 			// $total = number_format($orderTotal, 2, ',', ' ');
 			// $pdv = number_format($orderTotal*0.2, 2, ',', ' ');
 			// $totalPdv = number_format($orderTotal * 1.2, 2, ',', ' ');
-			// $pdv_text = \App\Services\Product\Product::getStringPrice($orderTotal*0.2);
-			// $totalPdv_text = \App\Services\Product\Product::getStringPrice($orderTotal*1.2);
+			// $pdv_text = ProductServices::getStringPrice($orderTotal*0.2);
+			// $totalPdv_text = ProductServices::getStringPrice($orderTotal*1.2);
 			//$pdf->setOption('enable-smart-shrinking', true);
 		//	$pdf->setOption('no-stop-slow-scripts', true);
 			 return $pdf->download(($order->sender?$order->sender->getCompany->prefix:'').'_'.$order->id.'.pdf');
@@ -709,7 +709,7 @@ class OrderController extends Controller
 
 			$products[] = [
 				'id'	=> $orderProduct->id,
-				'name' => \App\Services\Product\Product::getName($orderProduct->product,'uk'),
+				'name' => ProductServices::getName($orderProduct->product,'uk'),
 				'quantity' => $orderProduct->quantity/100,
 				'package' => 100,
 				'price' => number_format($price*100,2,',', ' '),
@@ -725,8 +725,8 @@ class OrderController extends Controller
 			'total' => number_format($orderTotal, 2, ',', ' '),
 			'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
 			'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
-			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
-			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+			'pdv_text' => ProductServices::getStringPrice($orderTotal*0.2),
+			'totalPdv_text' => ProductServices::getStringPrice($orderTotal*1.2),
 		]);
 		//$pdf->setOption('enable-smart-shrinking', true);
 		//$pdf->setOption('no-stop-slow-scripts', true);

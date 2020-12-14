@@ -10,6 +10,7 @@ use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Services\Order\ImplementationServices;
 use App\Services\Product\CategoryServices;
+use App\Services\Product\Product as ProductServices;
 use App\Services\TimeServices;
 use App\User;
 use Illuminate\Http\Request;
@@ -106,7 +107,7 @@ class ImplementationController extends Controller
 				    if($implementationProduct->orderProduct){
                         $products[] = [
                             'product_id'	=> $implementationProduct->orderProduct->product->id,
-                            'name'			=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product),
+                            'name'			=> ProductServices::getName($implementationProduct->orderProduct->product),
                             'quantity'		=> $implementationProduct->quantity,
                             'total'			=> number_format($implementationProduct->total,2,',',' '),
                             'order'			=> $implementationProduct->orderProduct->getCart?$implementationProduct->orderProduct->getCart->id:'?',
@@ -205,7 +206,7 @@ class ImplementationController extends Controller
 			$formatted_data[] = [
 				'id'	=> $implementationProduct->id,
 				'product_id'	=> $implementationProduct->orderProduct->product->id,
-				'name'	=> \App\Services\Product\Product::getName($implementationProduct->orderProduct->product).'('.$implementationProduct->orderProduct->product->article_show.')',
+				'name'	=> ProductServices::getName($implementationProduct->orderProduct->product).'('.$implementationProduct->orderProduct->product->article_show.')',
 				//'min'	=> $implementationProduct->quantity,
 				'max'	=> $implementationProduct->quantity,
 			];
@@ -228,7 +229,7 @@ class ImplementationController extends Controller
 
 			$products[] = [
 				'id'	=> $implementationProduct->id,
-				'name' => \App\Services\Product\Product::getName($implementationProduct->orderProduct->product,'uk'),
+				'name' => ProductServices::getName($implementationProduct->orderProduct->product,'uk'),
 				'quantity' => $implementationProduct->quantity/100,
 				'package' => 100,
 				'price' => number_format($price*100,2,',', ' '),
@@ -254,8 +255,8 @@ class ImplementationController extends Controller
 			'total' => number_format($orderTotal, 2, ',', ' '),
 			'pdv' => number_format($orderTotal*0.2, 2, ',', ' '),
 			'totalPdv' => number_format($orderTotal * 1.2, 2, ',', ' '),
-			'pdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*0.2),
-			'totalPdv_text' => \App\Services\Product\Product::getStringPrice($orderTotal*1.2),
+			'pdv_text' => ProductServices::getStringPrice($orderTotal*0.2),
+			'totalPdv_text' => ProductServices::getStringPrice($orderTotal*1.2),
 			'user'	=> $user
 		]);
 		$pdf->setOption('enable-smart-shrinking', true);
