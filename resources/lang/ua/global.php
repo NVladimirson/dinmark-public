@@ -41,6 +41,11 @@ return [
 
     'btn_clear_filter'	=> 'Скасувати фільтри',
 
+    'all_products' => 'усі Товари',
+    'all_orders' => 'усі Замовлення',
+    'all_implementations' => 'усі Реалізації',
+    'all_reclamations' => 'усі Рекламації',
+
     'global_search' => [
         'placeholder' => 'Загальний пошук',
         'article' => 'в Номенклатурі',

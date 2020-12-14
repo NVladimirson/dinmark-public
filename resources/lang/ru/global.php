@@ -40,6 +40,11 @@ return [
 
 	'btn_clear_filter'	=> 'Отменить фильтры',
 
+    'all_products' => 'все Товары',
+    'all_orders' => 'все Заказы',
+    'all_implementations' => 'все Реализации',
+    'all_reclamations' => 'все Рекламации',
+
     'global_search' => [
         'placeholder' => 'Общий поиск',
         'article' => 'в Номенклатуре',

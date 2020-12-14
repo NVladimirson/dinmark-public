@@ -880,36 +880,53 @@ class="hide" style="display: block;">
                         return '{{route('globalsearch')}}'
                     },
                     dataType: 'json',
-                    // data: function (params) {
-                    //     return {
-                    //         name: params.term,
-										// 				onlywithstorage: '0'
-                    //     };
-                    // },
+                    data: function (params) {
+												window.select2_input = params.term
+                        return {
+                            name: params.term,
+														//onlywithstorage: '0'
+                        };
+                    },
                     processResults: function (data) {
 											let results = [];
 											if(data['products'].length>0){
+												data['products'].push({
+													"id" : "products",
+													"text": "@lang('global.all_products')"
+												})
 												results.push({
 														"text": "@lang('global.global_search.article')",
 														"children" : data['products'],
-												});
+												})
 												// results.push({
 												// 	"text": "LINK PRODUCTS...",
 												// });
 											}
-											if(data['products'].length>0){
+											if(data['orders'].length>0){
+												data['orders'].push({
+													"id" : "orders",
+													"text": "@lang('global.all_orders')"
+												})
 												results.push({
 														"text": "@lang('global.global_search.order')",
 														"children" : data['orders']
 												});
 											}
-											if(data['products'].length>0){
+											if(data['implementations'].length>0){
+												data['implementations'].push({
+													"id" : "implementations",
+													"text": "@lang('global.all_implementations')"
+												})
 												results.push({
 														"text": "@lang('global.global_search.implementation')",
 														"children" : data['implementations']
 												});
 											}
-											if(data['products'].length>0){
+											if(data['reclamations'].length>0){
+												data['reclamations'].push({
+													"id" : "reclamations",
+													"text": "@lang('global.all_reclamations')"
+												})
 												results.push({
 														"text": "@lang('global.global_search.reclamation')",
 														"children" : data['reclamations']
@@ -917,38 +934,22 @@ class="hide" style="display: block;">
 											}
                         return {
 													results : results,
-														// "pagination": {
-														// 		"more": true
-														// }
-                            // results: [
-                            //     {
-                            //         "text": "@lang('global.global_search.article')",
-                            //         "children" : data['products']
-                            //     },
-                            //     {
-                            //         "text": "@lang('global.global_search.order')",
-                            //         "children" : data['orders']
-                            //     },
-                            //     {
-                            //         "text": "@lang('global.global_search.implementation')",
-                            //         "children" : data['implementations']
-                            //     },
-                            //     {
-                            //         "text": "@lang('global.global_search.reclamation')",
-                            //         "children" : data['reclamations']
-                            //     },
-														//
-                            // ],
                         };
                     },
                     cache: true
                 },
             });
 
+
 						$('#global_search').on('select2:select', function (e) {
-								console.log($('#global_search').val());
-								let product_id = $('#global_search').val();
-								window.location = '{{route('products')}}/' + product_id;
+								let find_by = ['products', 'orders', 'reclamations','implementations'];
+								let search = $('#global_search').val();
+								if(!find_by.includes(search)){
+									window.location = '{{route('products')}}/' + product_id;
+								}
+								else{
+									window.location = '{{route('products.find')}}/' + '?search='+window.select2_input+'#'+search;
+								}
 						});
         });
     })(jQuery);
