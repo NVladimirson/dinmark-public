@@ -8,7 +8,51 @@
 	{{ Breadcrumbs::render('product.search') }}
 	<h1 class="page-header">@lang('product.search_page_name')</h1>
 	<!-- begin row -->
-	<div class="row">
+
+    @if(isset($extendedSearchResult))
+    <div class="row">
+		<!-- begin col-10 -->
+		<div class="col-xl-12" id="product">
+			<!-- begin panel -->
+			<div class="panel panel-primary">
+				<!-- begin panel-heading -->
+				<div class="panel-heading">
+					<h4 class="panel-title">product_search</h4>
+				</div>
+				<!-- end panel-heading -->
+				<!-- begin panel-body -->
+				<div class="panel-body">
+					<div class="row">
+					@forelse($extendedSearchResult as $formatted_datum)
+						<div class="col-3 m-b-15">
+							<div class="row">
+							<div class="col-12 m-b-15">
+								<img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100%">
+							</div>
+            	<div class="col-12 m-b-15">
+								<div class="row">
+									<div class="col-4">
+										<b>Название</b>
+									</div>
+									<div class="col-8">
+										<a href="{{route('products.show',[$formatted_datum->id])}}">
+											{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+					@empty
+						<div class="alert alert-light fade show">@lang('product.empty')</div>
+					@endforelse
+                </div>
+
+                </div>
+                {{ $extendedSearchResult->links() }}
+			</div>
+
+   @else
+    <div class="row">
 		<!-- begin col-10 -->
 		<div class="col-xl-12" id="product">
 			<!-- begin panel -->
@@ -138,7 +182,8 @@
         </div>
 
 		<!-- end col-10 -->
-	</div>
+    </div>
+    @endif
 	<!-- end row -->
 @endsection
 
