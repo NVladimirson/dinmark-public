@@ -654,18 +654,24 @@ class ProductController extends Controller
     }
 
     public function find(Request $request)
+
     {
+
         $search = $request->search;
 
-        $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(25);
+        $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(24, ['*'], 'product_search');
 
-         $order_search = GlobalSearchService::getOrderProductsSearch($search, false)->paginate(25);
+         $order_search = GlobalSearchService::getOrderProductsSearch($search, false)->paginate(24, ['*'], 'order_search');
         //
-         $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, false)->paginate(25);
+         $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, false)->paginate(24, ['*'], 'implementation_search');
         //
-         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, false)->paginate(25);
+         $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, false)->paginate(24, ['*'], 'reclamation_search');
+
+
+
 
         return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
+
     }
 
     public function getPrice($id, Request $request)
