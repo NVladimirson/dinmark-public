@@ -9,7 +9,7 @@
 namespace App\Services\Miscellenous;
 use App\Models\Product\Product;
 use App\Models\Product\ProductFilter;
-
+use App\Models\Product\ProductOptionName;
 
 // use App\Models\Content;
 // use App\Models\Order\ImplementationProduct;
@@ -18,7 +18,7 @@ use App\Models\Product\ProductFilter;
 // use App\Models\Reclamation\Reclamation;
 // use App\Models\Order\Implementation;
 // use App\Models\Reclamation\ReclamationProduct;
-// use LaravelLocalization;
+ use LaravelLocalization;
 // use App\Services\Product\Product as ProductServices;
 // use App\Models\Order\Order;
 
@@ -53,20 +53,30 @@ class ExtendedSearchService
       //   'dovzhyna' => [],
       //   'diametr' => []
       // ];
-
+      $convertable = ['standart','material','pokryttja'];
       $first_finded = false;
       foreach ($params as $filter => $options) {
         if(count($options)){
+          if(in_array($filter,$convertable)){
+            $translated = [];
+            foreach ($options as $key => $option) {
+              $translated[] = ExtendedSearchService::translateProductFilter($option,true);
+            }
+            $options = $translated;
+          }
+
           if(!$first_finded){
-            $products = Product::whereHas('productFilters', function($productsFilters) use($filter,$options){
-                $productsFilters->whereIn($filter,$options);
-            });
+            // $products = Product::whereHas('productFilters', function($productsFilters) use($filter,$options){
+            //     $productsFilters->whereIn($filter,$options);
+            // });
+            $product_filters = ProductFilter::whereIn($filter,$options);
             $first_finded = true;
           }
           else{
-            $products = $products->whereHas('productFilters', function($productsFilters) use($filter,$options){
-                $productsFilters->whereIn($filter,$options);
-            });
+            // $products = $products->whereHas('productFilters', function($productsFilters) use($filter,$options){
+            //     $productsFilters->whereIn($filter,$options);
+            // });
+            $product_filters = $product_filters->whereIn($filter,$options);
           }
         }
         else{
@@ -74,10 +84,22 @@ class ExtendedSearchService
         }
       }
       if(!count($params)){
-        return Product::paginate(24);
+        return ProductFilter::paginate(24);
       }
       else{
-        return $products->paginate(24);
+        return $product_filters->paginate(24);
       }
+    }
+
+    public static function translateProductFilter($strToTranslate,$nameToOption = false){
+      $instance =  static::getInstance();
+      if($nameToOption){
+        $translate = ProductOptionName::where([['name',$strToTranslate],['language',$instance->lang]])->first();
+        $translate?$translate=$translate->option:'';
+      }else{
+        $translate = ProductOptionName::where([['option',$strToTranslate],['language',$instance->lang]])->first();
+        $translate?$translate=$translate->name:'';
+      }
+      return $translate;
     }
 }
