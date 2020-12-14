@@ -659,6 +659,9 @@ class ProductController extends Controller
 
         $search = $request->search;
 
+
+        if($search){
+
         $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(24, ['*'], 'product_search');
 
          $order_search = GlobalSearchService::getOrderProductsSearch($search, false)->paginate(24, ['*'], 'order_search');
@@ -671,8 +674,27 @@ class ProductController extends Controller
 
 
         return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
+        }else{
+            $param=$request->all();
+           // $standart=$request->only('standart');
 
+
+
+
+            $isEmpty=true;
+            foreach($param as $filter=>$options){
+                if($options!=null){
+                    $param[$filter]=explode(',',$options);
+                }else{
+                    $param[$filter]=[];
+                }
+
+
+            }
+            dd($param);
+        }
     }
+
 
     public function getPrice($id, Request $request)
     {
