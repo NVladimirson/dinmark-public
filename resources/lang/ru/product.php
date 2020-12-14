@@ -114,4 +114,32 @@ return [
       'storage_term' => 'Срок доставки',
       'category' => 'Категория'
     ],
+
+    'global_search' => [
+      'result_header' => 'Общий поиск',
+      'name' => 'Наименование',
+      'product_search' => [
+        'header' => 'Товары',
+      ],
+      'order_search' => [
+        'header' => 'Заказы',
+      ],
+      'reclamation_search' => [
+        'header' => 'Реализации',
+      ],
+      'implementation_search' => [
+        'header' => 'Рекламации',
+      ],
+    ],
+
+    'extended_search' => [
+      'result_header' => 'Расширенный поиск',
+      'name' => 'Наименование',
+      'standart' => 'Стандарт',
+      'pokryttja' => 'Покрытие',
+      'diametr' => 'Диаметр',
+      'material' => 'Материал',
+      'klas_micnosti' => 'Класс прочности',
+      'dovzhyna' => 'Длина',
+    ],
 ];

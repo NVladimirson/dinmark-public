@@ -122,4 +122,33 @@ return [
       'storage_term' => 'Термін доставки',
       'category' => 'Категорія'
     ],
+
+      'global_search' => [
+        'result_header' => 'Загальний пошук',
+        'name' => 'Назва',
+        'product_search' => [
+          'header' => 'Товари',
+        ],
+        'order_search' => [
+          'header' => 'Замовлення',
+        ],
+        'reclamation_search' => [
+          'header' => 'Реалізації',
+        ],
+        'implementation_search' => [
+          'header' => 'Рекламації',
+        ],
+      ],
+
+      'extended_search' => [
+        'result_header' => 'Розширений пошук',
+        'name' => 'Найменування',
+        'standart' => 'Стандарт',
+        'pokryttja' => 'Покриття',
+        'diametr' => 'Діаметр',
+        'material' => 'Матеріал',
+        'klas_micnosti' => 'Клас міцності',
+        'dovzhyna' => 'Довжина',
+      ],
+
 ];
