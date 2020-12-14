@@ -28,4 +28,8 @@ class Product extends Model
 	public function holdingArticles(){
 		return $this->hasMany('App\Models\Product\CompanyProductArticle','product_id');
 	}
+
+	public function productFilters(){
+		return $this->hasMany('App\Models\Product\ProductFilter','product_id');
+	}
 }
