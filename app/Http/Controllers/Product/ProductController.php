@@ -29,6 +29,7 @@ use LaravelLocalization;
 use PhpParser\Node\Expr\Array_;
 use App\Models\Product\ProductOption;
 use App\Models\Wishlist\LikeGroup;
+use App\Services\Miscellenous\ExtendedSearchService;
 
 class ProductController extends Controller
 {
@@ -691,7 +692,8 @@ class ProductController extends Controller
 
 
             }
-            dd($param);
+            $extendedSearchResult=ExtendedSearchService::getProductsByFilters($param);
+            return view('product.search',compact('extendedSearchResult'));
         }
     }
 
