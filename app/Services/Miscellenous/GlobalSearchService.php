@@ -38,9 +38,9 @@ class GlobalSearchService
         $this->lang = LaravelLocalization::getCurrentLocale() == 'ua'?'uk':LaravelLocalization::getCurrentLocale();
     }
 
-    // public static function getLang(){
-    //   return static::getInstance()->lang;
-    // }
+    public static function getLang(){
+      return static::getInstance()->lang;
+    }
 
     public static function getProductsSearch($search,$limited = true){
       $product_info = [];

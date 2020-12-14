@@ -7,6 +7,7 @@ use App\Models\Order\Order;
 use App\Models\Order\OrderProduct;
 use App\Models\Order\Payment;
 use App\Models\Product\Product;
+use App\Models\Product\ProductOptionName;
 use App\Services\Miscellenous\GlobalSearchService;
 use App\Services\Product\Product as ProductServices;
 use App\Models\Ticket\TicketMessage;
@@ -224,6 +225,11 @@ $most_popular_order_products = OrderProduct::with('product')->whereHas('getCart'
 $activefilter = $data['active'];
     $allowed_filters = ['standart','diametr','dovzhyna','material',
     'klas_micnosti','pokryttja','active'];
+
+    $convertable = ['standart','material','pokryttja'];
+    $language = GlobalSearchService::getLang();
+
+
     if(!in_array($activefilter,$allowed_filters)){
       return [];
     }
@@ -241,6 +247,23 @@ $activefilter = $data['active'];
         $data[$filter] = explode(",",$data[$filter]);
       }
     }
+
+    foreach ($data as $filter => $optionnames) {
+      if(in_array($filter,$convertable) && count($optionnames)){
+        $translated = [];
+        foreach ($optionnames as $key => $optionname) {
+          $option = ProductOptionName::where([['name',$optionname],['language',$language]])->first();
+          if($option->option){
+            $translated[] = $option->option;
+          }else{
+            info('НЕ НАШЕЛ product_options.option ДЛЯ '.$optionname. ' язык: '.$language.'. Данные: '."\n");
+            unset($optionnames[$key]);
+          }
+        }
+        $data[$filter] = $translated;
+      }
+    }
+
     $query = 'SELECT DISTINCT products_filter.'.$activefilter.' FROM products_filter';
 
     if($notemptyoptionrequest){
@@ -261,6 +284,7 @@ $activefilter = $data['active'];
         }
       }
     }
+
     $result = json_decode(json_encode(\DB::select($query)),true);
     $response = [];
     foreach ($result as $key => $value) {
@@ -272,6 +296,18 @@ $activefilter = $data['active'];
           //     unset($response[array_search($value, $response)]);
           //   }
           // }
+          if(in_array($activefilter,$convertable)){
+            foreach ($response as $key => $option) {
+              $optionname = ProductOptionName::where([['option',$option],['language',$language]])->first();
+              if(isset($optionname->name)){
+                $response[$key] = $optionname->name;
+              }else{
+                info('НЕ НАШЕЛ product_options.name ДЛЯ '.$option. ' язык: '.$language.'. Данные: '."\n");
+                unset($response[$key]);
+              }
+            }
+          }
+
           sort($response);
           return $response;
     }else{
