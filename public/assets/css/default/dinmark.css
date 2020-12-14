@@ -905,16 +905,16 @@ nav.mainmenu > div > a img {
 
 /* end header */
 tbody img:hover {
-    transform: scale(1.5);
+    transform: scale(1.8) translate(-25%, -25%);
     transition: all 0.5s ease-out;
     -webkit-transition: all 0.5s ease-out;
     -moz-transition: all 0.5s ease-out;
     -ms-transition: all 0.5s ease-out;
     -o-transition: all 0.5s ease-out;
-    -webkit-transform: scale(1.5);
-    -moz-transform: scale(1.5);
-    -ms-transform: scale(1.5);
-    -o-transform: scale(1.5);
+    -webkit-transform: scale(1.8) translate(-25%, -25%);
+    -moz-transform: scale(1.8) translate(-25%, -25%);
+    -ms-transform: scale(1.8) translate(-25%, -25%);
+    -o-transform: scale(1.8) translate(-25%, -25%);
 }
 
 tbody img {
@@ -1831,6 +1831,7 @@ input#pokryttja{
     top: 100%;
     background-color: #fff;
     z-index: 9999;
+    border: 1px solid  #B3B2B2;
 }
 .select-item {
     padding: 2px 5px;
