@@ -719,7 +719,7 @@ class="hide" style="display: block;">
                }
             },
             selectRender(e) {
-            
+
                 for (const key in this.render) {
                     if (Object.hasOwnProperty.call(this.render, key)) {
                         e.target.id === key ? this.render[key] = true : this.render[key] = false;
@@ -745,7 +745,7 @@ class="hide" style="display: block;">
                 });
               if(!!param && flag === 0) {
                  array.push(param);
-              } 
+              }
               if(!!param && array.length === 0) {
                 array.push(param);
               }
@@ -884,7 +884,7 @@ class="hide" style="display: block;">
 								let find_by = ['products', 'orders', 'reclamations','implementations'];
 								let search = $('#global_search').val();
 								if(!find_by.includes(search)){
-									window.location = '{{route('products')}}/' + product_id;
+									window.location = '{{route('products')}}/' + search;
 								}
 								else{
 									window.location = '{{route('products.find')}}/' + '?search='+window.select2_input+'#'+search;
