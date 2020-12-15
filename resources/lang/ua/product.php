@@ -126,6 +126,9 @@ return [
       'global_search' => [
         'result_header' => 'Загальний пошук',
         'name' => 'Назва',
+        'orders' => '№ Замовлення',
+        'implementations' => 'Реалізація',
+        'reclamations' => 'Рекламація',
         'product_search' => [
           'header' => 'Товари',
         ],
@@ -133,10 +136,10 @@ return [
           'header' => 'Замовлення',
         ],
         'reclamation_search' => [
-          'header' => 'Реалізації',
+          'header' => 'Рекламації',
         ],
         'implementation_search' => [
-          'header' => 'Рекламації',
+          'header' => 'Реалізації',
         ],
       ],
 
