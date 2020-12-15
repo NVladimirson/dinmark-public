@@ -201,7 +201,7 @@
             <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.standart" type="text" id="standart" class="search-input">
         </div>
         <div v-show="render.standart" @click="hasItem" id="standart" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item" v-for="(item, index) of info.standart.filter">@{{item}}
+            <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item" v-for="(item, index) of info.standart">@{{item}}
             </div>
         </div>
         </div>
