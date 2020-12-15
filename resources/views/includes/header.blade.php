@@ -5,7 +5,8 @@
 	$headerTopMenu = (!empty($headerTopMenu)) ? $headerTopMenu : '';
 @endphp
 <!-- begin #header -->
-<div id="header" @click="selectRender" class="header navbar-inverse ">
+<div @click="selectRender"  id="wrap">
+<div id="header" class="header navbar-inverse ">
 	<!-- begin navbar-header -->
 	<div class="navbar-header">
 		@if ($sidebarTwo)
@@ -197,76 +198,32 @@
         <div class="extend-search">
         <div class="d-flex flex-wrap">
             <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event); selectRender;" @input="" v-model="data.standart" type="text" id="standart" class="search-input">
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.standart" type="text" id="standart" class="search-input">
         </div>
         <div v-show="render.standart" @click="hasItem" id="standart" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item" v-for="(item, index) of info.standart">@{{item}}</div>
+            <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item" v-for="(item, index) of info.standart.filter">@{{item}}
+            </div>
         </div>
         </div>
-            <!-- <span class="select2 select2-container select2-container--default"
-            dir="ltr" data-select2-id="71" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--single"
-                    role="combobox" aria-haspopup="true"
-                    aria-expanded="false" tabindex="0"
-                    aria-disabled="false"
-                    aria-labelledby="select2-header_filter-64-standart-container">
-                        <span class="select2-selection__rendered"
-                        id="select2-header_filter-64-standart-container"
-                        role="textbox" aria-readonly="true">
-                            <span class="select2-selection__placeholder">(DIN, ГОСТ, AN, ISO)
-                            </span>
-                        </span>
-                        <span class="select2-selection__arrow" role="presentation">
-                            <b role="presentation"></b>
-                        </span>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span> -->
          </div>
          <div>
             <p>Діаметр (мм)</p>
             <div class="extend-search">
         <div class="d-flex flex-wrap">
             <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event); selectRender;" @input="" v-model="data.diametr" type="text" id="diametr" class="search-input">
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.diametr" type="text" id="diametr" class="search-input">
         </div>
         <div v-show="render.diametr" @click="hasItem" id="diametr" style="width: 100%" class="form-select">
             <div @click="addQuery(item, 'diametr'); data.diametr = '';" class="select-item" v-for="(item, index) of info.diametr">@{{item}}</div>
         </div>
         </div>
-
-            <!-- <select id="header_filter-7-diametr-d" name="7-diametr[]" multiple=""
-                style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
-                aria-hidden="true" data-select2-id="header_filter-7-diametr-d">
-            </select>
-            <span class="select2 select2-container select2-container--default"
-                dir="ltr" data-select2-id="73" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--multiple"
-                        role="combobox" aria-haspopup="true" aria-expanded="false"
-                        tabindex="-1" aria-disabled="false">
-                        <ul class="select2-selection__rendered">
-                            <li class="select2-search select2-search--inline">
-                                <input class="select2-search__field" type="search"
-                                    tabindex="0" autocomplete="off" autocorrect="off"
-                                    autocapitalize="none" spellcheck="false"
-                                    role="searchbox" aria-autocomplete="list"
-                                    placeholder="" style="">
-                            </li>
-                        </ul>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span> -->
         </div>
         <div>
             <p>Довжина (мм)</p>
             <div class="extend-search">
         <div class="d-flex flex-wrap">
             <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event); selectRender;" @input="" v-model="data.dovzhyna" type="text" id="dovzhyna" class="search-input">
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.dovzhyna" type="text" id="dovzhyna" class="search-input">
         </div>
         <div v-show="render.dovzhyna" @click="hasItem" id="dovzhyna" style="width: 100%" class="form-select">
             <div @click="addQuery(item, 'dovzhyna'); data.dovzhyna = '';" class="select-item" v-for="(item, index) of info.dovzhyna">@{{item}}</div>
@@ -278,7 +235,7 @@
             <div class="extend-search">
         <div class="d-flex flex-wrap">
             <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event); selectRender;" @input="" v-model="data.material" type="text" id="material" class="search-input">
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.material" type="text" id="material" class="search-input">
         </div>
         <div v-show="render.material" @click="hasItem" id="material" style="width: 100%" class="form-select">
             <div @click="addQuery(item, 'material'); data.material = '';" class="select-item" v-for="(item, index) of info.material">@{{item}}</div>
@@ -290,7 +247,7 @@
             <div class="extend-search">
         <div class="d-flex flex-wrap">
             <span @click="removeQuery(index, 'klas_micnosti')" v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event); selectRender;" @input="" v-model="data.klas_micnosti" type="text" id="klas_micnosti" class="search-input">
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.klas_micnosti" type="text" id="klas_micnosti" class="search-input">
         </div>
         <div v-show="render.klas_micnosti" @click="hasItem" id="klas_micnosti" style="width: 100%" class="form-select">
             <div @click="addQuery(item, 'klas_micnosti'); data.klas_micnosti = '';" class="select-item" v-for="(item, index) of info.klas_micnosti">@{{item}}</div>
@@ -302,7 +259,7 @@
             <div class="extend-search">
         <div class="d-flex flex-wrap">
             <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event); selectRender;" @input="" v-model="data.pokryttja" type="text" id="pokryttja" class="search-input">
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.pokryttja" type="text" id="pokryttja" class="search-input">
         </div>
         <div v-show="render.pokryttja" @click="hasItem" id="pokryttja" style="width: 100%" class="form-select">
             <div @click="addQuery(item, 'pokryttja'); data.pokryttja = '';" class="select-item" v-for="(item, index) of info.pokryttja">@{{item}}</div>
@@ -490,7 +447,7 @@
                 <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/affiliate-program" class="hexa">@lang('global.header_menu_affiliate')</a>
                 <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/blog" class="hexa">@lang('global.header_menu_blog')</a>
                 <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/tender" class="hexa">@lang('global.header_menu_tender')</a>
-                <a href="#" class="hexa">@lang('global.header_menu_sale')</a>
+                <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/promo" class="hexa">@lang('global.header_menu_sale')</a>
                 <a href="https://dinmark.com.ua{{trans('global.url_prefix')}}/contacts" class="hexa" style="margin-right: 8px;">@lang('global.header_menu_contact')</a>
             </div>
 
@@ -508,172 +465,96 @@
 <div class="filter--wrapper">
 
 
-<form action="https://dinmark.com.ua/search/filter" id="mobile-filter"
-class="hide" style="display: block;">
+<form @submit.prevent="handlerSubmit" id="mobile-filter" class="hide" style="display: block;">
     <div class="container flex">
-        <div><p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-            <select id="header_filter-64-standart" name="64-standart"
-            style="width: 100%" data-placeholder="(DIN, ГОСТ, AN, ISO)"
-            data-allow-clear="true" tabindex="-1" class="select2-hidden-accessible"
-            aria-hidden="true" data-select2-id="header_filter-64-standart">
-                <option data-select2-id="72"></option>
-            </select>
-            <span class="select2 select2-container select2-container--default"
-            dir="ltr" data-select2-id="71" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--single"
-                    role="combobox" aria-haspopup="true"
-                    aria-expanded="false" tabindex="0"
-                    aria-disabled="false"
-                    aria-labelledby="select2-header_filter-64-standart-container">
-                        <span class="select2-selection__rendered"
-                        id="select2-header_filter-64-standart-container"
-                        role="textbox" aria-readonly="true">
-                            <span class="select2-selection__placeholder">(DIN, ГОСТ, AN, ISO)
-                            </span>
-                        </span>
-                        <span class="select2-selection__arrow" role="presentation">
-                            <b role="presentation"></b>
-                        </span>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+        <div class="column flex-wrap">
+        <p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
+        <div class="extend-search">
+        <div class="d-flex flex-wrap">
+            <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.standart" type="text" id="standart" class="search-input">
+        </div>
+        <div v-show="render.standart" @click="hasItem" id="standart" style="width: 100%" class="form-select">
+            <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item" v-for="(item, index) of info.standart">@{{item}}
+            </div>
+        </div>
+        </div>
          </div>
          <div>
             <p>Діаметр (мм)</p>
-            <select id="header_filter-7-diametr" name="7-diametr[]" multiple=""
-                style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
-                aria-hidden="true" data-select2-id="header_filter-7-diametr">
-            </select>
-            <span class="select2 select2-container select2-container--default"
-                dir="ltr" data-select2-id="73" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--multiple"
-                        role="combobox" aria-haspopup="true" aria-expanded="false"
-                        tabindex="-1" aria-disabled="false">
-                        <ul class="select2-selection__rendered">
-                            <li class="select2-search select2-search--inline">
-                                <input class="select2-search__field" type="search"
-                                    tabindex="0" autocomplete="off" autocorrect="off"
-                                    autocapitalize="none" spellcheck="false"
-                                    role="searchbox" aria-autocomplete="list"
-                                    placeholder="" style="">
-                            </li>
-                        </ul>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            <div class="extend-search">
+        <div class="d-flex flex-wrap">
+            <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.diametr" type="text" id="diametr" class="search-input">
+        </div>
+        <div v-show="render.diametr" @click="hasItem" id="diametr" style="width: 100%" class="form-select">
+            <div @click="addQuery(item, 'diametr'); data.diametr = '';" class="select-item" v-for="(item, index) of info.diametr">@{{item}}</div>
+        </div>
+        </div>
         </div>
         <div>
             <p>Довжина (мм)</p>
-            <select id="header_filter-26-dovzhyna" name="26-dovzhyna[]"
-                multiple="" style="width: 100%" tabindex="-1"
-                class="select2-hidden-accessible" aria-hidden="true"
-                data-select2-id="header_filter-26-dovzhyna">
-            </select>
-            <span class="select2 select2-container select2-container--default"
-            dir="ltr" data-select2-id="74" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--multiple"
-                    role="combobox" aria-haspopup="true" aria-expanded="false"
-                    tabindex="-1" aria-disabled="false">
-                    <ul class="select2-selection__rendered">
-                        <li class="select2-search select2-search--inline">
-                        <input class="select2-search__field" type="search" tabindex="0"
-                        autocomplete="off" autocorrect="off" autocapitalize="none"
-                        spellcheck="false" role="searchbox" aria-autocomplete="list"
-                        placeholder="" style="">
-                        </li>
-                    </ul>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            <div class="extend-search">
+        <div class="d-flex flex-wrap">
+            <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.dovzhyna" type="text" id="dovzhyna" class="search-input">
+        </div>
+        <div v-show="render.dovzhyna" @click="hasItem" id="dovzhyna" style="width: 100%" class="form-select">
+            <div @click="addQuery(item, 'dovzhyna'); data.dovzhyna = '';" class="select-item" v-for="(item, index) of info.dovzhyna">@{{item}}</div>
+        </div>
+        </div>
         </div>
         <div>
             <p>Матеріал </p>
-            <select id="header_filter-11-material" name="11-material[]"
-            multiple="" style="width: 100%" tabindex="-1" class="select2-hidden-accessible"
-            aria-hidden="true" data-select2-id="header_filter-11-material">
-            </select>
-            <span class="select2 select2-container select2-container--default" dir="ltr"
-            data-select2-id="75" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--multiple" role="combobox"
-                    aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false">
-                    <ul class="select2-selection__rendered">
-                        <li class="select2-search select2-search--inline">
-                        <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
-                        autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="">
-                        </li>
-                    </ul>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            <div class="extend-search">
+        <div class="d-flex flex-wrap">
+            <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.material" type="text" id="material" class="search-input">
+        </div>
+        <div v-show="render.material" @click="hasItem" id="material" style="width: 100%" class="form-select">
+            <div @click="addQuery(item, 'material'); data.material = '';" class="select-item" v-for="(item, index) of info.material">@{{item}}</div>
+        </div>
+        </div>
         </div>
         <div>
             <p>Клас міцності </p>
-            <select id="header_filter-28-klas-micnosti" name="28-klas-micnosti[]" multiple=""
-            style="width: 100%" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
-            data-select2-id="header_filter-28-klas-micnosti">
-            </select>
-            <span class="select2 select2-container select2-container--default" dir="ltr"
-            data-select2-id="76" style="width: 100%;">
-                <span class="selection">
-                    <span class="select2-selection select2-selection--multiple" role="combobox"
-                    aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false">
-                        <ul class="select2-selection__rendered">
-                        <li class="select2-search select2-search--inline">
-                        <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
-                        autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox"
-                        aria-autocomplete="list" placeholder="" style="">
-                        </li>
-                    </ul>
-                    </span>
-                </span>
-                <span class="dropdown-wrapper" aria-hidden="true"></span>
-            </span>
+            <div class="extend-search">
+        <div class="d-flex flex-wrap">
+            <span @click="removeQuery(index, 'klas_micnosti')" v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.klas_micnosti" type="text" id="klas_micnosti" class="search-input">
+        </div>
+        <div v-show="render.klas_micnosti" @click="hasItem" id="klas_micnosti" style="width: 100%" class="form-select">
+            <div @click="addQuery(item, 'klas_micnosti'); data.klas_micnosti = '';" class="select-item" v-for="(item, index) of info.klas_micnosti">@{{item}}</div>
+        </div>
+        </div>
         </div>
         <div>
             <p>Покриття </p>
-                <select id="header_filter-13-pokryttja" name="13-pokryttja[]" multiple="" style="width: 100%"
-                tabindex="-1" class="select2-hidden-accessible" aria-hidden="true"
-                data-select2-id="header_filter-13-pokryttja">
-                </select>
-                <span class="select2 select2-container select2-container--default" dir="ltr"
-                data-select2-id="77" style="width: 100%;">
-                    <span class="selection">
-                        <span class="select2-selection select2-selection--multiple" role="combobox"
-                        aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false">
-                        <ul class="select2-selection__rendered">
-                            <li class="select2-search select2-search--inline">
-                                <input class="select2-search__field" type="search" tabindex="0"
-                                autocomplete="off" autocorrect="off" autocapitalize="none"
-                                spellcheck="false" role="searchbox" aria-autocomplete="list"
-                                placeholder="" style="">
-                            </li>
-                        </ul>
-                        </span>
-                    </span>
-                    <span class="dropdown-wrapper" aria-hidden="true"></span>
-                </span>
+            <div class="extend-search">
+        <div class="d-flex flex-wrap">
+            <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja" class="choice"><span class="times">&times;</span>@{{choice}}</span>
+            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.pokryttja" type="text" id="pokryttja" class="search-input">
+        </div>
+        <div v-show="render.pokryttja" @click="hasItem" id="pokryttja" style="width: 100%" class="form-select">
+            <div @click="addQuery(item, 'pokryttja'); data.pokryttja = '';" class="select-item" v-for="(item, index) of info.pokryttja">@{{item}}</div>
+        </div>
+        </div>
             </div>
         </div>
     <div class="submit">
-        <button class="hexa">Пошук</button>
+        <button @click="handlerSubmitGo" class="hexa">Пошук</button>
     </div>
 </form>
+
+</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 <script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
 <script>
-    let filter = new Vue({
-        el: "#header",
+
+    new Vue({
+        el: "#wrap",
         data() {
             return {
               render: {
@@ -712,17 +593,24 @@ class="hide" style="display: block;">
               }
             }
         },
+        computed: {
+            list: () => this.info.standart
+        },
         methods: {
             hasItem(e) {
                if(e.target.className != 'form-select') {
                    e.target.classList.add('selected');
                }
             },
-            selectRender(e) {
+            searchFilter(word, prop) {
+                let a = prop.filter(item => item.includes(word))
+                return a
 
+            },
+            selectRender(e) {
                 for (const key in this.render) {
                     if (Object.hasOwnProperty.call(this.render, key)) {
-                        e.target.id === key ? this.render[key] = true : this.render[key] = false;
+                        e.target.id === key && e.target.id !== undefined ? this.render[key] = true : this.render[key] = false;
                     }
                 }
             },
@@ -752,12 +640,13 @@ class="hide" style="display: block;">
               this.handlerSubmit();
             },
             handlerSubmit(event) {
+                this.selectRender(event)
                 let input = event ? event.target.value : '';
 				let active = this.queryList.active = event ? event.target.id : this.queryList.active;
                 const param = this.queryList;
                 let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}&active=${param.active}`;
 
-				fetch('{{route('extendedSearch')}}' + queryStr).then(res => !!res ? res.json() : false).then(arr => this.info[active] = arr);
+				fetch('{{route('extendedSearch')}}' + queryStr).then(res => !!res ? res.json() : false).then(arr => !!event.data ? this.info[active] = arr.filter(item => item.toString().toLowerCase().includes(this.data[event.target.id].toString().toLowerCase())) : this.info[active] = arr);
             },
             handlerSubmitGo() {
                 const param = this.queryList;
