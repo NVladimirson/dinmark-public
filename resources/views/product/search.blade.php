@@ -141,8 +141,7 @@
 										<b>Аналог</b>
 									</div>
 									<div class="col-8">
-										<a href="{{route('products.show',[$formatted_datum->id])}}">
-											{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,23)}}</a>
+										{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,23)}}
 									</div>
 								</div>
 								<div class="row">
@@ -150,8 +149,7 @@
 										<b>Народна Назва</b>
 									</div>
 									<div class="col-8">
-										<a href="{{route('products.show',[$formatted_datum->id])}}">
-											{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,30)}}</a>
+										{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,30)}}
 									</div>
 								</div>
 							</div>
@@ -195,7 +193,22 @@
 										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-4">
+									<b>@lang('product.global_search.orders')</b>
+								</div>
+								<div class="col-8">
+									@php $product_orders = \App\Services\Product\Product::getOrder($formatted_datum);@endphp
+									@if($product_orders)
+									<a href="{{route('orders.show',[array_key_first($product_orders)])}}">
+										{{$product_orders[array_key_first($product_orders)]}}</a>
+										@else
+										-
+									@endif
+								</div>
+							</div>
 						</div>
+
 						</div>
 					</div>
 					@empty
@@ -237,6 +250,20 @@
 										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-4">
+									<b>@lang('product.global_search.implementations')</b>
+								</div>
+								<div class="col-8">
+									@php $implementation_orders = \App\Services\Product\Product::getImplementations($formatted_datum);@endphp
+									@if($implementation_orders)
+									<a href="{{route('orders.show',[array_key_first($implementation_orders)])}}">
+											{{$implementation_orders[array_key_first($implementation_orders)]}}<</a>
+										@else
+										-
+									@endif
+								</div>
+							</div>
 						</div>
 						</div>
 					</div>
@@ -275,6 +302,15 @@
 							<div class="row">
 								<div class="col-4">
 									<b>@lang('product.global_search.name')</b>
+								</div>
+								<div class="col-8">
+									<a href="{{route('products.show',[$formatted_datum->id])}}">
+										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									<b>@lang('product.global_search.reclamations')</b>
 								</div>
 								<div class="col-8">
 									<a href="{{route('products.show',[$formatted_datum->id])}}">

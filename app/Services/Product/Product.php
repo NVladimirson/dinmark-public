@@ -13,6 +13,7 @@ use App\Models\Content;
 use App\Models\Product\Currency;
 use App\Models\Company\Company;
 use App\Models\Product\GetPrice;
+use App\Models\Order\Order;
 use App\Models\WlFile;
 use App\Models\WlImage;
 use App\Models\WlVideo;
@@ -486,6 +487,90 @@ class Product
 			return $res;
 		}
 
+	}
+
+	public static function getOrder($product){
+		$allowed_orders = Order::whereHas('getUser',function ($users){
+						$users->whereHas('getCompany',function ($companies){
+								$companies->where([
+										['id', session('current_company_id')],
+								]);
+						});
+		})->with('products')->get();
+
+		$result = [];
+		foreach ($allowed_orders as $key => $order) {
+			$id = $order->id;
+			$public_number = $order->public_number;
+
+			$order_products = $order->products;
+			$order_product_id_map = [];
+			foreach ($order_products as $key => $order_product) {
+				$order_product_id_map[] = $order_product->product_id;
+			}
+			$result[$id] = [
+				'public_number' => $public_number,
+				'product_ids' => $order_product_id_map
+			];
+		}
+
+		$response = [];
+		foreach ($result as $order_id => $data) {
+			if(in_array($product->id,$data['product_ids'])){
+				$response[$order_id] = $data['public_number'];
+			}
+		}
+		return $response;
+	}
+
+	public static function getReclamations($product){
+
+	}
+
+	public static function getImplementations($product){
+
+		$allowed_implementations = \App\Models\Order\Implementation::whereHas('sender',function ($users){
+						$users->whereHas('getCompany',function ($companies){
+								$companies->where([
+										['id', session('current_company_id')],
+								]);
+						});
+		})->orwhereHas('customer',function ($users){
+						$users->whereHas('getCompany',function ($companies){
+								$companies->where([
+										['id', session('current_company_id')],
+								]);
+						});
+		})->with('products.orderProduct.product');
+		// $test_impl = \App\Models\Order\Implementation::with('products.orderProduct.product');
+
+		$implementation_map = $allowed_implementations->get()->toArray();
+
+		// dd($implementation_map);
+		$response = [];
+
+		foreach ($implementation_map as $key => $implementation) {
+			$result[$implementation['id']] = [
+				'public_number' => $implementation['public_number'],
+				'ttn' => $implementation['ttn'],
+			];
+			foreach ($implementation['products'] as $key => $implementation_product) {
+				if($implementation_product['order_product']){
+						$implementation['products'][$key] = $implementation_product['order_product']['id'];
+				}
+			}
+			$result[$implementation['id']]['products'] = $implementation['products'];
+		}
+
+		foreach ($result as $implementation_id => $data) {
+			if(in_array($product->id,$data['products'])){
+				$response[$implementation_id] = [
+					'public_number' => $data['public_number'],
+					'ttn' => $data['ttn'],
+				];
+			}
+		}
+		return $response;
 	}
 
 

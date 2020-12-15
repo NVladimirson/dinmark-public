@@ -98,21 +98,15 @@ class GlobalSearchService
                 });
         })->pluck('id');
 
-        $allowed_products = OrderProduct::whereIn('cart',$allowed_orders)->pluck('product_id');
 
+        $allowed_products = OrderProduct::whereIn('cart',$allowed_orders)->pluck('product_id');
+        // dd($allowed_products);
         $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
           $content->where([
             ['language',$language],
             ['alias', 8],
             ['name', 'like',"%" . $search . "%"]
           ]);
-        })->orwhereHas('options', function($options) use($search,$language){
-          $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
-            $option_name->where([
-              ['language',$language],
-              ['name', 'like',"%" . $search . "%"]
-            ]);
-          });
         });
 
         if($limited){
@@ -153,13 +147,6 @@ class GlobalSearchService
             ['alias', 8],
             ['name', 'like',"%" . $search . "%"]
           ]);
-        })->orwhereHas('options', function($options) use($search,$language){
-          $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
-            $option_name->where([
-              ['language',$language],
-              ['name', 'like',"%" . $search . "%"]
-            ]);
-          });
         });
 
         if($limited){
@@ -208,15 +195,8 @@ class GlobalSearchService
               ['alias', 8],
               ['name', 'like',"%" . $search . "%"]
             ]);
-          })->orwhereHas('options', function($options) use($search,$language){
-            $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
-              $option_name->where([
-                ['language',$language],
-                ['name', 'like',"%" . $search . "%"]
-              ]);
-            });
           });
-          
+
           if($limited){
             $products = $products->limit(5);
             $products = $products->get();
