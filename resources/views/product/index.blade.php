@@ -216,7 +216,7 @@
                                     {!! str_replace('<p>&nbsp;</p>','',html_entity_decode($productText,ENT_QUOTES)) !!}
                                     @if($productVideo[0])
                                     <p>
-                                        <iframe style="width: 100%;" height="415" src="https://www.youtube.com/embed/{{$productVideo[0]}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <iframe style="width: 100%;" class="card-frame"  src="https://www.youtube.com/embed/{{$productVideo[0]}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </p>
                                     @endif
                                 </div>

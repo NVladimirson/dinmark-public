@@ -336,7 +336,7 @@
                     "language": {
                         "url": "@lang('table.localization_link')",
                     },
-                    //  "scrollX": true,
+                     "scrollX": true,
                     "pageLength": 25,
                     "autoWidth": true,
                     "processing": true,
