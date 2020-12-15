@@ -9,7 +9,7 @@
 	<h1 class="page-header">@lang('product.search_page_name')</h1>
 	<!-- begin row -->
 
-    @if(isset($extendedSearchResult))
+    @if($extendedSearch)
     <div class="row">
 		<!-- begin col-10 -->
 		<div class="col-xl-12" id="product">
@@ -104,8 +104,8 @@
                 </div>
                 {{ $extendedSearchResult->links() }}
 			</div>
-
-   @else
+	@endif
+   @if($globalSearch)
     <div class="row">
 		<!-- begin col-10 -->
 		<div class="col-xl-12" id="product">
@@ -119,6 +119,7 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
+						@if($product_search)
 					@forelse($product_search as $formatted_datum)
 						<div class="col-3 m-b-15">
 							<div class="row">
@@ -135,16 +136,35 @@
 											{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-4">
+										<b>Аналог</b>
+									</div>
+									<div class="col-8">
+										<a href="{{route('products.show',[$formatted_datum->id])}}">
+											{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,23)}}</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-4">
+										<b>Народна Назва</b>
+									</div>
+									<div class="col-8">
+										<a href="{{route('products.show',[$formatted_datum->id])}}">
+											{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,30)}}</a>
+									</div>
+								</div>
 							</div>
 							</div>
 						</div>
 					@empty
 						<div class="alert alert-light fade show">@lang('product.empty')</div>
 					@endforelse
+				{{  $product_search->links() }}
+					@endif
                 </div>
 
                 </div>
-                {{ $product_search->links() }}
 			</div>
 			<!-- end panel -->
         </div>
@@ -180,12 +200,12 @@
 					</div>
 					@empty
 						<div class="alert alert-light fade show">@lang('product.empty')</div>
-                    @endforelse
 
+                    @endforelse
+									{{$order_search->links()}}
                 </div>
                 {{-- {{ $order_search>links() }} --}}
                 </div>
-                {{$order_search->links()}}
 				<!-- end panel-body -->
 			</div>
 			<!-- end panel -->
@@ -222,13 +242,14 @@
 					</div>
 					@empty
 						<div class="alert alert-light fade show">@lang('product.empty')</div>
+
 					@endforelse
+					{{$implementation_search->links()}}
                 </div>
 
                 </div>
                 <!-- end panel-body -->
 
-                {{$implementation_search->links()}}
             </div>
 
 			<!-- end panel -->
@@ -265,14 +286,15 @@
 					</div>
 					@empty
 						<div class="alert alert-light fade show">@lang('product.empty')</div>
+
 					@endforelse
+						{{$reclamation_search->links()}}
                 </div>
 
                 </div>
 
 				<!-- end panel-body -->
             </div>
-            {{$reclamation_search->links()}}
 			<!-- end panel -->
         </div>
 
