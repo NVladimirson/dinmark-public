@@ -341,8 +341,8 @@ body {
 }
 
 #mobile-filter .submit {
-    position: fixed;
-    top: 334px;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
     z-index: 991;
@@ -667,11 +667,11 @@ nav.mainmenu > div > a img {
     }
 }
 
-@media screen and (min-width:927px) and (max-width: 1050px) {
+/* @media screen and (min-width:927px) and (max-width: 1050px) {
     #mobile-filter .submit {
         top: 280px;
     }
-}
+} */
 
 @media screen and (max-width: 1050px) {
     .content {
@@ -1202,17 +1202,17 @@ header .actions > a:hover, section.subscribe a:hover {
 }
 
 
-@media screen and (max-width: 508px) {
+/* @media screen and (max-width: 508px) {
     #mobile-filter .submit {
         top: 389px;
     }
-}
+} */
 
-@media screen and (max-width: 367px) {
+/* @media screen and (max-width: 367px) {
     #mobile-filter .submit {
         top: 441px;
     }
-}
+} */
 /* font aweasome fix */
 
 .float-sub-menu-container .float-sub-menu li > a .caret {
@@ -1794,6 +1794,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
     background-color: #fff;
     padding: 0!important;
     max-width: 250px;
+    min-width: 175px;
     min-height: 34px;
     border-radius: 5px;
     display: flex;
@@ -1811,6 +1812,8 @@ input#pokryttja{
     margin-top: 2px;
     width: 100%;
     border-radius: 5px;
+    border: none;
+    border-style: none;
 }
 
 .choice {
@@ -1852,3 +1855,9 @@ div.selected {
 .card-frame {
     height: calc(100vw * .2);
 }
+
+@media screen and (max-width: 990px) {
+    .card-frame {
+        height: 40vh;
+    }
+  }
