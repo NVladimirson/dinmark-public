@@ -1848,3 +1848,7 @@ input#pokryttja{
 div.selected {
     background-color: silver;
 }
+
+.card-frame {
+    height: calc(100vw * .2);
+}
