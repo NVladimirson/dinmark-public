@@ -16,6 +16,7 @@ use App\Models\Product\GetPrice;
 use App\Models\WlFile;
 use App\Models\WlImage;
 use App\Models\WlVideo;
+use App\Models\Product\Product as ProductModel;
 use Carbon\Carbon;
 use LaravelLocalization;
 use Config;
@@ -442,6 +443,52 @@ class Product
 
 		return static::$instance;
 	}
+
+	public static function getOptionMap($productid = null){
+		$language =  static::getInstance()->lang;
+		$option_map = [];
+		if($productid){
+			$productoptions = ProductModel::where('id',$productid)->first()->options()->with('val_translates','translates')->get();
+			foreach ($productoptions as $key => $productoption) {
+				$option_map[$productoption->id] = [
+					'option' => $productoption->translates->keyBy('language')[$language]->toArray(),
+					'value' => $productoption->val_translates->keyBy('language')[$language]->toArray()
+			];
+			}
+		}
+		return $option_map;
+	}
+
+	public static function getProductOptionBy($product_id = '', $option_name_id = ''){
+		$instance =  static::getInstance();
+		if(!($product_id)){
+			return [];
+		}
+
+		$optionmap = $instance->getOptionMap($product_id);
+
+		$language =  static::getInstance()->lang;
+		if($option_name_id){
+			foreach ($optionmap as $option => $data) {
+				if($option_name_id == $data['option']['option']){
+					if($data['value']['name']!=null){
+						return $data['value']['name'];
+					}else{
+						return '-';
+					}
+				}
+			}
+		}
+		else{
+			foreach ($optionmap as $option => $data) {
+				$res[$data['option']['name']] = $data['value']['name'];
+			}
+			return $res;
+		}
+
+	}
+
+
 
 	private function __construct(){
 		$this->currencies = Currency::all();

@@ -30,6 +30,7 @@ use PhpParser\Node\Expr\Array_;
 use App\Models\Product\ProductOption;
 use App\Models\Wishlist\LikeGroup;
 use App\Services\Miscellenous\ExtendedSearchService;
+use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
@@ -41,6 +42,7 @@ class ProductController extends Controller
         $orders = OrderServices::getByCompany();
         $terms = CategoryServices::getTermsForSelect();
         $filters = CategoryServices::getOptionFilters();
+        //dd($filters);
         $dinmark_url = \Config::get('values.dinmarkurl');
         return view('product.all',compact('wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
@@ -96,7 +98,33 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $this->dispatch(new ProductOptionFiltersJob());
+
+      //$this->dispatch(new ProductOptionFiltersJob());
+
+      // $language = 'uk';
+      // $search = 'DIN';
+      // $products = Product::whereHas('content', function($content) use($search,$language){
+      //   $content->where([
+      //     ['language',$language],
+      //     ['alias', 8],
+      //     ['name', 'like',"%" . $search . "%"]
+      //   ]);
+      // })->orwhereHas('options', function($options) use($search,$language){
+      //   $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
+      //     $option_name->where([
+      //       ['language',$language],
+      //       ['name', 'like',"%" . $search . "%"]
+      //     ]);
+      //   });
+      // });
+      // dd($products->with('options.val')->first());
+
+
+
+// $array = [100, '200', 300, '400', 500];
+//
+
+
     }
 
     public function allAjax(Request $request){
@@ -658,43 +686,56 @@ class ProductController extends Controller
 
     {
 
+        $product_search = collect();
+        $order_search = collect();
+        $implementation_search = collect();
+        $reclamation_search = collect();
+        $extended_search =  collect();
+        $globalSearch = false;
+        $extendedSearch = false;
+
         $search = $request->search;
-
-
-        if($search){
-
-        $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(24, ['*'], 'product_search');
-
+        if($search || $request->product_search || $request->order_search || $request->order_search || $request->implementation_search || $request->reclamation_search){
+         $globalSearch = true;
+         $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(24, ['*'], 'product_search');
          $order_search = GlobalSearchService::getOrderProductsSearch($search, false)->paginate(24, ['*'], 'order_search');
-        //
          $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, false)->paginate(24, ['*'], 'implementation_search');
-        //
          $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, false)->paginate(24, ['*'], 'reclamation_search');
-
-
-
-
-        return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
-        }else{
-            $param=$request->all();
-           // $standart=$request->only('standart');
-
-
-
-
-            $isEmpty=true;
-            foreach($param as $filter=>$options){
-                if($options!=null){
-                    $param[$filter]=explode(',',$options);
-                }else{
-                    $param[$filter]=[];
-                }
-
-
-            }
-            $extendedSearchResult=ExtendedSearchService::getProductsByFilters($param);
-            return view('product.search',compact('extendedSearchResult'));
+        //return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
         }
+
+        foreach (['pokryttja','standart','diametr','dovzhyna','material','klas_micnosti'] as $extended_search_filter) {
+          $extended_search_options = $request->$extended_search_filter;
+          if($extended_search_options){
+            $extended_search[$extended_search_filter] = explode(',',$extended_search_options);
+            $extendedSearch = true;
+          }
+          else{
+            $extended_search[$extended_search_filter] = [];
+          }
+        }
+
+        if($extended_search){
+          $extendedSearchResult=ExtendedSearchService::getProductsByFilters($extended_search);
+        }
+        //return view('product.search',compact('extendedSearchResult'));
+
+        if($globalSearch && $extendedSearch){
+          return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search','extendedSearchResult','globalSearch','extendedSearch'));
+        }
+        else{
+          if($globalSearch){
+            return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search','globalSearch','extendedSearch'));
+          }
+          if($extendedSearch){
+            return view('product.search',compact('extendedSearchResult','globalSearch','extendedSearch'));
+          }
+          else{
+            return view('product.search',compact('globalSearch','extendedSearch'));
+          }
+          }
+
+
     }
 
 
