@@ -30,17 +30,17 @@
 						continue;
 					}
 					@endphp
-						<div class="col-3 m-b-15">
+						<div class="col-xl-3 col-lg-4 col-md-6 m-b-15">
 							<div class="row">
 							<div class="col-12 m-b-15">
-								<img src="{{\App\Services\Product\Product::getImagePath($product)}}" width="100%">
+								<img src="{{\App\Services\Product\Product::getImagePath($product)}}" style="max-height: 250px;" width="100%">
 							</div>
-            	<div class="col-12 m-b-15">
+            	<div class="col-12 m-b-16 ml-3">
 								<div class="row">
 									<div class="col-4">
 										<b>@lang('product.extended_search.name')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 										<a href="{{route('products.show',[$formatted_datum->id])}}">
 											{{\App\Services\Product\Product::getName($product)}}</a>
 									</div>
@@ -49,7 +49,7 @@
 									<div class="col-4">
 										<b>@lang('product.extended_search.standart')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 										{{\App\Services\Miscellenous\ExtendedSearchService::translateProductFilter($formatted_datum->standart)}}
 									</div>
 								</div>
@@ -57,7 +57,7 @@
 									<div class="col-4">
 										<b>@lang('product.extended_search.diametr')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 											{{$formatted_datum->diametr}}
 									</div>
 								</div>
@@ -65,7 +65,7 @@
 									<div class="col-4">
 										<b>@lang('product.extended_search.dovzhyna')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 										{{$formatted_datum->dovzhyna}}
 									</div>
 								</div>
@@ -73,7 +73,7 @@
 									<div class="col-4">
 										<b>@lang('product.extended_search.material')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 										{{\App\Services\Miscellenous\ExtendedSearchService::translateProductFilter($formatted_datum->material)}}
 									</div>
 								</div>
@@ -81,7 +81,7 @@
 									<div class="col-4">
 										<b>@lang('product.extended_search.klas_micnosti')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 										{{$formatted_datum->klas_micnosti}}
 									</div>
 								</div>
@@ -89,7 +89,7 @@
 									<div class="col-4">
 										<b>@lang('product.extended_search.pokryttja')</b>
 									</div>
-									<div class="col-8">
+									<div class="col-6 ml-3">
 										{{\App\Services\Miscellenous\ExtendedSearchService::translateProductFilter($formatted_datum->pokryttja)}}
 									</div>
 								</div>

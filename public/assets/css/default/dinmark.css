@@ -1828,7 +1828,7 @@ input#pokryttja{
 }
 
 .form-select {
-    height: 300px!important;
+    max-height: 300px!important;
     overflow: auto;
     position: absolute;
     top: 100%;
