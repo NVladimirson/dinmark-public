@@ -98,7 +98,6 @@ class GlobalSearchService
                 });
         })->pluck('id');
 
-
         $allowed_products = OrderProduct::whereIn('cart',$allowed_orders)->pluck('product_id');
         // dd($allowed_products);
         $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
