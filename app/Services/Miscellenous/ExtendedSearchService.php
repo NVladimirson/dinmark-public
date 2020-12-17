@@ -8,7 +8,6 @@
 
 namespace App\Services\Miscellenous;
 use App\Models\Product\Product;
-use App\Models\Product\ProductFilter;
 use App\Models\Product\ProductOptionName;
 
 // use App\Models\Content;
@@ -84,10 +83,10 @@ class ExtendedSearchService
         }
       }
       if(!count($params)){
-        return ProductFilter::paginate(24);
+        return ;
       }
       else{
-        return $product_filters->paginate(24);
+        return $product_filters;
       }
     }
 
