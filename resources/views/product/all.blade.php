@@ -91,35 +91,36 @@
                         <table id="data-table-buttons" class="table-responsive table-striped table-bordered table-td-valign-middle">
                             <thead>
                             <tr>
-                                <th colspan="4" class="text-nowrap" style="text-align: center">@lang('product.table_header_info')</th>
-                                <th colspan="4" class="text-nowrap" style="text-align: center">@lang('product.table_header_price_per_100')</th>
+                                <th colspan="4" class="text-nowrap">@lang('product.table_header_info')</th>
+                                <th colspan="3" class="text-nowrap">@lang('product.table_header_price_per_100')</th>
                                 <!-- <th></th> -->
-                                <th colspan="4" class="text-nowrap" style="text-align: center">@lang('product.table_header_calc_price')</th>
+                                <th rowspan="2" class="text-nowrap" >@lang('product.table_header_storage')</th>
+                                <th colspan="4" class="text-nowrap">@lang('product.table_header_calc_price')</th>
                             </tr>
                             <tr>
-                                <th style="text-align: center"></th>
-                                <th style="text-align: center">
+                                <th></th>
+                                <th>
                                     <div class="checkbox checkbox-css">
                                         <input type="checkbox" id="select_all_products">
                                         <label for="select_all_products"> </label>
                                     </div>
                                 </th>
-                                <th data-orderable="false" style="text-align: center;">@lang('product.table_header_photo')</th>
-                                <th class="text-nowrap" style="text-align: center">@lang('product.table_header_name/article')</th>
-                                <th class="text-nowrap" style="min-width: 200px;max-width: 200px;text-align: center;">@lang('product.table_header_price')</th>
-                                <th id="price_porog_1" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_1')</th>
-                                <th id="price_porog_2" class="text-nowrap" style="text-align: center;">@lang('product.table_header_price_porog_2')</th>
-                                <th class="text-nowrap" style="max-width: 252px;text-align: center;">@lang('product.table_header_storage')</th>
-                                <th style="max-width: 82px;text-align: center">
+                                <th data-orderable="false">@lang('product.table_header_photo')</th>
+                                <th class="text-nowrap">@lang('product.table_header_name/article')</th>
+                                <th class="text-nowrap">@lang('product.table_header_price')</th>
+                                <th id="price_porog_1" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
+                                <th id="price_porog_2" class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
+                                
+                                <th>
                                     @lang('product.table_header_quantity')
                                 </th>
-                                <th style="text-align: center">
+                                <th>
                                     @lang('product.table_header_package_weight')
                                 </th>
-                                <th style="min-width: 100px; max-width: 100px; text-align: center" >
+                                <th  >
                                     @lang('product.table_header_sum_w_taxes')
                                 </th>
-                                <th style="max-width: 25px;min-width: 25px;text-align: center"></th>
+                                <th ></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -329,7 +330,7 @@
 
             window.table =
                 $('#data-table-buttons').DataTable({
-                    //  scrollY: "100vh",
+                     scrollY: "100vh",
                     //  fixedColumns: true,
                     deferRender: true,
                     //  scroller: true,
@@ -1580,13 +1581,13 @@
 
                     let retail_user_price = document.getElementById('retail_user_price_'+product_id);
                     if( (msg['price100_raw'] - msg['user_price_raw']) > (msg['price100_raw']*0.05) ){
-                        retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#f0c674">'+msg['user_price']+'</span>';
+                        retail_user_price.children[5].innerHTML = '<span style="background-color:#f0c674; padding: 2px;"><strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span>'+msg['user_price']+'</span></span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
                         sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
                     }
                     else if( (msg['price100_raw'] - msg['user_price_raw']) < (msg['price100_raw']*0.05) && ((msg['price100_raw'] -  msg['user_price_raw'])>0) ){
-                        retail_user_price.children[5].innerHTML = '<strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span style="color:#96ca0a">'+msg['user_price']+'</span>';
+                        retail_user_price.children[5].innerHTML = '<span style="background-color:#96ca0a; padding: 2px;"><strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span>'+msg['user_price']+'</span></span>';
                         sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
                         sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
                         sum_w_taxes.children[3].setAttribute('style',"background: #96ca0a");
