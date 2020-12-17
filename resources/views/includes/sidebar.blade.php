@@ -139,6 +139,7 @@ $sidebarClass = (!empty($sidebarTransparent)) ? 'sidebar-transparent' : '';
 		@php
 		$manager = auth()->user()->getCompany->getManager;
 		@endphp
+		@if($manager)
 		<ul style="background: #B3B2B2;" class="nav">
 			<li class="media media-xs nav-profile">
 				<div class="media-left">
@@ -176,6 +177,7 @@ $sidebarClass = (!empty($sidebarTransparent)) ? 'sidebar-transparent' : '';
 				<a style="position: relative;padding: 5px 10px; margin:0 0 5px 5px;" href="{{route('ticket')}}" class="btn btn-green" title="@lang('sidebar.message')"><i style="font-size: 20px;" class="fas fa-envelope"></i> <span style="position: absolute;top: -5px;right: -10px;" class="badge badge-light">{{$countMessage}}</span></a>
 			</p>
 		</ul>
+		@endif
 		@endif
 	</div>
 	<!-- end sidebar scrollbar -->

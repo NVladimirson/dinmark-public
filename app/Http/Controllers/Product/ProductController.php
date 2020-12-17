@@ -30,6 +30,7 @@ use PhpParser\Node\Expr\Array_;
 use App\Models\Product\ProductOption;
 use App\Models\Wishlist\LikeGroup;
 use App\Services\Miscellenous\ExtendedSearchService;
+use App\Models\Product\ProductFilter;
 use Illuminate\Support\Arr;
 
 class ProductController extends Controller
@@ -686,11 +687,11 @@ class ProductController extends Controller
 
     {
 
-        $product_search = collect();
-        $order_search = collect();
-        $implementation_search = collect();
-        $reclamation_search = collect();
-        $extended_search =  collect();
+        // $product_search = collect();
+        // $order_search = collect();
+        // $implementation_search = collect();
+        // $reclamation_search = collect();
+        // $extended_search =  collect();
         $globalSearch = false;
         $extendedSearch = false;
 
@@ -715,8 +716,15 @@ class ProductController extends Controller
           }
         }
 
-        if($extended_search){
-          $extendedSearchResult=ExtendedSearchService::getProductsByFilters($extended_search);
+        if($extendedSearch){
+          dd('sdss');
+          $extendedSearchResult = ExtendedSearchService::getProductsByFilters($extended_search);
+          if($extendedSearchResult){
+            $extendedSearchResult = $extendedSearchResult->paginate(24, ['*'], 'extended_search');
+          }else{
+            $extendedSearchResult = ProductFilter::paginate(24, ['*'], 'extended_search');
+          }
+
         }
         //return view('product.search',compact('extendedSearchResult'));
 
