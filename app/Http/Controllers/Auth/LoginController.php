@@ -53,6 +53,7 @@ class LoginController extends Controller
         $email = strip_tags($request->input('email'));
 
         $user = User::where('email', $email)->first();
+        //dd(PasswordCrypt::getPassword($user->id,$user->email,$password, false));
 		$error = [];
 		if(isset($user))
 		{

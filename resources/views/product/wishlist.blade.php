@@ -28,6 +28,52 @@
 @section('content')
 	{{ Breadcrumbs::render('catalogs') }}
 <div id="wrap-table">
+				<i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-filter"></i>
+        <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
+	<div id="accordion" class=".ui-helper-reset">
+			<p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
+			<p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
+			<div id="optionfilters" class="content1">
+					@foreach($filters as $option_id=>$filterdata)
+							<h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
+							<div class="filter" id="filter">
+									@php $i=0;@endphp
+									@foreach($filterdata['options'] as $branch_id => $data)
+
+											@if($i % 2 == 0)
+													<div class="row" style="margin: auto">
+															@endif
+
+															<div class="col-md-12">
+																	<div class="row" style="margin: auto">
+																			@if(isset($data['data']['photo']))
+																					@php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
+											'/'.$data['data']['photo']; @endphp
+																					<div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+																			@else
+																					@php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
+																					<div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
+																			@endif
+																			<p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
+																					{{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
+																					{{--aria-hidden="true" style="display: none"></i>--}}
+																			</p>
+																	</div>
+															</div>
+
+															@if($i % 2 == 1)
+													</div>
+											@endif
+
+											@php $i++; @endphp
+									@endforeach
+									@if($i % 2 != 0)
+							</div>
+							@endif
+										@endforeach
+			</div>
+	</div>
+
 	<h1 class="page-header">@lang('wishlist.page_list')</h1>
 	<!-- begin row -->
 	<div class="row">
@@ -204,7 +250,7 @@
                     @endforeach
                 </div>
 
-            </div>
+  </div>
 
             <div id="filters">
                 {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}
@@ -378,7 +424,21 @@
 									console.log(xhr);
 								}
 							});
-						})
+						});
+
+						$("#optionfilters").accordion({
+								collapsible: true,
+								active: false,
+								heightStyle: "content",
+								content: '.filter'
+						});
+
+						$("#accordion").accordion({
+								collapsible: true,
+								active: false,
+								heightStyle: "content",
+								content: '.content1'
+						});
 
 						$('.product-wishlist-remove').on('click',function (e) {
 							e.preventDefault();
