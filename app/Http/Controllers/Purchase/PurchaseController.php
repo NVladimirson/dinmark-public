@@ -16,3 +16,4 @@ class PurchaseController extends Controller
         return [];
     }
 }
+
