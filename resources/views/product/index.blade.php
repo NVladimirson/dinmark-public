@@ -4,12 +4,318 @@
 	<link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <link href="/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
-
 @endpush
+@push('scripts')
+	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
+	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
+	<script>
+		jQuery(function($) {
+			"use strict";
+			$(document).ready(function () {
+				$('#modal-wishlist').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product'));
+				})
+
+				$('#modal-get_price').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.product_id').val(button.data('product_id'));
+				})
+
+				$('#modal-order').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget);
+					var modal = $(this);
+					modal.find('.image').attr("src",button.data('image'));
+					modal.find('.name').text(button.data('name'));
+
+					modal.find('.product-name').text(button.data('product_name'));
+					modal.find('.product_id').val(button.data('product'));
+					modal.find('.storage_id').val(button[0].getAttribute("data-storage"));
+					let amount = button[0].getAttribute("data-amount");
+					modal.find('.amount').val(button[0].getAttribute("data-amount"));
+					let order_inputs = document.getElementById("modal_order_inputs");
+					while (order_inputs.firstChild) {
+							order_inputs.removeChild(order_inputs.lastChild);
+					}
+
+					$('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order')</label>"+
+							"<input type=\"number\" name=\"quantity\" class=\"form-control m-b-5 quantity\" " +
+							"placeholder=\"@lang('product.quantity_order')\" disabled/>"+
+							"</div>"));
+					$('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order_request')</label>"+
+							"<input type=\"number\" name=\"quantity_request\" class=\"form-control m-b-5 quantity_request\" " +
+							"placeholder=\"@lang('product.quantity_order_request')\" disabled/>"+
+							"</div>"));
+
+					let quantity = modal.find('input[name="quantity"]');
+
+					let quantity_request = modal.find('input[name="quantity_request"]');
+
+					if (amount - button.data('storage_max') > 0) {
+							quantity.val(button.data('storage_max'));
+							quantity_request.val(amount - button.data('storage_max'));
+					}
+					else {
+							if (amount % button.data('storage_min')) {
+									quantity.val(amount -
+											button.data('amount') % button.data('storage_min'));
+									quantity_request.val(amount
+											% button.data('storage_min'));
+							} else {
+									quantity.val(amount);
+									quantity_request.val(0);
+							}
+					}
+
+				});
+
+				$('input[name="quantity_request"]').change(function (e) {
+					e.preventDefault();
+					if($(this).val() > 0){
+						$('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
+					}else{
+						$('.btn-add-order').text($('.btn-add-order').data('btn_order'));
+					}
+				})
+
+				$('#form_add_catalog').submit(function (e) {
+					e.preventDefault();
+
+					$('#modal-wishlist').modal('hide');
+
+					var form = $(this);
+					let list_id = $('#wishlist').val();
+					var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function (resp) {
+							if (resp == "ok") {
+								$.gritter.add({
+									title: '@lang('wishlist.modal_success')',
+								});
+							}
+						},
+						error: function (xhr, str) {
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				});
+
+				$('#form_add_order').submit(function(e) {
+						e.preventDefault();
+
+						$('#modal-order').modal('hide');
+
+						var form = $(this);
+
+						let product_id_input = form[0].getElementsByClassName('product_id')[0].value;
+						let storage_id_input = form[0].getElementsByClassName('storage_id')[0].value;
+						let quantity_input = form[0].getElementsByClassName('form-control m-b-5 quantity')[0].value;
+						let quantity_request_input = form[0].getElementsByClassName('form-control m-b-5 quantity_request')[0].value;
+
+						var order_id = $('#order_id').val();
+						var route = '{{route('orders')}}/add-to-order/' + order_id;
+
+						$.ajaxSetup({
+								headers: {
+										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+								}
+						});
+
+
+						$.ajax({
+								method: "POST",
+								url: route,
+								data: 'product_id='+product_id_input+'&storage_id='+storage_id_input+
+								'&quantity='+quantity_input+'&quantity_request='+quantity_request_input,
+								success: function(resp) {
+										if (resp == "ok") {
+												$.gritter.add({
+														title: '@lang('order.modal_success')',
+												});
+												changeUpperCounter('order');
+										}
+								},
+								error: function(xhr, str) {
+										console.log(xhr);
+								}
+						});
+
+						return false;
+				});
+
+				$('#form_get_price').submit(function (e) {
+					e.preventDefault();
+					$('#modal-get_price').modal('hide');
+					var product_id = $('#get_price_product_id').val();
+					var form = $(this);
+
+					var route = '{{route('products')}}/'+product_id+'/get-price/';
+
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					$.ajax({
+						method: "GET",
+						url: route,
+						data: form.serialize(),
+						success: function(resp)
+						{
+							if(resp == "ok"){
+								$.gritter.add({
+									title: '@lang('product.get_price_success')',
+								});
+							}
+						},
+						error:  function(xhr, str){
+							console.log(xhr);
+						}
+					});
+
+					return false;
+				});
+
+				function numberStringFormat(nStr)
+				{
+					nStr = nStr.toFixed(2);
+					nStr += '';
+					var x = nStr.split('.');
+					var x1 = x[0];
+					var x2 = x.length > 1 ? '.' + x[1] : '';
+					var rgx = /(\d+)(\d{3})/;
+					while (rgx.test(x1)) {
+						x1 = x1.replace(rgx, '$1' + ' ' + '$2');
+					}
+					return x1 + x2;
+				}
+
+				$('input[name="quantity"]').change(calcTotal);
+			  $('input[name="quantity"]').each(calcTotal);
+
+				function calcTotal(){
+
+					var quantity = +$(this).val();
+					var price = +$(this).data('price');
+					var limit_1 = +$(this).data('limit_1');
+					var limit_2 = +$(this).data('limit_2');
+
+					var total_price_el = $(this).parent().parent().find('.product-total-price');
+					var total_els = $(this).parent().parent().find('.product-total');
+					var total_price_procent = $(this).parent().parent().find('.product-total-procent');
+					var total_price_discount = $(this).parent().parent().find('.product-total-discount');
+
+					total_els.removeClass('product-total-limit_1');
+					total_els.removeClass('product-total-limit_2');
+
+					var total = price/100 * quantity;
+					var discount = 0;
+					var procent = '0%';
+
+					if(quantity >= limit_2 && limit_2 > 0){
+						total_els.addClass('product-total-limit_2');
+						discount = total - total * 0.93;
+						total = total * 0.93;
+						procent = '7%';
+					}else if(quantity >= limit_1 && limit_2 > 0){
+						total_els.addClass('product-total-limit_1');
+						discount = total - total * 0.97;
+						total = total * 0.97;
+						procent = '3%';
+					}
+
+					total_price_el.text(numberStringFormat(total));
+					total_price_procent.text(procent);
+					total_price_discount.text(numberStringFormat(discount));
+
+					let id = $(this)[0].id;
+					if(id !== ''){
+						let button_id = id.substring(6);
+						document.getElementById(button_id).setAttribute('data-amount',quantity);
+					}
+					//{{$product->id}}_{{$storage->id}}
+                }
+			});
+
+
+        });
+	</script>
+@endpush
+
 
 @section('content')
 	{{ Breadcrumbs::render('product.show',$product, $productName) }}
 	<h1 class="page-header">{{$productName}}</h1>
+	<div id="scroll-filter" class="panel panel-primary">
+			<div class="panel-heading">
+					<h4 class="panel-title">@lang('product.right_widget_name')</h4>
+			</div>
+			<div id="reload" style="display:none"></div>
+			<div id="selected_products" style="display:none"></div>
+			<div id="filters_selected">
+
+			</div>
+			<div id="accordion" class=".ui-helper-reset">
+					<p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
+					<div id="jstree" class="content1"></div>
+
+					<p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
+					<div id="optionfilters" class="content1">
+							@foreach($filters as $option_id=>$filterdata)
+									<h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
+									<div class="filter" id="filter">
+											@php $i=0;@endphp
+											@foreach($filterdata['options'] as $branch_id => $data)
+
+													@if($i % 2 == 0)
+															<div class="row" style="margin: auto">
+																	@endif
+
+																	<div class="col-md-12">
+																			<div class="row" style="margin: auto">
+																					@if(isset($data['data']['photo']))
+																							@php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
+													'/'.$data['data']['photo']; @endphp
+																							<div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+																					@else
+																							@php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
+																							<div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
+																					@endif
+																					<p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
+																							{{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
+																							{{--aria-hidden="true" style="display: none"></i>--}}
+																					</p>
+																			</div>
+																	</div>
+
+																	@if($i % 2 == 1)
+															</div>
+													@endif
+
+													@php $i++; @endphp
+											@endforeach
+											@if($i % 2 != 0)
+									</div>
+									@endif
+					</div>
+					@endforeach
+			</div>
+	</div>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
@@ -232,7 +538,7 @@
                             </div>
                         </div>
 												@endif
-												
+
 					</div>
 				</div>
 				<!-- end panel-body -->
@@ -263,253 +569,3 @@
     </div>
 		@endforeach
 @endsection
-
-@push('scripts')
-	<script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-	<script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
-	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-    <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
-	<script>
-		(function ($) {
-			"use strict";
-			$(document).ready(function () {
-				$('#modal-wishlist').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product_id').val(button.data('product'));
-				})
-
-				$('#modal-get_price').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product_id').val(button.data('product_id'));
-				})
-
-				$('#modal-order').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.image').attr("src",button.data('image'));
-					modal.find('.name').text(button.data('name'));
-
-					modal.find('.product-name').text(button.data('product_name'));
-					modal.find('.product_id').val(button.data('product'));
-					modal.find('.storage_id').val(button[0].getAttribute("data-storage"));
-					let amount = button[0].getAttribute("data-amount");
-					modal.find('.amount').val(button[0].getAttribute("data-amount"));
-					let order_inputs = document.getElementById("modal_order_inputs");
-					while (order_inputs.firstChild) {
-							order_inputs.removeChild(order_inputs.lastChild);
-					}
-
-					$('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order')</label>"+
-							"<input type=\"number\" name=\"quantity\" class=\"form-control m-b-5 quantity\" " +
-							"placeholder=\"@lang('product.quantity_order')\" disabled/>"+
-							"</div>"));
-					$('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order_request')</label>"+
-							"<input type=\"number\" name=\"quantity_request\" class=\"form-control m-b-5 quantity_request\" " +
-							"placeholder=\"@lang('product.quantity_order_request')\" disabled/>"+
-							"</div>"));
-
-					let quantity = modal.find('input[name="quantity"]');
-
-					let quantity_request = modal.find('input[name="quantity_request"]');
-
-					if (amount - button.data('storage_max') > 0) {
-							quantity.val(button.data('storage_max'));
-							quantity_request.val(amount - button.data('storage_max'));
-					}
-					else {
-							if (amount % button.data('storage_min')) {
-									quantity.val(amount -
-											button.data('amount') % button.data('storage_min'));
-									quantity_request.val(amount
-											% button.data('storage_min'));
-							} else {
-									quantity.val(amount);
-									quantity_request.val(0);
-							}
-					}
-
-				})
-
-				$('input[name="quantity_request"]').change(function (e) {
-					e.preventDefault();
-					if($(this).val() > 0){
-						$('.btn-add-order').text($('.btn-add-order').data('btn_order_request'));
-					}else{
-						$('.btn-add-order').text($('.btn-add-order').data('btn_order'));
-					}
-				})
-
-				$('#form_add_catalog').submit(function (e) {
-					e.preventDefault();
-
-					$('#modal-wishlist').modal('hide');
-
-					var form = $(this);
-					let list_id = $('#wishlist').val();
-					var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
-
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "GET",
-						url: route,
-						data: form.serialize(),
-						success: function (resp) {
-							if (resp == "ok") {
-								$.gritter.add({
-									title: '@lang('wishlist.modal_success')',
-								});
-							}
-						},
-						error: function (xhr, str) {
-							console.log(xhr);
-						}
-					});
-
-					return false;
-				});
-
-				$('#form_add_order').submit(function(e) {
-						e.preventDefault();
-
-						$('#modal-order').modal('hide');
-
-						var form = $(this);
-
-						let product_id_input = form[0].getElementsByClassName('product_id')[0].value;
-						let storage_id_input = form[0].getElementsByClassName('storage_id')[0].value;
-						let quantity_input = form[0].getElementsByClassName('form-control m-b-5 quantity')[0].value;
-						let quantity_request_input = form[0].getElementsByClassName('form-control m-b-5 quantity_request')[0].value;
-
-						var order_id = $('#order_id').val();
-						var route = '{{route('orders')}}/add-to-order/' + order_id;
-
-						$.ajaxSetup({
-								headers: {
-										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-								}
-						});
-
-
-						$.ajax({
-								method: "POST",
-								url: route,
-								data: 'product_id='+product_id_input+'&storage_id='+storage_id_input+
-								'&quantity='+quantity_input+'&quantity_request='+quantity_request_input,
-								success: function(resp) {
-										if (resp == "ok") {
-												$.gritter.add({
-														title: '@lang('order.modal_success')',
-												});
-												changeUpperCounter('order');
-										}
-								},
-								error: function(xhr, str) {
-										console.log(xhr);
-								}
-						});
-
-						return false;
-				});
-
-				$('#form_get_price').submit(function (e) {
-					e.preventDefault();
-					$('#modal-get_price').modal('hide');
-					var product_id = $('#get_price_product_id').val();
-					var form = $(this);
-
-					var route = '{{route('products')}}/'+product_id+'/get-price/';
-
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "GET",
-						url: route,
-						data: form.serialize(),
-						success: function(resp)
-						{
-							if(resp == "ok"){
-								$.gritter.add({
-									title: '@lang('product.get_price_success')',
-								});
-							}
-						},
-						error:  function(xhr, str){
-							console.log(xhr);
-						}
-					});
-
-					return false;
-				});
-
-				function numberStringFormat(nStr)
-				{
-					nStr = nStr.toFixed(2);
-					nStr += '';
-					var x = nStr.split('.');
-					var x1 = x[0];
-					var x2 = x.length > 1 ? '.' + x[1] : '';
-					var rgx = /(\d+)(\d{3})/;
-					while (rgx.test(x1)) {
-						x1 = x1.replace(rgx, '$1' + ' ' + '$2');
-					}
-					return x1 + x2;
-				}
-
-				$('input[name="quantity"]').change(calcTotal);
-			  $('input[name="quantity"]').each(calcTotal);
-
-				function calcTotal(){
-
-					var quantity = +$(this).val();
-					var price = +$(this).data('price');
-					var limit_1 = +$(this).data('limit_1');
-					var limit_2 = +$(this).data('limit_2');
-
-					var total_price_el = $(this).parent().parent().find('.product-total-price');
-					var total_els = $(this).parent().parent().find('.product-total');
-					var total_price_procent = $(this).parent().parent().find('.product-total-procent');
-					var total_price_discount = $(this).parent().parent().find('.product-total-discount');
-
-					total_els.removeClass('product-total-limit_1');
-					total_els.removeClass('product-total-limit_2');
-
-					var total = price/100 * quantity;
-					var discount = 0;
-					var procent = '0%';
-
-					if(quantity >= limit_2 && limit_2 > 0){
-						total_els.addClass('product-total-limit_2');
-						discount = total - total * 0.93;
-						total = total * 0.93;
-						procent = '7%';
-					}else if(quantity >= limit_1 && limit_2 > 0){
-						total_els.addClass('product-total-limit_1');
-						discount = total - total * 0.97;
-						total = total * 0.97;
-						procent = '3%';
-					}
-
-					total_price_el.text(numberStringFormat(total));
-					total_price_procent.text(procent);
-					total_price_discount.text(numberStringFormat(discount));
-
-					let id = $(this)[0].id;
-					if(id !== ''){
-						let button_id = id.substring(6);
-						document.getElementById(button_id).setAttribute('data-amount',quantity);
-					}
-					//{{$product->id}}_{{$storage->id}}
-                }
-			});
-		})(jQuery);
-	</script>
-@endpush
