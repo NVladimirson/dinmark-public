@@ -13,9 +13,11 @@ use App\Models\Content;
 use App\Models\Product\Currency;
 use App\Models\Company\Company;
 use App\Models\Product\GetPrice;
+use App\Models\Order\Order;
 use App\Models\WlFile;
 use App\Models\WlImage;
 use App\Models\WlVideo;
+use App\Models\Product\Product as ProductModel;
 use Carbon\Carbon;
 use LaravelLocalization;
 use Config;
@@ -442,6 +444,136 @@ class Product
 
 		return static::$instance;
 	}
+
+	public static function getOptionMap($productid = null){
+		$language =  static::getInstance()->lang;
+		$option_map = [];
+		if($productid){
+			$productoptions = ProductModel::where('id',$productid)->first()->options()->with('val_translates','translates')->get();
+			foreach ($productoptions as $key => $productoption) {
+				$option_map[$productoption->id] = [
+					'option' => $productoption->translates->keyBy('language')[$language]->toArray(),
+					'value' => $productoption->val_translates->keyBy('language')[$language]->toArray()
+			];
+			}
+		}
+		return $option_map;
+	}
+
+	public static function getProductOptionBy($product_id = '', $option_name_id = ''){
+		$instance =  static::getInstance();
+		if(!($product_id)){
+			return [];
+		}
+
+		$optionmap = $instance->getOptionMap($product_id);
+
+		$language =  static::getInstance()->lang;
+		if($option_name_id){
+			foreach ($optionmap as $option => $data) {
+				if($option_name_id == $data['option']['option']){
+					if($data['value']['name']!=null){
+						return $data['value']['name'];
+					}else{
+						return '-';
+					}
+				}
+			}
+		}
+		else{
+			foreach ($optionmap as $option => $data) {
+				$res[$data['option']['name']] = $data['value']['name'];
+			}
+			return $res;
+		}
+
+	}
+
+	public static function getOrder($product){
+		$allowed_orders = Order::whereHas('getUser',function ($users){
+						$users->whereHas('getCompany',function ($companies){
+								$companies->where([
+										['id', session('current_company_id')],
+								]);
+						});
+		})->with('products')->get();
+
+		$result = [];
+		foreach ($allowed_orders as $key => $order) {
+			$id = $order->id;
+			$public_number = $order->public_number;
+
+			$order_products = $order->products;
+			$order_product_id_map = [];
+			foreach ($order_products as $key => $order_product) {
+				$order_product_id_map[] = $order_product->product_id;
+			}
+			$result[$id] = [
+				'public_number' => $public_number,
+				'product_ids' => $order_product_id_map
+			];
+		}
+
+		$response = [];
+		foreach ($result as $order_id => $data) {
+			if(in_array($product->id,$data['product_ids'])){
+				$response[$order_id] = $data['public_number'];
+			}
+		}
+		return $response;
+	}
+
+	public static function getReclamations($product){
+
+	}
+
+	public static function getImplementations($product){
+
+		$allowed_implementations = \App\Models\Order\Implementation::whereHas('sender',function ($users){
+						$users->whereHas('getCompany',function ($companies){
+								$companies->where([
+										['id', session('current_company_id')],
+								]);
+						});
+		})->orwhereHas('customer',function ($users){
+						$users->whereHas('getCompany',function ($companies){
+								$companies->where([
+										['id', session('current_company_id')],
+								]);
+						});
+		})->with('products.orderProduct.product');
+		// $test_impl = \App\Models\Order\Implementation::with('products.orderProduct.product');
+
+		$implementation_map = $allowed_implementations->get()->toArray();
+
+		// dd($implementation_map);
+		$response = [];
+
+		foreach ($implementation_map as $key => $implementation) {
+			$result[$implementation['id']] = [
+				'public_number' => $implementation['public_number'],
+				'ttn' => $implementation['ttn'],
+			];
+			foreach ($implementation['products'] as $key => $implementation_product) {
+				if($implementation_product['order_product']){
+						$implementation['products'][$key] = $implementation_product['order_product']['id'];
+				}
+			}
+			$result[$implementation['id']]['products'] = $implementation['products'];
+		}
+
+		foreach ($result as $implementation_id => $data) {
+			if(in_array($product->id,$data['products'])){
+				$response[$implementation_id] = [
+					'public_number' => $data['public_number'],
+					'ttn' => $data['ttn'],
+				];
+			}
+		}
+		return $response;
+	}
+
+
 
 	private function __construct(){
 		$this->currencies = Currency::all();

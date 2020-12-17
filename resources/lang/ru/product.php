@@ -118,6 +118,9 @@ return [
     'global_search' => [
       'result_header' => 'Общий поиск',
       'name' => 'Наименование',
+      'orders' => '№ Заказа',
+      'implementations' => 'Реализация',
+      'reclamations' => 'Рекламация',
       'product_search' => [
         'header' => 'Товары',
       ],
@@ -125,10 +128,10 @@ return [
         'header' => 'Заказы',
       ],
       'reclamation_search' => [
-        'header' => 'Реализации',
+        'header' => 'Рекламации',
       ],
       'implementation_search' => [
-        'header' => 'Рекламации',
+        'header' => 'Реализации',
       ],
     ],
 

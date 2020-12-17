@@ -17,7 +17,15 @@ class ProductOption extends Model
 		return $this->hasOne('App\Models\Product\ProductOptionName','option', 'value');
 	}
 
+	public function val_translates(){
+		return $this->hasMany('App\Models\Product\ProductOptionName','option', 'value');
+	}
+
 	public function option_val(){
 		return $this->hasOne('App\Models\Product\ProductOptionValue','id', 'value');
+	}
+
+	public function product_link(){
+		return $this->hasOne('App\Models\Product\Product','id', 'product');
 	}
 }
