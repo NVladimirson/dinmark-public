@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Services\Product\CatalogServices;
 use App\Services\Product\Product as ProductServices;
 use Artesaos\SEOTools\Facades\SEOTools;
+use App\Services\Product\CategoryServices;
 use Excel;
 
 class CatalogController extends Controller
@@ -32,10 +33,10 @@ class CatalogController extends Controller
 			session(['current_catalog' => $group->id]);
 		}
 		$orders = OrderServices::getByCompany();
-		//dd($orders);
 		$curentWishlist = LikeGroup::find(session('current_catalog'));
-		//dd($curentWishlist);
-		return view('product.wishlist',compact('wishlists','orders', 'curentWishlist'));
+		$filters = CategoryServices::getOptionFilters();
+		$dinmark_url = \Config::get('values.dinmarkurl');
+		return view('product.wishlist',compact('wishlists','orders', 'curentWishlist','filters','dinmark_url'));
 	}
 
     public function addToCatalog($id = 0, Request $request){
