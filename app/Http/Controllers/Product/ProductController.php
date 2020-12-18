@@ -32,6 +32,7 @@ use App\Models\Wishlist\LikeGroup;
 use App\Services\Miscellenous\ExtendedSearchService;
 use App\Models\Product\ProductFilter;
 use Illuminate\Support\Arr;
+use App\Events\NewMessage;
 
 class ProductController extends Controller
 {
@@ -100,7 +101,7 @@ class ProductController extends Controller
 
     public function test(Request $request){
 
-      //$this->dispatch(new ProductOptionFiltersJob());
+      $this->dispatch(new ProductOptionFiltersJob());
 
       // $language = 'uk';
       // $search = 'DIN';

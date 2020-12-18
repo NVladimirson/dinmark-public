@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
 use App\Services\Product\CategoryServices;
+use App\Events\NewMessage as NewMessageEvent;
 
 class TicketController extends Controller
 {
@@ -168,14 +169,22 @@ class TicketController extends Controller
 		$toUser = auth()->user();
 		$user = auth()->user()->id;
 		$manager = $user;
+
+    $message['sendto'] = auth()->user()->getCompany->getManager->id;
+    $message['name'] =  auth()->user()->name;
+    $message['email'] =  auth()->user()->email;
+    $success = event(new NewMessageEvent($message));
+
 		$isManage = (auth()->user()->type == 1 || auth()->user()->type == 2);
 
-		if($isManage){
+		if($isManage && ($request->id != null)){
 			$user = $request->id;
 		}else{
 			$manager = auth()->user()->getCompany->getManager->id;
 			$toUser = auth()->user()->getCompany->getManager;
+      $user = auth()->user()->id;
 		}
+    $manager = auth()->user()->getCompany->getManager->id;
 
 		$ticket = Ticket::create([
 			'subject' => $request->subject,
@@ -216,6 +225,11 @@ class TicketController extends Controller
 		if($ticket->user_id == auth()->user()->id){
 			$toUser = $ticket->manager;
 		}
+
+    $message['sendto'] = auth()->user()->getCompany->getManager->id;
+    $message['name'] =  auth()->user()->name;
+    $message['email'] =  auth()->user()->email;
+    $success = event(new NewMessageEvent($message));
 
 		$message = TicketMessage::create([
 			'text' => $request->text,

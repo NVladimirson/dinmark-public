@@ -96,7 +96,7 @@
         <div class="right-actions-block">
             <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle f-s-14 " id="new_notifications">
-                    <i class="fa fa-bell"></i>
+                    <i id="notificationbell" class="fa fa-bell"></i>
                     @if(auth()->user()->unreadNotifications->count() > 0)
                         <input type="hidden" id="last_notification" value="{{auth()->user()->unreadNotifications->first()->created_at}}">
                         <span class="label">{{auth()->user()->unreadNotifications->count()}}</span>

@@ -11,6 +11,13 @@
 	});
     @endif
     $('#new_notifications').click(function (e) {
+      let bell = $('#notificationbell');
+      if(bell.attr('class') === 'fa fa-exclamation'){
+          bell.toggleClass('fa-exclamation fa-bell');
+      }
+      else{
+        console.log(bell.attr('class'));
+      }
     	if($(this).has('#last_notification')){
     		var button = $(this);
 			$.ajaxSetup({
@@ -62,7 +69,7 @@ $(window).resize(function() {
     if (windowsize > 1050 && ($('.sidebar').css('left') == '-220px' )) {
         $('.sidebar').css('left', '0');
         $('.sidebar').css('z-index', '1020');
-    } 
+    }
     // else if ( windowsize < 1050 && ($('.sidebar').css('z-index') == '1010' ) ) {
     //     $('.sidebar').css('z-index', '1020');
     // }

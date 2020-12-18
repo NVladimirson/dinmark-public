@@ -40,8 +40,8 @@ class UserCurrentCompany
             $implementation_count = ImplementationServices::getByCompany()->count();
             $orders_count = OrderServices::getByCompany()->count();
 
-
-			view()->share(compact('companies','curent_company','logo','wishlists_count','implementation_count','orders_count'));
+      $current_user_id = auth()->user()->id;
+			view()->share(compact('companies','curent_company','logo','wishlists_count','implementation_count','orders_count','current_user_id'));
 		}
 
 

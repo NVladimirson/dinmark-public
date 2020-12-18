@@ -20,7 +20,6 @@
 	<!-- end page-header -->
 
 	<div class="row">
-
 		<div class="col-xl-3 col-md-6">
 			<div class="widget widget-stats bg-blue">
 				<div class="stats-icon"><i class="fas fa-shopping-cart"></i></div>
@@ -307,7 +306,30 @@
 	<script src="/assets/plugins/jvectormap-next/jquery-jvectormap.min.js"></script>
 	<script src="/assets/plugins/jvectormap-next/jquery-jvectormap-world-mill.js"></script>
 	<script src="/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+  <script>
 
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('2806f28559ed06d3275e', {
+      cluster: 'eu'
+    });
+
+    var channel = pusher.subscribe('newmessage-chanel');
+    channel.bind('newmessage-event', function(data) {
+			console.log(data);
+			let current = '{{$current_user_id}}';
+			let sendto = data.data.sendto;
+			if(current == sendto){
+				let bell = $('#notificationbell');
+				bell.toggleClass('fa-bell fa-exclamation');
+				$.gritter.add({
+						title: '@lang("notification.new_message")',
+				});
+			}
+    });
+  </script>
 	<script>
 		var ordersData = {!! $orders->toJson() !!};
 		var handlePriceChart = function () {
