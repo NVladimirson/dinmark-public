@@ -260,61 +260,6 @@
 @section('content')
 	{{ Breadcrumbs::render('product.show',$product, $productName) }}
 	<h1 class="page-header">{{$productName}}</h1>
-	<div id="scroll-filter" class="panel panel-primary">
-			<div class="panel-heading">
-					<h4 class="panel-title">@lang('product.right_widget_name')</h4>
-			</div>
-			<div id="reload" style="display:none"></div>
-			<div id="selected_products" style="display:none"></div>
-			<div id="filters_selected">
-
-			</div>
-			<div id="accordion" class=".ui-helper-reset">
-					<p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
-					<div id="jstree" class="content1"></div>
-
-					<p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
-					<div id="optionfilters" class="content1">
-							@foreach($filters as $option_id=>$filterdata)
-									<h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
-									<div class="filter" id="filter">
-											@php $i=0;@endphp
-											@foreach($filterdata['options'] as $branch_id => $data)
-
-													@if($i % 2 == 0)
-															<div class="row" style="margin: auto">
-																	@endif
-
-																	<div class="col-md-12">
-																			<div class="row" style="margin: auto">
-																					@if(isset($data['data']['photo']))
-																							@php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
-													'/'.$data['data']['photo']; @endphp
-																							<div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-																					@else
-																							@php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-																							<div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
-																					@endif
-																					<p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
-																							{{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
-																							{{--aria-hidden="true" style="display: none"></i>--}}
-																					</p>
-																			</div>
-																	</div>
-
-																	@if($i % 2 == 1)
-															</div>
-													@endif
-
-													@php $i++; @endphp
-											@endforeach
-											@if($i % 2 != 0)
-									</div>
-									@endif
-					</div>
-					@endforeach
-			</div>
-	</div>
 	<!-- begin row -->
 	<div class="row">
 		<!-- begin col-10 -->
