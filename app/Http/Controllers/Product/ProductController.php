@@ -100,37 +100,58 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-
-      $this->dispatch(new ProductOptionFiltersJob());
-
-      // $language = 'uk';
-      // $search = 'DIN';
-      // $products = Product::whereHas('content', function($content) use($search,$language){
-      //   $content->where([
-      //     ['language',$language],
-      //     ['alias', 8],
-      //     ['name', 'like',"%" . $search . "%"]
-      //   ]);
-      // })->orwhereHas('options', function($options) use($search,$language){
-      //   $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
-      //     $option_name->where([
-      //       ['language',$language],
-      //       ['name', 'like',"%" . $search . "%"]
-      //     ]);
+      $request_options = ['1587','538'];
+      $language = 'uk';
+      foreach ($request_options as $key => $request_option) {
+        if($key == 0){
+          $products = Product::whereHas('options', function($options) use ($request_option){
+            $options->whereHas('val_translates', function($option_name) use ($request_option){
+              $option_name->where('value',$request_option)->where('language','uk');
+            });
+          });
+        }
+        else{
+          $products = $products->orwhereHas('options', function($options) use ($request_option){
+            $options->whereHas('val_translates', function($option_name) use ($request_option){
+              $option_name->where('value',$request_option)->where('language','uk');
+            });
+        });
+      }
+      }
+      dd($products->get());
+      // $products = Product::whereHas('options', function($options) use ($request_options){
+      //   $options->whereHas('val_translates', function($option_name) use ($request_options){
+      //     $option_name->whereIn('value',$request_options)->where('language','uk');
       //   });
       // });
-      // dd($products->with('options.val')->first());
-
-
-
-// $array = [100, '200', 300, '400', 500];
-//
-
-
+      // dump($products->get());
+  //1587
+  $products = Product::where('id','16')->with('options.val_translates')->get();
+   dd($products);
     }
 
     public function allAjax(Request $request){
         $products = Product::with(['storages','content','options']);
+        $language = CategoryServices::getLang();
+        if($request->filter_with_options){
+            $request_options = explode(',',$request->filter_with_options);;
+            foreach ($request_options as $key => $request_option) {
+              if($key == 0){
+                $products = Product::whereHas('options', function($options) use ($request_option,$language){
+                  $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+                    $option_name->where('value',$request_option)->where('language','uk');
+                  });
+                });
+              }
+              else{
+                $products = $products->orwhereHas('options', function($options) use ($request_option,$language){
+                  $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+                    $option_name->where('value',$request_option)->where('language','uk');
+                  });
+              });
+            }
+            }
+        }
 
         if(!empty($request->categories)){
             $selected_items = array_values(explode(",",$request->categories));
@@ -188,26 +209,26 @@ class ProductController extends Controller
         }
 
 
-        if($request->filter_with_options){
-            $request_options = explode(',',$request->filter_with_options);
-            $valid_ids = Array();
-            $filters = CategoryServices::getOptionFilters();
-            foreach ($filters as $option_id=>$filterdata){
-                foreach($filterdata['options'] as $branch_id => $data){
-                    if(in_array($branch_id,$request_options)){
-                        if(empty($valid_ids)){
-                            $valid_ids = $data['products'];
-                        }else{
-                            $valid_ids = array_intersect($valid_ids,$data['products']);
-                        }
-
-                    }
-                }
-            }
-            if(!empty($valid_ids)){
-                $products = $products->whereIn('id',array_values($valid_ids));
-            }
-        }
+        // if($request->filter_with_options){
+        //     $request_options = explode(',',$request->filter_with_options);
+        //     $valid_ids = Array();
+        //     $filters = CategoryServices::getOptionFilters();
+        //     foreach ($filters as $option_id=>$filterdata){
+        //         foreach($filterdata['options'] as $branch_id => $data){
+        //             if(in_array($branch_id,$request_options)){
+        //                 if(empty($valid_ids)){
+        //                     $valid_ids = $data['products'];
+        //                 }else{
+        //                     $valid_ids = array_intersect($valid_ids,$data['products']);
+        //                 }
+        //
+        //             }
+        //         }
+        //     }
+        //     if(!empty($valid_ids)){
+        //         $products = $products->whereIn('id',array_values($valid_ids));
+        //     }
+        // }
 
         //$ids = null;
         $search_article = null;
@@ -718,7 +739,6 @@ class ProductController extends Controller
         }
 
         if($extendedSearch){
-          dd('sdss');
           $extendedSearchResult = ExtendedSearchService::getProductsByFilters($extended_search);
           if($extendedSearchResult){
             $extendedSearchResult = $extendedSearchResult->paginate(24, ['*'], 'extended_search');

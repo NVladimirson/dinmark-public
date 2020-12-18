@@ -188,6 +188,31 @@ class CatalogController extends Controller
 		if($request->has('search')){
 			$ids = ProductServices::getIdsSearch(request('search')['value']);
 		}
+		// $search_article = null;
+		//
+		// if($request->has('search')){
+		// 		$search_article = request('search')['value'];
+		// }
+
+		if($request->filter_with_options){
+				$request_options = explode(',',$request->filter_with_options);;
+				foreach ($request_options as $key => $request_option) {
+					if($key == 0){
+						$products = Product::whereHas('options', function($options) use ($request_option,$language){
+							$options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+								$option_name->where('value',$request_option)->where('language','uk');
+							});
+						});
+					}
+					else{
+						$products = $products->orwhereHas('options', function($options) use ($request_option,$language){
+							$options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+								$option_name->where('value',$request_option)->where('language','uk');
+							});
+					});
+				}
+				}
+		}
 
 		return datatables()
 			->eloquent($products)
