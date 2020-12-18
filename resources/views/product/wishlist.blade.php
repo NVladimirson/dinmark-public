@@ -22,7 +22,7 @@
             flex: 1;
         }
 		</style>
-		
+
 @endpush
 
 @section('content')
@@ -177,9 +177,10 @@
 								{{--<th class="text-nowrap">@lang('wishlist.table_header_name')</th>--}}
 								{{--<th class="text-nowrap">@lang('wishlist.table_header_article')</th>--}}
 								<th class="text-nowrap">@lang('wishlist.table_header_holding_article')</th>
-								<th class="text-nowrap">@lang('wishlist.table_header_price')</th>
+								<th>USER</th>
+								<!-- <th class="text-nowrap">@lang('wishlist.table_header_price')</th>
 								<th class="text-nowrap coef-header">@lang('wishlist.table_header_user_price') x {{
-				($curentWishlist->price)? $curentWishlist->price->koef : 1 }}</th>
+				($curentWishlist->price)? $curentWishlist->price->koef : 1 }}</th> -->
 								<th class="text-nowrap">@lang('wishlist.table_header_storage')</th>
 								<th width="100"></th>
 							</tr>
@@ -275,7 +276,7 @@
 
             </div>
 				</div>
-				
+
 	</div>
 	<!-- end row -->
 
@@ -378,13 +379,17 @@
 						{
 							data: 'article_holding',
 						},
+						// {
+						// 	"orderable":      false,
+						// 	data: 'user_price',
+						// },
+						// {
+						// 	"orderable":      false,
+						// 	data: 'catalog_price',
+						// },
 						{
 							"orderable":      false,
-							data: 'user_price',
-						},
-						{
-							"orderable":      false,
-							data: 'catalog_price',
+							data: 'retail_user_prices',
 						},
 						{
 							data: 'storage_html',
