@@ -390,8 +390,8 @@
                                 $.each(filter_selected_map, function(key, value) {
                                     if (value.attributes['filter-selected'].value === 'true') {
                                         let option_id = value.attributes['option_id'].value;
-                                        let option_name = value.attributes['option_name'].value;
-                                        filter_selected_ids.push(option_id + ';' + option_name);
+                                        //let option_name = value.attributes['option_name'].value;
+                                        filter_selected_ids.push(option_id);
                                         //filter_selected_ids.option_id = option_name;
                                     }
                                 });
