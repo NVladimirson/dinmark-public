@@ -189,7 +189,9 @@ class TicketController extends Controller
 		$ticket = Ticket::create([
 			'subject' => $request->subject,
 			'user_id' => $user,
-			'manager_id' => $manager
+			'manager_id' => $manager,
+      'new_for_user' => '1',
+      'new_for_manager' => '1',
 		]);
 
 		$message = TicketMessage::create([
@@ -234,8 +236,18 @@ class TicketController extends Controller
 		$message = TicketMessage::create([
 			'text' => $request->text,
 			'ticket_id' => $ticket->id,
-			'user_id' => auth()->user()->id
+			'user_id' => auth()->user()->id,
+      'new_for_user' => 0,
+      'new_for_manager' => 1,
+      'email' => 0,
 		]);
+
+    \DB::table('b2b_tickets')
+              ->where('id', $ticket->id)
+              ->update(
+                ['new_for_user' => 1],
+                ['new_for_manager' => 1]
+              );
 
 		$toUser->notify(new NewMessage($message));
 
