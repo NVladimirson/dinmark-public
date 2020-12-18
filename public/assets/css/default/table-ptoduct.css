@@ -224,7 +224,7 @@ tr:hover .datatable_actions_class div a {
     display: block;
 }
 .ui-accordion-content {
-    height: 50vh;
+    max-height: 50vh;
     overflow-y: auto;
 }
 
@@ -290,4 +290,8 @@ tr:hover .datatable_actions_class div a {
     left: 5px;
     padding-left: 4px;
     border: 1px solid silver;
+}
+
+#jstree {
+    padding-left: 0;
 }
