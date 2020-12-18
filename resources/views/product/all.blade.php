@@ -93,7 +93,6 @@
                             <tr>
                                 <th colspan="4" class="text-nowrap">@lang('product.table_header_info')</th>
                                 <th colspan="3" class="text-nowrap">@lang('product.table_header_price_per_100')</th>
-                                <!-- <th></th> -->
                                 <th rowspan="2" class="text-nowrap" >@lang('product.table_header_storage')</th>
                                 <th colspan="4" class="text-nowrap">@lang('product.table_header_calc_price')</th>
                             </tr>
@@ -117,7 +116,7 @@
                                 <th>
                                     @lang('product.table_header_package_weight')
                                 </th>
-                                <th  >
+                                <th>
                                     @lang('product.table_header_sum_w_taxes')
                                 </th>
                                 <th ></th>
