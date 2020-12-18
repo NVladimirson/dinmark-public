@@ -271,3 +271,23 @@ tr:hover .datatable_actions_class div a {
 .product-image img:hover {
     z-index: 999999;
 }
+
+#optionfilters {
+    padding: 0;
+}
+
+
+.dropdown-menu.inner.show li a {
+    padding-left: 23px;
+    position: relative;
+}
+
+.dropdown-menu.inner.show li a span:nth-child(1){
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    left: 5px;
+    padding-left: 4px;
+    border: 1px solid silver;
+}

@@ -21,7 +21,8 @@
             -ms-flex: 1;
             flex: 1;
         }
-    </style>
+		</style>
+		
 @endpush
 
 @section('content')
