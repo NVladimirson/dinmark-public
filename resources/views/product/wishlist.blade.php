@@ -10,7 +10,6 @@
 	<link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
 	<link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
-	<link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
     <style>
         .panel-title-control{
             line-height: 20px;
@@ -27,10 +26,12 @@
 
 @section('content')
 	{{ Breadcrumbs::render('catalogs') }}
+	<div id="filters_selected">
+    </div>
 <div id="wrap-table">
 				<i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-filter"></i>
         <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
-	<div id="accordion" class=".ui-helper-reset">
+	<!-- <div id="accordion" class=".ui-helper-reset">
 			<p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
 			<p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
 			<div id="optionfilters" class="content1">
@@ -72,7 +73,7 @@
 							@endif
 										@endforeach
 			</div>
-	</div>
+	</div> -->
 
 	<h1 class="page-header">@lang('wishlist.page_list')</h1>
 	<!-- begin row -->
@@ -250,7 +251,7 @@
                     @endforeach
                 </div>
 
-  </div>
+            </div>
 
             <div id="filters">
                 {{--<p style="font-size: 12pt;">@lang('product.filters.header')</p>--}}

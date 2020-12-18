@@ -135,6 +135,7 @@
 @endpush
 
 @section('content')
+<div id="filters_selected"></div>
 <div id="wrap-table">
         <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-filter"></i>
         <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
@@ -149,7 +150,7 @@
         <div id="filters_selected">
 
         </div>
-        <div id="accordion" class=".ui-helper-reset">
+        <!-- <div id="accordion" class=".ui-helper-reset">
             <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
             <div id="jstree" class="content1"></div>
 
@@ -193,7 +194,7 @@
                     @endif
             </div>
             @endforeach
-        </div>
+        </div> -->
 
     </div>
     </div>
