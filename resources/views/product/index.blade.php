@@ -248,7 +248,6 @@
 						let button_id = id.substring(6);
 						document.getElementById(button_id).setAttribute('data-amount',quantity);
 					}
-					//{{$product->id}}_{{$storage->id}}
                 }
 			});
 
