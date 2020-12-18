@@ -15,6 +15,7 @@ use App\Services\News\NewsServices;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Notifications\NewMessage;
 
 class DashboardController extends Controller
 {
