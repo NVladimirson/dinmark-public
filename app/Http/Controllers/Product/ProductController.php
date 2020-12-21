@@ -33,6 +33,7 @@ use App\Services\Miscellenous\ExtendedSearchService;
 use App\Models\Product\ProductFilter;
 use Illuminate\Support\Arr;
 use App\Events\NewMessage;
+use File;
 
 class ProductController extends Controller
 {
@@ -100,14 +101,12 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $products = Product::where('id',22414)->with('orderProducts.implementationProduct.implementation')->whereHas('orderProducts',function($orderProduct){
-        $orderProduct->where('id',38441);
-      });
-      $orderProducts = $products->get()->pluck('orderProducts')->first();
-      $orderProducts = $orderProducts->filter(function ($value, $key) {
-          return $value->id == 38441;
-        });
-        dd($orderProducts);
+      //image = 'https://dinmark.com.ua/images/shop/-1333/din-7991-109-bolt-z-potaynou-holovkou-i-vnutrishnim-shestyhrannykom-2992.jpg';
+      dump(
+         get_headers('https://dinmark.com.ua/images/shop/-1339/din-7991-a2-bolt-z-potaynou-holovkou-i-vnutrishnim-shestyhrannykom-2993.jpg'),
+      get_headers('https://dinmark.com.ua/images/shop/-1333/din-7991-109-bolt-z-potaynou-holovkou-i-vnutrishnim-shestyhrannykom-2992.jpg')
+      );
+      //dd(File::exists($image)?true:false);
     }
 
     public function allAjax(Request $request){

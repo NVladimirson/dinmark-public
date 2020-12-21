@@ -21,6 +21,7 @@ use LaravelLocalization;
 use App\Services\Product\Product as ProductServices;
 use App\Models\Order\Order;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Arr;
 
 class GlobalSearchService
 
@@ -207,6 +208,9 @@ class GlobalSearchService
                 'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
               ];
             }
+            $product_info = array_values(Arr::sort($product_info, function ($value) {
+              return $value['text'];
+            }));
           return $product_info;
           }
           else{
