@@ -226,9 +226,9 @@ class CatalogController extends Controller
 
 				return '<img src="'.$src.'" width="80">';
 			})
-            ->addColumn('name_article_html', function (Product $product){
-                $name = ProductServices::getName($product);
-                return '<a class="data-product_name" href="'
+      ->addColumn('name_article_html', function (Product $product){
+         $name = ProductServices::getName($product);
+            return '<a class="data-product_name" href="'
                     .route('products.show',[$product->id]).'">'.$name.'</a><br>'.
                     // '<a href="'.route('products.show',[$product->id]).'">'.$product->article_show.'</a>';
                     '<span>'.$product->article_show.'</span>';
@@ -296,6 +296,35 @@ class CatalogController extends Controller
 					}
 					return number_format(0,2,'.',' ');
 			})
+			->addColumn('html_limit_1', function (Product $product) {
+					$storage = $product->storages->first();
+					if(isset($storage->limit_1) && $storage->limit_1!=0){
+							//$price_limit = ProductServices::getPriceWithCoef($product,0.97);
+							$price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.97),2,'.',' ');
+							$limit = $storage->limit_1;
+							return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1">'.$price_limit.
+									'</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
+					}
+					else{
+							return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
+									</span><br><span class="limit_amount_quantity_1"></span></p>';
+					}
+			})
+			->addColumn('html_limit_2', function (Product $product) {
+					$storage = $product->storages->first();
+					if(isset($storage->limit_2) && $storage->limit_2!=0){
+							//$price_limit = ProductServices::getPriceWithCoef($product,0.93);
+							$price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.93),2,'.',' ');
+							$limit = $storage->limit_2;
+							return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2">'.$price_limit.
+									'</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
+					}
+					else{
+							return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
+									</span><br><span class="limit_amount_quantity_2"></span></p>';
+					}
+
+			})
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
 				$emptyvalue = trans('product.storage_choose');
@@ -338,156 +367,85 @@ class CatalogController extends Controller
 				}
 				return $value;
 			})
-			// ->addColumn('html_limit_1', function (Product $product) {
-			// 		$storage = $product->storages->first();
-			// 		if(isset($storage->limit_1) && $storage->limit_1!=0){
-			// 				//$price_limit = ProductServices::getPriceWithCoef($product,0.97);
-			// 				$price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.97),2,'.',' ');
-			// 				$limit = $storage->limit_1;
-			// 				return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1">'.$price_limit.
-			// 						'</span><br><span class="limit_amount_quantity_1">'.'>'.$limit.'</span></p>';
-			// 		}
-			// 		else{
-			// 				return '<p id="limit_1_'.$product->id.'" style="color: #96ca0a;margin-bottom: 0px" ><span class="limit_amount_price_1"> -
-			// 						</span><br><span class="limit_amount_quantity_1"></span></p>';
-			// 		}
-			// })
-			// ->addColumn('html_limit_2', function (Product $product) {
-			// 		$storage = $product->storages->first();
-			// 		if(isset($storage->limit_2) && $storage->limit_2!=0){
-			// 				//$price_limit = ProductServices::getPriceWithCoef($product,0.93);
-			// 				$price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.93),2,'.',' ');
-			// 				$limit = $storage->limit_2;
-			// 				return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2">'.$price_limit.
-			// 						'</span><br><span class="limit_amount_quantity_2">'.'>'.$limit.'</span></p>';
-			// 		}
-			// 		else{
-			// 				return '<p id="limit_2_'.$product->id.'" style="color: #f0c674;margin-bottom: 0px" ><span class="limit_amount_price_2"> -
-			// 						</span><br><span class="limit_amount_quantity_2"></span></p>';
-			// 		}
-			//
-			// })
-			// ->addColumn('storage_html', function (Product $product) {
-			// 		$value = trans('product.storage_empty');
-			// 		$emptyvalue = trans('product.storage_choose');
-			// 		$emptystorages = true;
-			// 		if($product->storages){
-			// 				$storages = $product->storages;
-			// 				if(count($storages)){
-			// 						$value = '<select onchange="initCalc(this)" class="custom-select" product_id="'.$product->id.'" id="storage_product_'.$product->id.'">';
-			// 						if(isset($product->storages->firstWhere('is_main',1)->storage_id)){
-			// 								$main_storage = $product->storages->firstWhere('is_main',1)->storage_id;
-			// 						}
-			// 						else{
-			// 								$main_storage = 0;
-			// 						}
-			// 						foreach ($storages as $key => $storage) {
-			// 								if($storage->amount!=0){
-			// 									$emptystorages = false;
-			// 									$term = $storage->storage->term;
-			// 									$days = ProductServices::getStingDays($term);
-			// 									// $name = CatalogServices::dayrounder($storage->amount).
-			// 									// ' / '.$term.' '.$days.' ('.$storage->storage->name.')';
-			// 									$name = __('product.storage_name'). ' '. $storage->storage->term . ' '. __('product.storage_term_measure_shortly').
-			// 									' / '.CatalogServices::dayrounder($storage->amount) . ' шт.';
-			// 									$value .= '<option value="'.$storage->storage->id.'" package_min="'.$storage->package.'"
-			// 									package_max="'.$storage->amount.'"';
-			// 									if($storage->storage->id == $main_storage){
-			// 											$value .= 'selected>'.$name.'</option>';
-			// 									}
-			// 									else{
-			// 											$value .= '>'.$name.'</option>';
-			// 									}
-			// 								}
-			// 						}
-			// 						$value .= '</select>';
-			// 				}
-			// 				$value .= '</select>';
-			// 		}
-			// 		if($emptystorages){
-			// 			$value = trans('product.storage_empty');
-			// 		}
-			// 		return $value;
-			// })
-			// ->addColumn('calc_quantity', function (Product $product) {
-			// 		$storage = $product->storages->firstWhere('is_main',1);
-			//
-			// 		if(ProductServices::hasAmount($product->storages)){
-			// 			if(isset($storage->package)){
-			// 				$package = $storage->package;
-			// 			}else{
-			// 				$package = 1;
-			// 			}
-			// 				// return '
-			// 				// <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
-			// 				// name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
-			// 				// value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
-			//
-			// 				return '
-			// 				<input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
-			// 				name="quantity" class="form-control m-b-15" style="max-width: 100px;margin-bottom: 0px!important;"
-			// 				value="0" min="0" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
-			// 		}
-			// 		else{
-			// 				// return '
-			// 				// <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
-			// 				// name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
-			// 				// value="0" min="0" step="10" data-max="1000"/>';
-			// 		}
-			// })
-			// ->addColumn('package_weight', function (Product $product) {
-			// 		$storage = $product->storages->firstWhere('is_main',1);
-			// 		if(isset($storage->package)){
-			// 				$package = $storage->package;
-			// 				$unit = $product->unit;
-			//
-			// 				preg_match_all('!\d+!', $unit, $isnumber);
-			// 				if(!empty($isnumber[0])){
-			// 						$unitnumber = $isnumber[0][0];
-			// 				}else{
-			// 						$unitnumber = 1;
-			// 				}//сори
-			//
-			// 				$weight = $product->weight * ($storage->package/$unitnumber);
-			// 				return '<div>
-			// 		<p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
-			// 		<span class="multiplier">0</span>
-			// 		<span class="x">x</span>
-			// 		<span class="package">'.$package.'</span>
-			// 		<br>
-			// 		<span class="weight">'.number_format(0,3,'.',',').'</span>
-			// 		</p></div>';
-			// 		}else{
-			// 				return '<div>
-			// 		<p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
-			// 		<span class="multiplier"></span>
-			// 		<span class="x" style="display:none">x</span>
-			// 		<span class="package"></span>
-			// 		<span class="weight"></span>
-			// 		</p></div>';
-			// 		}
-			// })
-			// ->addColumn('sum_w_taxes', function (Product $product) {
-			// 		$storage = $product->storages->first();
-			// 		if(isset($storage)){
-			// 			$package = $storage->package;
-			// 			$price = ProductServices::getPriceUnformatted($product,$storage->id);
-			// 			$price = $price/100 * $package;
-			// 			if(isset($storage->limit_2) && $storage->limit_2!=0){
-			// 				return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
-			// 					<span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p></div>';
-			// 			}else{
-			// 				return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
-			// 					<span class="discount" style="display:none">-0%</span> <span class="discountamount" style="display:none">'.number_format(0,2,'.',' ').'</span> </p></div>';
-			// 				// return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
-			// 				//   <span class="discount"></span> <span class="discountamount"></span> </p></div>';
-			// 			}
-			// 		}else{
-			// 				return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price"></span> <br>
-			// 					<span class="discount"></span> <span class="discountamount"></span> </p></div>';
-			// 		}
-			//
-			// })
+			->addColumn('calc_quantity', function (Product $product) {
+					$storage = $product->storages->firstWhere('is_main',1);
+
+					if(ProductServices::hasAmount($product->storages)){
+						if(isset($storage->package)){
+							$package = $storage->package;
+						}else{
+							$package = 1;
+						}
+							// return '
+							// <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
+							// name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important;"
+							// value="'.$storage->package.'" min="'.$storage->package.'" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
+
+							return '
+							<input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
+							name="quantity" class="form-control m-b-15" style="max-width: 100px;margin-bottom: 0px!important;"
+							value="0" min="0" step="'.$storage->package.'" datamax="'.$storage->amount.'"/>';
+					}
+					else{
+							// return '
+							// <input id="calc_quantity_'.$product->id.'" onchange="changeamount(this)" type="number"
+							// name="quantity" class="form-control m-b-15" style="max-width: 80px;margin-bottom: 0px!important; display:none"
+							// value="0" min="0" step="10" data-max="1000"/>';
+					}
+			})
+			->addColumn('package_weight', function (Product $product) {
+					$storage = $product->storages->firstWhere('is_main',1);
+					if(isset($storage->package)){
+							$package = $storage->package;
+							$unit = $product->unit;
+
+							preg_match_all('!\d+!', $unit, $isnumber);
+							if(!empty($isnumber[0])){
+									$unitnumber = $isnumber[0][0];
+							}else{
+									$unitnumber = 1;
+							}//сори
+
+							$weight = $product->weight * ($storage->package/$unitnumber);
+							return '<div>
+					<p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
+					<span class="multiplier">0</span>
+					<span class="x">x</span>
+					<span class="package">'.$package.'</span>
+					<br>
+					<span class="weight">'.number_format(0,3,'.',',').'</span>
+					</p></div>';
+					}else{
+							return '<div>
+					<p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
+					<span class="multiplier"></span>
+					<span class="x" style="display:none">x</span>
+					<span class="package"></span>
+					<span class="weight"></span>
+					</p></div>';
+					}
+			})
+			->addColumn('sum_w_taxes', function (Product $product) {
+					$storage = $product->storages->first();
+					if(isset($storage)){
+						$package = $storage->package;
+						$price = ProductServices::getPriceUnformatted($product,$storage->id);
+						$price = $price/100 * $package;
+						if(isset($storage->limit_2) && $storage->limit_2!=0){
+							return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
+								<span class="discount">-0%</span> <span class="discountamount">'.number_format(0,2,'.',' ').'</span> </p></div>';
+						}else{
+							return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
+								<span class="discount" style="display:none">-0%</span> <span class="discountamount" style="display:none">'.number_format(0,2,'.',' ').'</span> </p></div>';
+							// return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price">'.number_format(0,2,'.',' ').'</span> <br>
+							//   <span class="discount"></span> <span class="discountamount"></span> </p></div>';
+						}
+					}else{
+							return '<div><p id="sum_w_taxes_'.$product->id.'" style="margin-bottom: 0px"><span class="price"></span> <br>
+								<span class="discount"></span> <span class="discountamount"></span> </p></div>';
+					}
+
+			})
 			->addColumn('actions', function (Product $product) {
 				$storage = $product->storages->firstWhere('is_main',1);
                 $hasStorage = ProductServices::hasAmount($product->storages);
@@ -528,7 +486,22 @@ class CatalogController extends Controller
 				// 	$product->whereIn('id',$ids);
 				// }
 			}, true)
-			->rawColumns(['name_article_html','image_html','check_html','actions','article_holding','storage_html','user_price','catalog_price'])
+			->rawColumns([
+				'name_article_html',
+				'image_html',
+				'check_html',
+				'actions',
+				'article_holding',
+				'storage_html',
+				// 'user_price',
+				// 'catalog_price',
+				'retail_user_prices',
+				'html_limit_1',
+				'html_limit_2',
+				'calc_quantity',
+				'sum_w_taxes',
+				'package_weight'
+			])
 			->toJson();
 	}
 

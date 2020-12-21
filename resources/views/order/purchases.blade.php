@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('title', 'Managed Tables - Buttons')
+
 @push('css')
     <link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
@@ -104,165 +106,6 @@
                 }
                 $('#select_all_products').prop('checked', false);
             });
-
-            // document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
-            // document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].style.color = "#4e5c68";
-            // document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = '@lang('product.select_term')';
-
-            // window.table =
-            //     $('#data-table-buttons').DataTable({
-            //          scrollY: "100vh",
-            //         //  fixedColumns: true,
-            //         deferRender: true,
-            //         //  scroller: true,
-            //         "language": {
-            //             "url": "@lang('table.localization_link')",
-            //         },
-            //          "scrollX": true,
-            //         "pageLength": 25,
-            //         "autoWidth": true,
-            //         "processing": true,
-            //         "serverSide": true,
-            //         "ajax": {
-            //             "url": "{!! route('products.all_ajax') !!}",
-            //             "data": {
-            //                 "categories": function() {
-            //                     var node = document.getElementById('reload');
-            //                     textContent = node.textContent;
-            //                     var res = textContent.split(",");
-            //                     if (!res) {
-            //                         return [];
-            //                     }
-            //                     return res;
-            //                 },
-            //                 "instock": function() {
-            //                     return $('#instockToggler').prop('checked');
-            //                 },
-            //                 "term": function() {
-            //                     var optionSelected = $("option:selected", $('#storages')).val();
-            //                     if(optionSelected !== 'undefined'){
-            //                         return optionSelected;
-            //                     }
-            //                 },
-            //                 "new": function() {
-            //                     if ($('#new-checked').css("display") === 'none') {
-            //                         return 0;
-            //                     } else {
-            //                         return 1;
-            //                     }
-            //                 },
-            //                 "hits": function() {
-            //                     if ($('#hits-checked').css("display") === 'none') {
-            //                         return 0;
-            //                     } else {
-            //                         return 1;
-            //                     }
-            //                 },
-            //                 "discount": function() {
-            //                     if ($('#discount-checked').css("display") === 'none') {
-            //                         return 0;
-            //                     } else {
-            //                         return 1;
-            //                     }
-            //                 },
-
-            //                 "filter_with_options": function() {
-            //                     let filter_selected_map = $("[filter-selected=true]");
-            //                     filter_selected_ids = Array();
-            //                     $.each(filter_selected_map, function(key, value) {
-            //                         if (value.attributes['filter-selected'].value === 'true') {
-            //                             let option_id = value.attributes['option_id'].value;
-            //                             //let option_name = value.attributes['option_name'].value;
-            //                             filter_selected_ids.push(option_id);
-            //                             //filter_selected_ids.option_id = option_name;
-            //                         }
-            //                     });
-            //                     //console.log('filter_with_options: ' + filter_selected_ids)
-            //                     if(filter_selected_map.length){
-            //                       return filter_selected_ids;
-            //                     }
-
-            //                 }
-            //             }
-
-            //         },
-            //         "order": [
-            //             [3, "asc"]
-            //         ],
-            //         "columns": [{
-            //             data: 'id',
-            //             "visible": false,
-            //             "searchable": false,
-
-            //         },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'check_html',
-            //                 className: "datatable_checkbox_class"
-            //             },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'image_html',
-            //                 className: "datatable_image_class"
-            //             },
-            //             {
-            //                 "orderable": true,
-            //                 data: 'name_article_html',
-            //                 className: "datatable_namearticle_class"
-            //             },
-            //             // {
-            //             //     data: 'retail_price',
-            //             //     className: "datatable_retailprice_class"
-            //             // },
-            //             // {
-            //             //     data: 'user_price',
-            //             //     className: "datatable_userprice_class"
-            //             // },
-            //             {
-            //               "orderable": false,
-            //               data: 'retail_user_prices',
-            //               className: "datatable_userprice_class"
-            //             },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'html_limit_1',
-            //                 className: "datatable_limit1_class"
-            //             },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'html_limit_2',
-            //                 className: "datatable_limit2_class"
-            //             },
-            //             {
-            //                 data: 'storage_html',
-            //                 "orderable": false,
-            //                 className: "datatable_storage_class"
-            //             },
-            //             {
-            //                 data: 'calc_quantity',
-            //                 "orderable": false,
-            //                 className: "datatable_quantity_class"
-            //             },
-            //             {
-            //                 data: 'package_weight',
-            //                 "orderable": false,
-            //                 className: "datatable_weight_class"
-            //             },
-            //             {
-            //                 data: 'sum_w_taxes',
-            //                 "orderable": false,
-            //                 className: "datatable_sum_class"
-            //             },
-            //             {
-            //                 data: 'actions',
-            //                 "orderable": false,
-            //                 className: "datatable_actions_class"
-            //             },
-            //         ],
-            //         "preUpload": function(settings, json) {
-            //             $('#select_all_products').prop('checked', false);
-            //         }
-            //     });
 
             $("#accordion").accordion({
                 collapsible: true,
@@ -609,7 +452,7 @@
                     success: function(resp) {
                         if (resp == "ok") {
                             $.gritter.add({
-                                title: '@lang('order.modal_success')',
+                                title: '@lang('purchases.modal_success')',
                             });
                             changeUpperCounter('order');
                         }
@@ -671,7 +514,7 @@
 
                             $('#new_wishlist_name').val('');
                             $.gritter.add({
-                                title: '@lang("order.modal_success_multiple")'
+                                title: '@lang("purchases.modal_success_multiple")'
                             });
                             changeUpperCounter('order');
                         }
@@ -1147,7 +990,7 @@
 
         });
     </script>
-    
+
     <script>
         jQuery(function($) {
             window.table =
@@ -1155,9 +998,9 @@
                     "language": {
                         "url": "@lang('table.localization_link')",
                     },
-                    "scrollX": true,
+                    // "scrollX": true,
                     "pageLength": 25,
-                    "autoWidth": true,
+                    // "autoWidth": true,
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
@@ -1166,64 +1009,46 @@
                     "order": [[ 0, "desc" ]],
                     "columns": [
                         {
-                            data:'',
+                            data:'code_name',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
+                            "width": "14%"
                         },
                         {
-                            data:'',
+                            data:'photo',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
+                            "width": "14%"
                         },
                         {
-                            data:'',
+                            data:'quantity_in_orders_sellings_returns',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
+                            "width": "150px"
                         },
                         {
-                            data:'',
+                            data:'sum_of_orders/sellings/reclamations',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
+                            "width": "16%"
                         },
                         {
-                            data:'',
+                            data:'percentage_of_confirmed_orders',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
+                            "width": "14%"
                         },
                         {
-                            data:'',
+                            data:'sellings_weight',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
+                            "width": "14%"
                         },
                         {
-                            data:'',
+                            data:'CSV-export',
                             "orderable": true,
                             "searchable": false,
-                            "width": "10%"
-                        },
-                        {
-                            data:'',
-                            "orderable": true,
-                            "searchable": false,
-                            "width": "10%"
-                        },
-                        {
-                            data:'',
-                            "orderable": true,
-                            "searchable": false,
-                            "width": "10%"
-                        },
-                        {
-                            data:'',
-                            "orderable": true,
-                            "searchable": false,
-                            "width": "10%"
+                            "width": "14%"
                         }
                     ],
                 });
@@ -1251,11 +1076,12 @@
 @endpush
 
 @section('content')
+	{{ Breadcrumbs::render('purchases') }}
 <div id="filters_selected"></div>
 <div id="wrap-table">
         <i v-show="!isShow" v-on:click="toggleShow" id="slide-filter-on" class="fa fa-filter"></i>
         <i v-show="isShow" v-on:click="toggleShow" id="slide-filter-of" class="fa fa-angle-double-right"></i>
-    <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('order.purchases_pagename') @endif</h1>
+    <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('purchases.purchases_pagename') @endif</h1>
     <div v-show="isShow" class="responsive-width">
     <div id="scroll-filter" class="panel panel-primary">
         <div class="panel-heading">
@@ -1266,111 +1092,64 @@
         <div id="filters_selected">
 
         </div>
-        <!-- <div id="accordion" class=".ui-helper-reset">
-            <p style="font-size: 12pt;">@lang('product.all_categories_name')</p>
-            <div id="jstree" class="content1"></div>
 
-            <p style="font-size: 12pt;"> @lang('product.filters-with-properties')</p>
-            <div id="optionfilters" class="content1">
-                @foreach($filters as $option_id=>$filterdata)
-                    <h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
-                    <div class="filter" id="filter">
-                        @php $i=0;@endphp
-                        @foreach($filterdata['options'] as $branch_id => $data)
-
-                            @if($i % 2 == 0)
-                                <div class="row" style="margin: auto">
-                                    @endif
-
-                                    <div class="col-md-12">
-                                        <div class="row" style="margin: auto">
-                                            @if(isset($data['data']['photo']))
-                                                @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
-                            '/'.$data['data']['photo']; @endphp
-                                                <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-                                            @else
-                                                @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-                                                <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
-                                            @endif
-                                            <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
-                                                {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
-                                                {{--aria-hidden="true" style="display: none"></i>--}}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    @if($i % 2 == 1)
-                                </div>
-                            @endif
-
-                            @php $i++; @endphp
-                        @endforeach
-                        @if($i % 2 != 0)
-                    </div>
-                    @endif
-            </div>
-            @endforeach
-        </div> -->
 
     </div>
     </div>
 
     <!-- begin row -->
     <div class="row">
-        <div class="col-xl-6">
-            <h6>@lang('order.purchases_status')</h6>
-        </div>
-        <div class="col-xl-6">
-            <h6>@lang('order.purchases_search_by_data')</h6>
-        </div>
+       <!-- begin row -->
+       <div class="col-xl-12">
+          <div class="panel panel-primary">
+             <div class="panel-heading">
+               <h4 class="panel-title-control">
+                 Список Покупок
+               </h4>
+             </div>
+             <div class="panel-body">
+               <div class="row" style="margin-bottom: 10px">
+                  <div class="col-xl-6">
+                     <select class="custom-select" multiple>
+                        <option selected>None</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                     </select>
+                  </div>
+                  <div class="col-xl-3">
+                     <p>@lang('purchases.purchases_startdate')<input type="text" id="startdate"></p>
+                  </div>
+                  <div class="col-xl-3">
+                     <p>@lang('purchases.purchases_enddate')<input type="text" id="enddate"></p>
+                  </div>
+               </div>
+                <div class="row">
+                   <div class="col-xl-12">
+                      <table id="datatable" class="table table-striped table-bordered table-td-valign-middle">
+                         <thead>
+                            <tr>
+                               <th>@lang('purchases.purchases_table_code/name')</th>
+                               <th>@lang('purchases.purchases_table_photo')</th>
+                               <th>@lang('purchases.purchases_table_quantity_in_orders_sellings_returns')</th>
+                               <th>@lang('purchases.purchases_table_sum_of_orders/sellings/reclamations')</th>
+                               <th>@lang('purchases.purchases_table_percentage_of_confirmed_orders')</th>
+                               <th>@lang('purchases.purchases_table_sellings_weight')</th>
+                               <th>@lang('purchases.purchases_CSV-export')</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
     </div>
-    <div class="row" style="margin-bottom: 10px">
-        <div class="col-xl-6">
-            <select class="custom-select" multiple>
-                <option selected>None</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-        </div>
-        <div class="col-xl-3">
-            <p>@lang('order.purchases_startdate')<input type="text" id="startdate"></p>
-        </div>
-        <div class="col-xl-3">
-            <p>@lang('order.purchases_enddate')<input type="text" id="enddate"></p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xl-12">
-            <table id="datatable" class="table table-striped table-bordered table-td-valign-middle">
-                <thead>
-                <tr>
-                    <th>@lang('order.purchases_table_code/name')</th>
-                    {{--<th></th>--}}
-                    <th>@lang('order.purchases_table_photo')</th>
-                    <th>@lang('order.purchases_table_quantity_in_orders')</th>
-                    <th>@lang('order.purchases_table_quantity_in_sellings')</th>
-                    <th>@lang('order.purchases_table_quantity_in_returns')</th>
-                    <th>@lang('order.purchases_table_sum_of_orders/sellings/reclamations')</th>
-                    <th>@lang('order.purchases_table_percentage_of_confirmed_orders')</th>
-                    <th>@lang('order.purchases_table_sellings_weight')</th>
-                    <th>@lang('order.purchases_CSV-export')</th>
-                </tr>
-                </thead>
+    <!-- <div class="row">
 
-                {{--<tfoot>--}}
-                {{--<tr>--}}
-                    {{--<th>One</th>--}}
-                    {{--<th>Two</th>--}}
-                    {{--<th>Three</th>--}}
-                {{--</tr>--}}
-                {{--</tfoot>--}}
-            </table>
-        </div>
-    </div>
-    <div class="row">
-
-    </div>
+    </div> -->
     <div v-show="isShow" class="responsive-width">
             <div id="scroll-filter" class="panel panel-primary">
                 <div class="panel-heading">

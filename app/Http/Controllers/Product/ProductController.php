@@ -100,34 +100,14 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $request_options = ['1587','538'];
-      $language = 'uk';
-      foreach ($request_options as $key => $request_option) {
-        if($key == 0){
-          $products = Product::whereHas('options', function($options) use ($request_option){
-            $options->whereHas('val_translates', function($option_name) use ($request_option){
-              $option_name->where('value',$request_option)->where('language','uk');
-            });
-          });
-        }
-        else{
-          $products = $products->orwhereHas('options', function($options) use ($request_option){
-            $options->whereHas('val_translates', function($option_name) use ($request_option){
-              $option_name->where('value',$request_option)->where('language','uk');
-            });
+      $products = Product::where('id',22414)->with('orderProducts.implementationProduct.implementation')->whereHas('orderProducts',function($orderProduct){
+        $orderProduct->where('id',38441);
+      });
+      $orderProducts = $products->get()->pluck('orderProducts')->first();
+      $orderProducts = $orderProducts->filter(function ($value, $key) {
+          return $value->id == 38441;
         });
-      }
-      }
-      dd($products->get());
-      // $products = Product::whereHas('options', function($options) use ($request_options){
-      //   $options->whereHas('val_translates', function($option_name) use ($request_options){
-      //     $option_name->whereIn('value',$request_options)->where('language','uk');
-      //   });
-      // });
-      // dump($products->get());
-  //1587
-  $products = Product::where('id','16')->with('options.val_translates')->get();
-   dd($products);
+        dd($orderProducts);
     }
 
     public function allAjax(Request $request){
@@ -538,9 +518,22 @@ class ProductController extends Controller
             //     //     $product->whereIn('id',$ids);
             //     // }
             // }, true)
-            ->rawColumns(['name_article_html','html_limit_1','html_limit_2','image_html',
-            'check_html','actions','switch','storage_html','calc_quantity','sum_w_taxes','package_weight','retail_price','user_price','retail_user_prices'])
-            ->toJson();
+            ->rawColumns([
+              'name_article_html',
+              'html_limit_1',
+              'html_limit_2',
+              'image_html',
+              'check_html',
+              'actions',
+              'switch',
+              'storage_html',
+              'calc_quantity',
+              'sum_w_taxes',
+              'package_weight',
+              // 'retail_price',
+              // 'user_price',
+              'retail_user_prices'
+            ])->toJson();
     }
 
     public function getNode(Request $request){

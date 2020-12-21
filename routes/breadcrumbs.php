@@ -52,6 +52,11 @@ Breadcrumbs::for('catalogs', function ($trail) {
 	$trail->push(trans('wishlist.page_list'), route('catalogs'));
 });
 
+Breadcrumbs::for('purchases', function ($trail) {
+	$trail->parent('home');
+	$trail->push(trans('purchases.purchases_pagename'), route('catalogs'));
+});
+
 Breadcrumbs::for('ticket', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('ticket.page_name'), route('ticket'));
