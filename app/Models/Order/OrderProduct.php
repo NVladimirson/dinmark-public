@@ -40,4 +40,26 @@ class OrderProduct extends Model
 		return $this->hasOne('App\Models\Storage\Storage','id','storage_alias');
 	}
 
+	public function implementationProduct(){
+		return $this->hasMany('App\Models\Order\ImplementationProduct','order_product_id','id');
+	}
+
+	// public function orderProduct(){
+	// 	return $this->hasOne('App\Models\Order\OrderProduct','id','order_product_id');
+	// }
+	// public function product(){
+	// 		return $this->hasOne('App\Models\Order\ImplementationProduct','id','implementation_product_id');
+	// }
+	public function reclamationProduct()
+{
+		return $this->hasOneThrough(
+				'App\Models\Reclamation\ReclamationProduct',
+				'App\Models\Order\ImplementationProduct',
+				'order_product_id',
+				'implementation_product_id',
+				'id',
+				'id'
+		);
+}
+
 }

@@ -32,4 +32,8 @@ class Product extends Model
 	public function productFilters(){
 		return $this->hasMany('App\Models\Product\ProductFilter','product_id');
 	}
+
+	public function orderProducts(){
+		return $this->hasMany('App\Models\Order\OrderProduct','product_id','id');
+	}
 }

@@ -178,7 +178,18 @@
 								{{--<th class="text-nowrap">@lang('wishlist.table_header_name')</th>--}}
 								{{--<th class="text-nowrap">@lang('wishlist.table_header_article')</th>--}}
 								<th class="text-nowrap">@lang('wishlist.table_header_holding_article')</th>
-								<th>USER</th>
+								<th>@lang('product.table_header_price')</th>
+								<th id="price_porog_1" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
+								<th id="price_porog_2" class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
+								<th>
+										@lang('product.table_header_quantity')
+								</th>
+								<th>
+										@lang('product.table_header_package_weight')
+								</th>
+								<th>
+										@lang('product.table_header_sum_w_taxes')
+								</th>
 								<!-- <th class="text-nowrap">@lang('wishlist.table_header_price')</th>
 								<th class="text-nowrap coef-header">@lang('wishlist.table_header_user_price') x {{
 				($curentWishlist->price)? $curentWishlist->price->koef : 1 }}</th> -->
@@ -404,160 +415,6 @@
             document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].style.color = "#4e5c68";
             document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = '@lang('product.select_term')';
 
-            // window.table =
-            //     $('#data-table-buttons').DataTable({
-            //          scrollY: "100vh",
-            //         //  fixedColumns: true,
-            //         deferRender: true,
-            //         //  scroller: true,
-            //         "language": {
-            //             "url": "@lang('table.localization_link')",
-            //         },
-            //          "scrollX": true,
-            //         "pageLength": 25,
-            //         "autoWidth": true,
-            //         "processing": true,
-            //         "serverSide": true,
-            //         "ajax": {
-            //             "url": "{!! route('products.all_ajax') !!}",
-            //             "data": {
-            //                 "categories": function() {
-            //                     var node = document.getElementById('reload');
-            //                     textContent = node.textContent;
-            //                     var res = textContent.split(",");
-            //                     if (!res) {
-            //                         return [];
-            //                     }
-            //                     return res;
-            //                 },
-            //                 "instock": function() {
-            //                     return $('#instockToggler').prop('checked');
-            //                 },
-            //                 "term": function() {
-            //                     var optionSelected = $("option:selected", $('#storages')).val();
-            //                     if(optionSelected !== 'undefined'){
-            //                         return optionSelected;
-            //                     }
-            //                 },
-            //                 "new": function() {
-            //                     if ($('#new-checked').css("display") === 'none') {
-            //                         return 0;
-            //                     } else {
-            //                         return 1;
-            //                     }
-            //                 },
-            //                 "hits": function() {
-            //                     if ($('#hits-checked').css("display") === 'none') {
-            //                         return 0;
-            //                     } else {
-            //                         return 1;
-            //                     }
-            //                 },
-            //                 "discount": function() {
-            //                     if ($('#discount-checked').css("display") === 'none') {
-            //                         return 0;
-            //                     } else {
-            //                         return 1;
-            //                     }
-            //                 },
-
-            //                 "filter_with_options": function() {
-            //                     let filter_selected_map = $("[filter-selected=true]");
-            //                     filter_selected_ids = Array();
-            //                     $.each(filter_selected_map, function(key, value) {
-            //                         if (value.attributes['filter-selected'].value === 'true') {
-            //                             let option_id = value.attributes['option_id'].value;
-            //                             //let option_name = value.attributes['option_name'].value;
-            //                             filter_selected_ids.push(option_id);
-            //                             //filter_selected_ids.option_id = option_name;
-            //                         }
-            //                     });
-            //                     //console.log('filter_with_options: ' + filter_selected_ids)
-            //                     if(filter_selected_map.length){
-            //                       return filter_selected_ids;
-            //                     }
-
-            //                 }
-            //             }
-
-            //         },
-            //         "order": [
-            //             [3, "asc"]
-            //         ],
-            //         "columns": [{
-            //             data: 'id',
-            //             "visible": false,
-            //             "searchable": false,
-
-            //         },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'check_html',
-            //                 className: "datatable_checkbox_class"
-            //             },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'image_html',
-            //                 className: "datatable_image_class"
-            //             },
-            //             {
-            //                 "orderable": true,
-            //                 data: 'name_article_html',
-            //                 className: "datatable_namearticle_class"
-            //             },
-            //             // {
-            //             //     data: 'retail_price',
-            //             //     className: "datatable_retailprice_class"
-            //             // },
-            //             // {
-            //             //     data: 'user_price',
-            //             //     className: "datatable_userprice_class"
-            //             // },
-            //             {
-            //               "orderable": false,
-            //               data: 'retail_user_prices',
-            //               className: "datatable_userprice_class"
-            //             },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'html_limit_1',
-            //                 className: "datatable_limit1_class"
-            //             },
-            //             {
-            //                 "orderable": false,
-            //                 data: 'html_limit_2',
-            //                 className: "datatable_limit2_class"
-            //             },
-            //             {
-            //                 data: 'storage_html',
-            //                 "orderable": false,
-            //                 className: "datatable_storage_class"
-            //             },
-            //             {
-            //                 data: 'calc_quantity',
-            //                 "orderable": false,
-            //                 className: "datatable_quantity_class"
-            //             },
-            //             {
-            //                 data: 'package_weight',
-            //                 "orderable": false,
-            //                 className: "datatable_weight_class"
-            //             },
-            //             {
-            //                 data: 'sum_w_taxes',
-            //                 "orderable": false,
-            //                 className: "datatable_sum_class"
-            //             },
-            //             {
-            //                 data: 'actions',
-            //                 "orderable": false,
-            //                 className: "datatable_actions_class"
-            //             },
-            //         ],
-            //         "preUpload": function(settings, json) {
-            //             $('#select_all_products').prop('checked', false);
-            //         }
-            //     });
 
             $("#accordion").accordion({
                 collapsible: true,
@@ -1507,8 +1364,33 @@
 							data: 'retail_user_prices',
 						},
 						{
+								"orderable": false,
+								data: 'html_limit_1',
+								className: "datatable_limit1_class"
+						},
+						{
+								"orderable": false,
+								data: 'html_limit_2',
+								className: "datatable_limit2_class"
+						},
+						{
 							data: 'storage_html',
 							"orderable":      false,
+						},
+						{
+								data: 'calc_quantity',
+								"orderable": false,
+								className: "datatable_quantity_class"
+						},
+						{
+								data: 'package_weight',
+								"orderable": false,
+								className: "datatable_weight_class"
+						},
+						{
+								data: 'sum_w_taxes',
+								"orderable": false,
+								className: "datatable_sum_class"
 						},
 						{
 							data: 'actions',
