@@ -100,14 +100,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $products = Product::where('id',22414)->with('orderProducts.implementationProduct.implementation')->whereHas('orderProducts',function($orderProduct){
-        $orderProduct->where('id',38441);
-      });
-      $orderProducts = $products->get()->pluck('orderProducts')->first();
-      $orderProducts = $orderProducts->filter(function ($value, $key) {
-          return $value->id == 38441;
-        });
-        dd($orderProducts);
+        $this->dispatch(new ProductOptionFiltersJob());
     }
 
     public function allAjax(Request $request){
