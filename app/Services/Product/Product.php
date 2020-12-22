@@ -37,9 +37,14 @@ class Product
 			['content',$ids],
 			['position',1],
 		])->first();
-		$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
 		if($photo){
 			$src = 	Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/'.$photo->file_name;
+			if(get_headers($src)[0] == 'HTTP/1.1 404 Not Found'){
+				$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
+			}
+		}
+		else{
+			$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
 		}
 
 		return $src;
@@ -451,10 +456,14 @@ class Product
 		if($productid){
 			$productoptions = ProductModel::where('id',$productid)->first()->options()->with('val_translates','translates')->get();
 			foreach ($productoptions as $key => $productoption) {
-				$option_map[$productoption->id] = [
-					'option' => $productoption->translates->keyBy('language')[$language]->toArray(),
-					'value' => $productoption->val_translates->keyBy('language')[$language]->toArray()
-			];
+				$opt_translate = $productoption->translates->keyBy('language');
+				$val_translate = $productoption->val_translates->keyBy('language');
+				if(isset($opt_translate[$language]) && isset($val_translate[$language])){
+					$option_map[$productoption->id] = [
+						'option' => $opt_translate[$language]->toArray(),
+						'value' => $val_translate[$language]->toArray()
+				];
+				}
 			}
 		}
 		return $option_map;

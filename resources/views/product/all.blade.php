@@ -241,16 +241,18 @@
     <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 
+    <script src="/assets/plugins/select2/dist/js/popup.js"></script>
     <script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
     <script>
         const wrapTable = new Vue({
             el: "#wrap-table",
             data: {
-                isShow: false
+                isShow: false,
+                products: []
             },
             methods: {
                 toggleShow: function() {
-                    this.isShow = !this.isShow
+                    this.isShow = !this.isShow;
                 }
             }
         })

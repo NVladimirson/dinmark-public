@@ -100,7 +100,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $this->dispatch(new ProductOptionFiltersJob());
+     $this->dispatch(new ProductOptionFiltersJob());
     }
 
     public function allAjax(Request $request){
