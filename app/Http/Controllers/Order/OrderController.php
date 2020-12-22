@@ -178,79 +178,91 @@ class OrderController extends Controller
 	}
 
 	public function allAjax(Request $request){
+
         $orders = OrderServices::getFilteredData($request);
-
-		return datatables()
-			->eloquent($orders)
-			->addColumn('number_html', function (Order $order) {
-				$number = $order->id;
-				if($order->public_number){
-					$number .= ' / '. $order->public_number;
-				}else{
-					$number .= ' / -';
-				}
-				return '<a href="'.route('orders.show',[$order->id]).'">'.$number.'</a>';
-			})
-			->addColumn('date_html', function (Order $order) {
-				$date = Carbon::parse($order->date_add)->format('d.m.Y h:i');
-				return $date;
-			})
-			->addColumn('status_html', function (Order $order) {
-			    return '<div class="badge badge-'.OrderServices::getStatusClass($order->getStatus->id).' badge-status">'.$order->getStatus->name.'</div>';
-			})
-			->addColumn('payment_html', function (Order $order) {
-                if($order->payments->count() > 0){
-                    if($order->payments->sum('payed') < $order->total){
-                        return '<div class="badge badge-'.OrderServices::getStatusClass(1).' badge-status">'.trans('order.payment_status_partial').'</div>';
-                    }else{
-                        return '<div class="badge badge-'.OrderServices::getStatusClass(2).' badge-status">'.trans('order.payment_status_success').'</div>';
-                    }
-                }else{
-                    return '<div class="badge badge-'.OrderServices::getStatusClass(7).' badge-status">'.trans('order.payment_status_none').'</div>';
-                }
-			})
-			->addColumn('total_html', function (Order $order) {
-				return number_format($order->total,2,'.',' ');
-			})
-			->addColumn('sender', function (Order $order) {
-				return $order->sender?$order->sender->name:'Dinmark';
-			})
-			->addColumn('customer', function (Order $order) {
-				if($order->customer_id){
-					if($order->customer_id > 0){
-						return $order->customer->name;
-					}else{
-						$client = Client::find(-$order->customer_id);
-						if($client){
-							return '<i class="fas fa-users"></i> '.Client::find(-$order->customer_id)->name;
+				$a = datatables()
+					->eloquent($orders)
+					->addColumn('number_html', function (Order $order) {
+						$number = $order->id;
+						if($order->public_number){
+							$number .= ' / '. $order->public_number;
 						}else{
-							return trans('client.client_deleted');
+							$number .= ' / -';
 						}
-					}
-				}else{
-					return $order->getUser->name;
-				}
-			})
-			->addColumn('actions', function (Order $order) {
-                $number = $order->id;
-                if($order->public_number){
-                    $number .= ' / '. $order->public_number;
-                }else{
-                    $number .= ' / -';
-                }
-				return view('order.include.action_buttons',compact('order','number'));
-			})
-			->filterColumn('number_html', function($order, $keyword) {
-				$order->where('id', 'like',["%{$keyword}%"])->orWhere('public_number', 'like',["%{$keyword}%"]);
+						return '<a href="'.route('orders.show',[$order->id]).'">'.$number.'</a>';
+					})
+					->addColumn('date_html', function (Order $order) {
+						$date = Carbon::parse($order->date_add)->format('d.m.Y h:i');
+						return $date;
+					})
+					->addColumn('status_html', function (Order $order) {
+							if(isset($order->getStatus)){
+								return '<div class="badge badge-'.OrderServices::getStatusClass($order->getStatus->id).' badge-status">'.$order->getStatus->name.'</div>';
+							}
+							else{
+								return 'Нет статуса';
+							}
 
-			})
-			->filter(function ($order) use ($request) {
-				if(request()->has('name_html')){
-					$order->whereHas('id', 'like',"%" . request('number_html') . "%")->orWhere()->whereHas('public_number', 'like',"%" . request('number_html') . "%");
-				}
-			}, true)
-			->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding','status_html','payment_html'])
-			->toJson();
+					})
+					->addColumn('payment_html', function (Order $order) {
+		                if($order->payments->count() > 0){
+		                    if($order->payments->sum('payed') < $order->total){
+		                        return '<div class="badge badge-'.OrderServices::getStatusClass(1).' badge-status">'.trans('order.payment_status_partial').'</div>';
+		                    }else{
+		                        return '<div class="badge badge-'.OrderServices::getStatusClass(2).' badge-status">'.trans('order.payment_status_success').'</div>';
+		                    }
+		                }else{
+		                    return '<div class="badge badge-'.OrderServices::getStatusClass(7).' badge-status">'.trans('order.payment_status_none').'</div>';
+		                }
+					})
+					->addColumn('total_html', function (Order $order) {
+						return number_format($order->total,2,'.',' ');
+					})
+					->addColumn('author', function (Order $order) {
+						return '-';
+					})
+					->addColumn('sender', function (Order $order) {
+						return $order->sender?$order->sender->name:'Dinmark';
+					})
+					->addColumn('customer', function (Order $order) {
+						if($order->customer_id){
+							if($order->customer_id > 0){
+								return $order->customer->name;
+							}else{
+								$client = Client::find(-$order->customer_id);
+								if($client){
+									return '<i class="fas fa-users"></i> '.Client::find(-$order->customer_id)->name;
+								}else{
+									return trans('client.client_deleted');
+								}
+							}
+						}else{
+							return $order->getUser->name;
+						}
+					})
+					->addColumn('actions', function (Order $order) {
+		                $number = $order->id;
+		                if($order->public_number){
+		                    $number .= ' / '. $order->public_number;
+		                }else{
+		                    $number .= ' / -';
+		                }
+						return view('order.include.action_buttons',compact('order','number'));
+					})
+					->filterColumn('number_html', function($order, $keyword) {
+						$order->where('id', 'like',["%{$keyword}%"])->orWhere('public_number', 'like',["%{$keyword}%"]);
+
+					})
+					->filter(function ($order) use ($request) {
+						if(request()->has('name_html')){
+							$order->whereHas('id', 'like',"%" . request('number_html') . "%")->orWhere()->whereHas('public_number', 'like',"%" . request('number_html') . "%");
+						}
+					}, true)
+					//->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding','status_html','payment_html'])
+					->rawColumns(['number_html','date_html','status_html','payment_html','total_html','customer','actions','author','status_html','payment_html'])
+					->toJson();
+					info($a);
+		return $a;
 	}
 
     public function totalDataAjax(Request $request)

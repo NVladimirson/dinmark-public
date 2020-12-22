@@ -765,6 +765,7 @@
 														"children" : data['reclamations']
 												});
 											}
+											window.searchdata = data;
                         return {
 													results : results,
                         };
@@ -777,8 +778,20 @@
 						$('#global_search').on('select2:select', function (e) {
 								let find_by = ['products', 'orders', 'reclamations','implementations'];
 								let search = $('#global_search').val();
+								let category = $('#global_search').select2('data')[0].category;
 								if(!find_by.includes(search)){
+									if(category == 'products'){
 									window.location = '{{route('products')}}/' + search;
+									}
+									if(category == 'orders'){
+									window.location = '{{route('orders')}}/' + search;
+									}
+									if(category == 'reclamations'){
+									window.location = '{{route('orders')}}/' + search;
+									}
+									if(category == 'implementations'){
+									window.location = '{{route('orders')}}/' + search;
+									}
 								}
 								else{
 									window.location = '{{route('products.find')}}/' + '?search='+window.select2_input+'#'+search;

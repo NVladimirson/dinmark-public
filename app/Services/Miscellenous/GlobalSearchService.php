@@ -73,6 +73,7 @@ class GlobalSearchService
             $product_info[] = [
               'id' => $product->id,
               'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+              'category' => 'products'
               // 'url' => route('products.show', ['id' => $product->id]),
               // 'min' => $min,
               // 'max' => $max,
@@ -92,7 +93,7 @@ class GlobalSearchService
         $instance =  static::getInstance();
         $language = static::getInstance()->lang;
         $allowed_orders = Order::whereHas('getUser',function ($users){
-                $users->whereHas('getCompany',function ($companies){
+                $users->where('id',auth()->user()->id)->whereHas('getCompany',function ($companies){
                     $companies->where([
                         ['id', session('current_company_id')],
                     ]);
@@ -116,8 +117,9 @@ class GlobalSearchService
           $product_info = [];
           foreach ($products as $key => $product) {
             $product_info[] = [
-              'id' => $product->id,
+              'id' => $product->orderProducts->whereIn('cart', $allowed_orders)->first()->getCart->id,
               'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+              'category' => 'orders'
             ];
           }
         return $product_info;
@@ -156,8 +158,9 @@ class GlobalSearchService
           $product_info = [];
           foreach ($products as $key => $product) {
             $product_info[] = [
-              'id' => $product->id,
+              'id' => $product->orderProducts->first()->getCart->id,
               'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+              'category' => 'reclamations'
             ];
           }
         return $product_info;
@@ -204,8 +207,9 @@ class GlobalSearchService
             $product_info = [];
             foreach ($products as $key => $product) {
               $product_info[] = [
-                'id' => $product->id,
+                'id' => $product->orderProducts->first()->getCart->id,
                 'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                'category' => 'implementations'
               ];
             }
             $product_info = array_values(Arr::sort($product_info, function ($value) {

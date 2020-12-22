@@ -244,6 +244,9 @@
                                         </tfoot>
                                     </table>
                                 </div>
+
+																<table id="data-table-buttons"></table>
+
                                 <div class="row">
                                     <div class="col-lg-6">
 
@@ -532,7 +535,4 @@
 			});
 		})(jQuery);
     </script>
-    <style>
-
-    </style>
 @endpush

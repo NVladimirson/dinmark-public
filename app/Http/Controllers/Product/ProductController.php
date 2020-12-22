@@ -101,12 +101,19 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      //image = 'https://dinmark.com.ua/images/shop/-1333/din-7991-109-bolt-z-potaynou-holovkou-i-vnutrishnim-shestyhrannykom-2992.jpg';
-      dump(
-         get_headers('https://dinmark.com.ua/images/shop/-1339/din-7991-a2-bolt-z-potaynou-holovkou-i-vnutrishnim-shestyhrannykom-2993.jpg'),
-      get_headers('https://dinmark.com.ua/images/shop/-1333/din-7991-109-bolt-z-potaynou-holovkou-i-vnutrishnim-shestyhrannykom-2992.jpg')
-      );
-      //dd(File::exists($image)?true:false);
+      $allowed_orders = Order::whereHas('getUser',function ($users){
+              $users->whereHas('getCompany',function ($companies){
+                  $companies->where([
+                      ['id', session('current_company_id')],
+                  ]);
+              });
+      });
+
+      $product_orders = $allowed_orders->with('products.product')->get()->pluck('products', 'id');
+      foreach ($product_orders as $key => $product_orders_data) {
+          $product_orders[$key] = $product_orders_data->pluck('product', 'id');
+      }
+      dd($product_orders);
     }
 
     public function allAjax(Request $request){
@@ -657,19 +664,28 @@ class ProductController extends Controller
 
     public function search(Request $request){
         $search = $request->name;
-        $formatted_data = [];
+        // $formatted_data = [];
+        //
+        // $ids = ProductServices::getIdsSearch($search);
+        //
+        // $products = Product::whereIn('id',$ids)
+        // ->orWhere([
+        //     ['article','like',"%".$search."%"],
+        // ])->orWhere([
+        //     ['article_show','like',"%".$search."%"],
+        // ])
+        // ->orderBy('article')
+        // ->limit(10)
+        // ->get();
+        $language = CategoryServices::getLang();
 
-        $ids = ProductServices::getIdsSearch($search);
-
-        $products = Product::whereIn('id',$ids)
-        ->orWhere([
-            ['article','like',"%".$search."%"],
-        ])->orWhere([
-            ['article_show','like',"%".$search."%"],
-        ])
-        ->orderBy('article')
-        ->limit(10)
-        ->get();
+          $products = Product::whereHas('content', function($content) use($search,$language){
+            $content->where([
+              ['language',$language],
+              ['alias', 8],
+              ['name', 'like',"%" . $search . "%"]
+            ]);
+          })->limit(10)->get();
 
         foreach ($products as $product) {
             $name = ProductServices::getName($product);
