@@ -43,51 +43,73 @@ class ExtendedSearchService
       return static::getInstance()->lang;
     }
 
-    public static function getProductsByFilters($params)
+    public static function getProductsByFilters($filters)
     {
-      // $params = [
-      //   'standart' => [],
-      //   'pokryttja' => [],
-      //   'material' => [12,110],
-      //   'dovzhyna' => [],
-      //   'diametr' => []
-      // ];
-      $convertable = ['standart','material','pokryttja'];
-      $first_finded = false;
-      foreach ($params as $filter => $options) {
-        if(count($options)){
-          if(in_array($filter,$convertable)){
+      //dd($filters);
+      $first_finded = true;
+      foreach ($filters as $filter => $data) {
+        if(!empty($data)){
+          //if(in_array($filter,$convertable)){
             $translated = [];
-            foreach ($options as $key => $option) {
-              $translated[] = ExtendedSearchService::translateProductFilter($option,true);
+            foreach ($data as $key => $optionvalue) {
+              $translated[] = ExtendedSearchService::translateProductFilter($optionvalue,true);
             }
-            $options = $translated;
-          }
+              $filters[$filter] = $translated;
+                          //dd($translated);
+              //dump($translated);
+          //}
+          if($first_finded){
+            $products = Product::whereHas('productFilters', function($productsFilters) use($filter,$data){
+                $productsFilters->whereIn($filter,$data);
+            });
+            $first_finded = false;
 
-          if(!$first_finded){
-            // $products = Product::whereHas('productFilters', function($productsFilters) use($filter,$options){
-            //     $productsFilters->whereIn($filter,$options);
-            // });
-            $product_filters = ProductFilter::whereIn($filter,$options);
-            $first_finded = true;
           }
           else{
-            // $products = $products->whereHas('productFilters', function($productsFilters) use($filter,$options){
-            //     $productsFilters->whereIn($filter,$options);
-            // });
-            $product_filters = $product_filters->whereIn($filter,$options);
+            $products = $products->whereHas('productFilters', function($productsFilters) use($filter,$data){
+                $productsFilters->whereIn($filter,$data);
+            });
           }
         }
-        else{
-          unset($params[$filter]);
-        }
       }
-      if(!count($params)){
-        return ;
-      }
-      else{
-        return $product_filters;
-      }
+    //  dd($products->get());
+      return $products;
+//      $first_finded = false;
+      // foreach ($params as $filter => $options) {
+      //   if(count($options)){
+      //     if(in_array($filter,$convertable)){
+      //       $translated = [];
+      //       foreach ($options as $key => $option) {
+      //         $translated[] = ExtendedSearchService::translateProductFilter($option,true);
+      //       }
+      //       $options = $translated;
+      //     }
+      //
+      //     if(!$first_finded){
+      //       // $products = Product::whereHas('productFilters', function($productsFilters) use($filter,$options){
+      //       //     $productsFilters->whereIn($filter,$options);
+      //       // });
+      //       $product_filters = ProductFilter::whereIn($filter,$options);
+      //       $first_finded = true;
+      //     }
+      //     else{
+      //       // $products = $products->whereHas('productFilters', function($productsFilters) use($filter,$options){
+      //       //     $productsFilters->whereIn($filter,$options);
+      //       // });
+      //       $product_filters = $product_filters->whereIn($filter,$options);
+      //     }
+      //   }
+      //   else{
+      //     unset($params[$filter]);
+      //   }
+      // }
+      //
+      // if(!count($params)){
+      //   return '';
+      // }
+      // else{
+      //   return $product_filters;
+      // }
     }
 
     public static function translateProductFilter($strToTranslate,$nameToOption = false){
@@ -100,5 +122,13 @@ class ExtendedSearchService
         $translate?$translate=$translate->name:'';
       }
       return $translate;
+    }
+
+    public static function getProductFilters($product){
+      $productfilters = ProductFilter::where('product_id',$product->id)->toArray();
+      dd($productfilters);
+      foreach ($variable as $key => $value) {
+        // code...
+      }
     }
 }

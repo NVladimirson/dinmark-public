@@ -38,10 +38,15 @@ class Product
 			['position',1],
 		])->first();
 		if($photo){
-			$src = 	Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/'.$photo->file_name;
-			if(get_headers($src)[0] == 'HTTP/1.1 404 Not Found'){
-				$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
-			}
+			$src = Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/'.$photo->file_name;
+			// try {
+			// $src = 	Config::get('values.dinmarkurl').'images/shop/-'.$product->group.'/'.$photo->file_name;
+			// if(get_headers($src)[0] == 'HTTP/1.1 404 Not Found'){
+			// 	$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
+			// }
+			// } catch (Throwable $e) {
+			// 	$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
+			// }
 		}
 		else{
 			$src = Config::get('values.dinmarkurl').'images/dinmark_nophoto.jpg';
@@ -89,7 +94,12 @@ class Product
 		if(empty($lang)){
 			$lang = $instance->lang;
 		}
-		$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
+		if($product->content){
+			$content = $product->content->where('language',$lang)->where('alias',$product->wl_alias)->first();
+		}
+		else{
+			$content = '';
+		}
 		$productName = $content?$content->name:'';
 		return $productName;
 	}
@@ -467,6 +477,17 @@ class Product
 			}
 		}
 		return $option_map;
+	}
+
+	public static function getOptionTranslate($option_id){
+		$language =  static::getInstance()->lang;
+		$option = \App\Models\Product\ProductOptionName::where([['option',$option_id],['language',$language]])->first();
+		if($option){
+			return $option->name;
+		}
+		else{
+			return '';
+		}
 	}
 
 	public static function getProductOptionBy($product_id = '', $option_name_id = ''){

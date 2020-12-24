@@ -138,6 +138,10 @@ body {
     background-image: url(../default/images/after-filter.svg);
 }
 
+.select2-rendered__match {
+  text-decoration: underline;
+}
+
 #header i.fas {
     font-size: 11px;
     color: #3c3c3a;
