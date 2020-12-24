@@ -180,7 +180,8 @@ class OrderController extends Controller
 	public function allAjax(Request $request){
 
         $orders = OrderServices::getFilteredData($request);
-				$a = datatables()
+
+				return datatables()
 					->eloquent($orders)
 					->addColumn('number_html', function (Order $order) {
 						$number = $order->id;
@@ -261,8 +262,6 @@ class OrderController extends Controller
 					//->rawColumns(['number_html','article_show_html','image_html','author','customer','check_html','actions','article_holding','status_html','payment_html'])
 					->rawColumns(['number_html','date_html','status_html','payment_html','total_html','customer','actions','author','status_html','payment_html'])
 					->toJson();
-					info($a);
-		return $a;
 	}
 
     public function totalDataAjax(Request $request)
@@ -418,7 +417,7 @@ class OrderController extends Controller
 			 //counting total with discounts
 			$productinfo = $orderProduct->product;
 			$quantity = $orderProduct->quantity;
-			$storageinfo = Product::with('storages')->find($orderProduct->product_id)->storages->where('storage_id',$orderProduct->storage_alias)
+			$storageinfo = Product::with('storages')->find($orderProduct->product_id)->storages->where('is_main',1)
 			->first();
 			if($storageinfo){
 				$package = $storageinfo->package;
@@ -475,7 +474,7 @@ class OrderController extends Controller
             }
             $weight += $orderProduct->product->weight * $orderProduct->quantity/100;
 
-
+						dd(($storageProduct)?$orderProduct->quantity/$storageProduct->package:0);
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,
@@ -489,10 +488,10 @@ class OrderController extends Controller
 				// 'price_without_discount' => number_format($price_without_discount,2,'.',' '),
 				// 'price_without_discount_raw' => $price_without_discount,
 				'price_raw' => $price,
-                'storages'  => $orderProduct->product->storages->filter(function ($value, $key) {
-										if($value->amount > 0 && $value->amount - $value->package > 0){
-											return $value;
-										}
+        'storages'  => $orderProduct->product->storages->filter(function ($value, $key) {
+							if($value->amount > 0 && $value->amount - $value->package > 0){
+									return $value;
+							}
 									}),
                 'storage_prices' => $storage_prices,
                 'storage_id' => $orderProduct->storage_alias,

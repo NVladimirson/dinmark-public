@@ -706,8 +706,11 @@
             })
 
             $('#global_search').select2({
+								closeOnSelect: false,
                 placeholder: "@lang('global.global_search.placeholder')",
                 minimumInputLength: 3,
+								//dropdownCssClass: 'suckmycock',
+								language: 'ru',
                 ajax: {
                     url: function () {
                         return '{{route('globalsearch')}}'
@@ -765,7 +768,6 @@
 														"children" : data['reclamations']
 												});
 											}
-											window.searchdata = data;
                         return {
 													results : results,
                         };
@@ -797,6 +799,12 @@
 									window.location = '{{route('products.find')}}/' + '?search='+window.select2_input+'#'+search;
 								}
 						});
+
+					 function changedatastyling(){
+						 console.log('EVENT');
+							console.log($('#global_search').select2('data'));
+						}
+
         });
     })(jQuery);
 </script>

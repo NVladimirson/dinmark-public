@@ -6,7 +6,7 @@
 
 @section('content')
 	{{ Breadcrumbs::render('product.search') }}
-	<h1 class="page-header">@lang('product.search_page_name')</h1>
+	<h1 class="page-header">@lang('product.search_page_name')@if(isset($search)) : {{$search}}@endif @if(isset($extended_search_display)) : {{$extended_search_display}}@endif</h1>
 	<!-- begin row -->
 
     @if($extendedSearch)
@@ -23,13 +23,8 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-					@forelse($extendedSearchResult as $formatted_datum)
-					@php
-					$product = \App\Models\Product\Product::find($formatted_datum->product_id);
-					if($product == null){
-						continue;
-					}
-					@endphp
+					@forelse($extendedSearchResult as $product)
+
 						<div class="col-xl-3 col-lg-4 col-md-6 m-b-15">
 							<div class="row">
 							<div class="col-12 m-b-15">
@@ -41,58 +36,21 @@
 										<b>@lang('product.extended_search.name')</b>
 									</div>
 									<div class="col-6 ml-3">
-										<a href="{{route('products.show',[$formatted_datum->id])}}">
-											{{\App\Services\Product\Product::getName($product)}}</a>
+										<a href="{{route('products.show',[$product->id])}}">
+											{{$product->name}}</a>
 									</div>
 								</div>
+								@foreach($product->options as $option => $data)
 								<div class="row">
 									<div class="col-4">
-										<b>@lang('product.extended_search.standart')</b>
+										<b>{{$option}}</b>
 									</div>
 									<div class="col-6 ml-3">
-										{{\App\Services\Miscellenous\ExtendedSearchService::translateProductFilter($formatted_datum->standart)}}
+										{{$data}}
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-4">
-										<b>@lang('product.extended_search.diametr')</b>
-									</div>
-									<div class="col-6 ml-3">
-											{{$formatted_datum->diametr}}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-4">
-										<b>@lang('product.extended_search.dovzhyna')</b>
-									</div>
-									<div class="col-6 ml-3">
-										{{$formatted_datum->dovzhyna}}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-4">
-										<b>@lang('product.extended_search.material')</b>
-									</div>
-									<div class="col-6 ml-3">
-										{{\App\Services\Miscellenous\ExtendedSearchService::translateProductFilter($formatted_datum->material)}}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-4">
-										<b>@lang('product.extended_search.klas_micnosti')</b>
-									</div>
-									<div class="col-6 ml-3">
-										{{$formatted_datum->klas_micnosti}}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-4">
-										<b>@lang('product.extended_search.pokryttja')</b>
-									</div>
-									<div class="col-6 ml-3">
-										{{\App\Services\Miscellenous\ExtendedSearchService::translateProductFilter($formatted_datum->pokryttja)}}
-									</div>
-								</div>
+								@endforeach
+
 							</div>
 							</div>
 						</div>
@@ -120,11 +78,11 @@
 				<div class="panel-body">
 					<div class="row">
 						@if($product_search)
-					@forelse($product_search as $formatted_datum)
+					@forelse($product_search as $product)
 						<div class="col-3 m-b-15">
 							<div class="row">
 							<div class="col-12 m-b-15">
-								<img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100%">
+								<img src="{{\App\Services\Product\Product::getImagePath($product)}}" width="100%">
 							</div>
             	<div class="col-12 m-b-15">
 								<div class="row">
@@ -132,8 +90,16 @@
 										<b>@lang('product.global_search.name')</b>
 									</div>
 									<div class="col-8">
-										<a href="{{route('products.show',[$formatted_datum->id])}}">
-											{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+										<a href="{{route('products.show',[$product->id])}}">
+											{{$product->name}}</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-4">
+										<b>Артикул</b>
+									</div>
+									<div class="col-8">
+										{{$product->article}}
 									</div>
 								</div>
 								<div class="row">
@@ -141,7 +107,7 @@
 										<b>Аналог</b>
 									</div>
 									<div class="col-8">
-										{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,23)}}
+										{{$product->analogue}}
 									</div>
 								</div>
 								<div class="row">
@@ -149,7 +115,7 @@
 										<b>Народна Назва</b>
 									</div>
 									<div class="col-8">
-										{{\App\Services\Product\Product::getProductOptionBy($formatted_datum->id,30)}}
+										{{$product->narodna}}
 									</div>
 								</div>
 							</div>
@@ -177,11 +143,11 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-					@forelse($order_search as $formatted_datum)
+					@forelse($order_search as $order_product)
 					<div class="col-3 m-b-15">
 						<div class="row">
 						<div class="col-12 m-b-15">
-							<img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100%">
+							<img src="{{\App\Services\Product\Product::getImagePath($product)}}" width="100%">
 						</div>
 						<div class="col-12 m-b-15">
 							<div class="row">
@@ -189,8 +155,8 @@
 									<b>@lang('product.global_search.name')</b>
 								</div>
 								<div class="col-8">
-									<a href="{{route('products.show',[$formatted_datum->id])}}">
-										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+									<a href="{{route('products.show',[$product->id])}}">
+										{{$order_product->name}}</a>
 								</div>
 							</div>
 							<div class="row">
@@ -198,7 +164,7 @@
 									<b>@lang('product.global_search.orders')</b>
 								</div>
 								<div class="col-8">
-									@php $product_orders = \App\Services\Product\Product::getOrder($formatted_datum);@endphp
+									@php $product_orders = \App\Services\Product\Product::getOrder($product);@endphp
 									@if($product_orders)
 									<a href="{{route('orders.show',[array_key_first($product_orders)])}}">
 										{{$product_orders[array_key_first($product_orders)]}}</a>
@@ -234,11 +200,11 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-					@forelse($implementation_search as $formatted_datum)
+					@forelse($implementation_search as $implementation_product)
 					<div class="col-3 m-b-15">
 						<div class="row">
 						<div class="col-12 m-b-15">
-							<img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100%">
+							<img src="{{\App\Services\Product\Product::getImagePath($product)}}" width="100%">
 						</div>
 						<div class="col-12 m-b-15">
 							<div class="row">
@@ -246,8 +212,8 @@
 									<b>@lang('product.global_search.name')</b>
 								</div>
 								<div class="col-8">
-									<a href="{{route('products.show',[$formatted_datum->id])}}">
-										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+									<a href="{{route('products.show',[$product->id])}}">
+										{{$implementation_product->name}}</a>
 								</div>
 							</div>
 							<div class="row">
@@ -255,7 +221,7 @@
 									<b>@lang('product.global_search.implementations')</b>
 								</div>
 								<div class="col-8">
-									@php $implementation_orders = \App\Services\Product\Product::getImplementations($formatted_datum);@endphp
+									@php $implementation_orders = \App\Services\Product\Product::getImplementations($product);@endphp
 									@if($implementation_orders)
 									<a href="{{route('orders.show',[array_key_first($implementation_orders)])}}">
 											{{$implementation_orders[array_key_first($implementation_orders)]}}<</a>
@@ -292,11 +258,11 @@
 				<!-- begin panel-body -->
 				<div class="panel-body">
 					<div class="row">
-					@forelse($reclamation_search as $formatted_datum)
+					@forelse($reclamation_search as $reclamation_product)
 					<div class="col-3 m-b-15">
 						<div class="row">
 						<div class="col-12 m-b-15">
-							<img src="{{\App\Services\Product\Product::getImagePath($formatted_datum)}}" width="100%">
+							<img src="{{\App\Services\Product\Product::getImagePath($product)}}" width="100%">
 						</div>
 						<div class="col-12 m-b-15">
 							<div class="row">
@@ -304,8 +270,8 @@
 									<b>@lang('product.global_search.name')</b>
 								</div>
 								<div class="col-8">
-									<a href="{{route('products.show',[$formatted_datum->id])}}">
-										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+									<a href="{{route('products.show',[$product->id])}}">
+										{{$reclamation_product->name}}</a>
 								</div>
 							</div>
 							<div class="row">
@@ -313,8 +279,8 @@
 									<b>@lang('product.global_search.reclamations')</b>
 								</div>
 								<div class="col-8">
-									<a href="{{route('products.show',[$formatted_datum->id])}}">
-										{{\App\Services\Product\Product::getName($formatted_datum)}}</a>
+									<a href="{{route('products.show',[$product->id])}}">
+										{{$reclamation_product->name}}</a>
 								</div>
 							</div>
 						</div>

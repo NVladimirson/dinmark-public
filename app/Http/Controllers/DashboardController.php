@@ -227,7 +227,7 @@ $activefilter = $data['active'];
     $allowed_filters = ['standart','diametr','dovzhyna','material',
     'klas_micnosti','pokryttja','active'];
 
-    $convertable = ['standart','material','pokryttja'];
+    //$convertable = ['standart','material','pokryttja','diametr'];
     $language = GlobalSearchService::getLang();
 
 
@@ -250,7 +250,8 @@ $activefilter = $data['active'];
     }
 
     foreach ($data as $filter => $optionnames) {
-      if(in_array($filter,$convertable) && count($optionnames)){
+      //if(in_array($filter,$convertable) && count($optionnames)){
+      if(count($optionnames)){
         $translated = [];
         foreach ($optionnames as $key => $optionname) {
           $option = ProductOptionName::where([['name',$optionname],['language',$language]])->first();
@@ -297,7 +298,7 @@ $activefilter = $data['active'];
           //     unset($response[array_search($value, $response)]);
           //   }
           // }
-          if(in_array($activefilter,$convertable)){
+          //if(in_array($activefilter,$convertable)){
             foreach ($response as $key => $option) {
               $optionname = ProductOptionName::where([['option',$option],['language',$language]])->first();
               if(isset($optionname->name)){
@@ -307,7 +308,7 @@ $activefilter = $data['active'];
                 unset($response[$key]);
               }
             }
-          }
+          //}
 
           sort($response);
           return $response;

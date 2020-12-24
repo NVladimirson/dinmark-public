@@ -101,19 +101,8 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $allowed_orders = Order::whereHas('getUser',function ($users){
-              $users->whereHas('getCompany',function ($companies){
-                  $companies->where([
-                      ['id', session('current_company_id')],
-                  ]);
-              });
-      });
-
-      $product_orders = $allowed_orders->with('products.product')->get()->pluck('products', 'id');
-      foreach ($product_orders as $key => $product_orders_data) {
-          $product_orders[$key] = $product_orders_data->pluck('product', 'id');
-      }
-      dd($product_orders);
+        $products = ProductServices::getProductOptionBy(17621);
+dd($products);
     }
 
     public function allAjax(Request $request){
@@ -729,9 +718,33 @@ class ProductController extends Controller
         if($search || $request->product_search || $request->order_search || $request->order_search || $request->implementation_search || $request->reclamation_search){
          $globalSearch = true;
          $product_search = GlobalSearchService::getProductsSearch($search, false)->paginate(24, ['*'], 'product_search');
+         $product_search->getCollection()->transform(function ($value) {
+           $value->name = \App\Services\Product\Product::getName($value);
+           $nardona = \App\Services\Product\Product::getProductOptionBy($value->id,30);
+           $value->narodna = $nardona?$nardona:'-';
+           $analogue = \App\Services\Product\Product::getProductOptionBy($value->id,23);
+           $value->analogue = $analogue?$analogue:'-';
+           return $value;
+          });
+
+        // dd($product_search);
          $order_search = GlobalSearchService::getOrderProductsSearch($search, false)->paginate(24, ['*'], 'order_search');
+         $order_search->getCollection()->transform(function ($value) {
+           $value->name = \App\Services\Product\Product::getName($value);
+           // $value->narodna = \App\Services\Product\Product::getProductOptionBy($value->id,30);
+           // $value->analogue = \App\Services\Product\Product::getProductOptionBy($value->id,23);
+           return $value;
+          });
          $implementation_search = GlobalSearchService::getImplementationProductsSearch($search, false)->paginate(24, ['*'], 'implementation_search');
+         $implementation_search->getCollection()->transform(function ($value) {
+           $value->name = \App\Services\Product\Product::getName($value);
+           return $value;
+          });
          $reclamation_search = GlobalSearchService::getReclamationProductsSearch($search, false)->paginate(24, ['*'], 'reclamation_search');
+         $reclamation_search->getCollection()->transform(function ($value) {
+           $value->name = \App\Services\Product\Product::getName($value);
+           return $value;
+          });
         //return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search'));
         }
 
@@ -746,29 +759,50 @@ class ProductController extends Controller
           }
         }
 
+         $extended_search_display = '';
+         $optionmap = ['pokryttja' => 13,'standart' => 64,'diametr' => 7,'dovzhyna' => 26,'material' => 11,'klas_micnosti' => 28];
+        foreach ($extended_search as $filter => $value) {
+          if(count($value)>0){
+            $extended_search_display = $extended_search_display . ProductServices::getOptionTranslate($optionmap[$filter]).': '.implode(",", array_values($value)).'; ';
+          }
+        }
+
         if($extendedSearch){
           $extendedSearchResult = ExtendedSearchService::getProductsByFilters($extended_search);
+                    //dd($extendedSearchResult->get());
           if($extendedSearchResult){
             $extendedSearchResult = $extendedSearchResult->paginate(24, ['*'], 'extended_search');
-          }else{
-            $extendedSearchResult = ProductFilter::paginate(24, ['*'], 'extended_search');
+            $extendedSearchResult->getCollection()->transform(function ($value) {
+              $value->name = \App\Services\Product\Product::getName($value);
+              $value->options =  \App\Services\Product\Product::getProductOptionBy($value->id);
+              return $value;
+             });
+             //dd($extendedSearchResult);
           }
+
+          // else{
+          //   $extendedSearchResult = ProductFilter::paginate(24, ['*'], 'extended_search');
+          //   // $extendedSearchResult->getCollection()->transform(function ($value) {
+          //   //   $value->name = \App\Services\Product\Product::getName($value);
+          //   //   return $value;
+          //   //  });
+          // }
 
         }
         //return view('product.search',compact('extendedSearchResult'));
 
         if($globalSearch && $extendedSearch){
-          return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search','extendedSearchResult','globalSearch','extendedSearch'));
+          return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search','extendedSearchResult','globalSearch','extendedSearch','search'));
         }
         else{
           if($globalSearch){
-            return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search','globalSearch','extendedSearch'));
+            return view('product.search',compact('product_search','order_search','implementation_search','reclamation_search','globalSearch','extendedSearch','search'));
           }
           if($extendedSearch){
-            return view('product.search',compact('extendedSearchResult','globalSearch','extendedSearch'));
+            return view('product.search',compact('extendedSearchResult','globalSearch','extendedSearch','search','extended_search_display'));
           }
           else{
-            return view('product.search',compact('globalSearch','extendedSearch'));
+            return view('product.search',compact('globalSearch','extendedSearch','search'));
           }
           }
 

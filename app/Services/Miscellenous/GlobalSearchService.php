@@ -62,7 +62,7 @@ class GlobalSearchService
               ['name', 'like',"%" . $search . "%"]
             ]);
           });
-        });
+        })->orWhere([['article', 'like',"%" . $search . "%"]]);
 
         if($limited){
           $products = $products->limit(5);

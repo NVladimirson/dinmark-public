@@ -223,11 +223,21 @@
                                                 <td class="text-nowrap text-center">{{$product['price']}}</td>
                                                 <td class="text-nowrap text-center">{{$product['quantity']}}</td>
                                                 <td class="text-nowrap text-center order-product-storage">
-                                                    @foreach($product['storages'] as $storage)
-                                                        @if($storage->storage_id == $product['storage_id'])
+																									@if($product['storages'])
+																										@if(count($product['storages']))
+																										 <select class="custom-select">
+                                                    	@foreach($product['storages'] as $storage)
+																											  <option value="{{$storage->id}}" @if($storage->storage_id == $product['storage_id']) selected @endif>
+																													{{$storage->storage->name.' дн.'}} / {{ \App\Services\Product\CatalogServices::dayrounder($storage->amount).' шт.' }}
+																												</option>
+                                                        <!-- @if($storage->storage_id == $product['storage_id'])
                                                             {{$storage->storage->name.' дн.'}} / {{ \App\Services\Product\CatalogServices::dayrounder($storage->amount).' шт.' }}
-                                                        @endif
-                                                    @endforeach
+                                                        @endif -->
+
+                                                    	@endforeach
+																										</select>
+																										@endif
+																									@endif
                                                 </td>
                                                 <td class="text-nowrap text-center order-product-package">{{$product['package']}}*{{$product['min']}} @lang('global.pieces')</td>
                                                 <td class="text-nowrap text-center order-product-weight">{{$product['weight']*($product['quantity']/100)}} @lang('global.kg')</td>
@@ -244,8 +254,6 @@
                                         </tfoot>
                                     </table>
                                 </div>
-
-																<table id="data-table-buttons"></table>
 
                                 <div class="row">
                                     <div class="col-lg-6">
