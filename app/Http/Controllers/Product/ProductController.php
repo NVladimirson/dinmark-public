@@ -100,24 +100,6 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-<<<<<<< HEAD
-      $product = Product::where('id',22233)->with('orderProducts.implementationProduct','orderProducts.getCart')->get();
-      $confirmed = 0;
-      if($product){
-          $orders = $product->pluck('orderProducts')->first()->pluck('getCart');
-          foreach ($orders as $key => $order) {
-            if($order){
-              if($order->status == 8){
-                $confirmed ++;
-              }
-            }
-          }
-          $totalOrders = count($orders);
-      }
-      return $confirmed/$totalOrders;
-=======
-     $this->dispatch(new ProductOptionFiltersJob());
->>>>>>> bfe72e7137d9a82e12e703ed1f8d2d7f0ca7cff2
     }
 
     public function allAjax(Request $request){

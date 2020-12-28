@@ -207,6 +207,7 @@ $most_popular_order_products = OrderProduct::with('product')->whereHas('getCart'
           'reclamations' => $reclamation_search,
           'implementations' => $implementation_search,
          ];
+        //  info($res);
         return \Response::json($res);
     }
 

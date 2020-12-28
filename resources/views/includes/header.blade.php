@@ -74,7 +74,19 @@
         </div> -->
 
         <div id="global_search_wrap">
-            <select class="form-control m-b-5" id="global_search" name="product_id"></select>
+            <!-- <select class="form-control m-b-5" id="global_search" name="product_id"></select> -->
+
+
+
+            <input @click="showGlobalSearch = true" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
+
+            <div v-show="showGlobalSearch" class="form-select">
+                <div class="select-item" v-for="(item, index) of globalResult">@{{ item.text }}</div> 
+            </div>
+
+
+
+
             <div class="more hexa-plus">
                 <i class="fas fa-plus"></i>
             </div>
@@ -615,13 +627,26 @@
                 klas_micnosti: [],
                 pokryttja: [],
                 active: ''
-              }
+              },
+              globalSearch: '',
+              globalResult: [],
+              showGlobalSearch: false
             }
         },
         computed: {
             list: () => this.info.standart
         },
         methods: {
+            getResults() {
+                this.globalSearch.length > 2 ? fetch('{{route('globalsearch')}}' + `?name=${this.globalSearch}`).then(response => response.json()).then(data => {
+                    for (const key in data) {
+                        if (Object.hasOwnProperty.call(data, key)) {
+                            const element = data[key];
+                            this.globalResult = [...element]
+                        }
+                    }
+                }) : false;
+            },
             hasItem(e) {
                if(e.target.className != 'form-select') {
                    e.target.classList.add('selected');
@@ -729,106 +754,6 @@
                     showFilter('#mobile-filter', $(e.target).children('.fas'))
                 }
             })
-
-            $('#global_search').select2({
-								closeOnSelect: false,
-                placeholder: "@lang('global.global_search.placeholder')",
-                minimumInputLength: 3,
-								//dropdownCssClass: 'suckmycock',
-								language: 'ru',
-                ajax: {
-                    url: function () {
-                        return '{{route('globalsearch')}}'
-                    },
-                    dataType: 'json',
-                    data: function (params) {
-												window.select2_input = params.term
-                        return {
-                            name: params.term,
-														//onlywithstorage: '0'
-                        };
-                    },
-                    processResults: function (data) {
-											let results = [];
-											if(data['products'].length>0){
-												data['products'].push({
-													"id" : "products",
-													"text": "@lang('global.all_products')"
-												})
-												results.push({
-														"text": "@lang('global.global_search.article')",
-														"children" : data['products'],
-												})
-												// results.push({
-												// 	"text": "LINK PRODUCTS...",
-												// });
-											}
-											if(data['orders'].length>0){
-												data['orders'].push({
-													"id" : "orders",
-													"text": "@lang('global.all_orders')"
-												})
-												results.push({
-														"text": "@lang('global.global_search.order')",
-														"children" : data['orders']
-												});
-											}
-											if(data['implementations'].length>0){
-												data['implementations'].push({
-													"id" : "implementations",
-													"text": "@lang('global.all_implementations')"
-												})
-												results.push({
-														"text": "@lang('global.global_search.implementation')",
-														"children" : data['implementations']
-												});
-											}
-											if(data['reclamations'].length>0){
-												data['reclamations'].push({
-													"id" : "reclamations",
-													"text": "@lang('global.all_reclamations')"
-												})
-												results.push({
-														"text": "@lang('global.global_search.reclamation')",
-														"children" : data['reclamations']
-												});
-											}
-                        return {
-													results : results,
-                        };
-                    },
-                    cache: true
-                },
-            });
-
-
-						$('#global_search').on('select2:select', function (e) {
-								let find_by = ['products', 'orders', 'reclamations','implementations'];
-								let search = $('#global_search').val();
-								let category = $('#global_search').select2('data')[0].category;
-								if(!find_by.includes(search)){
-									if(category == 'products'){
-									window.location = '{{route('products')}}/' + search;
-									}
-									if(category == 'orders'){
-									window.location = '{{route('orders')}}/' + search;
-									}
-									if(category == 'reclamations'){
-									window.location = '{{route('orders')}}/' + search;
-									}
-									if(category == 'implementations'){
-									window.location = '{{route('orders')}}/' + search;
-									}
-								}
-								else{
-									window.location = '{{route('products.find')}}/' + '?search='+window.select2_input+'#'+search;
-								}
-						});
-
-					 function changedatastyling(){
-						 console.log('EVENT');
-							console.log($('#global_search').select2('data'));
-						}
 
         });
     })(jQuery);
