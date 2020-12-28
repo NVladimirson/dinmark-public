@@ -1842,7 +1842,29 @@ input#pokryttja{
 }
 .select-item {
     padding: 2px 5px;
+    font-family: "DIN Pro", Arial, Helvetica, sans-serif;
+    font-size: 14px;
 }
+
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+    #header form#filter .container, #mobile-filter .container {
+        width: 100%;
+    }
+    form#filter div div p.first span {
+        font-size: 10px !important;
+        white-space: nowrap;
+    }
+    form#filter div div p.first {
+        white-space: nowrap;
+    }
+}
+@media screen and (min-width: 1050px) and (max-width: 1200px) {
+    form#filter div div p {
+        white-space: nowrap;
+        max-width: 250px;
+    }
+}
+
 .select-item:hover {
     background-color: #29ABE2;
     cursor: pointer;
