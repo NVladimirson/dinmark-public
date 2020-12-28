@@ -629,7 +629,9 @@
                 active: ''
               },
               globalSearch: '',
-              globalResult: [],
+              globalResult: {
+                  
+              },
               showGlobalSearch: false
             }
         },
