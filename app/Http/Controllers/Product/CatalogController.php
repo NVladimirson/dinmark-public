@@ -192,8 +192,8 @@ class CatalogController extends Controller
 		// if($request->has('search')){
 		// 		$search_article = request('search')['value'];
 		// }
-
 		if($request->filter_with_options){
+				$language = CategoryServices::getLang();
 				$request_options = explode(',',$request->filter_with_options);;
 				foreach ($request_options as $key => $request_option) {
 					if($key == 0){
@@ -215,12 +215,6 @@ class CatalogController extends Controller
 
 		return datatables()
 			->eloquent($products)
-			->addColumn('check_html', function (Product $product) {
-				return '<div class="checkbox checkbox-css">
-						  <input type="checkbox" id="product-'.$product->id.'"  />
-						  <label for="product-'.$product->id.'"> </label>
-						</div>';
-			})
 			->addColumn('image_html', function (Product $product) {
 				$src = ProductServices::getImagePath($product);
 

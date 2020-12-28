@@ -37,6 +37,27 @@ class PurchaseController extends Controller
         });
       })->with('orderProducts.getCart');
 
+      if($request->filter_with_options){
+          $language = CategoryServices::getLang();
+          $request_options = explode(',',$request->filter_with_options);;
+          foreach ($request_options as $key => $request_option) {
+            if($key == 0){
+              $products = $products->whereHas('options', function($options) use ($request_option,$language){
+                $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+                  $option_name->where('value',$request_option)->where('language','uk');
+                });
+              });
+            }
+            else{
+              $products = $products->orwhereHas('options', function($options) use ($request_option,$language){
+                $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+                  $option_name->where('value',$request_option)->where('language','uk');
+                });
+            });
+          }
+          }
+      }
+
       if($request->new){
           $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
       }
@@ -131,13 +152,37 @@ class PurchaseController extends Controller
           ';
         })
         ->addColumn('sum_of_orders/sellings/reclamations', function (Product $product) {
-          
+
         })
         ->addColumn('percentage_of_confirmed_orders', function (Product $product) {
-
+          $product = Product::where('id',$product->id)->with('orderProducts.implementationProduct','orderProducts.getCart')->get();
+          $confirmed = 0;
+          if($product){
+              $orders = $product->pluck('orderProducts')->first()->pluck('getCart');
+              foreach ($orders as $key => $order) {
+                if($order){
+                  if($order->status == 8){
+                    $confirmed ++;
+                  }
+                }
+              }
+              $totalOrders = count($orders);
+          }
+          return round($confirmed/$totalOrders,2);
         })
         ->addColumn('sellings_weight', function (Product $product) {
-
+          $product = Product::where('id',$product->id)->with('orderProducts.implementationProduct','orderProducts.getCart')->get();
+          $weight100 = $product->first()->weight;
+          $weightTotal = 0;
+          if($product){
+              $implementationProducts = $product->pluck('orderProducts')->first()->pluck('implementationProduct');
+              foreach ($implementationProducts as $key => $implementationProduct) {
+                if(count($implementationProduct)){
+                  $weightTotal += $weight100 * ($implementationProduct->first()->quantity/100);
+                }
+              }
+          }
+          return $weightTotal;
         })
         ->addColumn('CSV-export', function (Product $product) {
 
