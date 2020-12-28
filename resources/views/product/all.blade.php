@@ -241,6 +241,7 @@
     <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
 
+    <script src="/assets/plugins/select2/dist/js/popup.js"></script>
     <script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
     <script>
         const wrapTable = new Vue({
@@ -248,6 +249,7 @@
             data: {
                 isShow: false,
                 products: []
+<<<<<<< HEAD
             },
             computed: {
                 cells: () => {
@@ -260,12 +262,17 @@
                     let a = this.products.filter(td => td[0].getElementsByTagName('div').getElementsByTagName('input').checked);
                     return a;
                 }
+=======
+>>>>>>> bfe72e7137d9a82e12e703ed1f8d2d7f0ca7cff2
             },
             methods: {
                 toggleShow: function() {
                     this.isShow = !this.isShow;
+<<<<<<< HEAD
                     console.log(this.cells)
                     console.log(this.checked)
+=======
+>>>>>>> bfe72e7137d9a82e12e703ed1f8d2d7f0ca7cff2
                 }
             }
         })
