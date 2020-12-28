@@ -168,7 +168,7 @@ class PurchaseController extends Controller
               }
               $totalOrders = count($orders);
           }
-          return round($confirmed/$totalOrders,2);
+          return number_format($confirmed*100/$totalOrders,2,'.',',').'%';
         })
         ->addColumn('sellings_weight', function (Product $product) {
           $product = Product::where('id',$product->id)->with('orderProducts.implementationProduct','orderProducts.getCart')->get();

@@ -152,16 +152,22 @@ class GlobalSearchService
         });
 
         if($limited){
-          $products = $products->limit(5);
+          $products = $products->limit(10);
           $products = $products->get();
 
           $product_info = [];
           foreach ($products as $key => $product) {
-            $product_info[] = [
-              'id' => $product->orderProducts->first()->getCart->id,
-              'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
-              'category' => 'reclamations'
-            ];
+            $orderProduct = $product->orderProducts->first();
+            if($orderProduct){
+              $product_info[] = [
+                'id' => $product->orderProducts->first()->getCart->id,
+                'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                'category' => 'reclamations'
+              ];
+            }
+            if(count($product_info)>5){
+              break;
+            }
           }
         return $product_info;
         }
@@ -206,11 +212,17 @@ class GlobalSearchService
 
             $product_info = [];
             foreach ($products as $key => $product) {
-              $product_info[] = [
-                'id' => $product->orderProducts->first()->getCart->id,
-                'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
-                'category' => 'implementations'
-              ];
+              $orderProduct = $product->orderProducts->first();
+              if($orderProduct){
+                $product_info[] = [
+                  'id' => $product->orderProducts->first()->getCart->id,
+                  'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                  'category' => 'implementations'
+                ];
+              }
+              if(count($product_info)>5){
+                break;
+              }
             }
             $product_info = array_values(Arr::sort($product_info, function ($value) {
               return $value['text'];
