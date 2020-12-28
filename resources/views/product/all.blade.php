@@ -246,11 +246,26 @@
         const wrapTable = new Vue({
             el: "#wrap-table",
             data: {
-                isShow: false
+                isShow: false,
+                products: []
+            },
+            computed: {
+                cells: () => {
+                    let row = document.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                    let tds = Array.from(row).map(td => Array.from(td.children))
+                    this.products = tds;
+                    return tds;
+                },
+                checked: () => {
+                    let a = this.products.filter(td => td[0].getElementsByTagName('div').getElementsByTagName('input').checked);
+                    return a;
+                }
             },
             methods: {
                 toggleShow: function() {
-                    this.isShow = !this.isShow
+                    this.isShow = !this.isShow;
+                    console.log(this.cells)
+                    console.log(this.checked)
                 }
             }
         })
@@ -1701,7 +1716,7 @@
             padding:8px;
             margin-left:6px;
 
-
+        }
         .right-align {
             float: right;
         }

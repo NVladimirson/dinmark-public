@@ -191,82 +191,107 @@
     </div>
 
 
-<form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
-    <div class="container flex">
-        <div class="column flex-wrap">
-        <p>Стандарт (DIN, ГОСТ, AN, ISO)</p>
-        <div class="extend-search">
-        <div class="d-flex flex-wrap">
-            <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.standart" type="text" id="standart" class="search-input">
-        </div>
-        <div v-show="render.standart" @click="hasItem" id="standart" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item" v-for="(item, index) of info.standart">@{{item}}
+    <form @submit.prevent="handlerSubmit" id="filter" class="hide" style="display: block;">
+    <div class="container flex flex-wrap">
+        <div class="col-xl-2 col-lg-4 flex-wrap">
+            <p class="first">Стандарт <span>(DIN, ГОСТ, AN, ISO)</span></p>
+            <div class="extend-search">
+                <div class="d-flex flex-wrap">
+                    <span @click="removeQuery(index, 'standart')" v-for="(choice, index) of queryList.standart"
+                          class="choice"><span class="times">&times;</span>@{{ choice }}</span>
+                    <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.standart"
+                           type="text" id="standart" class="search-input">
+                </div>
+                <div v-show="render.standart" @click="hasItem" id="standart" style="width: 100%" class="form-select">
+                    <div @click="addQuery(item, 'standart'); data.standart = '';" class="select-item"
+                         v-for="(item, index) of info.standart">@{{ item }}
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-         </div>
-         <div>
+        <div class="col-xl-2 col-lg-4 flex-wrap">
             <p>Діаметр (мм)</p>
             <div class="extend-search">
-        <div class="d-flex flex-wrap">
-            <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.diametr" type="text" id="diametr" class="search-input">
-        </div>
-        <div v-show="render.diametr" @click="hasItem" id="diametr" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'diametr'); data.diametr = '';" class="select-item" v-for="(item, index) of info.diametr">@{{item}}</div>
-        </div>
-        </div>
-        </div>
-        <div>
-            <p>Довжина (мм)</p>
-            <div class="extend-search">
-        <div class="d-flex flex-wrap">
-            <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.dovzhyna" type="text" id="dovzhyna" class="search-input">
-        </div>
-        <div v-show="render.dovzhyna" @click="hasItem" id="dovzhyna" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'dovzhyna'); data.dovzhyna = '';" class="select-item" v-for="(item, index) of info.dovzhyna">@{{item}}</div>
-        </div>
-        </div>
-        </div>
-        <div>
-            <p>Матеріал </p>
-            <div class="extend-search">
-        <div class="d-flex flex-wrap">
-            <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.material" type="text" id="material" class="search-input">
-        </div>
-        <div v-show="render.material" @click="hasItem" id="material" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'material'); data.material = '';" class="select-item" v-for="(item, index) of info.material">@{{item}}</div>
-        </div>
-        </div>
-        </div>
-        <div>
-            <p>Клас міцності </p>
-            <div class="extend-search">
-        <div class="d-flex flex-wrap">
-            <span @click="removeQuery(index, 'klas_micnosti')" v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.klas_micnosti" type="text" id="klas_micnosti" class="search-input">
-        </div>
-        <div v-show="render.klas_micnosti" @click="hasItem" id="klas_micnosti" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'klas_micnosti'); data.klas_micnosti = '';" class="select-item" v-for="(item, index) of info.klas_micnosti">@{{item}}</div>
-        </div>
-        </div>
-        </div>
-        <div>
-            <p>Покриття </p>
-            <div class="extend-search">
-        <div class="d-flex flex-wrap">
-            <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja" class="choice"><span class="times">&times;</span>@{{choice}}</span>
-            <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.pokryttja" type="text" id="pokryttja" class="search-input">
-        </div>
-        <div v-show="render.pokryttja" @click="hasItem" id="pokryttja" style="width: 100%" class="form-select">
-            <div @click="addQuery(item, 'pokryttja'); data.pokryttja = '';" class="select-item" v-for="(item, index) of info.pokryttja">@{{item}}</div>
-        </div>
-        </div>
+                <div class="d-flex flex-wrap">
+                    <span @click="removeQuery(index, 'diametr')" v-for="(choice, index) of queryList.diametr"
+                          class="choice"><span class="times">&times;</span>@{{ choice }}</span>
+                    <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.diametr"
+                           type="text" id="diametr" class="search-input">
+                </div>
+                <div v-show="render.diametr" @click="hasItem" id="diametr" style="width: 100%" class="form-select">
+                    <div @click="addQuery(item, 'diametr'); data.diametr = '';" class="select-item"
+                         v-for="(item, index) of info.diametr">@{{ item }}
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="col-xl-2 col-lg-4 flex-wrap">
+            <p>Довжина (мм)</p>
+            <div class="extend-search">
+                <div class="d-flex flex-wrap">
+                    <span @click="removeQuery(index, 'dovzhyna')" v-for="(choice, index) of queryList.dovzhyna"
+                          class="choice"><span class="times">&times;</span>@{{ choice }}</span>
+                    <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.dovzhyna"
+                           type="text" id="dovzhyna" class="search-input">
+                </div>
+                <div v-show="render.dovzhyna" @click="hasItem" id="dovzhyna" style="width: 100%" class="form-select">
+                    <div @click="addQuery(item, 'dovzhyna'); data.dovzhyna = '';" class="select-item"
+                         v-for="(item, index) of info.dovzhyna">@{{ item }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 flex-wrap">
+            <p>Матеріал </p>
+            <div class="extend-search">
+                <div class="d-flex flex-wrap">
+                    <span @click="removeQuery(index, 'material')" v-for="(choice, index) of queryList.material"
+                          class="choice"><span class="times">&times;</span>@{{ choice }}</span>
+                    <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.material"
+                           type="text" id="material" class="search-input">
+                </div>
+                <div v-show="render.material" @click="hasItem" id="material" style="width: 100%" class="form-select">
+                    <div @click="addQuery(item, 'material'); data.material = '';" class="select-item"
+                         v-for="(item, index) of info.material">@{{ item }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 flex-wrap">
+            <p>Клас міцності </p>
+            <div class="extend-search">
+                <div class="d-flex flex-wrap">
+                    <span @click="removeQuery(index, 'klas_micnosti')"
+                          v-for="(choice, index) of queryList.klas_micnosti" class="choice"><span
+                            class="times">&times;</span>@{{ choice }}</span>
+                    <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.klas_micnosti"
+                           type="text" id="klas_micnosti" class="search-input">
+                </div>
+                <div v-show="render.klas_micnosti" @click="hasItem" id="klas_micnosti" style="width: 100%"
+                     class="form-select">
+                    <div @click="addQuery(item, 'klas_micnosti'); data.klas_micnosti = '';" class="select-item"
+                         v-for="(item, index) of info.klas_micnosti">@{{ item }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 flex-wrap">
+            <p>Покриття </p>
+            <div class="extend-search">
+                <div class="d-flex flex-wrap">
+                    <span @click="removeQuery(index, 'pokryttja')" v-for="(choice, index) of queryList.pokryttja"
+                          class="choice"><span class="times">&times;</span>@{{ choice }}</span>
+                    <input @click="handlerSubmit(event);" @input="handlerSubmit(event);" v-model="data.pokryttja"
+                           type="text" id="pokryttja" class="search-input">
+                </div>
+                <div v-show="render.pokryttja" @click="hasItem" id="pokryttja" style="width: 100%" class="form-select">
+                    <div @click="addQuery(item, 'pokryttja'); data.pokryttja = '';" class="select-item"
+                         v-for="(item, index) of info.pokryttja">@{{ item }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="submit">
         <button @click="handlerSubmitGo" class="hexa">Пошук</button>
     </div>
