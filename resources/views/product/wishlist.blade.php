@@ -171,7 +171,6 @@
                             </th>
                         </tr> -->
 							<tr>
-								<th></th>
 								<th width="30"></th>
 								<th width="1%" data-orderable="false"></th>
                                <th class="text-nowrap">@lang('wishlist.table_header_name_article')</th>
@@ -1318,11 +1317,33 @@
                      //    header: true,
                      //    footer: true
                     // },
+
 					"pageLength": 25,
 					"autoWidth": true,
 					"processing": true,
 					"serverSide": true,
-					"ajax": ajaxRoute,
+					"ajax": {
+						"url": ajaxRoute,
+						"data": {
+							"filter_with_options": function() {
+									let filter_selected_map = $("[filter-selected=true]");
+									let filter_selected_ids = Array();
+									$.each(filter_selected_map, function(key, value) {
+											if (value.attributes['filter-selected'].value === 'true') {
+													let option_id = value.attributes['option_id'].value;
+													//let option_name = value.attributes['option_name'].value;
+													filter_selected_ids.push(option_id);
+													//filter_selected_ids.option_id = option_name;
+											}
+									});
+									//console.log('filter_with_options: ' + filter_selected_ids)
+									if(filter_selected_map.length){
+										return filter_selected_ids;
+									}
+
+							}
+						},
+					},
 					"order": [[ 3, "asc" ]],
 					"columns": [
 						{
@@ -1330,11 +1351,6 @@
 							data: 'id',
 							"visible": false,
 							"searchable": false
-						},
-						{
-							"orderable":      false,
-							data: 'check_html',
-							"visible": true	,
 						},
 						{
 							"orderable":      false,
@@ -1473,7 +1489,6 @@
 						});
 					}
 				} );
-
 
 
 				$('#modal-wishlist').on('show.bs.modal', function (event) {

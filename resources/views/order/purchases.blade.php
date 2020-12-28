@@ -1004,7 +1004,26 @@
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
-                        "url": "{!! route('purchases.get_ajax') !!}",
+                      "url": "{!! route('purchases.get_ajax') !!}",
+                      "data": {
+                        "filter_with_options": function() {
+                            let filter_selected_map = $("[filter-selected=true]");
+                            let filter_selected_ids = Array();
+                            $.each(filter_selected_map, function(key, value) {
+                                if (value.attributes['filter-selected'].value === 'true') {
+                                    let option_id = value.attributes['option_id'].value;
+                                    //let option_name = value.attributes['option_name'].value;
+                                    filter_selected_ids.push(option_id);
+                                    //filter_selected_ids.option_id = option_name;
+                                }
+                            });
+                            //console.log('filter_with_options: ' + filter_selected_ids)
+                            if(filter_selected_map.length){
+                              return filter_selected_ids;
+                            }
+
+                        }
+                      },
                     },
                     "order": [[ 0, "desc" ]],
                     "columns": [
@@ -1110,12 +1129,12 @@
              <div class="panel-body">
                <div class="row" style="margin-bottom: 10px">
                   <div class="col-xl-6">
-                     <select class="custom-select" multiple>
+                     <!-- <select class="custom-select" multiple>
                         <option selected>None</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
-                     </select>
+                     </select> -->
                   </div>
                   <div class="col-xl-3">
                      <p>@lang('purchases.purchases_startdate')<input type="text" id="startdate"></p>

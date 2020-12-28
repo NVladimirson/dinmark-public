@@ -101,8 +101,20 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-        $products = ProductServices::getProductOptionBy(17621);
-dd($products);
+      $product = Product::where('id',22233)->with('orderProducts.implementationProduct','orderProducts.getCart')->get();
+      $confirmed = 0;
+      if($product){
+          $orders = $product->pluck('orderProducts')->first()->pluck('getCart');
+          foreach ($orders as $key => $order) {
+            if($order){
+              if($order->status == 8){
+                $confirmed ++;
+              }
+            }
+          }
+          $totalOrders = count($orders);
+      }
+      return $confirmed/$totalOrders;
     }
 
     public function allAjax(Request $request){
