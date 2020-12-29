@@ -77,11 +77,10 @@
             <!-- <select class="form-control m-b-5" id="global_search" name="product_id"></select> -->
 
 
-
             <input id="globalInput" placeholder="@lang('global.header_search')" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
             <i v-show="globalSearch.length" @click="reset" id="chross">&#215;</i>
             <div class="wrap-global-result" v-if="globalSearch.length > 2">
-                <div v-if="showGlobalSearch" class="form-select">
+                <div v-if="showGlobalSearch" id="wrap-form-select" class="form-select">
                     <div v-show="globalResult.implementations.length" class="group">
                         <h4 class="pt-2 select-head">Implementations</h4> 
                         <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations">@{{ item.text }}</div> 
@@ -731,7 +730,7 @@
             },
             searchFilter(word, prop) {
                 let a = prop.filter(item => item.includes(word))
-                return a
+                return a;
 
             },
             selectRender(e) {
