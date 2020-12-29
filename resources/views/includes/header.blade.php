@@ -83,23 +83,23 @@
                 <div v-if="showGlobalSearch" class="form-select">
                     <div v-show="globalResult.implementations.length" class="group">
                         <div class="select-item"><b>Implementations</b>@{{  }}</div> 
-                        <div class="select-item" v-for="item of globalResult.implementations">{{ item.text }}</div> 
-                        <div class="select-item"><i>Смотреть все</i></div>  
+                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations">{{ item.text }}</div> 
+                        <div @click="viewSearchResult('implementations')" class="select-item"><i>Смотреть все</i></div>  
                     </div>
                     <div v-show="globalResult.orders.length" class="group">
                         <div class="select-item"><b>Orders</b>@{{  }}</div> 
-                        <div class="select-item" v-for="item of globalResult.orders">{{ item.text }}</div> 
-                        <div class="select-item"><i>Смотреть все</i></div>  
+                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders">{{ item.text }}</div> 
+                        <div @click="viewSearchResult('orders')" class="select-item"><i>Смотреть все</i></div>  
                     </div>
                     <div v-show="globalResult.products.length" class="group">
                         <div class="select-item"><b>Products</b>@{{  }}</div> 
-                        <div class="select-item" v-for="item of globalResult.products">{{ item.text }}</div> 
-                        <div class="select-item"><i>Смотреть все</i></div>  
+                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products">{{ item.text }}</div> 
+                        <div @click="viewSearchResult('products')" class="select-item"><i>Смотреть все</i></div>  
                     </div>
                     <div v-show="globalResult.reclamations.length" class="group">
                         <div class="select-item"><b>Reclamations</b>@{{  }}</div> 
-                        <div class="select-item" v-for="item of globalResult.reclamations">{{ item.text }}</div> 
-                        <div class="select-item"><i>Смотреть все</i></div>  
+                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations">{{ item.text }}</div> 
+                        <div @click="viewSearchResult('reclamations')" class="select-item"><i>Смотреть все</i></div>  
                     </div>
                 </div>
 
@@ -667,6 +667,21 @@
             list: () => this.info.standart
         },
         methods: {
+            viewSearchResult(category) {
+                console.log(category);
+            },
+            openItem(category, id) {
+                if(category === 'orders') {
+                    window.location = '{{ route('orders') }}' + '/' + id;
+                } else if(category === 'products') {
+                    window.location = '{{ route('products') }}' + '/' + id;
+                } else if(category === 'reclamations') {
+                    window.location = '{{ route('reclamations') }}' + '/' + id;
+                } else if(category === 'implementations') {
+                    window.location = '{{ route('implementations') }}' + '/' + id;
+                }
+
+            },
             getResults() {
                 clearTimeout(this.debounce);
                 this.debounce = setTimeout(() => {
