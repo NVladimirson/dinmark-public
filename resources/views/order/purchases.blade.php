@@ -8,6 +8,9 @@
     <link href="/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
     <link href="/assets/css/default/table-ptoduct.css" rel="stylesheet" />
     <link href="/assets/plugins/jstree/dist/style.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
 @endpush
 
 @push('scripts')
@@ -1002,6 +1005,7 @@
                     "pageLength": 25,
                     // "autoWidth": true,
                     "processing": true,
+                    "autoWidth": true,
                     "serverSide": true,
                     "ajax": {
                       "url": "{!! route('purchases.get_ajax') !!}",
@@ -1028,10 +1032,14 @@
                     "order": [[ 0, "desc" ]],
                     "columns": [
                         {
+                        data: 'date_html',
+                        "width": "10%"
+                        },
+                        {
                             data:'code_name',
                             "orderable": true,
                             "searchable": false,
-                            "width": "14%"
+                            "width": "150px"
                         },
                         {
                             data:'photo',
@@ -1128,18 +1136,18 @@
              </div>
              <div class="panel-body">
                <div class="row" style="margin-bottom: 10px">
-                  <div class="col-xl-6">
+                  <!-- <div class="col-xl-6"> -->
                      <!-- <select class="custom-select" multiple>
                         <option selected>None</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                      </select> -->
-                  </div>
-                  <div class="col-xl-3">
+                  <!-- </div> -->
+                  <div class="col-xl-6">
                      <p>@lang('purchases.purchases_startdate')<input type="text" id="startdate"></p>
                   </div>
-                  <div class="col-xl-3">
+                  <div class="col-xl-6">
                      <p>@lang('purchases.purchases_enddate')<input type="text" id="enddate"></p>
                   </div>
                </div>
@@ -1148,6 +1156,7 @@
                       <table id="datatable" class="table table-striped table-bordered table-td-valign-middle">
                          <thead>
                             <tr>
+                               <th>@lang('order.table_header_date_create')</th>
                                <th>@lang('purchases.purchases_table_code/name')</th>
                                <th>@lang('purchases.purchases_table_photo')</th>
                                <th>@lang('purchases.purchases_table_quantity_in_orders_sellings_returns')</th>

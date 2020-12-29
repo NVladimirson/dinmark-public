@@ -30,6 +30,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 class OrderController extends Controller
 {
 	public function index(){
+
 		SEOTools::setTitle(trans('order.page_list'));
 		$statuses = OrderStatus::all();
 
@@ -474,7 +475,7 @@ class OrderController extends Controller
             }
             $weight += $orderProduct->product->weight * $orderProduct->quantity/100;
 
-						dd(($storageProduct)?$orderProduct->quantity/$storageProduct->package:0);
+					
 			$products[] = [
 				'id'	=> $orderProduct->id,
 				'product_id'	=> $orderProduct->product->id,

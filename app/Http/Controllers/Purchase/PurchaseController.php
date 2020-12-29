@@ -14,7 +14,7 @@ use App\Services\Product\Product as ProductServices;
 class PurchaseController extends Controller
 {
     public function index(){
-        SEOTools::setTitle(trans('purchases.title'));
+        SEOTools::setTitle(trans('purchases.purchases_pagename'));
         $filters = CategoryServices::getOptionFilters();
         $dinmark_url = \Config::get('values.dinmarkurl');
         return view('order.purchases',compact('filters','dinmark_url'));
@@ -86,6 +86,20 @@ class PurchaseController extends Controller
 
       return datatables()
   			->eloquent($products)
+        ->addColumn('date_html', function (Product $product) {
+          $product = Product::where('id',$product->id)->with('orderProducts')->get();
+          $dates = [];
+          if($product->first()->orderProducts){
+            foreach ($product->first()->orderProducts as $key => $orderProduct) {
+              $dates[] = $orderProduct->date;
+            }
+            asort($dates);
+            foreach ($dates as $key => $date) {
+               $dates[$key] = Carbon::parse($date)->format('d.m.Y');
+            }
+          }
+          return '<p style="width:150px" title="'.implode(',',$dates).'">'.$dates[array_key_last($dates)].'</p>';
+        })
   			->addColumn('code_name', function (Product $product) {
           $name = ProductServices::getName($product);
           return '<a class="data-product_name" href="'
@@ -152,7 +166,34 @@ class PurchaseController extends Controller
           ';
         })
         ->addColumn('sum_of_orders/sellings/reclamations', function (Product $product) {
+          $product = Product::where('id',$product->id)->with('orderProducts.implementationProduct','orderProducts.reclamationProduct')->get();
+          $orderTotal = 0;
+          $implementationTotal = 0;
+          $reclamationTotal = 0;
+          if($product){
+              $orderProducts = $product->pluck('orderProducts')->first();
+              if($orderProducts){
+                foreach ($orderProducts as $key => $orderProduct) {
+                  $orderTotal += $orderProduct->price * $orderProduct->quantity;
+                  if($orderProduct->implementationProduct){
+                    if(count($orderProduct->implementationProduct)){
+                      $implementationTotal += $orderProduct->implementationProduct->first()->total;
+                    }
+                  }
 
+                  if($orderProduct->reclamationProduct){
+                    if(count($orderProduct->reclamationProduct)){
+                      $reclamationTotal += $orderProduct->reclamationProduct->total;
+                    }
+                  }
+                }
+              }
+          }
+          return '
+          <p style="overflow-wrap: break-word">Заказы: '.$orderTotal.'</p>
+          <p style="overflow-wrap: break-word">Реализации: '.$implementationTotal.'</p>
+          <p style="overflow-wrap: break-word">Возвраты: '.$reclamationTotal.'</p>
+          ';
         })
         ->addColumn('percentage_of_confirmed_orders', function (Product $product) {
           $product = Product::where('id',$product->id)->with('orderProducts.implementationProduct','orderProducts.getCart')->get();
@@ -185,9 +226,11 @@ class PurchaseController extends Controller
           return $weightTotal;
         })
         ->addColumn('CSV-export', function (Product $product) {
-
+          return '<a href="#" class="btn btn-sm btn-primary m-r-5">
+              <i class="fas fa-file-csv"></i></a>';
         })
         ->rawColumns([
+          'date_html',
           'code_name',
           'photo',
           'quantity_in_orders_sellings_returns',
