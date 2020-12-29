@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <div id="wrapProfile">
+    <div id="wrapProfile" @click="randomClick">
         <div class="profile" style="margin-top: -1px">
             <div class="profile-header">
                 <!-- BEGIN profile-header-cover -->
@@ -198,19 +198,27 @@
 
 
                         <div class="tab-pane fade show active">
+
                             <div class="m-b-5">
                                 <label class="m-b-0">Введіть населений пункт</label>
-                                <input type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
-                                <div class="wrap-select">
+                                <input id="searchCity" type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
+                                <div v-show="citiesResult.length" class="wrap-select">
                                     <div class="city-select">
-                                        <div v-for="cityName of citiesResult" class="city-item">@{{ cityName.Present }}</div>
+                                        <div @click="city = cityName.Present; selectCity(cityName.Ref)" v-for="cityName of citiesResult" class="city-item">@{{ cityName.Present }}</div>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="m-b-5">
                                 <label class="m-b-0">Адреса</label>
-                                <input type="text" class="form-control m-b-5" placeholder="Адреса">
+                                <input id="searchStreet" @click="searchStreet" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
+                                <div v-show="streetsResult.length" class="wrap-select">
+                                    <div class="city-select">
+                                        <div class="city-item" v-for="warehouse of streetsResult">@{{ warehouse.Description }}</div>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="m-b-5">
                                 <label class="m-b-0">Номер будинку / і квартири</label>
                                 <input type="text" class="form-control m-b-5" placeholder="Номер будинку / і квартири">
@@ -255,10 +263,44 @@
             el: '#wrapProfile',
             data: {
                 city: '',
-                citiesResult: []
+                street: '',
+                citiesResult: [],
+                streetsResult: [],
+                elementRef: ''
                 
             },
             methods: {
+                searchStreet() {
+                    let requestBody = {
+                        apiKey: "f50ab08faaad28c3a612bf9e97fb1c8a",
+                        modelName: "Address",
+                            calledMethod: "getWarehouses",
+                            methodProperties: {
+                                SettlementRef: this.elementRef,
+                                Limit: 99
+                            }
+                        }
+                        fetch('https://api.novaposhta.ua/v2.0/json/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(requestBody)
+                        })
+                        .then(response => response.json())
+                        .then(results => this.streetsResult = results.data);
+                },
+                selectCity(ref) {
+                    this.elementRef = ref;
+                },
+                randomClick(event) {
+                    if(event.target.id !== 'searchCity') {
+                        this.citiesResult = [];
+                    } 
+                    if(event.target.id !== 'searchStreet') {
+                        this.streetsResult = [];
+                    }
+                },
                 searchCity() {
                     let requestBody = {
                         apiKey: "f50ab08faaad28c3a612bf9e97fb1c8a",
