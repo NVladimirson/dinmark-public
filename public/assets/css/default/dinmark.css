@@ -3,7 +3,6 @@ body {
     font-family: "DinPRO", Arial, Helvetica, sans-serif !important;
 }
 
-
 #mobile-header {
     position: fixed;
     top: 0;
@@ -27,11 +26,8 @@ body {
     flex: 1;  */
 }
 
-
-
-
 #mobile-header .right-action-block > a {
-    color: #A2A2A2 !important;
+    color: #a2a2a2 !important;
 }
 #header {
     padding: 15px 0 20px;
@@ -57,7 +53,7 @@ body {
 }
 
 #header .right-actions-block li > a {
-    color: #A2A2A2;
+    color: #a2a2a2;
 }
 
 .navbar-grey .hideTab a:first-of-type {
@@ -67,14 +63,14 @@ body {
     /* margin-right: 50px !important; */
 }
 
-.bage-default.bage-sale{
-	background: #ee3f3c;
+.bage-default.bage-sale {
+    background: #ee3f3c;
 }
-.bage-default.bage-hits{
-	background: #43d171;
+.bage-default.bage-hits {
+    background: #43d171;
 }
-.bage-default.bage-new{
-  background: #ff9f1a;
+.bage-default.bage-new {
+    background: #ff9f1a;
 }
 
 .hexa {
@@ -84,8 +80,9 @@ body {
     z-index: 1;
 }
 
-.hexa:before, .hexa:after {
-    content: '';
+.hexa:before,
+.hexa:after {
+    content: "";
     position: absolute;
     width: 14px;
     height: 100%;
@@ -95,11 +92,9 @@ body {
     background-image: url(../default/images/before-filter.svg);
 }
 
-
-
 .hexa:after,
 .hexa:after {
-    content: '';
+    content: "";
     left: auto;
     right: 0;
     background-image: url(../default/images/after-filter.svg);
@@ -139,7 +134,7 @@ body {
 }
 
 .select2-rendered__match {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 #header i.fas {
@@ -153,11 +148,13 @@ body {
     left: 100%;
     top: 0;
 }
-.more.hexa-plus:before, .more.hexa-plus:after {
+.more.hexa-plus:before,
+.more.hexa-plus:after {
     width: 5px;
 }
 
-*:before, *:after {
+*:before,
+*:after {
     background-repeat: no-repeat;
 }
 
@@ -176,7 +173,7 @@ body {
     position: relative;
 }
 #global_search_wrap:before {
-    content: '';
+    content: "";
     position: absolute;
     width: 14px;
     height: 100%;
@@ -186,7 +183,7 @@ body {
     background-image: url(../default/images/before_plus.svg);
 }
 #global_search_wrap:after {
-    content: '';
+    content: "";
     position: absolute;
     width: 14px;
     height: 100%;
@@ -236,7 +233,7 @@ body {
     color: #000;
     text-decoration: none;
 }
-#header .debt-btn:hover{
+#header .debt-btn:hover {
     background: #e6e6e6;
 }
 
@@ -267,22 +264,22 @@ body {
 }
 
 #header .actions .comparison,
-.mobile-header .actions .comparison{
+.mobile-header .actions .comparison {
     background-image: url(../default/images/comparison1.svg);
 }
 
 #header .actions .comparison-active,
-.mobile-header .actions .comparison-active{
+.mobile-header .actions .comparison-active {
     background-image: url(../default/images/comparison-active.svg);
 }
 
 #header .actions .cart-active,
-.mobile-header .actions .cart-active  {
+.mobile-header .actions .cart-active {
     background-image: url(../default/images/cart-active.svg);
 }
 
 #header .actions .cart,
-.mobile-header .actions .cart  {
+.mobile-header .actions .cart {
     background-image: url(../default/images/cart.svg);
 }
 
@@ -365,24 +362,22 @@ body {
     border-radius: 5px;
 }
 
-#header form#filter .container div
-#mobile-filter .container div {
+#header form#filter .container div #mobile-filter .container div {
     width: 16%;
 }
 
 #header form#filter .container *,
-#mobile-filter .container *{
+#mobile-filter .container * {
     height: auto;
 }
 
 #header form#filter .container div > p,
-#mobile-filter .container div > p{
+#mobile-filter .container div > p {
     text-align: center;
     color: #fff;
     font-size: 12px;
     margin-bottom: 2px;
 }
-
 
 .select2-hidden-accessible {
     border: 0 !important;
@@ -415,7 +410,7 @@ body {
 #header form#filter .submit:after,
 #mobile-filter .submit:before,
 #mobile-filter .submit:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -19px;
@@ -486,7 +481,7 @@ body {
     background: url(../default/images/after-filter-sbt.svg);
 }
 nav.navbar-grey {
-    background: #5A5A5A;
+    background: #5a5a5a;
     padding: 10px 0;
     z-index: 1019;
     position: relative;
@@ -496,8 +491,6 @@ nav.navbar-grey .container {
     /* z-index: 1020; */
     /* background: #5A5A5A; */
 }
-
-
 
 .navbar-grey a:hover {
     opacity: 0.9;
@@ -509,7 +502,7 @@ nav.navbar-grey a.shop {
     margin-right: 100px;
     text-transform: uppercase;
     padding: 4px 8px !important;
-    background: #29ABE2;
+    background: #29abe2;
     color: #fff;
 }
 
@@ -531,16 +524,16 @@ nav.navbar-grey a.shop {
     align-self: flex-start !important;
 } */
 
-nav.navbar-grey  a {
+nav.navbar-grey a {
     /* white-space: nowrap; */
-    background: #A2A2A2;
+    background: #a2a2a2;
     color: #fff;
     padding: 4px 18px;
     border-radius: 2px;
 }
 
 nav.mainmenu a {
-    background: #D5D5D5;
+    background: #d5d5d5;
     color: #fff;
     padding: 4px 18px;
     border-radius: 2px;
@@ -550,11 +543,11 @@ nav.navbar-grey a.hexa:before {
     width: 8px;
     left: -7px;
 }
-nav.navbar-grey  a:before {
+nav.navbar-grey a:before {
     background-image: url(images/before-grey.svg);
 }
 
-nav.navbar-grey  a:after {
+nav.navbar-grey a:after {
     background-image: url(images/after-grey.svg);
 }
 
@@ -565,13 +558,14 @@ nav.mainmenu > div:hover:after {
     height: 100%;
     right: -23px;
     top: 0;
-    content: '';
+    content: "";
     z-index: 999;
     display: block;
     position: absolute;
 }
-nav.mainmenu > div:hover > a, nav.mainmenu div.submenu a:hover {
-    background: #29ABE2;
+nav.mainmenu > div:hover > a,
+nav.mainmenu div.submenu a:hover {
+    background: #29abe2;
     color: #fff;
     text-decoration: none;
 }
@@ -585,7 +579,7 @@ nav.mainmenu > div > a + div.submenu {
     left: calc(100% + 10px);
     top: 0;
     color: #fff;
-    background: #5A5A5A;
+    background: #5a5a5a;
     padding: 15px;
     z-index: 98;
 }
@@ -594,7 +588,7 @@ nav.mainmenu > div > a + div.submenu {
     color: #fff;
     text-decoration: none;
 }
-.right-actions-block .dropdown-menu{
+.right-actions-block .dropdown-menu {
     z-index: 2500;
 }
 .navbar-grey a:hover {
@@ -603,14 +597,13 @@ nav.mainmenu > div > a + div.submenu {
 nav.mainmenu > div > a + div.submenu a {
     display: block;
     padding: 10px;
-
 }
 nav.mainmenu > div > a {
     color: #000;
 }
 nav div.submenu a {
     color: #fff;
-    background-color: #5A5A5A;
+    background-color: #5a5a5a;
 }
 .mainmenu {
     width: 270px;
@@ -625,7 +618,7 @@ nav div.submenu a {
 nav.mainmenu {
     padding: 10px !important;
     border-radius: 5px;
-    background: #D5D5D5;
+    background: #d5d5d5;
 }
 nav.mainmenu > div {
     position: relative;
@@ -637,7 +630,6 @@ nav.mainmenu > div > a {
     font-weight: bold;
     position: relative;
 }
-
 
 nav.mainmenu > div > a div:first-child {
     text-align: right;
@@ -661,13 +653,11 @@ nav.mainmenu > div > a img {
     nav.navbar-grey .w75 a {
         padding: 4px 35px;
     }
-
 }
-
 
 @media screen and (min-width: 1051px) {
     #mobile-filter.show {
-       display: none;
+        display: none;
     }
 }
 
@@ -714,8 +704,8 @@ nav.mainmenu > div > a img {
         padding-top: 0;
     }
     #mobile-header ul {
-        padding:0;
-        margin:0;
+        padding: 0;
+        margin: 0;
         list-style-type: none;
     }
     .mobile-header .navbar-user-img {
@@ -768,7 +758,7 @@ nav.mainmenu > div > a img {
         -webkit-border-radius: 4px;
         border-radius: 4px;
     }
-    .navbar-toggle .icon-bar+.icon-bar {
+    .navbar-toggle .icon-bar + .icon-bar {
         margin-top: 4px;
     }
     #mobile-header .navbar-toggle .icon-bar {
@@ -869,7 +859,6 @@ nav.mainmenu > div > a img {
         color: #fff;
         z-index: 99999;
         /* display: none; */
-
     }
     .navbar-items {
         width: 100% !important;
@@ -904,9 +893,6 @@ nav.mainmenu > div > a img {
     } */
 }
 
-
-
-
 /* end header */
 tbody img:hover {
     transform: scale(1.8) translate(-30%, -25%);
@@ -929,12 +915,13 @@ tbody img {
     -o-transition: all 0.5s ease-out;
 }
 
-tbody tr:hover td, tbody tr:hover th {
+tbody tr:hover td,
+tbody tr:hover th {
     background-color: grey;
     color: #fff;
 }
 
-tbody tr:hover td .product-total{
+tbody tr:hover td .product-total {
     /* background-color: grey; */
     color: #000;
 }
@@ -955,14 +942,14 @@ tbody tr:hover td.datatable_namearticle_class a {
     color: #fff;
 }
 
-tbody tr:hover a{
+tbody tr:hover a {
     color: #fff;
 }
 
-.nav.nav-tabs.nav-tabs-panel{
+.nav.nav-tabs.nav-tabs-panel {
     margin-bottom: -10px;
 }
-.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link{
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link {
     color: #fff;
 }
 
@@ -971,73 +958,73 @@ tbody tr:hover a{
     color: #eee;
 }
 
-.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active{
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active {
     color: #2d353c;
 }
 
 .nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:focus,
-.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:hover{
+.nav.nav-tabs.nav-tabs-panel .nav-item .nav-link.active:hover {
     color: #48596a;
 }
-.nav.nav-tabs.nav-tabs-primary{
+.nav.nav-tabs.nav-tabs-primary {
     background-color: #1e7cd2;
 }
 .nav.nav-tabs.nav-tabs-primary .nav-item .nav-link {
     color: #fff;
 }
-.order-status{
+.order-status {
     display: none;
 }
 
-.order-status.order-status-tab_active{
+.order-status.order-status-tab_active {
     display: block;
 }
 
-.widget-list .widget-list-item.widget-list-item_transparent{
+.widget-list .widget-list-item.widget-list-item_transparent {
     background: transparent;
 }
-#ui-datepicker-div{
-    z-index: 5!important;
+#ui-datepicker-div {
+    z-index: 5 !important;
 }
-#page-container:not(.page-sidebar-minified) .sidebar .nav-manager{
+#page-container:not(.page-sidebar-minified) .sidebar .nav-manager {
     display: none;
 }
-.page-sidebar-minified .sidebar .nav>.nav-manager>a{
+.page-sidebar-minified .sidebar .nav > .nav-manager > a {
     padding: 10px 13.5px;
 }
-.debt{
+.debt {
     text-transform: uppercase;
     font-size: 18px;
     margin-top: 4px;
 }
-.news-content table{
-    width: 100%!important;
+.news-content table {
+    width: 100% !important;
 }
-.table-scroll-container{
-    width: 100%!important;
+.table-scroll-container {
+    width: 100% !important;
 }
-.table-scroll-container table{
+.table-scroll-container table {
     min-width: 100%;
 }
-.w-40{
+.w-40 {
     width: 40%;
 }
-.w-60{
+.w-60 {
     width: 60%;
 }
-.product-total{
+.product-total {
     padding: 5px;
     text-align: right;
     font-weight: 700;
     background-color: #f0f0f0;
 }
-.product-total-limit_1{
-    background-color: #FCAA3F;
+.product-total-limit_1 {
+    background-color: #fcaa3f;
     color: #ffffff;
 }
 
-.product-total-limit_2{
-    background-color: #74C186;
+.product-total-limit_2 {
+    background-color: #74c186;
     color: #ffffff;
 }
 
@@ -1072,7 +1059,8 @@ section.subscribe img {
     width: 100%;
 }
 
-header .actions > a:hover, section.subscribe a:hover {
+header .actions > a:hover,
+section.subscribe a:hover {
     transform: scale(1.1);
 }
 
@@ -1126,12 +1114,14 @@ header .actions > a:hover, section.subscribe a:hover {
     border-bottom: 1px solid #5e5e5e;
 }
 
-#footer .container div a, footer .container div p > a:hover {
+#footer .container div a,
+footer .container div p > a:hover {
     color: #fff;
     text-decoration: underline;
 }
 
-#footer .container div > a, footer .container div p {
+#footer .container div > a,
+footer .container div p {
     display: block;
     margin: 15px 0;
 }
@@ -1147,28 +1137,24 @@ header .actions > a:hover, section.subscribe a:hover {
 .copyright span {
     padding-left: 20px;
     font-size: 12px;
-
 }
 
-
-@media screen and (max-width: 1280px){
-
-    .table-scroll-container{
+@media screen and (max-width: 1280px) {
+    .table-scroll-container {
         display: block;
-        width: 100%!important;
+        width: 100% !important;
         overflow-x: scroll;
     }
-    .news-content table{
-        overflow-x: auto!important;
+    .news-content table {
+        overflow-x: auto !important;
     }
-    .pagination{
+    .pagination {
         flex-wrap: wrap;
     }
-
 }
 
-@media screen and (max-width: 768px){
-    .debt{
+@media screen and (max-width: 768px) {
+    .debt {
         width: 100%;
         margin-top: 0;
     }
@@ -1205,7 +1191,6 @@ header .actions > a:hover, section.subscribe a:hover {
     }
 }
 
-
 /* @media screen and (max-width: 508px) {
     #mobile-filter .submit {
         top: 389px;
@@ -1228,7 +1213,7 @@ header .actions > a:hover, section.subscribe a:hover {
     font-size: 11px;
     margin-top: -1px;
     border: none;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1238,7 +1223,7 @@ header .actions > a:hover, section.subscribe a:hover {
 .gallery .image .image-info .rating span.star:before {
     content: "\f005";
     color: #d5dbe0;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1254,7 +1239,7 @@ header .actions > a:hover, section.subscribe a:hover {
     height: 20px;
     line-height: 20px;
     text-align: center;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1271,7 +1256,7 @@ header .actions > a:hover, section.subscribe a:hover {
     color: #fff;
     opacity: 0.4;
     text-align: center;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1290,7 +1275,7 @@ header .actions > a:hover, section.subscribe a:hover {
     line-height: 16px;
     font-size: 10px;
     text-align: center;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1300,7 +1285,7 @@ header .actions > a:hover, section.subscribe a:hover {
 .todolist > li > a:hover .todolist-input i:before {
     content: "\f14a";
     color: rgba(45, 53, 60, 0.4);
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1320,7 +1305,7 @@ header .actions > a:hover, section.subscribe a:hover {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1329,35 +1314,35 @@ header .actions > a:hover, section.subscribe a:hover {
 body .datetimepicker .glyphicon {
     font-size: 14px;
     color: #2d353c;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
 .icon-eye-open {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
 .icon-eye-close {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
 .bootstrap-timepicker-widget table tbody tr td .glyphicon {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
 .combobox-container .input-group .input-group-addon .glyphicon {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1369,7 +1354,7 @@ body table.dataTable thead tr th.sorting_desc:after {
     opacity: 1;
     color: #c6ced5;
     bottom: 8px;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1388,7 +1373,7 @@ body .datepicker .datepicker-years table thead tr th.prev {
     color: transparent;
     width: 14.28%;
     position: relative;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1411,7 +1396,7 @@ body .datepicker .datepicker-years table thead tr th.prev {
     justify-content: center;
     -webkit-border-radius: 40px;
     border-radius: 40px;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1420,21 +1405,31 @@ body .datepicker .datepicker-years table thead tr th.prev {
 body .bootstrap-datetimepicker-widget .glyphicon {
     font-size: 14px;
     color: #2d353c;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.fc .fc-toolbar.fc-header-toolbar .fc-button-group .fc-button .fc-icon .fc-icon-left-single-arrow {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+.fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-button-group
+    .fc-button
+    .fc-icon
+    .fc-icon-left-single-arrow {
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.fc .fc-toolbar.fc-header-toolbar .fc-button-group .fc-button .fc-icon .fc-icon-right-single-arrow {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+.fc
+    .fc-toolbar.fc-header-toolbar
+    .fc-button-group
+    .fc-button
+    .fc-icon
+    .fc-icon-right-single-arrow {
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1453,7 +1448,7 @@ body .bootstrap-datetimepicker-widget .glyphicon {
     background: #f2f4f5;
     color: #c6ced5;
     font-size: 14px;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1470,7 +1465,7 @@ body .bootstrap-datetimepicker-widget .glyphicon {
     right: 0;
     bottom: 0;
     color: #fff;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1478,7 +1473,11 @@ body .bootstrap-datetimepicker-widget .glyphicon {
     -webkit-border-radius: 40px;
     border-radius: 40px;
 }
-.jstree .jstree-container-ul .jstree-node .jstree-anchor .jstree-icon.jstree-checkbox:after {
+.jstree
+    .jstree-container-ul
+    .jstree-node
+    .jstree-anchor
+    .jstree-icon.jstree-checkbox:after {
     content: "";
     position: absolute;
     left: 7px;
@@ -1486,7 +1485,7 @@ body .bootstrap-datetimepicker-widget .glyphicon {
     right: 7px;
     bottom: 7px;
     display: block;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1502,7 +1501,7 @@ body .select2-container .select2-choice .select2-search-choice-close {
     color: #9ba8b4;
     top: 1px;
     right: 20px;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1512,13 +1511,17 @@ body .select2-container .select2-choice .select2-search-choice-close {
 }
 body .select2-container .select2-choice .select2-arrow b {
     background: 0 0 !important;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-body .select2-container.select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close {
+body
+    .select2-container.select2-container-multi
+    .select2-choices
+    .select2-search-choice
+    .select2-search-choice-close {
     position: relative;
     left: 0;
     right: 0;
@@ -1527,7 +1530,7 @@ body .select2-container.select2-container-multi .select2-choices .select2-search
     margin-left: 5px;
     color: #c6ced5;
     background: 0 0 !important;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1542,14 +1545,22 @@ body .select2-drop .select2-search:before {
     font-size: 12px;
     line-height: 14px;
     color: #c6ced5;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.select2.select2-container .selection .select2-selection.select2-selection--multiple .select2-selection__arrow b,
-.select2.select2-container .selection .select2-selection.select2-selection--single .select2-selection__arrow b {
+.select2.select2-container
+    .selection
+    .select2-selection.select2-selection--multiple
+    .select2-selection__arrow
+    b,
+.select2.select2-container
+    .selection
+    .select2-selection.select2-selection--single
+    .select2-selection__arrow
+    b {
     position: relative;
     top: 0;
     left: 0;
@@ -1558,7 +1569,7 @@ body .select2-drop .select2-search:before {
     color: #2d353c;
     width: auto;
     height: auto;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1567,7 +1578,7 @@ body .select2-drop .select2-search:before {
 .simplecolorpicker.fontawesome .color[data-selected]:after {
     display: block;
     text-align: center;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1579,7 +1590,7 @@ body .select2-drop .select2-search:before {
     top: 0 !important;
     display: block;
     text-align: center;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1590,58 +1601,209 @@ body .select2-drop .select2-search:before {
     height: 24px;
     width: 16px;
     text-indent: 0;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
 body ul.wysihtml5-toolbar .glyphicon {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.editable-container .editableform .form-group > div .editable-input .input-append.date .add-on i {
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .add-on
+    i {
     width: auto;
     height: auto;
     margin: 0;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-centuries table thead tr th.next,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-centuries table thead tr th.prev,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-days table thead tr th.next,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-days table thead tr th.prev,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-decades table thead tr th.next,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-decades table thead tr th.prev,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-hours table thead tr th.next,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-hours table thead tr th.prev,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-months table thead tr th.next,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-months table thead tr th.prev,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-years table thead tr th.next,
-.editable-container .editableform .form-group > div .editable-input .input-append.date .datetimepicker .datetimepicker-years table thead tr th.prev {
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-centuries
+    table
+    thead
+    tr
+    th.next,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-centuries
+    table
+    thead
+    tr
+    th.prev,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-days
+    table
+    thead
+    tr
+    th.next,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-days
+    table
+    thead
+    tr
+    th.prev,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-decades
+    table
+    thead
+    tr
+    th.next,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-decades
+    table
+    thead
+    tr
+    th.prev,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-hours
+    table
+    thead
+    tr
+    th.next,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-hours
+    table
+    thead
+    tr
+    th.prev,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-months
+    table
+    thead
+    tr
+    th.next,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-months
+    table
+    thead
+    tr
+    th.prev,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-years
+    table
+    thead
+    tr
+    th.next,
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-input
+    .input-append.date
+    .datetimepicker
+    .datetimepicker-years
+    table
+    thead
+    tr
+    th.prev {
     color: transparent;
     width: 14.28%;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.editable-container .editableform .form-group > div .editable-buttons .btn .glyphicon-ok {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-buttons
+    .btn
+    .glyphicon-ok {
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
 }
-.editable-container .editableform .form-group > div .editable-buttons .btn .glyphicon-remove {
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+.editable-container
+    .editableform
+    .form-group
+    > div
+    .editable-buttons
+    .btn
+    .glyphicon-remove {
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1656,7 +1818,7 @@ body ul.wysihtml5-toolbar .glyphicon {
     text-align: center;
     font-size: 11px;
     border: none;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1671,7 +1833,7 @@ body ul.wysihtml5-toolbar .glyphicon {
     font-size: 11px;
     border: none;
     margin-left: 5px;
-    font-family: Font awesome\ 5 Free, Font awesome\ 5 Pro, FontAwesome !important;
+    font-family: Font awesome\5 Free, Font awesome\5 Pro, FontAwesome !important;
     font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -1683,8 +1845,11 @@ body ul.wysihtml5-toolbar .glyphicon {
     font-weight: 400;
     font-display: auto;
     src: url(../webfonts/fa-brands-400.eot);
-    src: url(../webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"), url(../webfonts/fa-brands-400.woff2) format("woff2"), url(../webfonts/fa-brands-400.woff) format("woff"), url(../webfonts/fa-brands-400.ttf) format("truetype"),
-    url(../webfonts/fa-brands-400.svg#fontawesome) format("svg");
+    src: url(../webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"),
+        url(../webfonts/fa-brands-400.woff2) format("woff2"),
+        url(../webfonts/fa-brands-400.woff) format("woff"),
+        url(../webfonts/fa-brands-400.ttf) format("truetype"),
+        url(../webfonts/fa-brands-400.svg#fontawesome) format("svg");
 }
 .fab {
     font-family: "Font Awesome 5 Brands";
@@ -1695,8 +1860,11 @@ body ul.wysihtml5-toolbar .glyphicon {
     font-weight: 400;
     font-display: auto;
     src: url(../webfonts/fa-regular-400.eot);
-    src: url(../webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"), url(../webfonts/fa-regular-400.woff2) format("woff2"), url(../webfonts/fa-regular-400.woff) format("woff"),
-    url(../webfonts/fa-regular-400.ttf) format("truetype"), url(../webfonts/fa-regular-400.svg#fontawesome) format("svg");
+    src: url(../webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),
+        url(../webfonts/fa-regular-400.woff2) format("woff2"),
+        url(../webfonts/fa-regular-400.woff) format("woff"),
+        url(../webfonts/fa-regular-400.ttf) format("truetype"),
+        url(../webfonts/fa-regular-400.svg#fontawesome) format("svg");
 }
 .far {
     font-weight: 400;
@@ -1707,39 +1875,47 @@ body ul.wysihtml5-toolbar .glyphicon {
     font-weight: 900;
     font-display: auto;
     src: url(../webfonts/fa-solid-900.eot);
-    src: url(../webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"), url(../webfonts/fa-solid-900.woff2) format("woff2"), url(../webfonts/fa-solid-900.woff) format("woff"), url(../webfonts/fa-solid-900.ttf) format("truetype"),
-    url(../webfonts/fa-solid-900.svg#fontawesome) format("svg");
+    src: url(../webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
+        url(../webfonts/fa-solid-900.woff2) format("woff2"),
+        url(../webfonts/fa-solid-900.woff) format("woff"),
+        url(../webfonts/fa-solid-900.ttf) format("truetype"),
+        url(../webfonts/fa-solid-900.svg#fontawesome) format("svg");
 }
 .fa,
 .far,
 .fas {
     font-family: "Font Awesome 5 Free";
 }
-.product-main-image{
+.product-main-image {
     display: block;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 5px;
 }
 .product-gallery a {
     display: flex;
     align-items: center;
     height: 90px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 5px;
     overflow: hidden;
 }
-.product-gallery a.video { position: relative; justify-content: center; margin-right: 0; cursor: pointer }
+.product-gallery a.video {
+    position: relative;
+    justify-content: center;
+    margin-right: 0;
+    cursor: pointer;
+}
 .product-gallery a.video::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 50%;
     height: 100%;
     left: 0;
     top: 0;
     z-index: 0;
-    background: #29ABE2;
+    background: #29abe2;
 }
-.product-gallery a.video img{
+.product-gallery a.video img {
     z-index: 1;
 }
 .profile-header .profile-header-cover:before {
@@ -1752,7 +1928,7 @@ body ul.wysihtml5-toolbar .glyphicon {
 .dropdown-menu .dropdown-item:hover {
     color: #348fe2;
 }
-.dropdown-menu.inner.show li a.dropdown-item{
+.dropdown-menu.inner.show li a.dropdown-item {
     color: #4e5c68;
 }
 
@@ -1786,17 +1962,18 @@ body ul.wysihtml5-toolbar .glyphicon {
     display: none;
 }
 
-table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+table.table-bordered.dataTable th,
+table.table-bordered.dataTable td {
     vertical-align: middle;
     text-align: center;
 }
 .scrollbar-sidebar {
-   background-color: #B3B2B2;
+    background-color: #b3b2b2;
 }
 
 .extend-search {
     background-color: #fff;
-    padding: 0!important;
+    padding: 0 !important;
     max-width: 25%;
     min-width: 175px;
     min-height: 34px;
@@ -1812,7 +1989,7 @@ input#diametr,
 input#dovzhyna,
 input#material,
 input#klas_micnosti,
-input#pokryttja{
+input#pokryttja {
     margin-top: 2px;
     width: 100%;
     border-radius: 5px;
@@ -1825,26 +2002,26 @@ input#pokryttja{
     background-color: #fff;
     color: #000;
     cursor: pointer;
-    border: 1px solid  #B3B2B2;
+    border: 1px solid #b3b2b2;
     border-radius: 15px;
     display: inline;
     margin: 3px 0;
 }
 
 .form-select {
-    max-height: 300px!important;
+    max-height: 300px !important;
     overflow: auto;
     position: absolute;
     top: 100%;
     background-color: #fff;
     z-index: 9999;
-    border: 1px solid  #B3B2B2;
+    border: 1px solid #b3b2b2;
 }
 .select-item {
     padding: 2px 5px;
 }
 .select-item:hover {
-    background-color: #29ABE2;
+    background-color: #29abe2;
     cursor: pointer;
 }
 .times {
@@ -1857,44 +2034,65 @@ div.selected {
 }
 
 .card-frame {
-    height: calc(100vw * .2);
+    height: calc(100vw * 0.2);
 }
 
 @media screen and (max-width: 990px) {
     .card-frame {
         height: 40vh;
     }
-  }
+}
 
-  @media screen and (min-width: 1051px) {
+@media screen and (min-width: 1051px) {
     #global_search_wrap:before {
         left: -8px;
     }
     #global_search_wrap:after {
         right: -13px;
     }
-  }
-  #header input {
-      background-color: #fff;
-      color: #000;
-      font-family: "DIN Pro", Arial, Helvetica, sans-serif;
-      font-size: 14px;
-  }
-  #header input::placeholder {
-      color: darkgray;
-      font-family: "DIN Pro", Arial, Helvetica, sans-serif;
-      font-size: 14px;
-  }
+}
+#header input {
+    background-color: #fff;
+    color: #000;
+    font-family: "DIN Pro", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+#header input::placeholder {
+    color: darkgray;
+    font-family: "DIN Pro", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
 
-  .select-item {
+.select-item {
     padding: 2px 5px;
     font-family: "DIN Pro", Arial, Helvetica, sans-serif;
     font-size: 14px;
 }
 #global_search_wrap .form-select {
-    width: 150%;
+    width: 250%;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> b1336815f407b7056ce11bf723dbdb25a94eef41
+#global_search_wrap .form-select .group {
+    padding: 0 5px;
+}
+#global_search_wrap .form-select .group .select-item {
+    border-bottom: 1px solid lightgray;
+}
+.group .select-footer span {
+    padding: 5px;
+    background-color: rgb(239, 239, 239);
+    cursor: pointer;
+}
+.group .select-footer span:hover {
+    background-color: #29abe2;
+}
+#global_search_wrap {
+    position: relative;
+}
+#chross {
+    position: absolute;
+    top: -2px;
+    right: 0;
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+}
