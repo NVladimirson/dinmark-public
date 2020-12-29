@@ -100,6 +100,8 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
+      $price = ProductServices::calcPriceWithoutPDV(Product::find(22233));
+      dd($price);
     }
 
     public function allAjax(Request $request){
