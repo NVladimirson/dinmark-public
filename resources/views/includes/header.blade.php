@@ -79,30 +79,35 @@
 
 
             <input id="globalInput" placeholder="@lang('global.header_search')" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
-            <div v-if="showGlobalSearch" class="form-select">
-                <div v-show="globalResult.implementations.length" class="group">
-                    <div class="select-item"><b>Implementations</b>@{{  }}</div> 
-                    <div class="select-item" v-for="item of globalResult.implementations">{{ item.text }}</div> 
-                    <div class="select-item"><i>Смотреть все</i></div>  
+            <div class="wrap-global-result" v-if="globalSearch.length > 2">
+                <div v-if="showGlobalSearch" class="form-select">
+                    <div v-show="globalResult.implementations.length" class="group">
+                        <div class="select-item"><b>Implementations</b>@{{  }}</div> 
+                        <div class="select-item" v-for="item of globalResult.implementations">{{ item.text }}</div> 
+                        <div class="select-item"><i>Смотреть все</i></div>  
+                    </div>
+                    <div v-show="globalResult.orders.length" class="group">
+                        <div class="select-item"><b>Orders</b>@{{  }}</div> 
+                        <div class="select-item" v-for="item of globalResult.orders">{{ item.text }}</div> 
+                        <div class="select-item"><i>Смотреть все</i></div>  
+                    </div>
+                    <div v-show="globalResult.products.length" class="group">
+                        <div class="select-item"><b>Products</b>@{{  }}</div> 
+                        <div class="select-item" v-for="item of globalResult.products">{{ item.text }}</div> 
+                        <div class="select-item"><i>Смотреть все</i></div>  
+                    </div>
+                    <div v-show="globalResult.reclamations.length" class="group">
+                        <div class="select-item"><b>Reclamations</b>@{{  }}</div> 
+                        <div class="select-item" v-for="item of globalResult.reclamations">{{ item.text }}</div> 
+                        <div class="select-item"><i>Смотреть все</i></div>  
+                    </div>
                 </div>
-                <div v-show="globalResult.orders.length" class="group">
-                    <div class="select-item"><b>Orders</b>@{{  }}</div> 
-                    <div class="select-item" v-for="item of globalResult.orders">{{ item.text }}</div> 
-                    <div class="select-item"><i>Смотреть все</i></div>  
+
+                <div v-else-if="!showGlobalSearch && !failedSearch" class="form-select">
+                    <div class="select-item">Пошук...</div>
                 </div>
-                <div v-show="globalResult.products.length" class="group">
-                    <div class="select-item"><b>Products</b>@{{  }}</div> 
-                    <div class="select-item" v-for="item of globalResult.products">{{ item.text }}</div> 
-                    <div class="select-item"><i>Смотреть все</i></div>  
-                </div>
-                <div v-show="globalResult.reclamations.length" class="group">
-                    <div class="select-item"><b>Reclamations</b>@{{  }}</div> 
-                    <div class="select-item" v-for="item of globalResult.reclamations">{{ item.text }}</div> 
-                    <div class="select-item"><i>Смотреть все</i></div>  
-                </div>
+
             </div>
-
-
 
 
             <div class="more hexa-plus">
@@ -653,7 +658,9 @@
                 products: [],
                 reclamations: []
               },
-              showGlobalSearch: false
+              showGlobalSearch: false,
+              failedSearch: false,
+              debounce: null
             }
         },
         computed: {
@@ -661,8 +668,16 @@
         },
         methods: {
             getResults() {
+                clearTimeout(this.debounce);
+                this.debounce = setTimeout(() => {
+                    asyncRequest();
+                }, 500);
+
+                const asyncRequest = async () => { 
                 if(this.globalSearch.length > 2) {
-                    fetch('{{route('globalsearch')}}' + `?name=${this.globalSearch}`).then(response => response.json()).then(data => this.globalResult = data).then(this.globalRender());
+                    this.failedSearch = false;
+                   await fetch('{{route('globalsearch')}}' + `?name=${this.globalSearch}`).then(response => response.json()).then(data => this.globalResult = data);
+                   this.globalRender();
                 } else if(this.globalSearch === '') {
                     this.globalResult = {
                         implementations: [],
@@ -672,12 +687,15 @@
                     };
                     this.showGlobalSearch = false;
                 }
+                }
+
             },
             globalRender() {
-                if (this.globalResult) {
-                    this.showGlobalSearch = true
+                if (this.globalResult.implementations.length > 0 || this.globalResult.orders.length > 0 || this.globalResult.products.length > 0 || this.globalResult.reclamations.length > 0) {
+                    this.showGlobalSearch = true;
                 } else {
                     this.showGlobalSearch = false;
+                    this.failedSearch = true;
                 }
             },
             hasItem(e) {
