@@ -78,10 +78,28 @@
 
 
 
-            <input @click="showGlobalSearch = true" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
-
-            <div v-show="showGlobalSearch" class="form-select">
-                <div class="select-item" v-for="(item, index) of globalResult">@{{ item.text }}</div> 
+            <input id="globalInput" placeholder="@lang('global.header_search')" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
+            <div v-if="showGlobalSearch" class="form-select">
+                <div v-show="globalResult.implementations.length" class="group">
+                    <div class="select-item"><b>Implementations</b>@{{  }}</div> 
+                    <div class="select-item" v-for="item of globalResult.implementations">{{ item.text }}</div> 
+                    <div class="select-item"><i>Смотреть все</i></div>  
+                </div>
+                <div v-show="globalResult.orders.length" class="group">
+                    <div class="select-item"><b>Orders</b>@{{  }}</div> 
+                    <div class="select-item" v-for="item of globalResult.orders">{{ item.text }}</div> 
+                    <div class="select-item"><i>Смотреть все</i></div>  
+                </div>
+                <div v-show="globalResult.products.length" class="group">
+                    <div class="select-item"><b>Products</b>@{{  }}</div> 
+                    <div class="select-item" v-for="item of globalResult.products">{{ item.text }}</div> 
+                    <div class="select-item"><i>Смотреть все</i></div>  
+                </div>
+                <div v-show="globalResult.reclamations.length" class="group">
+                    <div class="select-item"><b>Reclamations</b>@{{  }}</div> 
+                    <div class="select-item" v-for="item of globalResult.reclamations">{{ item.text }}</div> 
+                    <div class="select-item"><i>Смотреть все</i></div>  
+                </div>
             </div>
 
 
@@ -629,7 +647,12 @@
                 active: ''
               },
               globalSearch: '',
-              globalResult: [],
+              globalResult: {
+                implementations: [],
+                orders: [],
+                products: [],
+                reclamations: []
+              },
               showGlobalSearch: false
             }
         },
@@ -638,14 +661,24 @@
         },
         methods: {
             getResults() {
-                this.globalSearch.length > 2 ? fetch('{{route('globalsearch')}}' + `?name=${this.globalSearch}`).then(response => response.json()).then(data => {
-                    for (const key in data) {
-                        if (Object.hasOwnProperty.call(data, key)) {
-                            const element = data[key];
-                            this.globalResult = [...element]
-                        }
-                    }
-                }) : false;
+                if(this.globalSearch.length > 2) {
+                    fetch('{{route('globalsearch')}}' + `?name=${this.globalSearch}`).then(response => response.json()).then(data => this.globalResult = data).then(this.globalRender());
+                } else if(this.globalSearch === '') {
+                    this.globalResult = {
+                        implementations: [],
+                        orders: [],
+                        products: [],
+                        reclamations: []
+                    };
+                    this.showGlobalSearch = false;
+                }
+            },
+            globalRender() {
+                if (this.globalResult) {
+                    this.showGlobalSearch = true
+                } else {
+                    this.showGlobalSearch = false;
+                }
             },
             hasItem(e) {
                if(e.target.className != 'form-select') {
