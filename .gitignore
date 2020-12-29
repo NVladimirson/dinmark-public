@@ -17,4 +17,3 @@ composer.lock
 php.txt
 .gitignore
 /public
-!dinmark.css
