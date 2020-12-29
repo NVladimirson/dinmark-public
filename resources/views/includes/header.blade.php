@@ -79,27 +79,28 @@
 
 
             <input id="globalInput" placeholder="@lang('global.header_search')" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
+            <i v-show="globalSearch.length" @click="reset" id="chross">&#215;</i>
             <div class="wrap-global-result" v-if="globalSearch.length > 2">
                 <div v-if="showGlobalSearch" class="form-select">
                     <div v-show="globalResult.implementations.length" class="group">
-                        <div class="select-item"><b>Implementations</b>@{{  }}</div> 
-                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations">{{ item.text }}</div> 
-                        <div @click="viewSearchResult('implementations')" class="select-item"><i>Смотреть все</i></div>  
+                        <h4 class="pt-2 select-head">Implementations</h4> 
+                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations">@{{ item.text }}</div> 
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('implementations')">Смотреть все</span></div>  
                     </div>
                     <div v-show="globalResult.orders.length" class="group">
-                        <div class="select-item"><b>Orders</b>@{{  }}</div> 
-                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders">{{ item.text }}</div> 
-                        <div @click="viewSearchResult('orders')" class="select-item"><i>Смотреть все</i></div>  
+                        <h4 class="pt-2 select-head">Orders</h4> 
+                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders">@{{ item.text }}</div> 
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('orders')">Смотреть все</span></div>  
                     </div>
                     <div v-show="globalResult.products.length" class="group">
-                        <div class="select-item"><b>Products</b>@{{  }}</div> 
-                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products">{{ item.text }}</div> 
-                        <div @click="viewSearchResult('products')" class="select-item"><i>Смотреть все</i></div>  
+                        <h4 class="pt-2 select-head">Products</h4> 
+                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products">@{{ item.text }}</div> 
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('products')">Cмотреть все</span></div>  
                     </div>
                     <div v-show="globalResult.reclamations.length" class="group">
-                        <div class="select-item"><b>Reclamations</b>@{{  }}</div> 
-                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations">{{ item.text }}</div> 
-                        <div @click="viewSearchResult('reclamations')" class="select-item"><i>Смотреть все</i></div>  
+                        <h4 class="pt-2 select-head">Reclamations</h4> 
+                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations">@{{ item.text }}</div> 
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('reclamations')">Cмотреть все</span></div>  
                     </div>
                 </div>
 
@@ -667,8 +668,18 @@
             list: () => this.info.standart
         },
         methods: {
+            reset() {
+                this.globalSearch = '';
+                this.globalResult = {
+                        implementations: [],
+                        orders: [],
+                        products: [],
+                        reclamations: []
+                    };
+                    this.showGlobalSearch = false;
+            },
             viewSearchResult(category) {
-                console.log(category);
+                window.location = '{{ route('products') }}' +'/find?search='+ `${this.globalSearch}#${category}`;
             },
             openItem(category, id) {
                 if(category === 'orders') {
