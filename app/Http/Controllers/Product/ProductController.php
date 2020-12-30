@@ -11,6 +11,7 @@ use App\Models\Order\Implementation;
 use App\Models\Order\ImplementationProduct;
 use App\Models\Order\Order;
 use App\User;
+use Excel;
 use App\Models\Company\Company;
 use App\Models\Company\CompanyPrice;
 use App\Models\Order\OrderProduct;
@@ -100,30 +101,9 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      // $product =Product::where('id',22233)->with('orderProducts.implementationProduct','orderProducts.reclamationProduct','orderProducts.getCart')->get();
-      // $orderProducts = [];
-      // $implementation_products = [];
-      // $reclamation_products = [];
-      // if($product){
-      //   $orderProducts = $product->pluck('orderProducts');
-      //   if($orderProducts){
-      //     $orderProducts = $orderProducts->first()->sortBy('cart');
-      //     foreach ($orderProducts as $key => $orderProduct) {
-      //       if(count($orderProduct->implementationProduct)){
-      //         $implementation_products[$orderProduct->implementationProduct[0]->id] = $orderProduct->implementationProduct[0]->toArray();
-      //       }
-      //       if(count($orderProduct->implementationProduct)){
-      //         $reclamation_products[] = $orderProduct->reclamationProduct;
-      //       }
-      //
-      //       $orderProducts[$key] = $orderProduct->toArray();
-      //     }
-      //     //$implementation_products = $product->pluck('orderProducts')->first()->pluck('implementationProduct');
-      //   }
-      // }
-      //
-      // dump($orderProducts,$implementation_products,$reclamation_products);
-      dd(Carbon::parse('11/06/1990')->timestamp);
+      // $product =Product::where('id',22233)->with('orderProducts.getCart','orderProducts.implementationProduct',
+      // 'orderProducts.implementationProduct.reclamationProduct')->get();
+    
     }
 
     public function allAjax(Request $request){

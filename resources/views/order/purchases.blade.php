@@ -1084,12 +1084,6 @@
                             "searchable": false,
                             "width": "14%"
                         },
-                        {
-                            data:'CSV-export',
-                            "orderable": false,
-                            "searchable": false,
-                            "width": "14%"
-                        }
                     ],
                 });
                     $("#startdate").datepicker({ dateFormat: "dd-mm-yy" }).val();
@@ -1119,6 +1113,37 @@
                       window.enddate = $("#enddate")[0].value;
                       window.startdate = $("#startdate")[0].value;
                       window.table.ajax.reload();
+                    });
+
+                    $("#cleardates").click(function(){
+                      $("#startdate").val('');
+                      $("#enddate").val('');
+                      window.table.ajax.reload();
+                    });
+
+                    window.loading = false;
+                    $('#csvreport').click(function(){
+                      let url = "{!! @route('purchases.getcsv') !!}";
+                      // if(window.loading === false){
+                      //   window.loading = true;
+                      //   $.ajax({
+                      //       method: "GET",
+                      //       url: url,
+                      //       data: {
+                      //           startdate: $("#startdate")[0].value,
+                      //           enddate: $("#enddate")[0].value
+                      //       },
+                      //       success: function(resp) {
+                      //         window.loading = false;
+                      //         console.log(resp);
+                      //       }
+                      //   });
+                      // }
+                      // else{
+                      //   alert('Идет загрузка');
+                      // }
+                      url = url + '?startdate=' + $("#startdate")[0].value + '&enddate=' + $("#enddate")[0].value;
+                      window.location.href = url;
                     });
 
         });
@@ -1167,12 +1192,28 @@
                         <option value="3">Three</option>
                      </select> -->
                   <!-- </div> -->
-                  <div class="col-xl-6">
+                  <div class="col-xl-5">
                      <p>@lang('purchases.purchases_startdate')<input type="text" id="startdate"></p>
                   </div>
-                  <div class="col-xl-6">
+                  <div class="col-xl-5">
                      <p>@lang('purchases.purchases_enddate')<input type="text" id="enddate"></p>
                   </div>
+                  <div class="col-xl-2">
+                     <a id="cleardates" class="btn btn-sm btn-primary m-r-5"><i class="fa fa-times" aria-hidden="true"> Очистить</i></a>
+                  </div>
+
+               </div>
+               <div class="row" style="margin-bottom: 10px">
+                  <div class="col-xl-5">
+
+                  </div>
+                  <div class="col-xl-5">
+
+                  </div>
+                  <div class="col-xl-2">
+                     <a id="csvreport" class="btn btn-sm btn-primary m-r-5"><i class="fa fa-download" aria-hidden="true"> Скачать отчет</i></a>
+                  </div>
+
                </div>
                 <div class="row">
                    <div class="col-xl-12">
@@ -1186,7 +1227,6 @@
                                <th>@lang('purchases.purchases_table_sum_of_orders/sellings/reclamations')</th>
                                <th>@lang('purchases.purchases_table_percentage_of_confirmed_orders')</th>
                                <th>@lang('purchases.purchases_table_sellings_weight')</th>
-                               <th>@lang('purchases.purchases_CSV-export')</th>
                             </tr>
                          </thead>
                          <tbody>
