@@ -1007,6 +1007,7 @@
                     "processing": true,
                     "autoWidth": true,
                     "serverSide": true,
+                    deferRender: true,
                     "ajax": {
                       "url": "{!! route('purchases.get_ajax') !!}",
                       "data": {
@@ -1026,6 +1027,18 @@
                               return filter_selected_ids;
                             }
 
+                        },
+                        "dates": function(){
+                          let startdate = $("#startdate")[0].value;
+                          if(startdate === ''){
+                            startdate = 0;
+                          }
+
+                          let enddate = $("#enddate")[0].value;
+                          if(enddate === ''){
+                            enddate = 0;
+                          }
+                          return [startdate,enddate];
                         }
                       },
                     },
@@ -1038,7 +1051,7 @@
                         {
                             data:'code_name',
                             "orderable": true,
-                            "searchable": false,
+                            "searchable": true,
                             "width": "150px"
                         },
                         {
@@ -1073,15 +1086,13 @@
                         },
                         {
                             data:'CSV-export',
-                            "orderable": true,
+                            "orderable": false,
                             "searchable": false,
                             "width": "14%"
                         }
                     ],
                 });
-            window.startdate =
                     $("#startdate").datepicker({ dateFormat: "dd-mm-yy" }).val();
-            window.enddate =
                     $("#enddate").datepicker({ dateFormat: "dd-mm-yy" }).val();
 
                     $("#optionfilters").accordion({
@@ -1096,6 +1107,18 @@
                         active: false,
                         heightStyle: "content",
                         content: '.content1'
+                    });
+
+                    $("#startdate").change(function() {
+                      window.startdate = $("#startdate")[0].value;
+                      window.enddate = $("#enddate")[0].value;
+                        window.table.ajax.reload();
+                    });
+
+                    $("#enddate").change(function() {
+                      window.enddate = $("#enddate")[0].value;
+                      window.startdate = $("#startdate")[0].value;
+                      window.table.ajax.reload();
                     });
 
         });
