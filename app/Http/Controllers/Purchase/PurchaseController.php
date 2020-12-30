@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Services\Product\Product as ProductServices;
+use Illuminate\Support\Arr;
 
 class PurchaseController extends Controller
 {
@@ -60,13 +61,30 @@ class PurchaseController extends Controller
 
       if($request->dates){
         $dates = explode(',',$request->dates);
+
           if(($dates[0] != '0') || ($dates[1] != '0')){
-            $products = $products->whereHas('orderProducts', function($orderProduct) use($dates){
-              $orderProduct->where([
-                ['date', '>=', Carbon::parse($dates[0])->timestamp],
-                ['date', '<=', Carbon::parse($dates[1])->timestamp],
-              ]);
-            });
+            if(($dates[0] != '0') && ($dates[1] != '0')){
+              $products = $products->whereHas('orderProducts', function($orderProduct) use($dates){
+                $orderProduct->where([
+                  ['date', '>=', Carbon::parse($dates[0])->timestamp],
+                  ['date', '<=', Carbon::parse($dates[1])->timestamp],
+                ]);
+              });
+            }
+            else if(($dates[0] != '0')){
+              $products = $products->whereHas('orderProducts', function($orderProduct) use($dates){
+                $orderProduct->where([
+                  ['date', '>=', Carbon::parse($dates[0])->timestamp]
+                ]);
+              });
+            }
+            else{
+              $products = $products->whereHas('orderProducts', function($orderProduct) use($dates){
+                $orderProduct->where([
+                  ['date', '<=', Carbon::parse($dates[1])->timestamp]
+                ]);
+              });
+            }
           }
       }
 
@@ -194,14 +212,18 @@ class PurchaseController extends Controller
                 foreach ($orderProducts as $key => $orderProduct) {
                   $orderTotal += $orderProduct->price * $orderProduct->quantity;
                   if($orderProduct->implementationProduct){
-                    if(count($orderProduct->implementationProduct)){
-                      $implementationTotal += $orderProduct->implementationProduct->first()->total;
+                    if(!is_array($orderProduct->reclamationProduct) && $orderProduct->implementationProduct!=null){
+                      if(isset($orderProduct->implementationProduct->first()->total)){
+                          $implementationTotal += $orderProduct->implementationProduct->first()->total;
+                      }
                     }
                   }
 
-                  if($orderProduct->reclamationProduct){
-                    if(count($orderProduct->reclamationProduct)){
-                      $reclamationTotal += $orderProduct->reclamationProduct->total;
+                  if($orderProduct->reclamationProduct && $orderProduct->reclamationProduct!=null){
+                    if($orderProduct->reclamationProduct){
+                        if(!is_array($orderProduct->reclamationProduct)){
+                        $reclamationTotal += $orderProduct->reclamationProduct->total;
+                      }
                     }
                   }
                 }
@@ -243,10 +265,6 @@ class PurchaseController extends Controller
           }
           return $weightTotal;
         })
-        ->addColumn('CSV-export', function (Product $product) {
-          return '<a href="#" class="btn btn-sm btn-primary m-r-5">
-              <i class="fas fa-file-csv"></i></a>';
-        })
         // ->orderColumn('date_html', 'date_add $1')
         ->filterColumn('code_name', function($product, $keyword) use($search_article) {
           if($search_article){
@@ -277,10 +295,126 @@ class PurchaseController extends Controller
 
     }
 
-    public function getCSV($id){
-      $product =Product::where('id',$id)->with('orderProducts.implementationProduct','orderProducts.reclamationProduct','orderProducts.getCart')->get();
-      if($product){
-        $orderProducts = $product->pluck('orderProducts')->first();
+    public function getCSV(Request $request){
+      info($request->all());
+      $startdate = $request->startdate;
+      $enddate = $request->enddate;
+      $products = Product::whereHas('orderProducts',function($order_products){
+        $order_products->whereHas('getCart',function($orders){
+          $orders->whereHas('getUser',function($users){
+                $users->whereHas('getCompany',function ($companies){
+                    $companies->where([
+                        ['holding', auth()->user()->getCompany->holding],
+                        ['holding', '<>', 0],
+                    ])->orWhere([
+                        ['id', auth()->user()->getCompany->id],
+                    ]);
+                });
+          });
+        });
+      })->with('orderProducts.getCart','orderProducts.implementationProduct.implementation',
+       'orderProducts.implementationProduct.reclamationProduct.reclamation');
+
+       if($products && ($startdate != '' || $enddate != '')){
+         if($startdate != '' && $enddate !=''){
+           $products = $products->whereHas('orderProducts',function($order_products) use($startdate,$enddate){
+              $order_products->where([
+                ['date','>=',Carbon::parse($startdate)->timestamp],
+                ['date','<=',Carbon::parse($enddate)->timestamp]
+              ]);
+           });
+         }else if($startdate != ''){
+           $products = $products->whereHas('orderProducts',function($order_products) use($startdate){
+              $order_products->where([
+                ['date','>=',Carbon::parse($startdate)->timestamp]
+              ]);
+           });
+         }
+         else{
+           $products = $products->whereHas('orderProducts',function($order_products) use($enddate){
+              $order_products->where([
+                ['date','<=',Carbon::parse($enddate)->timestamp]
+              ]);
+           });
+         }
+
+       }
+
+       $products = $products->get();
+
+      $result = [];
+      foreach ($products as $key => $product) {
+        if(count($product->orderProducts)){
+          //$product->orderProducts
+          $orderInfo = [];
+
+            $orderProducts = $product->orderProducts;
+
+            $orders = $orderProducts->pluck('getCart')->toArray();
+            $orderInfo = [];
+            foreach ($orders as $key => $order) {
+              if($order != null){
+                $orderInfo[$key] = Arr::only($order, ['public_number', 'total', 'date_add', 'status']);
+              }
+            }
+
+            //$implementations = $orderProducts->pluck('implementationProduct.implementation');
+            $implementations = $orderProducts->pluck('implementationProduct');
+            $implementationInfo = [];
+            foreach ($implementations as $key => $implementation) {
+              if($implementation!=null && count($implementation)!=0){
+                //$implementationInfo[$key] = Arr::only($implementation, ['public_number', 'total', 'date_add', 'status']);
+                $implementationInfo[] = Arr::only($implementation->toArray()[0]['implementation'],['public_number', 'total', 'date_add', 'status']);
+              }
+            }
+
+            $reclamations = $orderProducts->pluck('implementationProduct.reclamationProduct.reclamation');
+            $reclamationInfo = [];
+            foreach ($reclamations as $key => $reclamation) {
+              if($reclamation!=null){
+                $reclamationInfo[] = Arr::only($reclamation->toArray()[0]['reclamation'],['public_number', 'total', 'date_add', 'status']);
+              }
+            }
+
+        }else{
+          $orderInfo = [];
+          $implementationInfo = [];
+          $reclamationInfo = [];
+        }
+        $result[] = [
+          //'Наименование' => ProductServices::getName($product),
+          'Артикул' => $product->article,
+          'Заказы' => $orderInfo,
+          'Реализации' => $implementationInfo,
+          'Рекламации' => $reclamationInfo,
+        ];
       }
+      $headers = array(
+        "Content-type" => "text/csv",
+        "Content-Disposition" => "attachment; filename=file.csv",
+        "Pragma" => "no-cache",
+        "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+        "Expires" => "0"
+      );
+      array_unshift($result, array_keys($result[0]));
+      $callback = function() use ($result)
+        {
+          $FH = fopen('php://output', 'w');
+          foreach ($result as $row) {
+            foreach ($row as $header => $headerdata) {
+              if(is_array($headerdata)){
+                $resstr = '';
+                foreach ($headerdata as $key => $item) {
+                  $resstr .= implode(',',$item).';';
+                }
+                $row[$header] = $resstr;
+              }
+            }
+            fputcsv($FH, $row);
+          }
+          fclose($FH);
+        };
+        return \Response::stream($callback, 200, $headers);
+          //return redirect()->back();
     }
 }

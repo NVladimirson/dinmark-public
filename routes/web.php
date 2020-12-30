@@ -139,7 +139,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 
 		Route::get('/purchases','Purchase\PurchaseController@index')->name('purchases');
         Route::get('/purchases/get-ajax','Purchase\PurchaseController@tableDataAjax')->name('purchases.get_ajax');
-				Route::get('/purchases/get-csv/{id}','Purchase\PurchaseController@getCSV')->name('purchases.getcsv');
+				Route::get('/purchases/get-csv','Purchase\PurchaseController@getCSV')->name('purchases.getcsv');
 
 	});
 });
