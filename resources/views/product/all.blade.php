@@ -109,7 +109,7 @@
                                 <th class="text-nowrap">@lang('product.table_header_price')</th>
                                 <th id="price_porog_1" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
                                 <th id="price_porog_2" class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
-                                
+
                                 <th>
                                     @lang('product.table_header_quantity')
                                 </th>
@@ -421,12 +421,12 @@
                     "order": [
                         [3, "asc"]
                     ],
-                    "columns": [{
-                        data: 'id',
-                        "visible": false,
-                        "searchable": false,
-
-                    },
+                    "columns": [
+                        {
+                           data: 'id',
+                           "visible": false,
+                           "searchable": false,
+                        },
                         {
                             "orderable": false,
                             data: 'check_html',

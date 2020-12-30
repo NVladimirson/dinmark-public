@@ -58,6 +58,18 @@ class PurchaseController extends Controller
           }
       }
 
+      if($request->dates){
+        $dates = explode(',',$request->dates);
+          if(($dates[0] != '0') || ($dates[1] != '0')){
+            $products = $products->whereHas('orderProducts', function($orderProduct) use($dates){
+              $orderProduct->where([
+                ['date', '>=', Carbon::parse($dates[0])->timestamp],
+                ['date', '<=', Carbon::parse($dates[1])->timestamp],
+              ]);
+            });
+          }
+      }
+
       if($request->new){
           $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
       }
@@ -82,6 +94,12 @@ class PurchaseController extends Controller
 
       if($request->discount){
           $products = $products->where('old_price','!=',0);
+      }
+
+      $search_article = null;
+
+      if($request->has('search')){
+          $search_article = request('search')['value'];
       }
 
       return datatables()
@@ -229,6 +247,21 @@ class PurchaseController extends Controller
           return '<a href="#" class="btn btn-sm btn-primary m-r-5">
               <i class="fas fa-file-csv"></i></a>';
         })
+        // ->orderColumn('date_html', 'date_add $1')
+        ->filterColumn('code_name', function($product, $keyword) use($search_article) {
+          if($search_article){
+           $language = CategoryServices::getLang();
+            $product->whereHas('content', function($content) use($search_article,$language){
+              $content->where([
+                ['language',$language],
+                ['alias', 8],
+                ['name', 'like',"%" . $search_article . "%"]
+              ]);
+            });
+          }else{
+              $product->select();
+          }
+        })
         ->rawColumns([
           'date_html',
           'code_name',
@@ -242,5 +275,12 @@ class PurchaseController extends Controller
         ->toJson();
 
 
+    }
+
+    public function getCSV($id){
+      $product =Product::where('id',$id)->with('orderProducts.implementationProduct','orderProducts.reclamationProduct','orderProducts.getCart')->get();
+      if($product){
+        $orderProducts = $product->pluck('orderProducts')->first();
+      }
     }
 }
