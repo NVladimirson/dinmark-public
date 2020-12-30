@@ -210,7 +210,7 @@
                             </div>
                             
                             <div class="m-b-5">
-                                <label class="m-b-0">Адреса</label>
+                                <label class="m-b-0">Адреса відділення</label>
                                 <input id="searchStreet" @click="searchStreet" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
                                 <div v-show="streetsResult.length" class="wrap-select">
                                     <div class="city-select">
