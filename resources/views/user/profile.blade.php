@@ -190,8 +190,12 @@
                     <option default value="1">Адреса 1</option>
                     <option value="2">Адреса 2</option>
                 </select>
-                    <button @click="createAdress = !createAdress" v-if="!createAdress" class="btn btn-primary mb-3">Додати нову адресу</button>
+                <div v-if="!createAdress" class="mt-3 d-flex justify-content-around">
+                    <button @click="createAdress = !createAdress"  class="btn btn-primary mb-3">Додати нову адресу</button>
+                    <button class="btn btn-primary mb-3">Зберегти обране</button>
+                </div>
                     <form action="" v-else id="form-adress" method="post" enctype="multipart/form-data">
+                    <h4>Створити адресу доставки</h4>
                         <ul id="nova_poshta_tab" class="nav nav-pills">
                             <li @click="toggleTypeDelivery = true; reset()" class="nav-item col p-0 text-center">
                                 <a href="#wherhouse-tab" data-toggle="tab" class="nav-link"><span>На відділення</span></a>
@@ -205,7 +209,7 @@
 
                             <div class="m-b-5">
                                 <label class="m-b-0">Введіть населений пункт</label>
-                                <input id="searchCity" type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
+                                <input required id="searchCity" type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
                                 <div v-show="citiesResult.length" class="wrap-select">
                                     <div class="city-select">
                                         <div @click="city = cityName.Present; selectCity(cityName.Ref)" v-for="cityName of citiesResult" class="city-item">@{{ cityName.Present }}</div>
@@ -215,7 +219,7 @@
                             
                             <div class="m-b-5">
                                 <label class="m-b-0">Адреса відділення</label>
-                                <input id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
+                                <input required id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
                                 <div v-show="streetsResult.length" class="wrap-select">
                                     <div class="city-select">
                                         <div @click="street = warehouse.Description" class="city-item" v-for="warehouse of streetsResult">@{{ warehouse.Description }}</div>
@@ -229,7 +233,7 @@
 
                             <div class="m-b-5">
                                 <label class="m-b-0">Введіть населений пункт</label>
-                                <input id="searchCity" type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
+                                <input required id="searchCity" type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
                                 <div v-show="citiesResult.length" class="wrap-select">
                                     <div class="city-select">
                                         <div @click="city = cityName.Present; selectCity(cityName.Ref)" v-for="cityName of citiesResult" class="city-item">@{{ cityName.Present }}</div>
@@ -239,7 +243,7 @@
 
                             <div class="m-b-5">
                                 <label class="m-b-0">Адреса доставки</label>
-                                <input id="searchStreet" @input="searchStreets" v-model="street" type="text" class="form-control m-b-5" placeholder="Вулиця, квартал">
+                                <input required id="searchStreet" @input="searchStreets" v-model="street" type="text" class="form-control m-b-5" placeholder="Вулиця, квартал">
                                 <div v-show="streetsResult.length" class="wrap-select">
                                     <div class="city-select">
                                         <div @click="street = streetDel.Present" class="city-item" v-for="streetDel of streetsResult">@{{ streetDel.Present }}</div>
@@ -249,14 +253,14 @@
 
                             <div class="m-b-5">
                                 <label class="m-b-0">Номер будинку / і квартири</label>
-                                <input type="text" class="form-control m-b-5" placeholder="Номер будинку / і квартири">
+                                <input required type="text" class="form-control m-b-5" placeholder="Номер будинку / і квартири">
                             </div>
 
                         </div>
                         
                         <div class="mt-3 d-flex justify-content-around">
                                 <button class="btn btn-primary">Зберегти</button>
-                                <button @click.prevent="createAdress = false" class="btn btn-danger">Скасувати</button>
+                                <button @click.prevent="createAdress = false; reset()" class="btn btn-danger">Скасувати</button>
                             </div>
                     </form>
 
