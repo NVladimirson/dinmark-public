@@ -808,15 +808,9 @@
 <script>
     const burger = document.querySelector(".sidebar-minify-btn.navbar-toggle");
     const closeBurger = document.querySelector("#close-burger-menu");
-    const toggleBurger = (el) => {
-        el.classList.toggle("hide");
-    }
-    const listenClick1 = burger.addEventListener('click', ()=> {
-        toggleBurger(burger);
-    })
-    const listenClick2 = closeBurger.addEventListener('click', ()=> {
-        toggleBurger(burger);
-    })
+    const toggleBurger = (el) => el.classList.toggle("hide");
+    const listenClick1 = burger.addEventListener('click', ()=> toggleBurger(burger));
+    const listenClick2 = closeBurger.addEventListener('click', ()=> toggleBurger(burger));
 </script>
 
 <script>
