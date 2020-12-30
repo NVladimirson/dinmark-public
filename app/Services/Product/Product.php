@@ -175,7 +175,13 @@ class Product
                 $price *= $currency->currency;
             }
         }
-		$price *= 1.2 * 2;
+				$priceCoef = auth()->user()->price->price;
+				if($company){
+					$priceCoef = $company->getPrice->price;
+				}else{
+					$priceCoef = 2;
+				}
+				$price *= 1.2 * $priceCoef;
 
 		return number_format($price,2,'.',' ');
 	}
