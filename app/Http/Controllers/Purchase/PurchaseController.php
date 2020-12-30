@@ -113,7 +113,7 @@ class PurchaseController extends Controller
             }
             asort($dates);
             foreach ($dates as $key => $date) {
-               $dates[$key] = Carbon::parse($date)->format('d.m.Y');
+               $dates[$key] = Carbon::parse(intval($date))->format('d.m.Y');
             }
           }
           return '<p style="width:150px" title="'.implode(',',$dates).'">'.$dates[array_key_last($dates)].'</p>';
