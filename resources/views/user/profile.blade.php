@@ -184,20 +184,24 @@
                 </div>
                 </div>
                 <div class="panel-body">
-                
-
-                    <form id="form-adress">
-                        <!-- <ul id="nova_poshta_tab" class="nav nav-pills">
-                            <li class="nav-item col p-0 text-center">
+                <label for="savedAdress">Вибрати збережену адресу доставки</label>
+                <select class="form-control mb-3" id="savedAdress">
+                    <br>
+                    <option default value="1">Адреса 1</option>
+                    <option value="2">Адреса 2</option>
+                </select>
+                    <button @click="createAdress = !createAdress" v-if="!createAdress" class="btn btn-primary mb-3">Додати нову адресу</button>
+                    <form action="" v-else id="form-adress" method="post" enctype="multipart/form-data">
+                        <ul id="nova_poshta_tab" class="nav nav-pills">
+                            <li @click="toggleTypeDelivery = true; reset()" class="nav-item col p-0 text-center">
                                 <a href="#wherhouse-tab" data-toggle="tab" class="nav-link"><span>На відділення</span></a>
                             </li>
-                            <li class="nav-item col p-0 text-center">
+                            <li @click="toggleTypeDelivery = false; reset()" class="nav-item col p-0 text-center">
                                 <a href="#curier-tab" data-toggle="tab" class="nav-link active"><span>Кур'єром</span></a>
                             </li>
-                        </ul> -->
+                        </ul>
 
-
-                        <div class="tab-pane fade show active">
+                        <div v-if="toggleTypeDelivery" class="tab-pane warehouse">
 
                             <div class="m-b-5">
                                 <label class="m-b-0">Введіть населений пункт</label>
@@ -211,10 +215,34 @@
                             
                             <div class="m-b-5">
                                 <label class="m-b-0">Адреса відділення</label>
-                                <input id="searchStreet" @click="searchStreet" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
+                                <input id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
                                 <div v-show="streetsResult.length" class="wrap-select">
                                     <div class="city-select">
-                                        <div class="city-item" v-for="warehouse of streetsResult">@{{ warehouse.Description }}</div>
+                                        <div @click="street = warehouse.Description" class="city-item" v-for="warehouse of streetsResult">@{{ warehouse.Description }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div v-else class="tab-pane curier">
+
+                            <div class="m-b-5">
+                                <label class="m-b-0">Введіть населений пункт</label>
+                                <input id="searchCity" type="text" class="form-control m-b-5" @input="searchCity" v-model="city" placeholder="Введіть населений пункт">
+                                <div v-show="citiesResult.length" class="wrap-select">
+                                    <div class="city-select">
+                                        <div @click="city = cityName.Present; selectCity(cityName.Ref)" v-for="cityName of citiesResult" class="city-item">@{{ cityName.Present }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-b-5">
+                                <label class="m-b-0">Адреса доставки</label>
+                                <input id="searchStreet" @input="searchStreets" v-model="street" type="text" class="form-control m-b-5" placeholder="Вулиця, квартал">
+                                <div v-show="streetsResult.length" class="wrap-select">
+                                    <div class="city-select">
+                                        <div @click="street = streetDel.Present" class="city-item" v-for="streetDel of streetsResult">@{{ streetDel.Present }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +251,13 @@
                                 <label class="m-b-0">Номер будинку / і квартири</label>
                                 <input type="text" class="form-control m-b-5" placeholder="Номер будинку / і квартири">
                             </div>
+
                         </div>
+                        
+                        <div class="mt-3 d-flex justify-content-around">
+                                <button class="btn btn-primary">Зберегти</button>
+                                <button @click.prevent="createAdress = false" class="btn btn-danger">Скасувати</button>
+                            </div>
                     </form>
 
 
@@ -262,6 +296,8 @@
         new Vue({
             el: '#wrapProfile',
             data: {
+                createAdress: false,
+                toggleTypeDelivery: false,
                 city: '',
                 street: '',
                 citiesResult: [],
@@ -270,7 +306,7 @@
                 
             },
             methods: {
-                searchStreet() {
+                searchWarehouse() {
                     let requestBody = {
                         apiKey: "f50ab08faaad28c3a612bf9e97fb1c8a",
                         modelName: "Address",
@@ -278,8 +314,8 @@
                             methodProperties: {
                                 SettlementRef: this.elementRef,
                                 Limit: 99
-                            }
-                        }
+                            } 
+                        } 
                         fetch('https://api.novaposhta.ua/v2.0/json/', {
                             method: 'POST',
                             headers: {
@@ -290,16 +326,45 @@
                         .then(response => response.json())
                         .then(results => this.streetsResult = results.data);
                 },
+                searchStreets() {
+                    let requestBody = {
+                        apiKey: "f50ab08faaad28c3a612bf9e97fb1c8a",
+                        modelName: "Address",
+                        calledMethod: "searchSettlementStreets",
+                        methodProperties: {
+                            StreetName: this.street,
+                            SettlementRef: this.elementRef,
+                            Limit: 99
+                        }   
+                    }
+                    if(this.street.length > 2) {
+                        fetch('https://api.novaposhta.ua/v2.0/json/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
+                    })
+                    .then(response => response.json())
+                    .then(results => this.streetsResult = results.data[0].Addresses);
+                    }
+                },
                 selectCity(ref) {
                     this.elementRef = ref;
                 },
                 randomClick(event) {
                     if(event.target.id !== 'searchCity') {
                         this.citiesResult = [];
-                    } 
+                    }  
                     if(event.target.id !== 'searchStreet') {
                         this.streetsResult = [];
-                    }
+                    } 
+                },
+                reset() {
+                        this.citiesResult = [];
+                        this.streetsResult = [];
+                        this.city = '';
+                        this.street = '';
                 },
                 searchCity() {
                     let requestBody = {
