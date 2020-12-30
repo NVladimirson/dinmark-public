@@ -184,17 +184,20 @@
                 </div>
                 </div>
                 <div class="panel-body">
-                <label for="savedAdress">Вибрати збережену адресу доставки</label>
-                <select class="form-control mb-3" id="savedAdress">
-                    <br>
-                    <option default value="1">Адреса 1</option>
-                    <option value="2">Адреса 2</option>
-                </select>
-                <div v-if="!createAdress" class="mt-3 d-flex justify-content-around">
-                    <button @click="createAdress = !createAdress"  class="btn btn-primary mb-3">Додати нову адресу</button>
-                    <button class="btn btn-primary mb-3">Зберегти обране</button>
+                <div>
+                    <div v-if="deliveryAdress.length">
+                        <label for="savedAdress">Вибрати збережену адресу доставки</label>
+                        <select class="form-control mb-3" id="savedAdress">
+                            <option v-for="adress of deliveryAdress" value="adress">@{{ adress }}</option>
+                        </select>
+                    </div>
+                    <p class="col-form-label col-md-3" v-else>Збережених адресів немає</p>
                 </div>
-                    <form action="" v-else id="form-adress" method="post" enctype="multipart/form-data">
+                <div v-if="!createAdress" class="mt-3 d-flex justify-content-around">
+                    <button @click="createAdress = !createAdress"  class="btn btn-green mb-3">Додати нову адресу</button>
+                    <button @click="" class="btn btn-primary mb-3">Зберегти обране</button>
+                </div>
+                    <form @submit.prevent="addAdress" action="" v-else id="form-adress" method="post" enctype="multipart/form-data">
                     <h4>Створити адресу доставки</h4>
                         <ul id="nova_poshta_tab" class="nav nav-pills">
                             <li @click="toggleTypeDelivery = true; reset()" class="nav-item col p-0 text-center">
@@ -219,7 +222,7 @@
                             
                             <div class="m-b-5">
                                 <label class="m-b-0">Адреса відділення</label>
-                                <input required id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Номер відділення">
+                                <input required id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Номер відділення/вулиця">
                                 <div v-show="streetsResult.length" class="wrap-select">
                                     <div class="city-select">
                                         <div @click="street = warehouse.Description" class="city-item" v-for="warehouse of streetsResult.filter(filterWarehouse)">@{{ warehouse.Description }}</div>
@@ -253,7 +256,7 @@
 
                             <div class="m-b-5">
                                 <label class="m-b-0">Номер будинку / і квартири</label>
-                                <input required type="text" class="form-control m-b-5" placeholder="Номер будинку / і квартири">
+                                <input v-model="house" required type="text" class="form-control m-b-5" placeholder="Номер будинку / і квартири">
                             </div>
 
                         </div>
@@ -304,12 +307,19 @@
                 toggleTypeDelivery: false,
                 city: '',
                 street: '',
+                house: '',
                 citiesResult: [],
                 streetsResult: [],
+                deliveryAdress: [],
                 elementRef: ''
                 
             },
             methods: {
+                addAdress() {
+                    let adress = `${this.city} ${this.street} ${this.house}`;
+                    this.deliveryAdress.push(adress);
+                    this.reset();
+                },
                 filterWarehouse(w) {
                     if(typeof this.street === "number") {
                         return w.Number.includes(this.street);
@@ -323,7 +333,7 @@
                     let requestBody = {
                         apiKey: "f50ab08faaad28c3a612bf9e97fb1c8a",
                         modelName: "Address",
-                            calledMethod: "getWarehouses",
+                        calledMethod: "getWarehouses",
                             methodProperties: {
                                 SettlementRef: this.elementRef,
                                 Limit: 99
@@ -378,6 +388,7 @@
                         this.streetsResult = [];
                         this.city = '';
                         this.street = '';
+                        this.house = '';
                 },
                 searchCity() {
                     let requestBody = {
