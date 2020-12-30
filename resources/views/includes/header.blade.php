@@ -77,29 +77,28 @@
             <!-- <select class="form-control m-b-5" id="global_search" name="product_id"></select> -->
 
 
-
             <input id="globalInput" placeholder="@lang('global.header_search')" class="form-control m-b-5" @input="getResults" v-model="globalSearch" type="text">
             <i v-show="globalSearch.length" @click="reset" id="chross">&#215;</i>
             <div class="wrap-global-result" v-if="globalSearch.length > 2">
-                <div v-if="showGlobalSearch" class="form-select">
+                <div v-if="showGlobalSearch" id="wrap-form-select" class="form-select">
                     <div v-show="globalResult.implementations.length" class="group">
-                        <h4 class="pt-2 select-head">Implementations</h4> 
-                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations">@{{ item.text }}</div> 
+                        <h4 class="pt-2 select-head">Реалізації</h4> 
+                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations" v-html="item.text"></div> 
                         <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('implementations')">Смотреть все</span></div>  
                     </div>
                     <div v-show="globalResult.orders.length" class="group">
-                        <h4 class="pt-2 select-head">Orders</h4> 
-                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders">@{{ item.text }}</div> 
+                        <h4 class="pt-2 select-head">Замовлення</h4> 
+                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders" v-html="item.text"></div> 
                         <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('orders')">Смотреть все</span></div>  
                     </div>
                     <div v-show="globalResult.products.length" class="group">
-                        <h4 class="pt-2 select-head">Products</h4> 
-                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products">@{{ item.text }}</div> 
+                        <h4 class="pt-2 select-head">Продукти</h4> 
+                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products" v-html="item.text"></div> 
                         <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('products')">Cмотреть все</span></div>  
                     </div>
                     <div v-show="globalResult.reclamations.length" class="group">
-                        <h4 class="pt-2 select-head">Reclamations</h4> 
-                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations">@{{ item.text }}</div> 
+                        <h4 class="pt-2 select-head">Рекламації</h4> 
+                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations" v-html="item.text"></div> 
                         <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('reclamations')">Cмотреть все</span></div>  
                     </div>
                 </div>
@@ -661,7 +660,8 @@
               },
               showGlobalSearch: false,
               failedSearch: false,
-              debounce: null
+              debounce: null,
+              detailText: "aaa 98 vvv ddd 7 98"
             }
         },
         computed: {
@@ -676,7 +676,7 @@
                         products: [],
                         reclamations: []
                     };
-                    this.showGlobalSearch = false;
+                this.showGlobalSearch = false;
             },
             viewSearchResult(category) {
                 window.location = '{{ route('products') }}' +'/find?search='+ `${this.globalSearch}#${category}`;
@@ -691,7 +691,6 @@
                 } else if(category === 'implementations') {
                     window.location = '{{ route('implementations') }}' + '/' + id;
                 }
-
             },
             getResults() {
                 clearTimeout(this.debounce);
@@ -711,10 +710,9 @@
                         products: [],
                         reclamations: []
                     };
-                    this.showGlobalSearch = false;
+                        this.showGlobalSearch = false;
+                    }
                 }
-                }
-
             },
             globalRender() {
                 if (this.globalResult.implementations.length > 0 || this.globalResult.orders.length > 0 || this.globalResult.products.length > 0 || this.globalResult.reclamations.length > 0) {
@@ -723,6 +721,24 @@
                     this.showGlobalSearch = false;
                     this.failedSearch = true;
                 }
+                // if(this.globalResult.implementations.length) {
+                // this.globalResult.implementations.forEach(item => {
+                //     item.searchText = this.replacer(item.text, this.globalSearch, `<b>${this.globalSearch}</b>`) || item.text;
+                // })}
+                // if(this.globalResult.orders.length) {
+                // this.globalResult.orders.forEach(item => {
+                //     item.searchText = this.replacer(item.text, this.globalSearch, `<b>${this.globalSearch}</b>`) || item.text;
+                // })}
+                // if(this.globalResult.products.length) {
+                //     this.globalResult.products.forEach(item => {
+                //         let b = new RegExp(this.globalSearch);
+                //         item.searchText = this.replacer(item.text, this.globalSearch, `<b>${this.globalSearch}</b>`) || item.text;
+                //     }
+                // )}
+                // if(this.globalResult.implementations.length) {
+                // this.globalResult.implementations.forEach(item => {
+                //     item.searchText = this.replacer(item.text, this.globalSearch, `<b>${this.globalSearch}</b>`) || item.text;
+                // })}
             },
             hasItem(e) {
                if(e.target.className != 'form-select') {
@@ -731,7 +747,7 @@
             },
             searchFilter(word, prop) {
                 let a = prop.filter(item => item.includes(word))
-                return a
+                return a;
 
             },
             selectRender(e) {
@@ -779,8 +795,14 @@
                 const param = this.queryList;
                 let queryStr = `?standart=${param.standart}&diametr=${param.diametr}&dovzhyna=${param.dovzhyna}&material=${param.material}&klas_micnosti=${param.klas_micnosti}&pokryttja=${param.pokryttja}`;
                 window.location = '{{route('products.find')}}/' + queryStr;
+            },
+            replacer(sting, oldS, newS) {
+                return sting.split(oldS).join(newS);
             }
+        },
+        mounted() {
         }
+
     });
 </script>
 <script>
