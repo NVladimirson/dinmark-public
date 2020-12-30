@@ -219,10 +219,10 @@
                             
                             <div class="m-b-5">
                                 <label class="m-b-0">Адреса відділення</label>
-                                <input required id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Адреса">
+                                <input required id="searchStreet" @click="searchWarehouse" v-model="street" type="text" class="form-control m-b-5" placeholder="Номер відділення">
                                 <div v-show="streetsResult.length" class="wrap-select">
                                     <div class="city-select">
-                                        <div @click="street = warehouse.Description" class="city-item" v-for="warehouse of streetsResult">@{{ warehouse.Description }}</div>
+                                        <div @click="street = warehouse.Description" class="city-item" v-for="warehouse of streetsResult.filter(filterWarehouse)">@{{ warehouse.Description }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -310,6 +310,15 @@
                 
             },
             methods: {
+                filterWarehouse(w) {
+                    if(typeof this.street === "number") {
+                        return w.Number.includes(this.street);
+                    } else if(typeof this.street === "string") {
+                        return w.Description.toLowerCase().includes(this.street.toLowerCase());
+                    } else {
+                        return w;
+                    }
+                },
                 searchWarehouse() {
                     let requestBody = {
                         apiKey: "f50ab08faaad28c3a612bf9e97fb1c8a",
