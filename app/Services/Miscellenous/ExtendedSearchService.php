@@ -52,7 +52,9 @@ class ExtendedSearchService
           //if(in_array($filter,$convertable)){
             $translated = [];
             foreach ($data as $key => $optionvalue) {
+
               $translated[] = ExtendedSearchService::translateProductFilter($optionvalue,true);
+
             }
               $filters[$filter] = $translated;
                           //dd($translated);

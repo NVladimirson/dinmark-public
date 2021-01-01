@@ -287,7 +287,7 @@ $activefilter = $data['active'];
         }
       }
     }
-
+    info($query);
     $result = json_decode(json_encode(\DB::select($query)),true);
     $response = [];
     foreach ($result as $key => $value) {
