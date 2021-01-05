@@ -160,6 +160,7 @@ class Product
 
 	public static function getBasePrice($product,$storage_id = null){
 		$instance =  static::getInstance();
+		$company = $instance->company;
 		if($storage_id != null){
 				$storage = $product->storages->firstWhere('storage_id',$storage_id);
 		}else{
@@ -188,7 +189,7 @@ class Product
 
     public static function getBasePriceUnformatted($product, $storage_id = 0){
         $instance =  static::getInstance();
-
+				$company = $instance->company;
         if(!$storage_id){
             $storage = $product->storages->firstWhere('is_main',1);
         }else{

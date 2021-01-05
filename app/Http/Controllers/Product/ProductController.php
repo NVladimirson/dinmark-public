@@ -103,7 +103,7 @@ class ProductController extends Controller
     public function test(Request $request){
       // $product =Product::where('id',22233)->with('orderProducts.getCart','orderProducts.implementationProduct',
       // 'orderProducts.implementationProduct.reclamationProduct')->get();
-    
+
     }
 
     public function allAjax(Request $request){
@@ -706,12 +706,17 @@ class ProductController extends Controller
     public function find(Request $request)
 
     {
-
-        // $product_search = collect();
-        // $order_search = collect();
-        // $implementation_search = collect();
-        // $reclamation_search = collect();
-        // $extended_search =  collect();
+//       "pokryttja" => []
+          // "standart" => array:1 [▼
+//  0 => "1199-C"
+// ]
+// "diametr" => array:2 [▼
+//  0 => "14"
+//  1 => "16"
+// ]
+// "dovzhyna" => []
+// "material" => []
+// "klas_micnosti" => []
         $globalSearch = false;
         $extendedSearch = false;
 
