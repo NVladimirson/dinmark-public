@@ -168,9 +168,10 @@
                                                         @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
                                                         <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
                                                     @endif
-                                                    <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}" option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false" filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
-                                                        {{--<i id="filter-checked_{!! $value !!}" class="fas fa-check-circle"--}}
-                                                        {{--aria-hidden="true" style="display: none"></i>--}}
+                                                    <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}"
+                                                     option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false"
+                                                     filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
+
                                                     </p>
                                                 </div>
                                             </div>
@@ -1741,11 +1742,10 @@
             color: #454545;
         }
 
-        .image-container {
+        /* .image-container {
             width: 75px;
             height: 75px;
-            /*border: dashed blue 1px;*/
-        }
+        } */
 
         .image-container img {
             max-height: 100%;

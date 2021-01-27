@@ -55,14 +55,22 @@ class GlobalSearchService
             ['alias', 8],
             ['name', 'like',"%" . $search . "%"]
           ]);
-        })->orwhereHas('options', function($options) use($search,$language){
+        })
+        ->orwhereHas('options', function($options) use($search,$language){
+          //аналог,народное наименование
           $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
             $option_name->where([
               ['language',$language],
               ['name', 'like',"%" . $search . "%"]
             ]);
           });
-        })->orWhere([['article', 'like',"%" . $search . "%"]]);
+        })
+        ->orWhere([
+        ['article', 'like',"%" . $search . "%"]
+        ])
+        ->orWhere([
+        ['alias', 'like',"%" . $search . "%"]
+        ]);
 
         if($limited){
           $products = $products->limit(5);
