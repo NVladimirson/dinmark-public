@@ -173,7 +173,7 @@ class CatalogController extends Controller
 
 	public function allAjax(Request $request){
 		$group = LikeGroup::with(['price'])->find($request->group);
-
+		info($request->group);
 		session(['current_catalog' => $group->id]);
 		$products = Product::whereHas('likes',function($likes) use ($group){
 			$likes->where([

@@ -103,7 +103,17 @@ class ProductController extends Controller
     public function test(Request $request){
       // $product =Product::where('id',22233)->with('orderProducts.getCart','orderProducts.implementationProduct',
       // 'orderProducts.implementationProduct.reclamationProduct')->get();
-
+      $group = LikeGroup::with(['price'])->find(1);
+    //  dd($group);
+      session(['current_catalog' => $group->id]);
+      $products = Product::whereHas('likes',function($likes) use ($group){
+        $likes->where([
+          ['alias',8],
+          ['group_id',$group->group_id],
+          ['user',$group->user_id],
+        ]);
+      });
+      dd($group,$group->id,$products->get()->pluck('id'));
     }
 
     public function allAjax(Request $request){
@@ -416,11 +426,11 @@ class ProductController extends Controller
                     $weight = $product->weight * ($storage->package/$unitnumber);
                     return '<div>
                 <p id="package_weight_'.$product->id.'" style="margin-bottom: 0px;">
-                <span class="multiplier">0</span>
-                <span class="x">x</span>
-                <span class="package">'.$package.'</span>
+                <span class="multiplier" style="background-color: lightgrey;">0</span>
+                <span class="x" style="background-color: lightgrey;">x</span>
+                <span class="package" style="background-color: lightgrey;">'.$package.'</span>
                 <br>
-                <span class="weight">'.number_format(0,3,'.',',').'</span>
+                <span class="weight" style="background-color: lightgrey;">'.number_format(0,3,'.',',').'</span>
                 </p></div>';
                 }else{
                     return '<div>
@@ -484,7 +494,13 @@ class ProductController extends Controller
                     ['alias', 8],
                     ['name', 'like',"%" . $search_article . "%"]
                   ]);
-                });
+                })
+                ->orWhere([
+                ['article', 'like',"%" . $search_article . "%"]
+                ])
+                ->orWhere([
+                ['alias', 'like',"%" . $search_article . "%"]
+                ]);
               }else{
                   $product->select();
               }
@@ -654,7 +670,7 @@ class ProductController extends Controller
 
     public function search(Request $request){
         $search = $request->name;
-        // $formatted_data = [];
+         $formatted_data = [];
         //
         // $ids = ProductServices::getIdsSearch($search);
         //
@@ -675,7 +691,14 @@ class ProductController extends Controller
               ['alias', 8],
               ['name', 'like',"%" . $search . "%"]
             ]);
-          })->limit(10)->get();
+          })
+          ->orWhere([
+          ['article', 'like',"%" . $search . "%"]
+          ])
+          ->orWhere([
+          ['alias', 'like',"%" . $search . "%"]
+          ])
+          ->limit(10)->get();
 
         foreach ($products as $product) {
             $name = ProductServices::getName($product);
