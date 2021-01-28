@@ -103,17 +103,20 @@ class ProductController extends Controller
     public function test(Request $request){
       // $product =Product::where('id',22233)->with('orderProducts.getCart','orderProducts.implementationProduct',
       // 'orderProducts.implementationProduct.reclamationProduct')->get();
-      $group = LikeGroup::with(['price'])->find(1);
-    //  dd($group);
-      session(['current_catalog' => $group->id]);
-      $products = Product::whereHas('likes',function($likes) use ($group){
-        $likes->where([
-          ['alias',8],
-          ['group_id',$group->group_id],
-          ['user',$group->user_id],
-        ]);
-      });
-      dd($group,$group->id,$products->get()->pluck('id'));
+    //   $group = LikeGroup::with(['price'])->find(1);
+    // //  dd($group);
+    //   session(['current_catalog' => $group->id]);
+    //   $products = Product::whereHas('likes',function($likes) use ($group){
+    //     $likes->where([
+    //       ['alias',8],
+    //       ['group_id',$group->group_id],
+    //       ['user',$group->user_id],
+    //     ]);
+    //   });
+    //   dd($group,$group->id,$products->get()->pluck('id'));
+
+    //933-8-65-5,8ц
+
     }
 
     public function allAjax(Request $request){
@@ -693,10 +696,10 @@ class ProductController extends Controller
             ]);
           })
           ->orWhere([
-          ['article', 'like',"%" . $search . "%"]
+          ['article_show', 'like',"%" . $search . "%"]
           ])
           ->orWhere([
-          ['alias', 'like',"%" . $search . "%"]
+          ['article', 'like',"%" . $search . "%"]
           ])
           ->limit(10)->get();
 
