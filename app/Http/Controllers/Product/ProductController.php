@@ -502,7 +502,7 @@ class ProductController extends Controller
                 ['article', 'like',"%" . $search_article . "%"]
                 ])
                 ->orWhere([
-                ['alias', 'like',"%" . $search_article . "%"]
+                ['article_show', 'like',"%" . $search_article . "%"]
                 ]);
               }else{
                   $product->select();

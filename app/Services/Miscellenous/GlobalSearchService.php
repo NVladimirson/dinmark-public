@@ -69,7 +69,7 @@ class GlobalSearchService
         ['article', 'like',"%" . $search . "%"]
         ])
         ->orWhere([
-        ['alias', 'like',"%" . $search . "%"]
+        ['article_show', 'like',"%" . $search . "%"]
         ]);
 
         if($limited){
