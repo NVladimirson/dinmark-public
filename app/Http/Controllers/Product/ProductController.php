@@ -101,6 +101,9 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
+      // $products = $products->whereHas('storages', function($storages) use($terms){
+      //     $storages->where('amount','>',0);
+      // });
       // $product =Product::where('id',22233)->with('orderProducts.getCart','orderProducts.implementationProduct',
       // 'orderProducts.implementationProduct.reclamationProduct')->get();
     //   $group = LikeGroup::with(['price'])->find(1);
@@ -688,7 +691,11 @@ class ProductController extends Controller
         // ->get();
         $language = CategoryServices::getLang();
 
-          $products = Product::whereHas('content', function($content) use($search,$language){
+          $products = Product::
+          whereHas('storages', function($storages){
+              $storages->where('amount','>',0);
+          })
+          ->whereHas('content', function($content) use($search,$language){
             $content->where([
               ['language',$language],
               ['alias', 8],
