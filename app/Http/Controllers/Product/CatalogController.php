@@ -175,13 +175,17 @@ class CatalogController extends Controller
 		$group = LikeGroup::with(['price'])->find($request->group);
 		info($request->group);
 		session(['current_catalog' => $group->id]);
-		$products = Product::whereHas('likes',function($likes) use ($group){
-			$likes->where([
-				['user',$group->user_id],
-				['group_id',$group->group_id],
-				['alias',8],
-			]);
-		});
+		
+		// $products = Product::whereHas('likes',function($likes) use ($group){
+		// 	$likes->where([
+		// 		['user',$group->user_id],
+		// 		['group_id',$group->group_id],
+		// 		['alias',8],
+		// 	]);
+		// });
+		$product_ids = \App\Models\Wishlist\Like::where([['user',$group->user_id],['group_id',$group->group_id],['alias',8]])->pluck('content');
+		$products = Product::whereIn('id',$product_ids);
+
 		$holdingId = auth()->user()->getCompany->holding;
 		 $ids = null;
 		// if($request->has('search')){
