@@ -130,6 +130,11 @@ class GlobalSearchService
 
           $product_info = [];
           foreach ($products as $key => $product) {
+            try{
+              $product_id = $product->orderProducts->whereIn('cart', $allowed_orders)->first()->getCart->id;
+            }catch(\Exception $e){
+              continue;
+            }
             $product_info[] = [
               'id' => $product->orderProducts->whereIn('cart', $allowed_orders)->first()->getCart->id,
               'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
