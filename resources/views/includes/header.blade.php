@@ -82,24 +82,24 @@
             <div class="wrap-global-result" v-if="globalSearch.length > 2">
                 <div v-if="showGlobalSearch" id="wrap-form-select" class="form-select">
                     <div v-show="globalResult.implementations.length" class="group">
-                        <h4 class="pt-2 select-head">Реалізації</h4> 
-                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations" v-html="item.text"></div> 
-                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('implementations')">Смотреть все</span></div>  
+                        <h4 class="pt-2 select-head">Реалізації</h4>
+                        <div class="select-item" @click="openItem('implementations', item.id)" v-for="item of globalResult.implementations" v-html="item.text"></div>
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('implementations')">Смотреть все</span></div>
                     </div>
                     <div v-show="globalResult.orders.length" class="group">
-                        <h4 class="pt-2 select-head">Замовлення</h4> 
-                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders" v-html="item.text"></div> 
-                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('orders')">Смотреть все</span></div>  
+                        <h4 class="pt-2 select-head">Замовлення</h4>
+                        <div class="select-item" @click="openItem('orders', item.id)" v-for="item of globalResult.orders" v-html="item.text"></div>
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('orders')">Смотреть все</span></div>
                     </div>
                     <div v-show="globalResult.products.length" class="group">
-                        <h4 class="pt-2 select-head">Продукти</h4> 
-                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products" v-html="item.text"></div> 
-                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('products')">Cмотреть все</span></div>  
+                        <h4 class="pt-2 select-head">Продукти</h4>
+                        <div class="select-item" @click="openItem('products', item.id)" v-for="item of globalResult.products" v-html="item.text"></div>
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('products')">Cмотреть все</span></div>
                     </div>
                     <div v-show="globalResult.reclamations.length" class="group">
-                        <h4 class="pt-2 select-head">Рекламації</h4> 
-                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations" v-html="item.text"></div> 
-                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('reclamations')">Cмотреть все</span></div>  
+                        <h4 class="pt-2 select-head">Рекламації</h4>
+                        <div class="select-item" @click="openItem('reclamations', item.id)" v-for="item of globalResult.reclamations" v-html="item.text"></div>
+                        <div class="text-center select-footer mt-1"><span  @click="viewSearchResult('reclamations')">Cмотреть все</span></div>
                     </div>
                 </div>
 
@@ -689,7 +689,8 @@
                 } else if(category === 'reclamations') {
                     window.location = '{{ route('reclamations') }}' + '/' + id;
                 } else if(category === 'implementations') {
-                    window.location = '{{ route('implementations') }}' + '/' + id;
+                    //window.location = '{{ route('implementations') }}' + '/' + id;
+										window.location = '{{ route('implementations') }}' + '/pdf/' + id;
                 }
             },
             getResults() {
@@ -698,7 +699,7 @@
                     asyncRequest();
                 }, 500);
 
-                const asyncRequest = async () => { 
+                const asyncRequest = async () => {
                 if(this.globalSearch.length > 2) {
                     this.failedSearch = false;
                    await fetch('{{route('globalsearch')}}' + `?name=${this.globalSearch}`).then(response => response.json()).then(data => this.globalResult = data);
