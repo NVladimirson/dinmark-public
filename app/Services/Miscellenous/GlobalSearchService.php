@@ -218,7 +218,7 @@ class GlobalSearchService
 
           $allowed_order_products = OrderProduct::whereIn('id', $allowed_implementation_products)->pluck('product_id');
 
-          $products = Product::whereIn('id',$allowed_order_products)->whereHas('content', function($content) use($search,$language){
+          $products = Product::with('orderProducts.implementationProduct.implementation')->whereIn('id',$allowed_order_products)->whereHas('content', function($content) use($search,$language){
             $content->where([
               ['language',$language],
               ['alias', 8],
@@ -227,23 +227,49 @@ class GlobalSearchService
           });
 
           if($limited){
-            $products = $products->limit(5);
+            //$products = $products->limit(5);
             $products = $products->get();
-
-            $product_info = [];
-            foreach ($products as $key => $product) {
-              $orderProduct = $product->orderProducts->first();
-              if($orderProduct){
+            // $product_info = [];
+            // foreach ($products as $key => $product) {
+            //   $orderProduct = $product->orderProducts->first();
+            //   if($orderProduct){
+            //     $product_info[] = [
+            //       'id' => $product->orderProducts->first()->getCart->id,
+            //       'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+            //       'category' => 'implementations'
+            //     ];
+            //   }
+            //   if(count($product_info)>5){
+            //     break;
+            //   }
+            // }
+          $product_info = [];
+          foreach ($products->pluck('orderProducts','id') as $product_id => $orderProducts) {
+            if(count($product_info) >= 5){
+              break;
+            }
+            foreach ($orderProducts as $key => $orderProduct) {
+              if(count($product_info) >= 5){
+                break;
+              }
+              $implemetationProducts = $orderProduct->implementationProduct;
+              if(count($implemetationProducts)){
+                //dd($implemetationProducts->pluck('implementation'));
+                $implemetation = $implemetationProducts->pluck('implementation');
+                if($implemetation){
+                  $implemetation_id = $implemetation[0]->id;
+                }
+                else{
+                  continue;
+                }
                 $product_info[] = [
-                  'id' => $product->orderProducts->first()->getCart->id,
-                  'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                  'id' => $implemetation_id,
+                  'text' => ProductServices::getName(Product::find($product_id),$language).' ('.Product::find($product_id)->article_show.')',
                   'category' => 'implementations'
                 ];
               }
-              if(count($product_info)>5){
-                break;
-              }
             }
+          }
             $product_info = array_values(Arr::sort($product_info, function ($value) {
               return $value['text'];
             }));
