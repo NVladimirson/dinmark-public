@@ -116,7 +116,13 @@ class GlobalSearchService
             ['alias', 8],
             ['name', 'like',"%" . $search . "%"]
           ]);
-        });
+        })
+        ->orWhere([
+        ['article', 'like',"%" . $search . "%"]
+        ])
+        ->orWhere([
+        ['article_show', 'like',"%" . $search . "%"]
+        ]);
 
         if($limited){
           $products = $products->limit(5);
@@ -157,7 +163,13 @@ class GlobalSearchService
             ['alias', 8],
             ['name', 'like',"%" . $search . "%"]
           ]);
-        });
+        })
+        ->orWhere([
+        ['article', 'like',"%" . $search . "%"]
+        ])
+        ->orWhere([
+        ['article_show', 'like',"%" . $search . "%"]
+        ]);
 
         if($limited){
           $products = $products->limit(10);
