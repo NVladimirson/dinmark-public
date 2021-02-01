@@ -173,9 +173,8 @@ class CatalogController extends Controller
 
 	public function allAjax(Request $request){
 		$group = LikeGroup::with(['price'])->find($request->group);
-		info($request->group);
 		session(['current_catalog' => $group->id]);
-		
+
 		// $products = Product::whereHas('likes',function($likes) use ($group){
 		// 	$likes->where([
 		// 		['user',$group->user_id],
@@ -188,17 +187,14 @@ class CatalogController extends Controller
 
 		$holdingId = auth()->user()->getCompany->holding;
 		 $ids = null;
-		// if($request->has('search')){
-		// 	$ids = ProductServices::getIdsSearch(request('search')['value']);
-		// }
-		// $search_article = null;
-		//
-		// if($request->has('search')){
-		// 		$search_article = request('search')['value'];
-		// }
+		 $search_article = null;
+
+		if($request->has('search')){
+				$search_article = request('search')['value'];
+		}
 		if($request->filter_with_options){
 				$language = CategoryServices::getLang();
-				$request_options = explode(',',$request->filter_with_options);;
+				$request_options = explode(',',$request->filter_with_options);
 				foreach ($request_options as $key => $request_option) {
 					if($key == 0){
 						$products = $products->whereHas('options', function($options) use ($request_option,$language){
@@ -465,13 +461,25 @@ class CatalogController extends Controller
 			->filterColumn('article_show_html', function($product, $keyword) {
 				$product->where('article_show', 'like',["%{$keyword}%"]);
 			})
-			->filterColumn('name_html', function($product, $keyword) use($ids) {
-				// if($ids){
-				// 	$product->whereIn('id',$ids);
-				// }else{
-				// 	$product->select();
-				// }
-				$product->select();
+			->filterColumn('name_article_html', function($product, $keyword) use($search_article) {
+				if($search_article){
+				 $language = CategoryServices::getLang();
+					$product->whereHas('content', function($content) use($search_article,$language){
+						$content->where([
+							['language',$language],
+							['alias', 8],
+							['name', 'like',"%" . $search_article . "%"]
+						]);
+					})
+					->orWhere([
+					['article', 'like',"%" . $search_article . "%"]
+					])
+					->orWhere([
+					['article_show', 'like',"%" . $search_article . "%"]
+					]);
+				}else{
+						$product->select();
+				}
 			})
 			->filter(function ($product) use ($request,$ids) {
 				if (request()->has('storage_html')) {
