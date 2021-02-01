@@ -1733,7 +1733,7 @@
 						}
 					});
 					$.ajax({
-						method: "GET",
+						method: "POST",
 						url: route,
 						data: form.serialize(),
 						success: function(resp)
