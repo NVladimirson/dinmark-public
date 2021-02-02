@@ -42,7 +42,9 @@
 			@yield('content')
 		</div>
 
+		@if(Route::current()->getName() == 'home')
 		@include('includes.footer')
+		@endif
 
 		@include('includes.component.scroll-top-btn')
 

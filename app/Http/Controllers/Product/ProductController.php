@@ -50,6 +50,18 @@ class ProductController extends Controller
         return view('product.all',compact('wishlists', 'orders', 'terms','filters','dinmark_url'));
     }
 
+    public function index_v2() {
+        SEOTools::setTitle(trans('product.all_tab_name'));
+        $wishlists = CatalogServices::getByCompany();
+        $orders = OrderServices::getByCompany();
+        $terms = CategoryServices::getTermsForSelect();
+        $filters = false;
+        // $filters = CategoryServices::getOptionFilters();
+        //dd($filters);
+        $dinmark_url = \Config::get('values.dinmarkurl');
+        return view('product.all_v2',compact('wishlists', 'orders', 'terms','filters','dinmark_url'));
+    }
+
     public function category($id){
         $page_name = CategoryServices::getName($id);
         SEOTools::setTitle($page_name);
@@ -125,40 +137,48 @@ class ProductController extends Controller
     public function allAjax(Request $request){
         $products = Product::with(['storages','content','options']);
         $language = CategoryServices::getLang();
-        if($request->filter_with_options){
+
+        if(!empty($request->filter_with_options)) {
             $request_options = explode(',',$request->filter_with_options);;
             foreach ($request_options as $key => $request_option) {
-              if($key == 0){
-                $products = Product::whereHas('options', function($options) use ($request_option,$language){
-                  $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
-                    $option_name->where('value',$request_option)->where('language','uk');
+                  if($key == 0){
+                    $products = Product::whereHas('options', function($options) use ($request_option,$language){
+                      $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+                        $option_name->where('value',$request_option)->where('language','uk');
+                      });
+                    });
+                  }
+                  else{
+                    $products = $products->whereHas('options', function($options) use ($request_option,$language){
+                      $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
+                        $option_name->where('value',$request_option)->where('language','uk');
+                      });
                   });
-                });
-              }
-              else{
-                $products = $products->orwhereHas('options', function($options) use ($request_option,$language){
-                  $options->whereHas('val_translates', function($option_name) use ($request_option,$language){
-                    $option_name->where('value',$request_option)->where('language','uk');
-                  });
-              });
-            }
-            }
-        }
-
-        if(!empty($request->categories)){
-            $selected_items = array_values(explode(",",$request->categories));
-            $res = $selected_items;
-            foreach ($selected_items as $key => $parent) {
-                $childs = CategoryServices::getAllChildrenCategoriesID($parent);
-                // $res = Arr::crossJoin($res,$childs);
-                foreach ($childs as $key => $child) {
-                    $res[] = $child;
                 }
             }
-            $products = $products->whereIn('group', $res);
         }
 
-        if(isset($request->term)){
+        if(!empty($request->categories)) {
+            $selected_items = [];
+            foreach (explode(",", $request->categories) as $cat) {
+                if(is_numeric($cat))
+                    $selected_items[] = $cat;
+            }
+            if(!empty($selected_items))
+            {
+                $res = $selected_items;
+                foreach ($selected_items as $key => $parent) {
+                    $childs = CategoryServices::getAllChildrenCategoriesID($parent);
+                    // $res = Arr::crossJoin($res,$childs);
+                    foreach ($childs as $key => $child) {
+                        $res[] = $child;
+                    }
+                }
+                $products = $products->whereIn('group', $res);
+            }
+        }
+
+        if(!empty($request->term)){
             $terms = explode(',',$request->term);
             $products = $products->whereHas('storages', function($storages) use($terms){
                 $storages->where('amount','>',0)->whereHas('storage',function($storage) use($terms){
@@ -174,11 +194,11 @@ class ProductController extends Controller
             });
         }
 
-        if($request->new){
+        if($request->new == 'true'){
             $products = $products->where('date_add','>',Carbon::now()->subDays(7)->timestamp);
         }
 
-        if($request->hits){
+        if($request->hits == 'true'){
             $order_products = \DB::select('
             SELECT s_cart_products.product_id AS `product_id`,COUNT(*)
             FROM s_cart
@@ -196,7 +216,7 @@ class ProductController extends Controller
             $products = $products->whereIn('id', $filtered);
         }
 
-        if($request->discount){
+        if($request->discount == 'true'){
             $products = $products->where('old_price','!=',0);
         }
 

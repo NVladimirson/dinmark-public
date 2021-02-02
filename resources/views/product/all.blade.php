@@ -151,41 +151,25 @@
                         @foreach($filters as $option_id=>$filterdata)
                             <h3 class="filtername" filter_name="{!! $filterdata['data']['name'] !!}"><b>{!! $filterdata['data']['name'] !!}</b></h3>
                             <div class="filter" id="filter">
-                                @php $i=0;@endphp
                                 @foreach($filterdata['options'] as $branch_id => $data)
 
-                                    @if($i % 2 == 0)
-                                        <div class="row" style="margin: auto">
-                                            @endif
+                                    <div class="filterElem">
+                                        @if(isset($data['data']['photo']))
+                                            @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
+                        '/'.$data['data']['photo']; @endphp
+                                            <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
+                                        @else
+                                            @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
+                                            <div class="image-container"><img width="20" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
+                                        @endif
+                                        <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}"
+                                         option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false"
+                                         filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
+                                        </p>
+                                    </div>
 
-                                            <div class="col-md-12">
-                                                <div class="row" style="margin: auto">
-                                                    @if(isset($data['data']['photo']))
-                                                        @php $url = $dinmark_url.'/images/shop/options/'.$filterdata['data']['alias'].
-                                    '/'.$data['data']['photo']; @endphp
-                                                        <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}"></div>
-                                                    @else
-                                                        @php $url = $dinmark_url.'style/images/checkbox.svg'; @endphp
-                                                        <div class="image-container"><img width="50" src="{!! $url !!}" title="{!! $data['data']['name'] !!}" alt="unset"></div>
-                                                    @endif
-                                                    <p class="filter_with_options" option_id="{!! $data['data']['option'] !!}" option_name="{!! $data['data']['name'] !!}"
-                                                     option_filter_name="{!! $filterdata['data']['name'] !!}" filter-selected="false"
-                                                     filter-accessible="true" style="cursor:pointer">{!! $data['data']['name'] !!}
-
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            @if($i % 2 == 1)
-                                        </div>
-                                    @endif
-
-                                    @php $i++; @endphp
                                 @endforeach
-                                @if($i % 2 != 0)
                             </div>
-                            @endif
-                    </div>
                     @endforeach
                 </div>
 
@@ -214,6 +198,8 @@
         </div>
     </div>
     <!-- end row -->
+
+    <div id="loading"></div>
 
     @include('product.include.modal_wishlist')
     @include('product.include.modal_order')
@@ -274,53 +260,57 @@
     <script>
         jQuery(function($) {
 
+            $('#loading').hide();
+
             var loaded_nodes = [];
             setFiltersQuantity();
-            $("#jstree").jstree({
-                "plugins": ["wholerow", "checkbox", "json_data"],
-                "core": {
-                    "check_callback": true,
-                    "data": {
-                        url: "{!! @route('getnode', ['id' => 0]) !!}",
-                        contentType: "application/json; charset=utf-8",
-                    },
-                }
-            }).on('deselect_node.jstree', function(e, data) {
-                jsTreetoDatatable();
-                initOptionFilters();
-            })
-                .on('select_node.jstree', function(e, data) {
+            $("#jstree")
+                .jstree({
+                    "plugins": ["wholerow", "checkbox", "json_data"],
+                    "core": {
+                        "check_callback": true,
+                        "data": {
+                            url: "{!! @route('getnode', ['id' => 0]) !!}",
+                            contentType: "application/json; charset=utf-8",
+                        },
+                    }
+                })
+                .on('deselect_node.jstree', function(e, data) {
                     jsTreetoDatatable();
                     initOptionFilters();
-                }).
-            on('before_open.jstree', function(e, data) {
-                if (!loaded_nodes.includes(data.node.id)) {
+                })
+                .on('select_node.jstree', function(e, data) {
+                        jsTreetoDatatable();
+                        initOptionFilters();
+                    })
+                .on('before_open.jstree', function(e, data) {
+                    if (!loaded_nodes.includes(data.node.id)) {
 
-                    var url = "{!! @route('getnode', ['id' => 0]) !!}";
-                    url = url.substring(0, url.length - 1) + data.node.id;
-                    $.ajax({
-                        method: "GET",
-                        url: url,
-                        success: function(resp) {
-                            // $('#jstree').jstree().delete_node();
-                            $('#jstree').jstree().delete_node($('#jstree').jstree().get_node(data.node.id).children);
-                            var child = resp;
-                            //var child = {"text" : "atet", "id" : 46};
-                            child.forEach(function(index, item) {
-                                $('#jstree').jstree().create_node(data.node.id, index, "last",
-                                    function() {
+                        var url = "{!! @route('getnode', ['id' => 0]) !!}";
+                        url = url.substring(0, url.length - 1) + data.node.id;
+                        $.ajax({
+                            method: "GET",
+                            url: url,
+                            success: function(resp) {
+                                // $('#jstree').jstree().delete_node();
+                                $('#jstree').jstree().delete_node($('#jstree').jstree().get_node(data.node.id).children);
+                                var child = resp;
+                                //var child = {"text" : "atet", "id" : 46};
+                                child.forEach(function(index, item) {
+                                    $('#jstree').jstree().create_node(data.node.id, index, "last",
+                                        function() {
 
-                                    });
-                                $('#jstree').jstree().deselect_node(index.id, true);
-                            });
-                        },
-                        error: function(xhr, str) {
-                            console.log(xhr);
-                        }
-                    });
-                    loaded_nodes.push(data.node.id);
-                }
-            });
+                                        });
+                                    $('#jstree').jstree().deselect_node(index.id, true);
+                                });
+                            },
+                            error: function(xhr, str) {
+                                console.log(xhr);
+                            }
+                        });
+                        loaded_nodes.push(data.node.id);
+                    }
+                });
 
 
             $('#data-table-buttons').on('draw.dt', function() {
@@ -506,6 +496,8 @@
 
 
             function initOptionFilters() {
+                    $('#loading').show();
+
                     let filter_selected_map = $("[filter-selected=true]");
                     let all_filters = $(".filter_with_options");
                     $.each(all_filters, function(key, value) {
@@ -537,8 +529,10 @@
 
                             $.each(all_filters, function(key, value) {
                                 //value.setAttribute("style", "color:red;cursor:not-allowed");
-                                value.setAttribute("style", "color:red;cursor:not-allowed");
-                                value.setAttribute("filter-accessible", "false");
+                                // value.setAttribute("style", "color:red;cursor:not-allowed");
+                                // value.setAttribute("filter-accessible", "false");
+                                // value.closest('.filterElem').style.display = 'none';
+                                $( value ).closest('.filterElem').addClass('hide')
                             });
 
                             if (resp.available) {
@@ -547,11 +541,26 @@
                                     let filter_by_id = $("[option_id=" + index + "]");
                                     //console.log(filter_by_id);
                                     if(typeof(filter_by_id[0]) !== 'undefined'){
-                                      filter_by_id[0].setAttribute("style", "cursor:pointer");
-                                      filter_by_id[0].setAttribute("filter-accessible", "true");
+                                      // filter_by_id[0].setAttribute("style", "cursor:pointer");
+                                      // filter_by_id[0].setAttribute("filter-accessible", "true");
+                                      // filter_by_id[0].closest('.filterElem').style.display = 'flex';
+                                      $( filter_by_id[0] ).closest('.filterElem').removeClass('hide')
                                     }
                                 });
                             }
+
+                            $('.filter').each(function( index ) {
+                                let filter = $( this );
+                                let enabled = filter.find('.filterElem:not(.hide)').length;
+                                let h3 = filter.prev();
+                                if(enabled == 0)
+                                    h3.hide()
+                                else
+                                {
+                                    let name = h3.attr('filter_name') + ' (' + enabled + ')';
+                                    h3.text( name );
+                                }
+                            })
 
                             //console.log($('#instockToggler').prop('checked'));
                             if ($('#instockToggler').prop('checked')) {
@@ -645,23 +654,19 @@
 
                             if ((resp.available.length === 0) && (resp['checked'].length === 0)) {
                                 $.each(all_filters, function(key, value) {
-                                    value.setAttribute("style", "cursor:pointer");
-                                    value.setAttribute("filter-accessible", "true");
+                                    $(value).closest('.filterElem').removeClass('hide')
                                 });
                             }
 
-                            setFiltersQuantity();
+                            // setFiltersQuantity();
+
+                            $('#loading').hide();
                         },
                         error: function(xhr, str) {
                             console.log(xhr);
+                            $('#loading').hide();
                         }
                     });
-
-                    $.each(all_filters, function(key, value) {
-                        value.setAttribute("style", "color:grey;cursor:progress");
-                        // value.setAttribute("filter-accessible","false");
-                    });
-
             }
 
             function setFiltersQuantity() {
@@ -1726,9 +1731,7 @@
         }
 
         .ui-accordion-header {
-            height: 60px;
             font-size: 24px;
-
         }
 
         .filter_with_options {
@@ -1760,10 +1763,37 @@
         .filter {
             max-height: 300px;
             overflow-y: scroll;
+            width: 350px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .filterElem {
+            display: flex;
+            align-items: center;
+            width: 33%;
+            padding: 5px;
+            box-sizing: border-box;
         }
 
         #data-table-buttons {
             max-width: 100%;
+        }
+
+        #loading {
+            display: block;
+            position: fixed;
+            z-index: 10001;
+            background-image: url(https://dinmark.com.ua/style/images/icon-loading.gif);
+            background-color: #000;
+            background-size: 80px;
+            opacity: 0.7;
+            background-repeat: no-repeat;
+            background-position: center;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
         }
 
 
