@@ -31,6 +31,11 @@
 				.ui-accordion .ui-accordion-content {
 					padding:0px !important;
 				}
+
+				.ui-accordion-header {
+					height: 60px;
+					font-size: 24px;
+				}
 		</style>
 
 @endpush
