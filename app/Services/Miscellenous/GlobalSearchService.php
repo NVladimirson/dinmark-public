@@ -152,7 +152,7 @@ class GlobalSearchService
         $product_info = [];
         $instance =  static::getInstance();
         $language = static::getInstance()->lang;
-        $allowed_reclamations = Reclamation::whereHas('user',function ($users){
+        $allowed_reclamations = \App\Models\Reclamation\Reclamation::whereHas('user',function ($users){
                 $users->whereHas('getCompany',function ($companies){
                     $companies->where([
                         ['id', session('current_company_id')],
@@ -160,7 +160,11 @@ class GlobalSearchService
                 });
         })->pluck('id');
 
-        $allowed_products = ReclamationProduct::whereIn('reclamation_id',$allowed_reclamations)->pluck('implementation_product_id');
+        $allowed_implementation_products = ReclamationProduct::whereIn('reclamation_id',$allowed_reclamations)->pluck('implementation_product_id');
+
+        $allowed_order_products = ImplementationProduct::whereIn('id',$allowed_implementation_products)->pluck('order_product_id');
+
+        $allowed_products = OrderProduct::whereIn('id',$allowed_order_products)->pluck('product_id');
 
         $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
           $content->where([
