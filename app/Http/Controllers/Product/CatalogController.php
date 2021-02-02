@@ -260,13 +260,38 @@ class CatalogController extends Controller
       //           }
       //           return number_format(0,2,'.',' ');
 			// })
-			->addColumn('retail_user_prices', function (Product $product) {
+			->addColumn('retail_user_prices', function (Product $product) use ($group){
+				// $coef = 1;
+				// if($group->price){
+				// 	$coef = $group->price->koef;
+				// }
+				// 				if(\App\Services\Product\Product::hasAmount($product->storages)){
+				// 						return '<div id="catalog_catalog_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
+				// 				}
+				// 				return number_format(0,2,'.',' ');
+
 					if(ProductServices::hasAmount($product->storages)){
 							$storage = $product->storages->first();
 							$package = $storage->package;
 							$retail = ProductServices::getBasePrice($product,$storage->storage_id);
 							$user_price = ProductServices::getPrice($product,$storage->id);
 							$old_price = ProductServices::getOldPrice($product,$storage->storage_id);
+
+							$coef = 1;
+							if($group->price){
+								$coef = $group->price->koef;
+												if(\App\Services\Product\Product::hasAmount($product->storages)){
+													$catalog_price = \App\Services\Product\Product::getPriceWithCoef($product,$coef);
+												}
+												else{
+													$catalog_price = number_format(0,2,'.',' ');
+												}
+							}
+							else{
+								$catalog_price = number_format(0,2,'.',' ');
+							}
+
+
 							// <span style="color:#f0c674">
 							if($product->old_price){
 								return '<p id="retail_user_price_'.$product->id.'" style="margin-bottom:0px">
@@ -275,7 +300,12 @@ class CatalogController extends Controller
 								<br>
 								<span>'.__('product.table_header_price').': </span>
 								<span class="old_price" style="color:red"><strike>'.$old_price.'</strike></span>
-								<span class="user_price">'. $user_price .'</span></p>';
+								<span class="user_price">'. $user_price .'</span>
+								<br>
+								<span>'.__('product.table_header_catalog_price').' (x'.$coef.'): </span>
+								<br>
+								<span class="catalog_price">' . $catalog_price . '</span>
+								</p>';
 							}else{
 								return '<p id="retail_user_price_'.$product->id.'" style="margin-bottom:0px">
 								<span>'.__('product.table_header_price_retail').': </span>
@@ -283,10 +313,13 @@ class CatalogController extends Controller
 								<br>
 								<span>'.__('product.table_header_price').': </span>
 								<span class="old_price" style="display:none;color:red"><strike>'.$old_price.'</strike></span>
-								<span class="user_price">'. $user_price .'</span></p>';
+								<span class="user_price">'. $user_price .'</span>
+								<br>
+								<span>'.__('product.table_header_catalog_price').' (x'.$coef.'): </span>
+								<br>
+								<span class="catalog_price">' . $catalog_price . '</span>
+								</p>';
 							}
-
-
 					}
 					return number_format(0,2,'.',' ');
 			})

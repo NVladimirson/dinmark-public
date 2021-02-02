@@ -276,7 +276,7 @@ tr:hover .datatable_actions_class div a {
 }
 
 
-.dropdown-menu.inner.show li a {
+/* .dropdown-menu.inner.show li a {
     padding-left: 23px;
     position: relative;
 }
@@ -289,7 +289,7 @@ tr:hover .datatable_actions_class div a {
     left: 5px;
     padding-left: 4px;
     border: 1px solid silver;
-}
+} */
 
 #jstree {
     padding-left: 0;

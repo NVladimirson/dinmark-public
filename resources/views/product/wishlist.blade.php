@@ -22,6 +22,15 @@
             -ms-flex: 1;
             flex: 1;
         }
+
+				.image-container img {
+						max-height: 100%;
+						max-width: 30px;
+				}
+
+				.ui-accordion .ui-accordion-content {
+					padding:0px !important;
+				}
 		</style>
 
 @endpush
@@ -181,18 +190,18 @@
 								<th id="price_porog_1" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
 								<th id="price_porog_2" class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
 								<th>
+									Залишок/Термін  доставки
+								</th>
+								<th>
 										@lang('product.table_header_quantity')
 								</th>
 								<th>
 										@lang('product.table_header_package_weight')
 								</th>
-								<th>
-										@lang('product.table_header_sum_w_taxes')
-								</th>
 								<!-- <th class="text-nowrap">@lang('wishlist.table_header_price')</th>
 								<th class="text-nowrap coef-header">@lang('wishlist.table_header_user_price') x {{
 				($curentWishlist->price)? $curentWishlist->price->koef : 1 }}</th> -->
-								<th class="text-nowrap">@lang('wishlist.table_header_storage')</th>
+								<th class="text-nowrap">@lang('product.table_header_sum_w_taxes')</th>
 								<th width="100"></th>
 							</tr>
 						</thead>
@@ -410,9 +419,9 @@
                 $('#select_all_products').prop('checked', false);
             });
 
-            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
-            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].style.color = "#4e5c68";
-            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = '@lang('product.select_term')';
+            // document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
+            // document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].style.color = "#4e5c68";
+            // document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = '@lang('product.select_term')';
 
 
             $("#accordion").accordion({
