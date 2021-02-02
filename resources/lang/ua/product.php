@@ -57,6 +57,7 @@ return [
 	'table_header_article' => 'Артикул',
     'table_header_price_retail' => 'Роздріб',
     'table_header_price' => 'Ціна',
+    'table_header_catalog_price' => 'Цена с наценкой',
     'table_header_top_price' => 'Сума в Замовленнях',
     'table_header_times_in_orders' => 'Кількість в Замовленнях',
     'table_header_retail_user_prices' => 'Роздріб/Ваша ціна',
