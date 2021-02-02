@@ -49,7 +49,7 @@ return [
     'table_header_article' => 'Артикул',
     'table_header_price_retail' => 'Розница',
     'table_header_price' => 'Цена',
-    'table_header_catalog_price' => 'Ціна з націнкою',
+    'table_header_catalog_price' => 'Цена с наценкой',
     'table_header_top_price' => 'Сумма в Заказах',
     'table_header_times_in_orders' => 'Количество в Заказах',
     'table_header_retail_user_prices' => 'Розница/Ваша цена',
