@@ -42,12 +42,21 @@
           <td>{{$product['total']}}</td>
         </tr>
 				@else
+				@if($product_focused)
 				<tr>
           <td><b><a href="{{route('products.show',['id' => $product['id']])}}"> {{$product['name']}}</a></b></td>
           <td><b>{{$product['article']}}</b></td>
           <td><b>{{$product['quantity']}}</b></td>
           <td><b>{{$product['total']}}</b></td>
         </tr>
+				@else
+				<tr>
+          <td><a href="{{route('products.show',['id' => $product['id']])}}"> {{$product['name']}}</a></td>
+          <td>{{$product['article']}}</td>
+          <td>{{$product['quantity']}}</td>
+          <td>{{$product['total']}}</td>
+        </tr>
+				@endif
 				@endif
         @empty
         @endforelse

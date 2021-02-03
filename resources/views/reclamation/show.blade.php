@@ -31,7 +31,7 @@
 						<th>@lang('implementation.product_show_header_name')</th>
 						<th>@lang('implementation.product_show_header_article')</th>
 						<th>@lang('implementation.product_show_header_quantity')</th>
-						<th>@lang('implementation.product_show_header_note')</th>
+						<th>@lang('implementation.product_show_header_total')</th>
 					</tr>
 				@forelse($products as $key => $product)
 				@if($key)
@@ -42,12 +42,22 @@
 					<td>{{$product['note']}}</td>
 				</tr>
 				@else
+				@if($product_focused)
 				<tr>
 					<td><b><a href="{{route('products.show',['id' => $product['id']])}}"> {{$product['name']}}</a></b></td>
 					<td><b>{{$product['article']}}</b></td>
 					<td><b>{{$product['quantity']}}</b></td>
 					<td><b>{{$product['note']}}</b></td>
 				</tr>
+				@else
+				<tr>
+					<td><a href="{{route('products.show',['id' => $product['id']])}}"> {{$product['name']}}</a></td>
+					<td>{{$product['article']}}</td>
+					<td>{{$product['quantity']}}</td>
+					<td>{{$product['note']}}</td>
+				</tr>
+				@endif
+
 				@endif
 				@empty
 				@endforelse

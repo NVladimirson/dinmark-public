@@ -91,7 +91,7 @@ class ImplementationController extends Controller
       }
     }
     //dd($products);
-    return view('order.implementation_show',compact('implementation','products'));
+    return view('order.implementation_show',compact('implementation','products', 'product_focused'));
   }
 
 	public function ajax(Request $request)

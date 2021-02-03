@@ -43,20 +43,6 @@ class ReclamationController extends Controller
 		isset($request->all()['focus']) ? $product_focused = $request->all()['focus'] : $product_focused = false;
 		$reclamation = Reclamation::find($id);
 
-		//$reclamation_products = ReclamationProduct::where('reclamation_id',$id)->get();
-		// $products = \App\Models\Product\Product::
-		// with('orderProducts.implementationProduct.reclamationProduct.reclamation')->
-		// whereHas('orderProducts', function($ordrerProducts) use ($id){
-		// 	$ordrerProducts->whereHas('implementationProduct', function($implementationProduct) use ($id){
-		// 		$implementationProduct->whereHas('reclamationProduct', function($reclamationProduct) use ($id){
-		// 			$reclamationProduct->where('reclamation_id',$id);
-		// 		});
-		// 	});
-		// })->get();
-		//
-		// foreach ($products as $key => $product) {
-		// 	$products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);
-		// }
 		$products = json_decode(json_encode(\DB::select('SELECT p.id,p.article,rp.quantity,rp.note
 						FROM s_shopshowcase_products AS p
 						JOIN s_cart_products AS cp ON p.id = cp.product_id
@@ -84,7 +70,7 @@ class ReclamationController extends Controller
 			}
 		}
 
-		return view('reclamation.show',compact('reclamation','products'));
+		return view('reclamation.show',compact('reclamation','products', 'product_focused'));
 	}
 
 	public function ajax(Request $request){
