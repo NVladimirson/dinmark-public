@@ -17,9 +17,74 @@ use Ramsey\Uuid\Uuid;
 
 class ReclamationController extends Controller
 {
+
+	private  $lang;
+	private static $instance;
+	public static function getInstance()
+	{
+			if (null === static::$instance) {
+					static::$instance = new static();
+			}
+
+			return static::$instance;
+	}
+
+
 	public function index(){
 		SEOTools::setTitle(trans('reclamation.page_list'));
 		return view('reclamation.index');
+	}
+
+	public function show(Request $request){
+		$instance =  static::getInstance();
+		$language = static::getInstance()->lang;
+
+		$id = $request->all()['reclamation'];
+		isset($request->all()['focus']) ? $product_focused = $request->all()['focus'] : $product_focused = false;
+		$reclamation = Reclamation::find($id);
+
+		//$reclamation_products = ReclamationProduct::where('reclamation_id',$id)->get();
+		// $products = \App\Models\Product\Product::
+		// with('orderProducts.implementationProduct.reclamationProduct.reclamation')->
+		// whereHas('orderProducts', function($ordrerProducts) use ($id){
+		// 	$ordrerProducts->whereHas('implementationProduct', function($implementationProduct) use ($id){
+		// 		$implementationProduct->whereHas('reclamationProduct', function($reclamationProduct) use ($id){
+		// 			$reclamationProduct->where('reclamation_id',$id);
+		// 		});
+		// 	});
+		// })->get();
+		//
+		// foreach ($products as $key => $product) {
+		// 	$products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);
+		// }
+		$products = json_decode(json_encode(\DB::select('SELECT p.id,p.article,rp.quantity,rp.note
+						FROM s_shopshowcase_products AS p
+						JOIN s_cart_products AS cp ON p.id = cp.product_id
+						JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
+						JOIN b2b_reclamation_products AS rp ON rp.implementation_product_id = ip.id
+						JOIN b2b_reclamations AS r ON r.id = rp.reclamation_id
+						WHERE r.id ='.$id)),true);
+
+		foreach ($products as $key => $product) {
+				$products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);
+		}
+		foreach ($products as $key => $product) {
+			if($product_focused && $product['id'] == $product_focused){
+				if($key){
+
+					$focused = $products[$key];
+					$temp = $products[0];
+
+					$products[0] = $focused;
+					$products[$key] = $temp;
+
+				}
+
+				break;
+			}
+		}
+
+		return view('reclamation.show',compact('reclamation','products'));
 	}
 
 	public function ajax(Request $request){

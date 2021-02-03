@@ -91,6 +91,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/implementations/find','Order\ImplementationController@find')->name('implementations.find');
 		Route::get('/implementations/products/{id}','Order\ImplementationController@getProductsAjax')->name('implementations.products');
 		Route::get('/implementations/pdf/{id}','Order\ImplementationController@generatePDF')->name('implementations.pdf');
+		Route::get('/implementations/{id}','Order\ImplementationController@show')->name('implementations.show');
 
 		Route::get('/reclamations','Order\ReclamationController@index')->name('reclamations');
 		Route::get('/reclamations/ajax','Order\ReclamationController@ajax')->name('reclamations.ajax');
@@ -99,6 +100,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
 		Route::get('/reclamations/update/{reclamation_id}','Order\ReclamationController@update')->name('reclamations.update');
 		Route::post('/reclamations/create','Order\ReclamationController@store')->name('reclamations.store');
 		Route::get('/reclamations/create/{implementation_id}','Order\ReclamationController@createByImplementation')->name('reclamations.store_implementation');
+		Route::get('/reclamations/{id}','Order\ReclamationController@show')->name('reclamations.show');
 
         Route::get('/payments','Finance\PaymentController@index')->name('payments');
         Route::get('/payments/ajax','Finance\PaymentController@ajax')->name('payments.ajax');

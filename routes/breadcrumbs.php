@@ -97,9 +97,19 @@ Breadcrumbs::for('implementations', function ($trail) {
 	$trail->push(trans('implementation.page_list'), route('implementations'));
 });
 
+Breadcrumbs::for('implementation.show', function ($trail,$implementation) {
+	 $trail->parent('implementations');
+	 $trail->push($implementation->id, route('implementations.show',[$implementation->id]));
+});
+
 Breadcrumbs::for('reclamation.all', function ($trail) {
 	$trail->parent('home');
 	$trail->push(trans('reclamation.page_list'), route('reclamations'));
+});
+
+Breadcrumbs::for('reclamations.show', function ($trail,$reclamation) {
+	 $trail->parent('reclamation.all');
+	 $trail->push($reclamation->id, route('reclamations.show',[$reclamation->id]));
 });
 
 Breadcrumbs::for('reclamation.create', function ($trail) {

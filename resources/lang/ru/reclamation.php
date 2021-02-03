@@ -52,5 +52,12 @@ return [
 
     'download_file' => 'Загрузить',
     'deploy' => 'Развернуть',
-    'collapse' => 'Свернуть'
+    'collapse' => 'Свернуть',
+
+    'reclamation' => 'Рекламация',
+    'show_tab_name' => 'Информация о товарах',
+    'product_show_header_name' => 'Наименование',
+    'product_show_header_article' => 'Артикул',
+    'product_show_header_quantity' => 'Количество на реализацию',
+    'product_show_header_note' => 'Комментарий'
 ];

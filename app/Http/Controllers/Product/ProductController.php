@@ -101,24 +101,100 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      // $products = $products->whereHas('storages', function($storages) use($terms){
-      //     $storages->where('amount','>',0);
-      // });
-      // $product =Product::where('id',22233)->with('orderProducts.getCart','orderProducts.implementationProduct',
-      // 'orderProducts.implementationProduct.reclamationProduct')->get();
-    //   $group = LikeGroup::with(['price'])->find(1);
-    // //  dd($group);
-    //   session(['current_catalog' => $group->id]);
-    //   $products = Product::whereHas('likes',function($likes) use ($group){
-    //     $likes->where([
-    //       ['alias',8],
-    //       ['group_id',$group->group_id],
-    //       ['user',$group->user_id],
-    //     ]);
-    //   });
-    //   dd($group,$group->id,$products->get()->pluck('id'));
+      $product_info = [];
+      // $instance =  static::getInstance();
+      // $language = static::getInstance()->lang;
+      $language = 'ru';
+      $search = 'DIN';
+      $limited = true;
+      $allowed_reclamations = \App\Models\Reclamation\Reclamation::whereHas('user',function ($users){
+              $users->whereHas('getCompany',function ($companies){
+                  $companies->where([
+                      ['id', session('current_company_id')],
+                  ]);
+              });
+      })->pluck('id');
 
-    //933-8-65-5,8ц
+      $allowed_implementation_products = ReclamationProduct::whereIn('reclamation_id',$allowed_reclamations)->pluck('implementation_product_id');
+
+      $allowed_order_products = ImplementationProduct::whereIn('id',$allowed_implementation_products)->pluck('order_product_id');
+
+      $allowed_products = OrderProduct::whereIn('id',$allowed_order_products)->pluck('product_id');
+
+
+
+      $products = Product::with('orderProducts.implementationProduct.reclamationProduct')->whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
+        $content->where([
+          ['language',$language],
+          ['alias', 8],
+          ['name', 'like',"%" . $search . "%"]
+        ]);
+      })
+      ->orWhere([
+      ['article', 'like',"%" . $search . "%"]
+      ])
+      ->orWhere([
+      ['article_show', 'like',"%" . $search . "%"]
+      ]);
+
+      if($limited){
+        $products = $products->limit(10);
+        $products = $products->get();
+
+        $product_info = [];
+        foreach ($products as $key => $product) {
+          $product_reclamation_info = json_decode(json_encode(
+            \DB::select('
+              SELECT p.id AS 'product_id',i.id AS 'implementation_id'
+              FROM s_shopshowcase_products AS p
+              JOIN s_cart_products AS cp ON p.id = cp.product_id
+              JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
+              JOIN b2b_implementations AS i ON i.id = ip.implementation_id
+              WHERE p.id ='
+            .$product->id)),true);
+
+            foreach ($product_reclamation_info as $key => $product_reclamation) {
+              //dd($product_reclamation['reclamation_id']);
+              $product_info[] = [
+                'id' => $product_reclamation['implementation_id'],
+                'product_id' => $product_reclamation['product_id'],
+                'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                'category' => 'reclamations'
+              ];
+              if(count($product_info)>5){
+                break;
+              }
+            }
+            if(count($product_info)>5){
+              break;
+            }
+
+          }
+
+        }
+        dd($product_info);
+      if($limited){
+        $products = $products->limit(10);
+        $products = $products->get();
+
+        $product_info = [];
+        foreach ($products as $key => $product) {
+          $orderProduct = $product->orderProducts->first();
+          if($orderProduct){
+            $product_info[] = [
+              'id' => $product->orderProducts->first()->getCart->id,
+              'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+              'category' => 'reclamations'
+            ];
+          }
+          if(count($product_info)>5){
+            break;
+          }
+        }
+
+      }
+
+      return $product_info;
 
     }
 

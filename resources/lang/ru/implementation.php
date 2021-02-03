@@ -38,6 +38,14 @@ return [
 	'btn_generate_pdf' 			=> 'Расходная накладная',
     'btn_create_implementation' => 'Оформить возврат',
     'deploy' => 'Развернуть',
-    'collapse' => 'Свернуть'
+    'collapse' => 'Свернуть',
+
+    'implementation' => 'Реализация',
+    'show_tab_name' => 'Информация о товарах',
+    'product_show_header_name' => 'Найменування',
+    'product_show_header_article' => 'Артикул',
+    'product_show_header_quantity' => 'Кількість на реалізацію',
+    'product_show_header_total' => 'Сума'
+
 
 ];

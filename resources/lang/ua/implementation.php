@@ -38,5 +38,12 @@ return [
 	'btn_generate_pdf' 			=> 'Видаткова накладна',
     'btn_create_implementation' => 'Оформити повернення',
     'deploy' => 'Розгорнути',
-    'collapse' => 'Згорнути'
+    'collapse' => 'Згорнути',
+
+    'implementation' => 'Реалізація',
+    'show_tab_name' => 'Інформація про товари',
+    'product_show_header_name' => 'Найменування',
+    'product_show_header_article' => 'Артикул',
+    'product_show_header_quantity' => 'Кількість на реалізацію',
+    'product_show_header_total' => 'Сума'
 ];
