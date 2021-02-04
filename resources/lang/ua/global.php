@@ -59,5 +59,13 @@ return [
       'likes' => 'Каталоги',
       'comparison' => 'Реалізації',
       'cart' => 'Замовлення',
+    ],
+
+    'global_search' => [
+      'all_results' => 'Дивитися всі',
+      'implementations' => 'Реалізації',
+      'reclamations' => 'Рекламації',
+      'orders' => 'Замовлення',
+      'products' => 'Продукти'
     ]
 ];
