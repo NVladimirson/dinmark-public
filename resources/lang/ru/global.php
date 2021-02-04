@@ -58,5 +58,13 @@ return [
       'likes' => 'Каталоги',
       'comparison' => 'Реализации',
       'cart' => 'Заказы',
+    ],
+
+    'global_search' => [
+      'all_results' => 'Смотреть все',
+      'implementations' => 'Реализации',
+      'reclamations' => 'Рекламации',
+      'orders' => 'Заказы',
+      'products' => 'Продукты'
     ]
 ];
