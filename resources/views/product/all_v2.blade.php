@@ -31,7 +31,7 @@
 
     <header class="nav">
         <div id="groupsToggle" onclick="$('#filterGroups').addClass('show')"><i class="fas fa-th-large"></i> Категорія</div>
-        <div><i class="fa fa-filter"></i> Властивості</div>
+        <div id="optionsToggle"><i class="fa fa-filter"></i> Властивості</div>
         <div>
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="instockToggler">
@@ -106,14 +106,21 @@
         </tbody>
     </table>
 
-
     <div id="loading"></div>
     <div id="filterGroups" class="myModal">
         <article>
             <i class="far fa-times-circle" onclick="$('#filterGroups').removeClass('show'); initFilter()"></i>
-            <h2>Оберіть категорії</h2>
+            <h2>@lang('product.all_categories_name')</h2>
             <div id="jstreeGroups"></div>
             <button class="btn btn-success m-t-5" onclick="$('#filterGroups').removeClass('show'); initFilter()">Застосувати</button>
+        </article>
+    </div>
+    <div id="filterOptions" class="myModal">
+        <article>
+            <i class="far fa-times-circle" onclick="$('#filterOptions').removeClass('show');"></i>
+            <h2>@lang('product.filters-with-properties')</h2>
+            <div id="optionfilters"></div>
+            <button class="btn btn-success m-t-5" onclick="$('#filterOptions').removeClass('show'); initFilter()">Застосувати</button>
         </article>
     </div>
 
@@ -145,6 +152,7 @@
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <!-- <script src="/assets/plugins/select2/dist/js/vue.min.js"></script> -->
     <script>
+        let get__getFilterOptions = true;
 
         /* const wrapTable = new Vue({
             el: "#data-table-buttons",
@@ -209,6 +217,14 @@
                         loaded_nodes.push(data.node.id);
                     }
                 });
+
+            $('#optionsToggle').click(function () {
+                if(get__getFilterOptions)
+                    getFilterOptions();
+                $('#filterOptions').addClass('show')
+            });
+
+            $('header.nav input, header.nav select').change(initFilter);
 
             window.table =
                 $('#data-table-buttons').DataTable({
@@ -351,8 +367,6 @@
 
             
         });
-    
-        $('header.nav input, header.nav select').change(initFilter);
 
         function initFilter() {
             $('#loading').show();
@@ -443,6 +457,141 @@
             
             initFilter();
         }
+
+        function getFilterOptions() {
+            $('#loading').show();
+
+            $.ajax({
+                method: "POST",
+                // url: '{{route("products.optionfilters")}}',
+                url: '{{env('DINMARK_URL')}}api/products/filters',
+                data: {
+                    filter_with_options: function () {
+                        let options = Object();
+                        $("input:checked", $('#optionfilters')).each(function () {
+                            options[this.name] = this.value;
+                        });
+                    },
+                    categories: function () {
+                        return $.jstree.reference('jstreeGroups').get_checked();
+                    }
+                },
+                success: function(filters) {
+                    $('#optionfilters').empty();
+
+                    if(filters)
+                    {
+                        for(let i in filters)
+                        {
+                            $('<h3/>', { text: filters[i].name }).appendTo('#optionfilters');
+                            let div = $('<div/>', { class: 'filter'});
+                            for(v in filters[i].values)
+                            {
+                                $('<div/>', {
+                                    class: 'filterElem',
+                                    html: filters[i].values[v].img + ' <span>' + filters[i].values[v].name + '</span>',
+                                    'filter-selected': filters[i].values[v].selected
+                                }).appendTo(div);
+                            }
+                            div.appendTo('#optionfilters');
+                        }
+
+                        $("#optionfilters").accordion({
+                            collapsible: true,
+                            active: false
+                        });
+                    }
+
+                    $('#loading').hide();
+                },
+                error: function(xhr, str) {
+                    console.log(xhr);
+                    $('#loading').hide();
+                }
+            });
+        }
+
+        function changeamount(obj){
+            let id = obj.id;
+            let product_id = id.substr(14);
+            let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
+            let storage_id = optionselected.val();
+            let amount = obj.value;
+            let step = obj.step;
+
+            if(amount%step){
+              obj.value = amount - amount%step;
+              amount = obj.value;
+            }
+
+            let getPrice = false;
+            let getPriceRequestAmount = amount - obj.getAttribute('datamax');
+
+            if(getPrice === true){
+              document.getElementById('get_price_button_'+product_id).setAttribute('data-amount',getPriceRequestAmount);
+              document.getElementById('get_price_button_'+product_id).setAttribute('data-step',step);
+              document.getElementById('get_price_button_'+product_id).setAttribute('data-min',step);
+              document.getElementById('get_price_button_'+product_id).click();
+              obj.value = obj.getAttribute('datamax');
+              amount = obj.getAttribute('datamax');
+            }
+
+            $.ajax({
+                type: "GET",
+                data: {
+                    product_id:product_id,
+                    storage_id:storage_id,
+                    amount:amount
+                },
+                url: "{!! @route('priceCalc') !!}",
+                success: function(msg){
+                    console.log(msg);
+                    let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+
+                    let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+                    if( (msg['price100_raw'] - msg['user_price_raw']) > (msg['price100_raw']*0.05) ){
+                        retail_user_price.children[5].innerHTML = '<span style="background-color:#f0c674; padding: 2px;"><strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span>'+msg['user_price']+'</span></span>';
+                        sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
+                        sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
+                        sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
+                    }
+                    else if( (msg['price100_raw'] - msg['user_price_raw']) < (msg['price100_raw']*0.05) && ((msg['price100_raw'] -  msg['user_price_raw'])>0) ){
+                        retail_user_price.children[5].innerHTML = '<span style="background-color:#96ca0a; padding: 2px;"><strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span>'+msg['user_price']+'</span></span>';
+                        sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
+                        sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
+                        sum_w_taxes.children[3].setAttribute('style',"background: #96ca0a");
+                    }
+                    else{
+                        retail_user_price.children[5].innerText = msg['user_price'];
+                        sum_w_taxes.children[0].setAttribute('style','');
+                        sum_w_taxes.children[2].setAttribute('style','');
+                        sum_w_taxes.children[3].setAttribute('style','');
+                    }
+
+
+                    let package_weight = document.getElementById('package_weight_'+product_id);
+                    package_weight.children[0].innerText = msg['multiplier'];
+                    package_weight.children[2].innerText = msg['package'];
+                    package_weight.children[4].innerText = msg['weight'];
+
+                    sum_w_taxes.children[0].innerText = msg['price'];
+
+                    if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                        sum_w_taxes.children[2].innerText = '';
+                        sum_w_taxes.children[3].innerText = '';
+                        sum_w_taxes.children[0].setAttribute('style','');
+                        sum_w_taxes.children[2].setAttribute('style','');
+                        sum_w_taxes.children[3].setAttribute('style','');
+                    }else{
+                        sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                        sum_w_taxes.children[3].innerText = msg['discountamount'];
+                    }
+
+                    let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
+                    add_to_order_button.setAttribute('data-amount',amount);
+                }
+            });
+        }
     </script>
 
     <style>
@@ -476,7 +625,7 @@
             justify-content: center;
             align-items: center;
             position: fixed;
-            z-index: 1100;
+            z-index: 2000;
             background-color: rgb(0 0 0 / 70%);
             left: 0;
             bottom: 0;
@@ -486,7 +635,7 @@
         .myModal article {
             background: #fff;
             padding: 25px;
-            width: 500px;
+            min-width: 500px;
             height: auto;
             max-height: 80%;
             overflow-y: auto;
@@ -497,6 +646,32 @@
             color: red;
             cursor: pointer;
         }
+
+        .filter {
+            height: min-content;
+            max-height: 300px;
+            overflow-y: scroll;
+            max-width: 450px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0 !important;
+        }
+
+        .filterElem {
+            display: flex;
+            align-items: center;
+            width: 33%;
+            padding: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            height: min-content
+        }
+        .filterElem img { width: 25px; margin-right: 5px }
+        .filterElem:hover {
+            background-color: #f2f4f5;
+        }
+
+
         #loading {
             display: block;
             position: fixed;
@@ -511,6 +686,17 @@
             bottom: 0;
             right: 0;
             top: 0;
+        }
+
+        @media screen and (max-width: 500px) {
+            .myModal article {
+                padding: 15px;
+                min-width: 300px;
+                width: 90%;
+                height: auto;
+                max-height: 80%;
+                overflow: auto;
+            }
         }
     </style>
 
