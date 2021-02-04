@@ -30,7 +30,6 @@
     <div id="filters_selected"></div>
 
     <header class="nav">
-        <span>Фільтри:</span>
         <div id="groupsToggle" onclick="$('#filterGroups').addClass('show')"><i class="fas fa-th-large"></i> Категорія</div>
         <div><i class="fa fa-filter"></i> Властивості</div>
         <div>
@@ -62,7 +61,7 @@
                 <select class="form-control selectpicker" id="storages" data-style="btn-white" multiple="multiple">
                     <!-- <option value="0">@lang('product.select_term')</option> -->
                     @foreach($terms as $key => $term)
-                      <option value="{{$key}}">{!! $term !!}</option>
+                      <option value="{{$key}}" id="termToggler-{{$key}}">{!! $term !!}</option>
                     @endforeach
                 </select>
             </div>
@@ -111,6 +110,7 @@
     <div id="loading"></div>
     <div id="filterGroups" class="myModal">
         <article>
+            <i class="far fa-times-circle" onclick="$('#filterGroups').removeClass('show'); initFilter()"></i>
             <h2>Оберіть категорії</h2>
             <div id="jstreeGroups"></div>
             <button class="btn btn-success m-t-5" onclick="$('#filterGroups').removeClass('show'); initFilter()">Застосувати</button>
@@ -143,9 +143,8 @@
     <script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-    <script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
+    <!-- <script src="/assets/plugins/select2/dist/js/vue.min.js"></script> -->
     <script>
-        let filter__groups = filter__group_nodes = [];
 
         /* const wrapTable = new Vue({
             el: "#data-table-buttons",
@@ -170,6 +169,11 @@
 
             $('#loading').hide();
 
+            // storages
+            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
+            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].style.color = "#4e5c68";
+            document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = '@lang('product.select_term')';
+
             var loaded_nodes = [];
             $("#jstreeGroups")
                 .jstree({
@@ -181,19 +185,6 @@
                             contentType: "application/json; charset=utf-8",
                         },
                     }
-                })
-                .on("changed.jstree", function (e, data) {
-                    filter__groups = data.selected;
-                    filter__group_nodes = [];
-                    for(i = 0, j = data.selected.length; i < j; i++) {
-                        node = data.instance.get_node(data.selected[i]);
-                        if(Number.parseInt(node.id))
-                            filter__group_nodes['group_' + node.id] = node.text;
-                    }
-                    if(Object.keys(filter__group_nodes).length > 0)
-                        $('#groupsToggle').addClass('active');
-                    else
-                        $('#groupsToggle').removeClass('active');
                 })
                 .on('before_open.jstree', function(e, data) {
                     if (!loaded_nodes.includes(data.node.id)) {
@@ -237,7 +228,7 @@
                         "url": "{!! route('products.all_ajax') !!}",
                         "data": {
                             "categories": function () {
-                                return filter__groups;
+                                return $.jstree.reference('jstreeGroups').get_checked();
                             },
                             "instock": function() {
                                 return $('#instockToggler').prop('checked');
@@ -366,7 +357,19 @@
         function initFilter() {
             $('#loading').show();
 
-            let filter__nodes = [];
+            $('#filters_selected').empty();
+            let filter__nodes = Object();
+
+            let groups = $.jstree.reference('jstreeGroups').get_checked(true);
+            for (var i in groups) {
+                if(Number.parseInt(groups[i].id))
+                    filter__nodes['group-' + groups[i].id] = 'Категорія: ' + groups[i].text;
+            }
+
+            if(Object.keys(filter__nodes).length > 0)
+                $('#groupsToggle').addClass('active');
+            else
+                $('#groupsToggle').removeClass('active');
 
             if($('#instockToggler').prop('checked'))
                 filter__nodes['instock'] = '@lang('product.in_stock_button_name')';
@@ -380,29 +383,75 @@
             if($('#discountToggler').prop('checked'))
                 filter__nodes['discount'] = '@lang('product.filters.discount')';
 
-            $('#filters_selected').empty();
+            $("option:selected", $('#storages')).each(function () {
+                filter__nodes[this.id] = 'Термін: ' + this.innerText;
+            });
 
-            let nodes = Object.assign(filter__group_nodes, filter__nodes);
-            for (var key in nodes) {
-                if(nodes[key])
+            
+
+            // let nodes = Object.assign(filter__nodes, filter__group_nodes);
+            for (var key in filter__nodes) {
+                if(filter__nodes[key])
                     $('<div/>', {
-                        id: key,
+                        'data-deselect': key,
                         "class": 'selected_filter',
-                        text: nodes[key]
+                        html: filter__nodes[key] + ' <i class="far fa-times-circle"></i>'
                     }).appendTo('#filters_selected');
             }
 
+            $('#filters_selected i').click(deselectFilter)
+
             window.table.ajax.reload();
+        }
+
+        function deselectFilter() {
+            let id = this.closest('div').dataset.deselect;
+
+            let checkBox = ['instock', 'new', 'hits', 'discount'];
+            if(checkBox.includes(id))
+            {
+                $('#' + id + 'Toggler').prop('checked', false);
+            }
+            else
+            {
+                let key = id.split('-');
+                if(key[0] == 'group')
+                {
+                    $.jstree.reference('jstreeGroups').deselect_node(key[1]);
+                }
+                else
+                {
+                    $('#'+id).prop('selected', false);
+
+                    let labels = '';
+                    $("option:selected", $('#storages')).each(function () {
+                        if(labels !== '') {
+                            labels = labels + ', ' + this.innerText;
+                        }
+                        else {
+                            labels = this.innerText;
+                        }
+                    });
+
+                    if(labels === '') {
+                        labels = '@lang('product.select_term')';
+                    }
+                    document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title',labels);
+                    document.getElementsByClassName('btn dropdown-toggle btn-white')[0].children[0].children[0].children[0].innerText = labels;
+                }
+            }
+            
+            initFilter();
         }
     </script>
 
     <style>
+        #filters_selected i { color: red; cursor: pointer }
         header.nav {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
-        header.nav > span { width: 100px; }
         header.nav > div {
             padding: 7px 25px;
             border-left: 1px solid #d5dbe0;
@@ -410,6 +459,7 @@
             display: flex;
             align-items: center;
         }
+        header.nav > div:first-child { border-left: none }
         header.nav > div.active { color: #2daae1 }
         header.nav > div.select { width: 250px }
         header.nav > div:not(.select):hover { background-color: #01aadf; color: #fff }
@@ -440,6 +490,12 @@
             height: auto;
             max-height: 80%;
             overflow-y: auto;
+        }
+        .myModal article > i {
+            float: right;
+            font-size: 25px;
+            color: red;
+            cursor: pointer;
         }
         #loading {
             display: block;
