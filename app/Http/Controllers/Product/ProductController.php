@@ -113,7 +113,7 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-    
+
 
     }
 
@@ -679,21 +679,29 @@ class ProductController extends Controller
 
     public function search(Request $request){
         $search = $request->name;
-         $formatted_data = [];
-        //
-        // $ids = ProductServices::getIdsSearch($search);
-        //
-        // $products = Product::whereIn('id',$ids)
-        // ->orWhere([
-        //     ['article','like',"%".$search."%"],
-        // ])->orWhere([
-        //     ['article_show','like',"%".$search."%"],
-        // ])
-        // ->orderBy('article')
-        // ->limit(10)
-        // ->get();
+        isset($request->storages) ? $storages = true : $storages = false;
+        info($request->all());
+        info($storages);
+        $formatted_data = [];
         $language = CategoryServices::getLang();
-
+        if($storages){
+          info('all');
+          $products = Product::
+          whereHas('content', function($content) use($search,$language){
+            $content->where([
+              ['language',$language],
+              ['alias', 8],
+              ['name', 'like',"%" . $search . "%"]
+            ]);
+          })
+          ->orWhere([
+          ['article_show', 'like',"%" . $search . "%"]
+          ])
+          ->orWhere([
+          ['article', 'like',"%" . $search . "%"]
+          ])
+          ->limit(10)->get();
+        }else{
           $products = Product::
           whereHas('storages', function($storages){
               $storages->where('amount','>',0);
@@ -712,22 +720,23 @@ class ProductController extends Controller
           ['article', 'like',"%" . $search . "%"]
           ])
           ->limit(10)->get();
+        }
+
 
         foreach ($products as $product) {
             $name = ProductServices::getName($product);
             $storage = $product->storages->firstWhere('is_main',1);
             $min = 0;
             $max = 0;
-            $storage_id = 1;
+            $storage_id = 0;
             if($storage){
                 $min = $storage->package;
                 $max = $storage->amount;
                 $storage_id = $storage->storage_id;
             }
-            else{
+            else if(!$storages){
               continue;
             }
-
             $formatted_data[] = [
                 'id' => $product->id,
                 'text' => $name.' ('.$product->article_show.')',

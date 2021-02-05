@@ -747,44 +747,49 @@
             $('#form_add_order').submit(function(e) {
                 e.preventDefault();
 
-                $('#modal-order').modal('hide');
-
                 var form = $(this);
-
                 let product_id_input = form[0].getElementsByClassName('product_id')[0].value;
                 let storage_id_input = form[0].getElementsByClassName('storage_id')[0].value;
                 let quantity_input = form[0].getElementsByClassName('form-control m-b-5 quantity')[0].value;
                 let quantity_request_input = form[0].getElementsByClassName('form-control m-b-5 quantity_request')[0].value;
 
-                var order_id = $('#order_id').val();
-                var route = '{{route('orders')}}/add-to-order/' + order_id;
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+								if(quantity_input === '0'){
+									return 0;
+								}
+								else{
+									$('#modal-order').modal('hide');
 
 
-                $.ajax({
-                    method: "POST",
-                    url: route,
-                    data: 'product_id='+product_id_input+'&storage_id='+storage_id_input+
-                    '&quantity='+quantity_input+'&quantity_request='+quantity_request_input,
-                    success: function(resp) {
-                        if (resp == "ok") {
-                            $.gritter.add({
-                                title: '@lang('order.modal_success')',
-                            });
-                            changeUpperCounter('order');
-                        }
-                    },
-                    error: function(xhr, str) {
-                        console.log(xhr);
-                    }
-                });
+									var order_id = $('#order_id').val();
+									var route = '{{route('orders')}}/add-to-order/' + order_id;
 
-                return false;
+									$.ajaxSetup({
+											headers: {
+													'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+											}
+									});
+
+
+									$.ajax({
+											method: "POST",
+											url: route,
+											data: 'product_id='+product_id_input+'&storage_id='+storage_id_input+
+											'&quantity='+quantity_input+'&quantity_request='+quantity_request_input,
+											success: function(resp) {
+													if (resp == "ok") {
+															$.gritter.add({
+																	title: '@lang('order.modal_success')',
+															});
+															changeUpperCounter('order');
+													}
+											},
+											error: function(xhr, str) {
+													console.log(xhr);
+											}
+									});
+
+									return false;
+								}
             });
             //modal-order single submit
 
@@ -1561,28 +1566,28 @@
 
 
 
-				$('#modal-order').on('show.bs.modal', function (event) {
-					var button = $(event.relatedTarget);
-					var modal = $(this);
-					modal.find('.product-name').text(button.data('product_name'));
-					modal.find('.product_id').val(button.data('product'));
-					modal.find('.storage_id').val(button.data('storage'));
-					modal.find('.order-storage-amount').text(button.data('storage_max'));
-					var quantity = modal.find('input[name="quantity"]');
-					quantity.val(button.data('storage_min'));
-					quantity.attr('min',button.data('storage_min'));
-					quantity.attr('step',button.data('storage_min'));
-					quantity.attr('data-max',button.data('storage_max'));
-
-					var quantity_request = modal.find('input[name="quantity_request"]');
-					quantity_request.val(0);
-					quantity_request.attr('min',0);
-					quantity_request.attr('step',button.data('storage_min'));
-
-					$('.storage-limit-info').hide();
-					$('.storage-limit-request').hide();
-					$('input[name="quantity_request"]').change();
-				});
+				// $('#modal-order').on('show.bs.modal', function (event) {
+				// 	var button = $(event.relatedTarget);
+				// 	var modal = $(this);
+				// 	modal.find('.product-name').text(button.data('product_name'));
+				// 	modal.find('.product_id').val(button.data('product'));
+				// 	modal.find('.storage_id').val(button.data('storage'));
+				// 	modal.find('.order-storage-amount').text(button.data('storage_max'));
+				// 	var quantity = modal.find('input[name="quantity"]');
+				// 	quantity.val(button.data('storage_min'));
+				// 	quantity.attr('min',button.data('storage_min'));
+				// 	quantity.attr('step',button.data('storage_min'));
+				// 	quantity.attr('data-max',button.data('storage_max'));
+				//
+				// 	var quantity_request = modal.find('input[name="quantity_request"]');
+				// 	quantity_request.val(0);
+				// 	quantity_request.attr('min',0);
+				// 	quantity_request.attr('step',button.data('storage_min'));
+				//
+				// 	$('.storage-limit-info').hide();
+				// 	$('.storage-limit-request').hide();
+				// 	$('input[name="quantity_request"]').change();
+				// });
 
 				$('input[name="quantity"]').change(function (e) {
 					e.preventDefault();
@@ -1602,44 +1607,44 @@
 					modal.find('.product_id').val(button.data('product_id'));
 				})
 
-				$('#form_add_order').submit(function (e) {
-					e.preventDefault();
-
-					$('#modal-order').modal('hide');
-
-					var form = $(this);
-
-					var order_id = $('#order_id').val();
-					var route = '{{route('orders')}}/add-to-order/'+order_id;
-
-					$.ajaxSetup({
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						}
-					});
-					$.ajax({
-						method: "POST",
-						url: route,
-						data: form.serialize(),
-						success: function(resp)
-						{
-							if(resp == "ok"){
-								$.gritter.add({
-									title: '@lang('order.modal_success')',
-								});
-								if(order_id == 0){
-									document.location.reload(true);
-								}
-								window.table.ajax.reload();
-							}
-						},
-						error:  function(xhr, str){
-							console.log(xhr);
-						}
-					});
-
-					return false;
-				})
+				// $('#form_add_order').submit(function (e) {
+				// 	e.preventDefault();
+				//
+				// 	$('#modal-order').modal('hide');
+				//
+				// 	var form = $(this);
+				//
+				// 	var order_id = $('#order_id').val();
+				// 	var route = '{{route('orders')}}/add-to-order/'+order_id;
+				//
+				// 	$.ajaxSetup({
+				// 		headers: {
+				// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				// 		}
+				// 	});
+				// 	$.ajax({
+				// 		method: "POST",
+				// 		url: route,
+				// 		data: form.serialize(),
+				// 		success: function(resp)
+				// 		{
+				// 			if(resp == "ok"){
+				// 				$.gritter.add({
+				// 					title: '@lang('order.modal_success')',
+				// 				});
+				// 				if(order_id == 0){
+				// 					document.location.reload(true);
+				// 				}
+				// 				window.table.ajax.reload();
+				// 			}
+				// 		},
+				// 		error:  function(xhr, str){
+				// 			console.log(xhr);
+				// 		}
+				// 	});
+				//
+				// 	return false;
+				// })
 
 				$('#form_get_price').submit(function (e) {
 					e.preventDefault();
@@ -1723,7 +1728,8 @@
 						dataType: 'json',
 						data: function (params) {
 							return {
-								name: params.term
+								name: params.term,
+								storages: '1'
 							};
 						},
 						processResults: function (data) {
@@ -1808,5 +1814,267 @@
 				@enderror
 			});
 		})(jQuery);
+	</script>
+	<script>
+			var acc = document.getElementsByClassName("accordion");
+			var i;
+
+			for (i = 0; i < acc.length; i++) {
+					acc[i].addEventListener("click", function() {
+							this.classList.toggle("active");
+							var panel = this.nextElementSibling;
+							if (panel.style.display === "block") {
+									panel.style.display = "none";
+							} else {
+									panel.style.display = "block";
+							}
+					});
+			}
+
+			function initCalc(obj){
+					let optionselected = $("option:selected", obj);
+					let product_id = obj.getAttribute('product_id');
+
+					let quantityinput = $('#calc_quantity_'+product_id);
+					let packageweight = $('#package_weight_'+product_id);
+					let sumwithtaxes = $('#sum_w_taxes_'+product_id);
+
+					let orderbutton = $('#to_order_button_'+product_id);
+					let getpricebutton = $('#get_price_button_'+product_id);
+					let storage_id = optionselected.val();
+					if(storage_id!=='0'){
+							let min = optionselected[0].getAttribute('package_min');
+							let max = optionselected[0].getAttribute('package_max');
+
+							if(max !== '0' && (max - min > 0)){
+								//console.log('> min: '+min+', max: '+max);
+								quantityinput[0].setAttribute('value',min);
+								quantityinput[0].setAttribute('min',min);
+								quantityinput[0].setAttribute('step',min);
+								quantityinput[0].setAttribute('max',max);
+								quantityinput[0].setAttribute('datamax',max);
+
+								quantityinput.toggle(true);
+
+								orderbutton.toggle(true);
+								getpricebutton.toggle(false);
+
+								packageweight[0].parentElement.setAttribute('style','display:auto');
+								sumwithtaxes[0].parentElement.setAttribute('style','display:auto');
+							}
+							else{
+								//console.log('min: '+min+', max: '+max);
+								quantityinput.toggle(false);
+
+								orderbutton.toggle(false);
+								getpricebutton.toggle(true);
+
+								packageweight[0].parentElement.setAttribute('style','display:none');
+								sumwithtaxes[0].parentElement.setAttribute('style','display:none');
+							}
+
+							$.ajax({
+									type: "GET",
+									data: {
+											product_id:product_id,
+											storage_id:storage_id,
+											amount:quantityinput[0].getAttribute('value')
+									},
+									url: "{!! @route('priceCalc') !!}",
+									success: function(msg){
+											let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+											retail_user_price.children[1].innerText = msg['retail'];
+											retail_user_price.children[5].innerText = msg['user_price'];
+											// if(msg['oldprice'] !== '0'){
+											//   retail_user_price.children[3].children[0].show;
+											//   retail_user_price.children[3].children[0].innerText = msg['oldprice'];
+											// }
+
+
+											let package_weight = document.getElementById('package_weight_'+product_id);
+											package_weight.children[0].innerText = msg['multiplier'];
+											package_weight.children[2].innerText = msg['package'];
+											package_weight.children[4].innerText = msg['weight'];
+
+											let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+											sum_w_taxes.children[0].innerText = msg['price'];
+
+											if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+													sum_w_taxes.children[2].innerText = '';
+													sum_w_taxes.children[3].innerText = '';
+
+													sum_w_taxes.children[0].setAttribute('style','');
+													sum_w_taxes.children[2].setAttribute('style','');
+													sum_w_taxes.children[3].setAttribute('style','');
+											}else{
+													sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+													sum_w_taxes.children[3].innerText = msg['discountamount'];
+
+													sum_w_taxes.children[2].setAttribute('style','display:auto');
+													sum_w_taxes.children[3].setAttribute('style','display:auto');
+											}
+
+											if(msg['limit_amount_quantity_1'] === '0' || msg['limit_amount_quantity_1'] === 0){
+													let limit_1 = document.getElementById('limit_1_'+product_id);
+													limit_1.children[0].innerText = '';
+													limit_1.children[2].innerText = '-';
+											}else{
+													let limit_1 = document.getElementById('limit_1_'+product_id);
+													limit_1.children[0].innerText = msg['limit_amount_price_1'];
+													limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
+											}
+
+											if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+													let limit_2 = document.getElementById('limit_2_'+product_id);
+													limit_2.children[0].innerText = '';
+													limit_2.children[2].innerText = '-';
+											}else{
+													let limit_2 = document.getElementById('limit_2_'+product_id);
+													limit_2.children[0].innerText = msg['limit_amount_price_2'];
+													limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
+											}
+
+											let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
+											add_to_order_button.setAttribute('data-storage',storage_id);
+											orderbutton[0].setAttribute('data-storage_max',optionselected[0].getAttribute('package_max'));
+											orderbutton[0].setAttribute('data-storage_min',optionselected[0].getAttribute('package_min'));
+											orderbutton[0].setAttribute('data-amount',optionselected[0].getAttribute('package_max'));
+									},
+									error: function(xhr, str) {
+											console.log(xhr);
+									}
+							});
+
+							packageweight.css("display","");
+
+							sumwithtaxes.css("display","");
+
+
+					}else{
+							quantityinput.css("display","none");
+
+							packageweight.css("display","none");
+
+							sumwithtaxes.css("display","none");
+
+							let limit_1 = document.getElementById('limit_1_'+product_id);
+							limit_1.children[0].innerText = '';
+							limit_1.children[2].innerText = '-';
+
+
+							let limit_2 = document.getElementById('limit_2_'+product_id);
+							limit_2.children[0].innerText = '';
+							limit_2.children[2].innerText = '-';
+
+							let productbutton = $('#action_buttons_'+product_id);
+							if(productbutton[0].children[2]){
+									productbutton[0].children[2].remove();
+							}
+					}
+			}
+
+			// let text = document.createElement('span');
+
+			function changeamount(obj){
+					let id = obj.id;
+					let product_id = id.substr(14);
+					let optionselected = $("option:selected", document.getElementById('storage_product_'+product_id));
+					let storage_id = optionselected.val();
+					let amount = obj.value;
+					let step = obj.step;
+
+					if(amount%step){
+						obj.value = amount - amount%step;
+						amount = obj.value;
+					}
+
+					let getPrice = false;
+					let getPriceRequestAmount = amount - obj.getAttribute('datamax');
+					// if(getPriceRequestAmount > 0){
+					//   // obj.value = max;
+					//   const td = obj.parentNode
+					//   text.innerHTML = 'Максимум для этого склада <br> &le; ' + obj.getAttribute('datamax')
+					//   td.append(text)
+					//   // obj.value = obj.getAttribute('datamax')
+					//   setTimeout(() => {
+					//       text.innerHTML = ''
+					//       td.append(text)
+					//   }, 5000)
+					//   getPrice = true;
+					// }
+
+					if(getPrice === true){
+						//let get_price_button = $('get_price_button_'+product_id);
+						document.getElementById('get_price_button_'+product_id).setAttribute('data-amount',getPriceRequestAmount);
+						document.getElementById('get_price_button_'+product_id).setAttribute('data-step',step);
+						document.getElementById('get_price_button_'+product_id).setAttribute('data-min',step);
+						document.getElementById('get_price_button_'+product_id).click();
+						obj.value = obj.getAttribute('datamax');
+						amount = obj.getAttribute('datamax');
+						// docu.click();
+						// get_price_button.attr('data-amount',getPriceRequestAmount);
+						//get_price_button.click();
+					}
+
+					$.ajax({
+							type: "GET",
+							data: {
+									product_id:product_id,
+									storage_id:storage_id,
+									amount:amount
+							},
+							url: "{!! @route('priceCalc') !!}",
+							success: function(msg){
+									let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+
+									let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+									if( (msg['price100_raw'] - msg['user_price_raw']) > (msg['price100_raw']*0.05) ){
+											retail_user_price.children[5].innerHTML = '<span style="background-color:#f0c674; padding: 2px;"><strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span>'+msg['user_price']+'</span></span>';
+											sum_w_taxes.children[0].setAttribute('style',"background: #f0c674");
+											sum_w_taxes.children[2].setAttribute('style',"background: #f0c674");
+											sum_w_taxes.children[3].setAttribute('style',"background: #f0c674");
+									}
+									else if( (msg['price100_raw'] - msg['user_price_raw']) < (msg['price100_raw']*0.05) && ((msg['price100_raw'] -  msg['user_price_raw'])>0) ){
+											retail_user_price.children[5].innerHTML = '<span style="background-color:#96ca0a; padding: 2px;"><strike style="color:#E84124">'+msg['price100']+'</strike> '+' <span>'+msg['user_price']+'</span></span>';
+											sum_w_taxes.children[0].setAttribute('style',"background: #96ca0a");
+											sum_w_taxes.children[2].setAttribute('style',"background: #96ca0a");
+											sum_w_taxes.children[3].setAttribute('style',"background: #96ca0a");
+									}
+									else{
+											retail_user_price.children[5].innerText = msg['user_price'];
+											sum_w_taxes.children[0].setAttribute('style','');
+											sum_w_taxes.children[2].setAttribute('style','');
+											sum_w_taxes.children[3].setAttribute('style','');
+									}
+
+
+									let package_weight = document.getElementById('package_weight_'+product_id);
+									package_weight.children[0].innerText = msg['multiplier'];
+									package_weight.children[2].innerText = msg['package'];
+									package_weight.children[4].innerText = msg['weight'];
+
+									sum_w_taxes.children[0].innerText = msg['price'];
+
+									if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+											sum_w_taxes.children[2].innerText = '';
+											sum_w_taxes.children[3].innerText = '';
+											sum_w_taxes.children[0].setAttribute('style','');
+											sum_w_taxes.children[2].setAttribute('style','');
+											sum_w_taxes.children[3].setAttribute('style','');
+									}else{
+											sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+											sum_w_taxes.children[3].innerText = msg['discountamount'];
+									}
+
+									let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[1];
+									add_to_order_button.setAttribute('data-amount',amount);
+							}
+					});
+
+					// $("#storages").select2({
+					//   language: "ru"
+					// });
+			}
+
 	</script>
 @endpush
