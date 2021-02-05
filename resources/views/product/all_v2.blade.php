@@ -119,7 +119,7 @@
         <article>
             <i class="far fa-times-circle submit" onclick="$('#filterOptions').removeClass('show');"></i>
             <h2>@lang('product.filters-with-properties')</h2>
-            <div id="optionfilters"></div>
+            <div id="optionfilters">Підбираємо...</div>
             <button class="btn btn-success m-t-5 submit">Застосувати</button>
         </article>
     </div>
@@ -500,7 +500,8 @@
             $.ajax({
                 method: "POST",
                 // url: '{{route("products.optionfilters")}}',
-                url: '{{env('DINMARK_URL')}}api/products/filters',
+                // url: '{{env('DINMARK_URL')}}api/products/filters',
+                url: 'https://dinmark.com.ua/api/products/filters',
                 data: {
                     filter_with_options: function () {
                         let filter_selected_map = $(".filterElem[filter-selected=true]");
