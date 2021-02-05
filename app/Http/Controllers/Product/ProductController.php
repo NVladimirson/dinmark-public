@@ -680,9 +680,12 @@ class ProductController extends Controller
     public function search(Request $request){
         $search = $request->name;
         isset($request->storages) ? $storages = true : $storages = false;
+        info($request->all());
+        info($storages);
         $formatted_data = [];
         $language = CategoryServices::getLang();
         if($storages){
+          info('all');
           $products = Product::
           whereHas('content', function($content) use($search,$language){
             $content->where([
@@ -725,16 +728,15 @@ class ProductController extends Controller
             $storage = $product->storages->firstWhere('is_main',1);
             $min = 0;
             $max = 0;
-            $storage_id = 1;
+            $storage_id = 0;
             if($storage){
                 $min = $storage->package;
                 $max = $storage->amount;
                 $storage_id = $storage->storage_id;
             }
-            else{
+            else if(!$storages){
               continue;
             }
-
             $formatted_data[] = [
                 'id' => $product->id,
                 'text' => $name.' ('.$product->article_show.')',
