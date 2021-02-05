@@ -396,6 +396,11 @@
                     filter__nodes['group-' + groups[i].id] = 'Категорія: ' + groups[i].text;
             }
 
+            if(Object.keys(filter__nodes).length > 0)
+                $('#groupsToggle').addClass('active');
+            else
+                $('#groupsToggle').removeClass('active');
+
             let filter_selected_map = $(".filterElem[filter-selected=true]");
             if(filter_selected_map.length)
             {
@@ -408,11 +413,6 @@
             }
             else
                 $('#optionsToggle').removeClass('active');
-
-            if(Object.keys(filter__nodes).length > 0)
-                $('#groupsToggle').addClass('active');
-            else
-                $('#groupsToggle').removeClass('active');
 
             if($('#instockToggler').prop('checked'))
                 filter__nodes['instock'] = '@lang('product.in_stock_button_name')';
@@ -463,6 +463,7 @@
                 }
                 else if(key[0] == 'option')
                 {
+                    get__FilterOptions = true;
                     $('#' + id).attr('filter-selected', 'false');
                 }
                 else
