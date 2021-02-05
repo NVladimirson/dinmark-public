@@ -109,18 +109,18 @@
     <div id="loading"></div>
     <div id="filterGroups" class="myModal">
         <article>
-            <i class="far fa-times-circle" onclick="$('#filterGroups').removeClass('show'); initFilter()"></i>
+            <i class="far fa-times-circle submit"></i>
             <h2>@lang('product.all_categories_name')</h2>
             <div id="jstreeGroups"></div>
-            <button class="btn btn-success m-t-5" onclick="$('#filterGroups').removeClass('show'); initFilter()">Застосувати</button>
+            <button class="btn btn-success m-t-5 submit">Застосувати</button>
         </article>
     </div>
     <div id="filterOptions" class="myModal">
         <article>
-            <i class="far fa-times-circle" onclick="$('#filterOptions').removeClass('show');"></i>
+            <i class="far fa-times-circle submit" onclick="$('#filterOptions').removeClass('show');"></i>
             <h2>@lang('product.filters-with-properties')</h2>
             <div id="optionfilters"></div>
-            <button class="btn btn-success m-t-5" onclick="$('#filterOptions').removeClass('show'); initFilter()">Застосувати</button>
+            <button class="btn btn-success m-t-5 submit">Застосувати</button>
         </article>
     </div>
 
@@ -152,7 +152,7 @@
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <!-- <script src="/assets/plugins/select2/dist/js/vue.min.js"></script> -->
     <script>
-        let get__getFilterOptions = true;
+        let get__products = get__FilterOptions = true;
 
         /* const wrapTable = new Vue({
             el: "#data-table-buttons",
@@ -194,6 +194,9 @@
                         },
                     }
                 })
+                .on("changed.jstree", function (e, data) {
+                    get__products = get__FilterOptions = true;
+                })
                 .on('before_open.jstree', function(e, data) {
                     if (!loaded_nodes.includes(data.node.id)) {
 
@@ -219,9 +222,21 @@
                 });
 
             $('#optionsToggle').click(function () {
-                if(get__getFilterOptions)
+                if(get__FilterOptions)
                     getFilterOptions();
                 $('#filterOptions').addClass('show')
+            });
+
+            $('.myModal .submit').click(function () {
+                $(this).closest('.myModal').removeClass('show');
+                if(get__products)
+                    initFilter();
+            });
+
+            $("#optionfilters").accordion({
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
             });
 
             $('header.nav input, header.nav select').change(initFilter);
@@ -264,24 +279,25 @@
                                     return optionSelected;
                                 }
                             },
-
-                            // "filter_with_options": function() {
-                            //     let filter_selected_map = $("[filter-selected=true]");
-                            //     filter_selected_ids = Array();
-                            //     $.each(filter_selected_map, function(key, value) {
-                            //         if (value.attributes['filter-selected'].value === 'true') {
-                            //             let option_id = value.attributes['option_id'].value;
-                            //             //let option_name = value.attributes['option_name'].value;
-                            //             filter_selected_ids.push(option_id);
-                            //             //filter_selected_ids.option_id = option_name;
-                            //         }
-                            //     });
-                            //     //console.log('filter_with_options: ' + filter_selected_ids)
-                            //     if(filter_selected_map.length){
-                            //       return filter_selected_ids;
-                            //     }
-
-                            // }
+                            "filter_with_options": function() {
+                                let filter_selected_map = $(".filterElem[filter-selected=true]");
+                                if(filter_selected_map.length)
+                                {
+                                    filter_selected_ids = Array();
+                                    $.each(filter_selected_map, function(key, value) {
+                                        if (value.attributes['filter-selected'].value === 'true') {
+                                            let option_id = value.attributes['option_id'].value;
+                                            //let option_name = value.attributes['option_name'].value;
+                                            filter_selected_ids.push(option_id);
+                                            //filter_selected_ids.option_id = option_name;
+                                        }
+                                    });
+                                    //console.log('filter_with_options: ' + filter_selected_ids)
+                                
+                                  return filter_selected_ids;
+                                }
+                                return '';
+                            }
                         },
                         complete: function() {
                             $('#loading').hide();
@@ -380,6 +396,19 @@
                     filter__nodes['group-' + groups[i].id] = 'Категорія: ' + groups[i].text;
             }
 
+            let filter_selected_map = $(".filterElem[filter-selected=true]");
+            if(filter_selected_map.length)
+            {
+                $.each(filter_selected_map, function(key, value) {
+                    if (value.attributes['filter-selected'].value === 'true') {
+                        filter__nodes[value.id] = value.title;
+                    }
+                });
+                $('#optionsToggle').addClass('active');
+            }
+            else
+                $('#optionsToggle').removeClass('active');
+
             if(Object.keys(filter__nodes).length > 0)
                 $('#groupsToggle').addClass('active');
             else
@@ -401,8 +430,6 @@
                 filter__nodes[this.id] = 'Термін: ' + this.innerText;
             });
 
-            
-
             // let nodes = Object.assign(filter__nodes, filter__group_nodes);
             for (var key in filter__nodes) {
                 if(filter__nodes[key])
@@ -416,6 +443,7 @@
             $('#filters_selected i').click(deselectFilter)
 
             window.table.ajax.reload();
+            get__products = false;
         }
 
         function deselectFilter() {
@@ -432,6 +460,10 @@
                 if(key[0] == 'group')
                 {
                     $.jstree.reference('jstreeGroups').deselect_node(key[1]);
+                }
+                else if(key[0] == 'option')
+                {
+                    $('#' + id).attr('filter-selected', 'false');
                 }
                 else
                 {
@@ -459,6 +491,9 @@
         }
 
         function getFilterOptions() {
+            if(!get__FilterOptions)
+                return true;
+
             $('#loading').show();
 
             $.ajax({
@@ -467,16 +502,27 @@
                 url: '{{env('DINMARK_URL')}}api/products/filters',
                 data: {
                     filter_with_options: function () {
-                        let options = Object();
-                        $("input:checked", $('#optionfilters')).each(function () {
-                            options[this.name] = this.value;
-                        });
+                        let filter_selected_map = $(".filterElem[filter-selected=true]");
+                        if(filter_selected_map.length)
+                        {
+                            filter_selected_ids = Array();
+                            $.each(filter_selected_map, function(key, value) {
+                                if (value.attributes['filter-selected'].value === 'true') {
+                                    let option_id = value.attributes['option_id'].value;
+                                    filter_selected_ids.push(option_id);
+                                }
+                            });
+                            return filter_selected_ids;
+                        }
+                        return '';
                     },
                     categories: function () {
                         return $.jstree.reference('jstreeGroups').get_checked();
                     }
                 },
                 success: function(filters) {
+                    get__products = true;
+                    get__FilterOptions = false;
                     $('#optionfilters').empty();
 
                     if(filters)
@@ -488,18 +534,27 @@
                             for(v in filters[i].values)
                             {
                                 $('<div/>', {
+                                    id: 'option-' + filters[i].values[v].id,
                                     class: 'filterElem',
+                                    title: filters[i].name + ': ' + filters[i].values[v].name,
                                     html: filters[i].values[v].img + ' <span>' + filters[i].values[v].name + '</span>',
-                                    'filter-selected': filters[i].values[v].selected
+                                    'option_id': filters[i].values[v].id,
+                                    'filter-selected': filters[i].values[v].selected,
+                                    click: function () {
+                                        if($(this).attr('filter-selected') == 'true')
+                                            $(this).attr('filter-selected', 'false');
+                                        else
+                                            $(this).attr('filter-selected', 'true');
+
+                                        get__FilterOptions = true;
+                                        getFilterOptions();
+                                    }
                                 }).appendTo(div);
                             }
                             div.appendTo('#optionfilters');
                         }
 
-                        $("#optionfilters").accordion({
-                            collapsible: true,
-                            active: false
-                        });
+                        $("#optionfilters").accordion("refresh");
                     }
 
                     $('#loading').hide();
@@ -666,10 +721,9 @@
             cursor: pointer;
             height: min-content
         }
+        .filterElem:hover,
+        .filterElem[filter-selected=true] { background-color: #01aadf; color: #fff }
         .filterElem img { width: 25px; margin-right: 5px }
-        .filterElem:hover {
-            background-color: #f2f4f5;
-        }
 
 
         #loading {
