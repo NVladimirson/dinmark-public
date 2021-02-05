@@ -279,13 +279,25 @@ class CatalogController extends Controller
 
 							$coef = 1;
 							if($group->price){
-								$coef = $group->price->koef;
-												if(\App\Services\Product\Product::hasAmount($product->storages)){
-													$catalog_price = \App\Services\Product\Product::getPriceWithCoef($product,$coef);
-												}
-												else{
-													$catalog_price = number_format(0,2,'.',' ');
-												}
+								if(str_contains($group->price->name, '%')){
+									$coef = $group->price->koef;
+													if(\App\Services\Product\Product::hasAmount($product->storages)){
+														$catalog_price = \App\Services\Product\Product::getPriceWithCoef($product,$coef/100);
+													}
+													else{
+														$catalog_price = number_format(0,2,'.',' ');
+													}
+								}
+								else{
+									$coef = $group->price->koef;
+													if(\App\Services\Product\Product::hasAmount($product->storages)){
+														$catalog_price = \App\Services\Product\Product::getPriceWithCoef($product,$coef);
+													}
+													else{
+														$catalog_price = number_format(0,2,'.',' ');
+													}
+								}
+
 							}
 							else{
 								$catalog_price = number_format(0,2,'.',' ');
