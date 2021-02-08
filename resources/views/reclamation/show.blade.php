@@ -14,7 +14,7 @@
 @section('content')
 	{{ Breadcrumbs::render('reclamations.show',$reclamation) }}
 
-<h1 class="page-header">@lang('reclamation.reclamation')</h1>
+<h1 class="page-header">@lang('reclamation.reclamation') (@lang('implementation.implementation') {{$products[0]['public_number']}})</h1>
 <!-- begin row -->
 <div class="row">
   <!-- begin col-10 -->

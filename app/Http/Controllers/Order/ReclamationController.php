@@ -43,13 +43,15 @@ class ReclamationController extends Controller
 		isset($request->all()['focus']) ? $product_focused = $request->all()['focus'] : $product_focused = false;
 		$reclamation = Reclamation::find($id);
 
-		$products = json_decode(json_encode(\DB::select('SELECT p.id,p.article,rp.quantity,rp.note
-						FROM s_shopshowcase_products AS p
-						JOIN s_cart_products AS cp ON p.id = cp.product_id
-						JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
-						JOIN b2b_reclamation_products AS rp ON rp.implementation_product_id = ip.id
-						JOIN b2b_reclamations AS r ON r.id = rp.reclamation_id
-						WHERE r.id ='.$id)),true);
+		$products = json_decode(json_encode(\DB::select('
+			SELECT p.id,p.article,rp.quantity,rp.note, i.public_number
+			FROM s_shopshowcase_products AS p
+			JOIN s_cart_products AS cp ON p.id = cp.product_id
+			JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
+			JOIN b2b_implementations AS i ON ip.implementation_id = i.id
+			JOIN b2b_reclamation_products AS rp ON rp.implementation_product_id = ip.id
+			JOIN b2b_reclamations AS r ON r.id = rp.reclamation_id
+			WHERE r.id ='.$id)),true);
 
 		foreach ($products as $key => $product) {
 				$products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);

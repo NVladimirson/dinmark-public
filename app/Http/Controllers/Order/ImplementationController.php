@@ -69,12 +69,13 @@ class ImplementationController extends Controller
     isset($request->all()['focus']) ? $product_focused = $request->all()['focus'] : $product_focused = false;
     $implementation = Implementation::find($id);
 
-    $products = json_decode(json_encode(\DB::select('SELECT p.id,p.article,ip.quantity,ip.total
-      FROM s_shopshowcase_products AS p
-      JOIN s_cart_products AS cp ON p.id = cp.product_id
-      JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
-      JOIN b2b_implementations AS i ON ip.implementation_id = i.id
-      WHERE i.id ='.$id)),true);
+    $products = json_decode(json_encode(\DB::select('
+        SELECT p.id,p.article,ip.quantity,ip.total, i.public_number
+        FROM s_shopshowcase_products AS p
+        JOIN s_cart_products AS cp ON p.id = cp.product_id
+        JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
+        JOIN b2b_implementations AS i ON ip.implementation_id = i.id
+        WHERE i.id = '.$id)),true);
 
     foreach ($products as $key => $product) {
         $products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);
