@@ -292,7 +292,8 @@ class ProductController extends Controller
         })
             ->addColumn('retail_user_prices', function (Product $product) {
                 if(ProductServices::hasAmount($product->storages)){
-                    $storage = $product->storages->first();
+                  $main_storages = $product->storages->where('is_main',1);
+                  count($main_storages) ? $storage = $main_storages->first() : $storage = $product->storages->first();
                     $package = $storage->package;
                     $retail = ProductServices::getBasePrice($product,$storage->storage_id);
                     $user_price = ProductServices::getPrice($product,$storage->id);
