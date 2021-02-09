@@ -322,7 +322,7 @@ class ProductController extends Controller
             })
             ->addColumn('html_limit_1', function (Product $product) {
                 $main_storages = $product->storages->where('is_main',1);
-                count($main_storages) ? $storage = $main_storages : $storage = $product->storages->first();
+                count($main_storages) ? $storage = $main_storages->first() : $storage = $product->storages->first();
                 if(isset($storage->limit_1) && $storage->limit_1!=0){
                     //$price_limit = ProductServices::getPriceWithCoef($product,0.97);
                     $price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.97),2,'.',' ');
@@ -338,7 +338,7 @@ class ProductController extends Controller
             ->addColumn('html_limit_2', function (Product $product) {
                 //$storage = $product->storages->first();
                 $main_storages = $product->storages->where('is_main',1);
-                count($main_storages) ? $storage = $main_storages : $storage = $product->storages->first();
+                count($main_storages) ? $storage = $main_storages->first() : $storage = $product->storages->first();
                 if(isset($storage->limit_2) && $storage->limit_2!=0){
                     //$price_limit = ProductServices::getPriceWithCoef($product,0.93);
                     $price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.93),2,'.',' ');
@@ -480,15 +480,6 @@ class ProductController extends Controller
                 $name = ProductServices::getName($product);
                 return view('product.include.action_buttons',compact('product','hasStorage','name','src','storage'));
             })
-            // ->orderColumn('name_article_html',false)
-            // ->orderColumn('storage_html','storage_1 $1')
-            // ->orderColumn('article_show_html','article_show $1')
-            // ->orderColumn('user_price', function ($product, $order){
-            //         ->leftJoin('s_currency', 's_shopshowcase_products.currency', '=', 's_currency.code')
-            //         //->select('s_shopshowcase_products.*', \DB::raw('s_shopshowcase_products.price * s_currency.currency AS price_with_currency'))
-            //         ->select('s_shopstorage_products.*', \DB::raw('s_shopstorage_products.price * s_currency.currency AS price_with_currency'))
-            //         ->orderBy("price_with_currency", $order);
-            // })
             ->filterColumn('storage_html', function($product, $keyword) {
                 $product->where('storage_1', 'like',["%{$keyword}%"])->orWhere('termin', 'like',["%{$keyword}%"]);
             })
@@ -516,30 +507,6 @@ class ProductController extends Controller
               }
             })
             ->orderColumn('name_article_html', 'date_add $1')
-            // $top_price_order_products = OrderProduct::with('product')->whereHas('getCart',function ($order){
-            //         $order->whereHas('getUser', function ($users){
-            //             $users->where('company',auth()->user()->company);
-            //         });
-            //     })
-            //     ->groupBy('product_id')
-            //     ->selectRaw('(price*quantity) as total, product_id')
-            //     ->orderByRaw('price*quantity desc')
-            //     ->limit(5)
-            //     ->get();
-
-
-
-            // ->filter(function ($product) use ($request) {
-            //     if (request()->has('storage_html')) {
-            //         $product->whereHas('storage_1', 'like',"%" . request('storage_html') . "%")->orWhere()->whereHas('termin', 'like',"%" . request('storage_html') . "%");
-            //     }
-            //     if (request()->has('article_show_html')) {
-            //         $product->whereHas('article_show', 'like',"%" . request('article_show_html') . "%");
-            //     }
-            //     // if(request()->has('name_article_html')){
-            //     //     $product->whereIn('id',$ids);
-            //     // }
-            // }, true)
             ->rawColumns([
               'name_article_html',
               'html_limit_1',
@@ -570,6 +537,9 @@ class ProductController extends Controller
 
         $productinfo = Product::find($product_id);
         $name = ProductServices::getName($productinfo);
+        info('storage_id');
+        info($storage_id);
+        info('end');
         $storageinfo = $productinfo->storages->where('storage_id',$storage_id)->first();
         $package = $storageinfo->package;
         $package ? ($storageamount = $storageinfo->amount-($storageinfo->amount%$storageinfo->package)) :
