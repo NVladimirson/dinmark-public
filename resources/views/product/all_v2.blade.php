@@ -28,6 +28,7 @@
     <h1 class="page-header">@if(isset($page_name)) {{$page_name}} @else @lang('product.all_page_name') @endif</h1>
 
     <div id="filters_selected"></div>
+    <div id="selected_products" style="display:none"></div>
 
     <header class="nav">
         <div id="groupsToggle" onclick="$('#filterGroups').addClass('show')"><i class="fas fa-th-large"></i> Категорія</div>
@@ -106,6 +107,14 @@
         </tbody>
     </table>
 
+    <div id="actionsMultiProducts">
+        <select class="form-control" id="mass_actions" data-size="2" data-style="btn-white">
+            <option value="0">@lang('product.mass_actions.select')</option>
+            <option value="wishlist">@lang('product.mass_actions.add-to-wishlist')</option>
+            <option value="order">@lang('product.mass_actions.add-to-order')</option>
+        </select>
+    </div>
+
     <div id="loading"></div>
     <div id="filterGroups" class="myModal">
         <article>
@@ -150,11 +159,11 @@
     <script src="/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-    <!-- <script src="/assets/plugins/select2/dist/js/vue.min.js"></script> -->
+    <script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
     <script>
         let get__products = get__FilterOptions = true;
 
-        /* const wrapTable = new Vue({
+        const wrapTable = new Vue({
             el: "#data-table-buttons",
             data: {
                 products: []
@@ -171,7 +180,7 @@
                     return a;
                 }
             }
-        }) */ 
+        });
 
         jQuery(function($) {
 
@@ -382,6 +391,59 @@
                 });
 
             
+            $('#data-table-buttons').on('draw.dt', function() {
+                const arr = Array.from(document.querySelectorAll('.datatable_actions_class a'))
+                for (let i = 0; i < arr.length; i++) {
+                    if (i % 3 === 0) {
+                        arr[i].setAttribute('title', "@lang('product.show_card_product')")
+                    }else if(i % 2 === 0) {
+                        arr[i].setAttribute('title', "@lang('product.add_to_wish_list')")
+                    }else {
+                        arr[i].setAttribute('title', "@lang('product.add_to_order')")
+                    }
+                }
+                $('#select_all_products').prop('checked', false);
+
+                $('.intable').change(function(event) {
+                    if($(".intable:checked").length > 0)
+                        $('#actionsMultiProducts').css('display', 'flex');
+                    else
+                        $('#actionsMultiProducts').css('display', 'none');
+                });
+            });
+
+            $('#select_all_products').change(function() {
+                if ($('#select_all_products').prop('checked')) {
+                    window.products = [];
+                    $(".intable").each(function() {
+                        $(this).prop('checked', true);
+                        products.push($(this).prop('id').slice(8));
+                    });
+                    $('#actionsMultiProducts').css('display', 'flex');
+                } else {
+                    $(".intable").each(function() {
+                        $(this).prop('checked', false);
+                        document.getElementById('selected_products').innerText = '';
+                    });
+                    window.products = [];
+                    $('#actionsMultiProducts').css('display', 'none');
+                }
+            });
+
+            $('#products_selector').on('change', function() {
+                let id = this.options[this.selectedIndex].attributes['value'].value;
+                let inputs = document.getElementById("multiple_input_div").children;
+                let name_images = document.getElementById("name_image_container").children;
+
+                $.each(inputs, function(key, value) {
+                    $('#'+value.attributes['id'].value).hide();
+                });
+                $.each(name_images, function(key, value) {
+                    $('#'+value.attributes['id'].value).hide();
+                });
+                $('#wrapper_name_image_'+id).show();
+                $('#wrapper_inputs_'+id).show();
+            });
         });
 
         function initFilter() {
@@ -430,7 +492,6 @@
                 filter__nodes[this.id] = 'Термін: ' + this.innerText;
             });
 
-            // let nodes = Object.assign(filter__nodes, filter__group_nodes);
             for (var key in filter__nodes) {
                 if(filter__nodes[key])
                     $('<div/>', {
@@ -568,6 +629,148 @@
             });
         }
 
+        function initCalc(obj){
+            let optionselected = $("option:selected", obj);
+            let product_id = obj.getAttribute('product_id');
+
+            let quantityinput = $('#calc_quantity_'+product_id);
+            let packageweight = $('#package_weight_'+product_id);
+            let sumwithtaxes = $('#sum_w_taxes_'+product_id);
+
+            let orderbutton = $('#to_order_button_'+product_id);
+            let getpricebutton = $('#get_price_button_'+product_id);
+            let storage_id = optionselected.val();
+            if(storage_id!=='0'){
+                let min = optionselected[0].getAttribute('package_min');
+                let max = optionselected[0].getAttribute('package_max');
+
+                if(max !== '0' && (max - min > 0)){
+                  //console.log('> min: '+min+', max: '+max);
+                  quantityinput[0].setAttribute('value',min);
+                  quantityinput[0].setAttribute('min',min);
+                  quantityinput[0].setAttribute('step',min);
+                  quantityinput[0].setAttribute('max',max);
+                  quantityinput[0].setAttribute('datamax',max);
+
+                  quantityinput.toggle(true);
+
+                  orderbutton.toggle(true);
+                  getpricebutton.toggle(false);
+
+                  packageweight[0].parentElement.setAttribute('style','display:auto');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:auto');
+                }
+                else{
+                  //console.log('min: '+min+', max: '+max);
+                  quantityinput.toggle(false);
+
+                  orderbutton.toggle(false);
+                  getpricebutton.toggle(true);
+
+                  packageweight[0].parentElement.setAttribute('style','display:none');
+                  sumwithtaxes[0].parentElement.setAttribute('style','display:none');
+                }
+
+                $.ajax({
+                    type: "GET",
+                    data: {
+                        product_id:product_id,
+                        storage_id:storage_id,
+                        amount:quantityinput[0].getAttribute('value')
+                    },
+                    url: "{!! @route('priceCalc') !!}",
+                    success: function(msg){
+                        let retail_user_price = document.getElementById('retail_user_price_'+product_id);
+                        retail_user_price.children[1].innerText = msg['retail'];
+                        retail_user_price.children[5].innerText = msg['user_price'];
+                        // if(msg['oldprice'] !== '0'){
+                        //   retail_user_price.children[3].children[0].show;
+                        //   retail_user_price.children[3].children[0].innerText = msg['oldprice'];
+                        // }
+
+
+                        let package_weight = document.getElementById('package_weight_'+product_id);
+                        package_weight.children[0].innerText = msg['multiplier'];
+                        package_weight.children[2].innerText = msg['package'];
+                        package_weight.children[4].innerText = msg['weight'];
+
+                        let sum_w_taxes = document.getElementById('sum_w_taxes_'+product_id);
+                        sum_w_taxes.children[0].innerText = msg['price'];
+
+                        if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                            sum_w_taxes.children[2].innerText = '';
+                            sum_w_taxes.children[3].innerText = '';
+
+                            sum_w_taxes.children[0].setAttribute('style','');
+                            sum_w_taxes.children[2].setAttribute('style','');
+                            sum_w_taxes.children[3].setAttribute('style','');
+                        }else{
+                            sum_w_taxes.children[2].innerText = '-'+msg['discount'];
+                            sum_w_taxes.children[3].innerText = msg['discountamount'];
+
+                            sum_w_taxes.children[2].setAttribute('style','display:auto');
+                            sum_w_taxes.children[3].setAttribute('style','display:auto');
+                        }
+
+                        if(msg['limit_amount_quantity_1'] === '0' || msg['limit_amount_quantity_1'] === 0){
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = '';
+                            limit_1.children[2].innerText = '-';
+                        }else{
+                            let limit_1 = document.getElementById('limit_1_'+product_id);
+                            limit_1.children[0].innerText = msg['limit_amount_price_1'];
+                            limit_1.children[2].innerText = '>'+msg['limit_amount_quantity_1'];
+                        }
+
+                        if(msg['limit_amount_quantity_2'] === '0' || msg['limit_amount_quantity_2'] === 0){
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = '';
+                            limit_2.children[2].innerText = '-';
+                        }else{
+                            let limit_2 = document.getElementById('limit_2_'+product_id);
+                            limit_2.children[0].innerText = msg['limit_amount_price_2'];
+                            limit_2.children[2].innerText = '>'+msg['limit_amount_quantity_2'];
+                        }
+
+                        let add_to_order_button = document.getElementById('action_buttons_'+product_id).children[2];
+                        add_to_order_button.setAttribute('data-storage',storage_id);
+                        orderbutton[0].setAttribute('data-storage_max',optionselected[0].getAttribute('package_max'));
+                        orderbutton[0].setAttribute('data-storage_min',optionselected[0].getAttribute('package_min'));
+                        orderbutton[0].setAttribute('data-amount',optionselected[0].getAttribute('package_max'));
+                    },
+                    error: function(xhr, str) {
+                        console.log(xhr);
+                    }
+                });
+
+                packageweight.css("display","");
+
+                sumwithtaxes.css("display","");
+
+
+            }else{
+                quantityinput.css("display","none");
+
+                packageweight.css("display","none");
+
+                sumwithtaxes.css("display","none");
+
+                let limit_1 = document.getElementById('limit_1_'+product_id);
+                limit_1.children[0].innerText = '';
+                limit_1.children[2].innerText = '-';
+
+
+                let limit_2 = document.getElementById('limit_2_'+product_id);
+                limit_2.children[0].innerText = '';
+                limit_2.children[2].innerText = '-';
+
+                let productbutton = $('#action_buttons_'+product_id);
+                if(productbutton[0].children[2]){
+                    productbutton[0].children[2].remove();
+                }
+            }
+        }
+
         function changeamount(obj){
             let id = obj.id;
             let product_id = id.substr(14);
@@ -649,6 +852,423 @@
                 }
             });
         }
+
+        //МОДАЛЬНЫЕ ФОРМЫ
+
+        //modal order single
+        $('#modal-order').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find('.image').attr("src",button.data('image'));
+            modal.find('.name').text(button.data('name'));
+
+            modal.find('.product-name').text(button.data('product_name'));
+            modal.find('.product_id').val(button.data('product'));
+            modal.find('.storage_id').val(button[0].getAttribute("data-storage"));
+            let amount = button[0].getAttribute("data-amount");
+            modal.find('.amount').val(button[0].getAttribute("data-amount"));
+            let order_inputs = document.getElementById("modal_order_inputs");
+            while (order_inputs.firstChild) {
+                order_inputs.removeChild(order_inputs.lastChild);
+            }
+
+            $('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order')</label>"+
+                "<input type=\"number\" name=\"quantity\" class=\"form-control m-b-5 quantity\" " +
+                "placeholder=\"@lang('product.quantity_order')\" disabled/>"+
+                "</div>"));
+            $('#modal_order_inputs').append($("<div class=\"form-group m-b-15\"><label>@lang('product.quantity_order_request')</label>"+
+                "<input type=\"number\" name=\"quantity_request\" class=\"form-control m-b-5 quantity_request\" " +
+                "placeholder=\"@lang('product.quantity_order_request')\" disabled/>"+
+                "</div>"));
+
+            let quantity = modal.find('input[name="quantity"]');
+
+            let quantity_request = modal.find('input[name="quantity_request"]');
+
+            if (amount - button.data('storage_max') > 0) {
+                quantity.val(button.data('storage_max'));
+                quantity_request.val(amount - button.data('storage_max'));
+            }
+            else {
+                if (amount % button.data('storage_min')) {
+                    quantity.val(amount -
+                        button.data('amount') % button.data('storage_min'));
+                    quantity_request.val(amount
+                        % button.data('storage_min'));
+                } else {
+                    quantity.val(amount);
+                    quantity_request.val(0);
+                }
+            }
+
+        });
+        //modal order single
+
+        //modal-order single submit
+        $('#form_add_order').submit(function(e) {
+            e.preventDefault();
+
+            $('#modal-order').modal('hide');
+
+            var form = $(this);
+
+            let product_id_input = form[0].getElementsByClassName('product_id')[0].value;
+            let storage_id_input = form[0].getElementsByClassName('storage_id')[0].value;
+            let quantity_input = form[0].getElementsByClassName('form-control m-b-5 quantity')[0].value;
+            let quantity_request_input = form[0].getElementsByClassName('form-control m-b-5 quantity_request')[0].value;
+
+            var order_id = $('#order_id').val();
+            var route = '{{route('orders')}}/add-to-order/' + order_id;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+            $.ajax({
+                method: "POST",
+                url: route,
+                data: 'product_id='+product_id_input+'&storage_id='+storage_id_input+
+                '&quantity='+quantity_input+'&quantity_request='+quantity_request_input,
+                success: function(resp) {
+                    if (resp == "ok") {
+                        $.gritter.add({
+                            title: '@lang('order.modal_success')',
+                        });
+                        changeUpperCounter('order');
+                    }
+                },
+                error: function(xhr, str) {
+                    console.log(xhr);
+                }
+            });
+
+            return false;
+        });
+        //modal-order single submit
+
+        //modal-order multiple submit
+        $('#form_add_order_multiple').submit(function(e) {
+            e.preventDefault();
+
+            let form = $(this)[0];
+            let product_id = $('#products_selector').find(":selected")[0].value;
+            let multiple_input_div = document.getElementById('multiple_input_div');
+            let multiple_inputs = multiple_input_div.getElementsByClassName('multipleorderinput');
+            let data = String();
+
+            $.each(multiple_inputs, function(key, value) {
+                let product_id = value.id.substr(15);
+                if(product_id.indexOf('_qr') !== -1){
+                    product_id = product_id.substr(0,product_id.indexOf('_qr'));
+                    data += ',' + 'quantity_request:'+value.getAttribute('value');
+
+                }
+                else{
+                    if(data.length === 0){
+                        //data = product_id+'_:_'+'quantity='+value.getAttribute('value');
+                        data = product_id + '=' + 'quantity:'+value.getAttribute('value') +
+                            ',' + 'storage:'+value.getAttribute('data-storage');
+                    }
+                    else{
+                        data +=  '&'+ product_id + '=' + 'quantity:'+value.getAttribute('value') +
+                            ',' + 'storage:'+value.getAttribute('data-storage');
+                    }
+                }
+
+            });
+
+
+            let orders = multiple_inputs.length/2;
+            let route = '{{route('orders')}}/add-to-order-multiple';
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "GET",
+                url: route,
+                data: data,
+                success: function(resp) {
+                    if (resp == "ok") {
+
+                        $('#new_wishlist_name').val('');
+                        $.gritter.add({
+                            title: '@lang("order.modal_success_multiple")'
+                        });
+                        changeUpperCounter('order');
+                    }
+                },
+                error: function(xhr, str) {
+                    console.log(xhr);
+                }
+            });
+            $('#modal-order_multiple').modal('hide');
+            return false;
+        });
+        //modal-order multiple submit
+
+        //wishlist single
+        $('#modal-wishlist').on('show.bs.modal', function(event) {
+            if (!$('#products_wishlist').val()) {
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+                modal.find('.product_id').val(button.data('product'));
+            }
+        });
+        //wishlist single
+
+        $('#wishlist').change(function(e) {
+            if ($(this).val() == 0) {
+                $('#new_wishlist_name').parent().show();
+                $('#new_wishlist_name').attr('required', 'required');
+            } else {
+                $('#new_wishlist_name').parent().hide();
+                $('#new_wishlist_name').removeAttr('required');
+            }
+        });
+
+        //modal-catalog single submit
+        $('#form_add_catalog').submit(function(e) {
+            e.preventDefault();
+
+            $('#modal-wishlist').modal('hide');
+
+            var form = $(this);
+            let list_id = $('#wishlist').val();
+            var route = '{{route('catalogs')}}/add-to-catalog/' + list_id;
+
+            var form = $(this);
+            var order_id = $('#order_id').val();
+            //var route = '{{route('orders')}}/add-to-order/'+order_id;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: route,
+                data: form.serialize(),
+                success: function(resp)
+                {
+                    if(resp == "ok"){
+                        $.gritter.add({
+                            title: '@lang('wishlist.modal_success')',
+                        });
+                        changeUpperCounter('catalog');
+                    }
+                },
+                error:  function(xhr, str){
+                    console.log(xhr);
+                }
+            });
+
+            $('#products_wishlist').val('');
+            return false;
+        })
+        //modal-catalog single submit
+
+        //mass actions (modal-order wishlist) multiple
+        $('#mass_actions').on('change', function(e) {
+            let option = $("option:selected", $('#mass_actions')).val();
+            window.products = [];
+            if (option === 'wishlist') {
+                $(".intable").each(function() {
+                    if ($(this).prop('checked')) {
+                        window.products.push($(this).prop('id').slice(8));
+                    }
+                });
+
+                if (window.products.length > 0) {
+                    $('#products_wishlist').val(window.products);
+                    $('#mass_actions option[value="0"]').prop('selected', true);
+                    $('#modal-wishlist').modal('show');
+                }
+
+            }
+            if (option === 'order') {
+                $(".intable").each(function() {
+                    if ($(this).prop('checked')) {
+                        window.products.push($(this).prop('id').slice(8));
+                    }
+                });
+
+                if (window.products.length > 0) {
+                    let element = document.getElementById("products_selector");
+                    while (element.firstChild) {
+                        element.removeChild(element.firstChild);
+                    }
+
+                    if (document.getElementById("name_image_container")) {
+                        document.getElementById("name_image_container").remove();
+                    }
+                    if (document.getElementById("multiple_input_div")) {
+                        document.getElementById("multiple_input_div").remove();
+                    }
+
+                    //let map = $('.data-product_name');
+                    let map = $('.source');
+                    window.multiple_order_map = [];
+                    $.each(map, function(key, value) {
+                        let id = value.attributes['data-product'].value;
+                        if (window.products.indexOf(id) !== -1) {
+                            multiple_order_map.push(
+                              id +
+                                '_:_' + value.attributes['data-product_name'].value +
+                                '_:_' + value.attributes['data-storage'].value +
+                                '_:_' + value.attributes['data-storage_min'].value +
+                                '_:_' + value.attributes['data-storage_max'].value +
+                                '_:_' + value.attributes['data-amount'].value +
+                                '_:_' + value.attributes['data-image'].value
+                            );
+                        }
+                    });
+
+                    $('#append_to').prepend($('<div id="name_image_container"></div>'));
+                    $('#append_to').append($('<div id="multiple_input_div"></div>'));
+                    let inputs = document.getElementById("multiple_input_div").children;
+                    let name_images = document.getElementById("name_image_container").children;
+                    while (inputs.firstChild) {
+                        inputs.removeChild(inputs.lastChild);
+                    }
+                    while (name_images.firstChild) {
+                        name_images.removeChild(name_images.lastChild);
+                    }
+
+                    $.each(multiple_order_map, function(key, value) {
+                        let model_order_data = value.split('_:_');
+                        let product_id = model_order_data[0];
+                        let text = value.split('_:_')[1];
+                        let data_storage = value.split('_:_')[2];
+                        let data_storage_min = value.split('_:_')[3];
+                        let data_storage_max = value.split('_:_')[4];
+                        let data_amount = value.split('_:_')[5];
+                        let data_image = value.split('_:_')[6];
+                        let quantity_amount = 0;
+                        //console.log(data_storage_max);
+                        if(data_storage_max === '0' || data_storage_max-data_storage_min<0){
+                            return;
+                        }
+
+                        if(data_amount - data_storage_max > 0){
+                            quantity_amount = data_amount - data_storage_max;
+                            data_amount = data_storage_max;
+                        }
+                        else{
+                            quantity_amount = data_amount % data_storage_min;
+                            data_amount = data_amount - quantity_amount;
+                        }
+
+                        $('#products_selector')
+                            .append($("<option></option>")
+                                .attr("value", product_id)
+                                .text(text)
+                                .attr("data-storage", data_storage)
+                                .attr("data-storage_min", data_storage_min)
+                                .attr("data-storage_max", data_storage_max)
+                            );
+
+                        let wrapper_name_image = '<div class="row" id="wrapper_name_image_'+product_id+'" style="display: none">'+
+                            '<div class="col-xl-3"><img class="image" src="'+data_image+'" width="80"></div>' +
+                            '<div class="col-xl-9"><p class="name">'+text+'</p></div>' +
+                            '</div>';
+                        let wrapper_inputs = '<div id="wrapper_inputs_'+product_id+'" style="display: none"></div>';
+                        if(key === 0){
+                            wrapper_name_image = '<div class="row" id="wrapper_name_image_'+product_id+'">'+
+                                '<div class="col-xl-3"><img class="image" src="'+data_image+'" width="80"></div>' +
+                                '<div class="col-xl-9"><p class="name">'+text+'</p></div>' +
+                                '</div>';
+                            wrapper_inputs = '<div id="wrapper_inputs_'+product_id+'"></div>';
+                        }
+                        $('#multiple_input_div').append($(wrapper_inputs));
+
+                        let inputdata = '<input id="multiple_input_' + product_id + '" type="number" ' +
+                            'name="id_' + product_id +
+                            ':storageid_' + data_storage + '" ' +
+                            'class="form-control m-b-5 multipleorderinput" placeholder="@lang("product.quantity_order_request")"' +
+                            'value ="' + data_amount + '" ' +
+                            'data-storage ="' + data_storage +'"'+
+                            'min="' + data_storage_min + '" ' +
+                            'max="' + data_storage_max + '" ';
+                        inputdata += 'disabled >';
+
+                        let inputdataqr = '<input id="multiple_input_' + product_id + '_qr" type="number" ' +
+                            'name="qr_id_' + product_id +
+                            ':storageid_' + data_storage + '" ' +
+                            'class="form-control m-b-5 multipleorderinput quantityinput" placeholder="@lang("product.quantity_order_request")"' +
+                            'value ="' + quantity_amount + '" ' +
+                            'min="' + data_storage_min + '" ' +
+                            'max="' + data_storage_max + '" ';
+
+                        inputdataqr += 'disabled >';
+
+                        $('#wrapper_inputs_'+product_id).append($(inputdata));
+                        $('#wrapper_inputs_'+product_id).append($(inputdataqr));
+                        $('#name_image_container').append(wrapper_name_image);
+                    });
+
+
+                    $("#modal-order_multiple").modal('show');
+                }
+                $('#mass_actions option[value="0"]').prop('selected', true);
+            }
+        });
+        //mass actions (modal-order wishlist) multiple
+
+        //get price single
+        $('#modal-get_price').on('show.bs.modal', function(event) {
+            let button = $(event.relatedTarget);
+            let modal = $(this);
+            modal.find('.image').attr("src",button.data('image'));
+            modal.find('.name').text(button.data('name'));
+            modal.find('.product_id').val(button.data('product_id'));
+            modal.find('.quantity').val(button.data('amount'));
+            modal.find('.quantity')[0].setAttribute('min',button.data('min'));
+            modal.find('.quantity')[0].setAttribute('value',button.data('amount'));
+            modal.find('.quantity')[0].setAttribute('step',button.data('step'));
+            modal.find('.comment').val('');
+        });
+
+        //get price single
+
+        //get_price single submit
+        $('#form_get_price').submit(function(e) {
+            e.preventDefault();
+            $('#modal-get_price').modal('hide');
+            var product_id = $('#get_price_product_id').val();
+            var form = $(this);
+
+            var route = '{{route('products')}}/' + product_id + '/get-price/';
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "GET",
+                url: route,
+                data: form.serialize(),
+                success: function(resp) {
+                    if (resp == "ok") {
+                        $.gritter.add({
+                            title: '@lang('product.get_price_success')',
+                        });
+
+                    }
+                },
+                error: function(xhr, str) {
+                    console.log(xhr);
+                }
+            });
+
+            return false;
+        });
+        //get_price single submit
     </script>
 
     <style>
@@ -727,6 +1347,22 @@
         .filterElem[filter-selected=true] { background-color: #01aadf; color: #fff }
         .filterElem img { width: 25px; margin-right: 5px }
 
+        #actionsMultiProducts {
+            position: fixed;
+            z-index: 10;
+            width: calc(100% - 220px);
+            left: 220px;
+            bottom: 0;
+            padding: 10px;
+            background: #01aadf;
+            /*display: flex;*/
+            display: none;
+            justify-content: center;
+        }
+        #actionsMultiProducts select { max-width: 700px }
+
+        .datatable_weight_class span, .datatable_sum_class span { padding: 5px 10px; display: inline-block }
+
 
         #loading {
             display: block;
@@ -752,6 +1388,10 @@
                 height: auto;
                 max-height: 80%;
                 overflow: auto;
+            }
+            #actionsMultiProducts {
+                width: 100%;
+                left: 0;
             }
         }
     </style>
