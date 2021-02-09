@@ -113,75 +113,6 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $product_info = [];
-    //  $instance =  static::getInstance();
-      $language = 'uk';
-      $limited = true;
-      $search = '125-';
-      //$search = 'Гвинт';
-      $allowed_reclamations = \App\Models\Reclamation\Reclamation::whereHas('user',function ($users){
-              $users->whereHas('getCompany',function ($companies){
-                  $companies->where([
-                      ['id', session('current_company_id')],
-                  ]);
-              });
-      })->pluck('id');
-
-      $allowed_implementation_products = ReclamationProduct::whereIn('reclamation_id',$allowed_reclamations)->pluck('implementation_product_id');
-
-      $allowed_order_products = ImplementationProduct::whereIn('id',$allowed_implementation_products)->pluck('order_product_id');
-
-      $allowed_products = OrderProduct::whereIn('id',$allowed_order_products)->pluck('product_id');
-      //dd($allowed_products);
-      $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
-        $content->where([
-          ['language',$language],
-          ['alias', 8],
-          ['name', 'like',"%" . $search . "%"],
-        ]);
-      })
-      ->orWhereIn('id',$allowed_products)
-      ->where([
-      ['article_show', 'like', $search . "%"]
-      ]);
-
-      if($limited){
-        //$products = $products->limit(5);
-        $products = $products->get();
-        dd($products->pluck('article_show'));
-        //info($products);
-        $product_reclamation_info = [];
-        foreach ($products as $key => $product) {
-          $product_reclamation_info = json_decode(json_encode(
-            \DB::select('
-              SELECT p.id AS `product_id`,r.id AS `reclamation_id`
-              FROM s_shopshowcase_products AS p
-              JOIN s_cart_products AS cp ON p.id = cp.product_id
-              JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
-              JOIN b2b_reclamation_products AS rp ON rp.implementation_product_id = ip.id
-              JOIN b2b_reclamations AS r ON r.id = rp.reclamation_id
-              WHERE p.id ='
-            .$product->id)),true);
-
-            dd($product_reclamation_info);
-
-            foreach ($product_reclamation_info as $key => $product_reclamation) {
-              $product_info[] = [
-                'id' => $product_reclamation['reclamation_id'],
-                'product_id' => $product_reclamation['product_id'],
-                'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
-                'category' => 'reclamations'
-              ];
-              if(count($product_info)>5){
-                break;
-              }
-            }
-            if(count($product_info)>5){
-              break;
-            }
-          }
-          return $product_info;
-        }
     }
 
     public function allAjax(Request $request){
@@ -390,7 +321,8 @@ class ProductController extends Controller
                 return number_format(0,2,'.',' ');
             })
             ->addColumn('html_limit_1', function (Product $product) {
-                $storage = $product->storages->first();
+                $main_storages = $product->storages->where('is_main',1);
+                count($main_storages) ? $storage = $main_storages : $storage = $product->storages->first();
                 if(isset($storage->limit_1) && $storage->limit_1!=0){
                     //$price_limit = ProductServices::getPriceWithCoef($product,0.97);
                     $price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.97),2,'.',' ');
@@ -404,7 +336,9 @@ class ProductController extends Controller
                 }
             })
             ->addColumn('html_limit_2', function (Product $product) {
-                $storage = $product->storages->first();
+                //$storage = $product->storages->first();
+                $main_storages = $product->storages->where('is_main',1);
+                count($main_storages) ? $storage = $main_storages : $storage = $product->storages->first();
                 if(isset($storage->limit_2) && $storage->limit_2!=0){
                     //$price_limit = ProductServices::getPriceWithCoef($product,0.93);
                     $price_limit = number_format(ProductServices::getPriceWithCoefUnformatted($product,$storage->id,0.93),2,'.',' ');
@@ -747,12 +681,9 @@ class ProductController extends Controller
     public function search(Request $request){
         $search = $request->name;
         isset($request->storages) ? $storages = true : $storages = false;
-        info($request->all());
-        info($storages);
         $formatted_data = [];
         $language = CategoryServices::getLang();
         if($storages){
-          info('all');
           $products = Product::
           whereHas('content', function($content) use($search,$language){
             $content->where([
