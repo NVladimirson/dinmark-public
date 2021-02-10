@@ -71,37 +71,28 @@
 
     <table id="data-table-buttons" class="table-responsive table-striped table-bordered table-td-valign-middle">
         <thead>
-        <tr>
-            <th colspan="4" class="text-nowrap">@lang('product.table_header_info')</th>
-            <th colspan="3" class="text-nowrap">@lang('product.table_header_price_per_100')</th>
-            <th rowspan="2" class="text-nowrap" >@lang('product.table_header_storage')</th>
-            <th colspan="4" class="text-nowrap">@lang('product.table_header_calc_price')</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>
-                <div class="checkbox checkbox-css">
-                    <input type="checkbox" id="select_all_products">
-                    <label for="select_all_products"> </label>
-                </div>
-            </th>
-            <th data-orderable="false">@lang('product.table_header_photo')</th>
-            <th class="text-nowrap">@lang('product.table_header_name/article')</th>
-            <th class="text-nowrap">@lang('product.table_header_price')</th>
-            <th id="price_porog_1" class="text-nowrap">@lang('product.table_header_price_porog_1')</th>
-            <th id="price_porog_2" class="text-nowrap">@lang('product.table_header_price_porog_2')</th>
-
-            <th>
-                @lang('product.table_header_quantity')
-            </th>
-            <th>
-                @lang('product.table_header_package_weight')
-            </th>
-            <th>
-                @lang('product.table_header_sum_w_taxes')
-            </th>
-            <th ></th>
-        </tr>
+            <tr>
+                <th colspan="4" class="text-nowrap"> @lang('product.table_header_info') </th>
+                <th class="text-nowrap"> @lang('product.table_header_price_per_100') </th>
+                <th rowspan="2" class="text-nowrap"> @lang('product.table_header_storage') </th>
+                <th colspan="4" class="text-nowrap"> @lang('product.table_header_calc_price') </th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <div class="checkbox checkbox-css">
+                        <input type="checkbox" id="select_all_products">
+                        <label for="select_all_products"> </label>
+                    </div>
+                </th>
+                <th data-orderable="false">@lang('product.table_header_photo')</th>
+                <th class="text-nowrap">@lang('product.table_header_name/article')</th>
+                <th class="text-nowrap">@lang('product.table_header_price')</th>
+                <th> @lang('product.table_header_quantity') </th>
+                <th> @lang('product.table_header_package_weight') </th>
+                <th> @lang('product.table_header_sum_w_taxes') </th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         </tbody>
@@ -252,7 +243,7 @@
 
             window.table =
                 $('#data-table-buttons').DataTable({
-                     scrollY: "100vh",
+                    scrollY: "100vh",
                     //  fixedColumns: true,
                     deferRender: true,
                     //  scroller: true,
@@ -265,8 +256,16 @@
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
-                        "url": "{!! route('products.all_ajax') !!}",
+                        // "url": "{!! route('products.all_ajax') !!}",
+                        url: 'http://dinmark.localhost/api/products/list',
+                        // url: 'https://dinmark.com.ua/api/products/list',
                         "data": {
+                            "client_id": function() {
+                                return '{{auth()->user()->id}}';
+                            },
+                            "client_secret": function() {
+                                return '{{$client_secret}}';
+                            },
                             "categories": function () {
                                 return $.jstree.reference('jstreeGroups').get_checked();
                             },
@@ -283,9 +282,13 @@
                                 return $('#discountToggler').prop('checked');
                             },
                             "term": function() {
-                                var optionSelected = $("option:selected", $('#storages')).val();
-                                if(optionSelected !== 'undefined') {
-                                    return optionSelected;
+                                var optionSelected = $("option:selected", $('#storages'));
+                                if(optionSelected.length) {
+                                    term_selected_ids = Array();
+                                    $.each(optionSelected, function(key, option) {
+                                        term_selected_ids.push($(option).val());
+                                    });
+                                    return term_selected_ids;
                                 }
                             },
                             "filter_with_options": function() {
@@ -296,14 +299,10 @@
                                     $.each(filter_selected_map, function(key, value) {
                                         if (value.attributes['filter-selected'].value === 'true') {
                                             let option_id = value.attributes['option_id'].value;
-                                            //let option_name = value.attributes['option_name'].value;
                                             filter_selected_ids.push(option_id);
-                                            //filter_selected_ids.option_id = option_name;
                                         }
                                     });
-                                    //console.log('filter_with_options: ' + filter_selected_ids)
-                                
-                                  return filter_selected_ids;
+                                    return filter_selected_ids;
                                 }
                                 return '';
                             }
@@ -336,28 +335,10 @@
                             data: 'name_article_html',
                             className: "datatable_namearticle_class"
                         },
-                        // {
-                        //     data: 'retail_price',
-                        //     className: "datatable_retailprice_class"
-                        // },
-                        // {
-                        //     data: 'user_price',
-                        //     className: "datatable_userprice_class"
-                        // },
                         {
-                          "orderable": false,
-                          data: 'retail_user_prices',
-                          className: "datatable_userprice_class"
-                        },
-                        {
-                            "orderable": false,
-                            data: 'html_limit_1',
-                            className: "datatable_limit1_class"
-                        },
-                        {
-                            "orderable": false,
-                            data: 'html_limit_2',
-                            className: "datatable_limit2_class"
+                            "orderable": true,
+                            data: 'user_prices',
+                            className: "datatable_userprice_class"
                         },
                         {
                             data: 'storage_html',

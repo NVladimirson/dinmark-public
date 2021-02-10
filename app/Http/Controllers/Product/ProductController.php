@@ -57,9 +57,11 @@ class ProductController extends Controller
         $terms = CategoryServices::getTermsForSelect();
         $filters = false;
         // $filters = CategoryServices::getOptionFilters();
-        //dd($filters);
+        // dd(auth()->user()->email);
         $dinmark_url = \Config::get('values.dinmarkurl');
-        return view('product.all_v2',compact('wishlists', 'orders', 'terms','filters','dinmark_url'));
+
+        $client_secret = sha1(auth()->user()->id .'-b2b-dinmark-'.auth()->user()->email);
+        return view('product.all_v2',compact('wishlists', 'orders', 'terms','filters','dinmark_url', 'client_secret'));
     }
 
     public function category($id){
