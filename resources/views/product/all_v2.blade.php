@@ -30,7 +30,7 @@
     <div id="filters_selected"></div>
     <div id="selected_products" style="display:none"></div>
 
-    <header class="nav">
+    <header class="nav sticky" data-margin-top="85" data-sticky-for="1024">
         <div id="groupsToggle" onclick="$('#filterGroups').addClass('show')"><i class="fas fa-th-large"></i> Категорія</div>
         <div id="optionsToggle"><i class="fa fa-filter"></i> Властивості</div>
         <div>
@@ -151,6 +151,7 @@
     <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <script src="/assets/plugins/select2/dist/js/vue.min.js"></script>
+    <script src="/assets/plugins/sticky.min.js"></script>
     <script>
         let get__products = get__FilterOptions = true;
 
@@ -176,6 +177,8 @@
         jQuery(function($) {
 
             $('#loading').hide();
+
+            var sticky = new Sticky('header.sticky');
 
             // storages
             document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
@@ -1258,6 +1261,8 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px;
+            background: #fff;
+            z-index: 1;
         }
         header.nav > div {
             padding: 7px 25px;
