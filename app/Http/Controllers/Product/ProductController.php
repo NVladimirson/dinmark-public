@@ -115,6 +115,8 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
+      $product = Product::find(4864);
+      dump($product->storages->pluck('storage_id'),ProductServices::getName($product,'ru'));
     }
 
     public function allAjax(Request $request){
@@ -293,7 +295,7 @@ class ProductController extends Controller
             '<span>'.$product->article_show.'</span>';
         })
             ->addColumn('retail_user_prices', function (Product $product) {
-                if(ProductServices::hasAmount($product->storages)){
+                if(count($product->storages)){
                   $main_storages = $product->storages->where('is_main',1);
                   count($main_storages) ? $storage = $main_storages->first() : $storage = $product->storages->first();
                     $package = $storage->package;
@@ -318,8 +320,6 @@ class ProductController extends Controller
                       <span class="old_price" style="display:none;color:red"><strike>'.$old_price.'</strike></span>
                       <span class="user_price">'. $user_price .'</span></p>';
                     }
-
-
                 }
                 return number_format(0,2,'.',' ');
             })
