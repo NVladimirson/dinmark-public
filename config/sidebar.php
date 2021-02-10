@@ -45,9 +45,9 @@ return [
 				],[
 					'url' => 'implementations',
 					'title' => 'menu.implementations'
-				],[
-                    'url' => 'purchases',
-                    'title' => 'menu.purchases'
+				// ],[
+    //                 'url' => 'purchases',
+    //                 'title' => 'menu.purchases'
                 ],
 			]
 		],[

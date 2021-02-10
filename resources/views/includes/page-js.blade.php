@@ -159,17 +159,17 @@ $('#show-catalog-menu').click(function (e) {
 
 <script>
 // hide/show menu onscroll
-$(window).scroll(function() {
-    if ($(this).scrollTop() > 1) {
-        // $('.navbar-grey').addClass('hide');
-        $('.sidebar').css('padding-top', '89px');
-        $('.navbar-grey').css('z-index', '1015');
-    } else {
-        // $('.navbar-grey').removeClass('hide');
-        $('.sidebar').css('padding-top', '135px');
-        $('.navbar-grey').css('z-index', '1019');
-    }
-});
+// $(window).scroll(function() {
+//     if ($(this).scrollTop() > 1) {
+//         // $('.navbar-grey').addClass('hide');
+//         $('.sidebar').css('padding-top', '89px');
+//         $('.navbar-grey').css('z-index', '1015');
+//     } else {
+//         // $('.navbar-grey').removeClass('hide');
+//         $('.sidebar').css('padding-top', '135px');
+//         $('.navbar-grey').css('z-index', '1019');
+//     }
+// });
 
 </script>
 @stack('scripts')

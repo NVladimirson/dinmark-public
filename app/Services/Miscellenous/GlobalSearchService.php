@@ -56,20 +56,20 @@ class GlobalSearchService
             ['name', 'like',"%" . $search . "%"]
           ]);
         })
-        ->orwhereHas('options', function($options) use($search,$language){
-          //аналог,народное наименование
-          $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
-            $option_name->where([
-              ['language',$language],
-              ['name', 'like',"%" . $search . "%"]
-            ]);
-          });
-        })
+        // ->orwhereHas('options', function($options) use($search,$language){
+        //   //аналог,народное наименование
+        //   $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
+        //     $option_name->where([
+        //       ['language',$language],
+        //       ['name', 'like',"%" . $search . "%"]
+        //     ]);
+        //   });
+        // })
+        // ->orWhere([
+        // ['article', 'like',"%" . $search . "%"]
+        // ])
         ->orWhere([
-        ['article', 'like',"%" . $search . "%"]
-        ])
-        ->orWhere([
-        ['article_show', 'like',"%" . $search . "%"]
+        ['article_show', 'like', $search . "%"]
         ]);
 
         if($limited){
@@ -117,11 +117,9 @@ class GlobalSearchService
             ['name', 'like',"%" . $search . "%"]
           ]);
         })
-        ->orWhere([
-        ['article', 'like',"%" . $search . "%"]
-        ])
-        ->orWhere([
-        ['article_show', 'like',"%" . $search . "%"]
+        ->orWhereIn('id',$allowed_products)
+        ->where([
+        ['article_show', 'like', $search . "%"]
         ]);
 
         if($limited){
@@ -173,18 +171,15 @@ class GlobalSearchService
             ['name', 'like',"%" . $search . "%"]
           ]);
         })
-        ->orWhere([
-        ['article', 'like',"%" . $search . "%"]
-        ])
-        ->orWhere([
-        ['article_show', 'like',"%" . $search . "%"]
+        ->orWhereIn('id',$allowed_products)
+        ->where([
+        ['article_show', 'like', $search . "%"]
         ]);
 
         if($limited){
-          $products = $products->limit(10);
+          $products = $products->limit(5);
           $products = $products->get();
-
-          $product_info = [];
+          //info($products);
           $product_reclamation_info = [];
           foreach ($products as $key => $product) {
             $product_reclamation_info = json_decode(json_encode(
@@ -197,7 +192,9 @@ class GlobalSearchService
                 JOIN b2b_reclamations AS r ON r.id = rp.reclamation_id
                 WHERE p.id ='
               .$product->id)),true);
-
+              info('RECLAMATION_INFO!');
+              info($product_reclamation_info);
+              info('RECLAMATION_INFO!');
               foreach ($product_reclamation_info as $key => $product_reclamation) {
                 $product_info[] = [
                   'id' => $product_reclamation['reclamation_id'],
@@ -270,7 +267,11 @@ class GlobalSearchService
               ['alias', 8],
               ['name', 'like',"%" . $search . "%"]
             ]);
-          });
+          })
+          ->orWhereIn('id',$allowed_order_products)
+          ->where([
+          ['article_show', 'like', $search . "%"]
+          ]);
 
           if($limited){
             //$products = $products->limit(5);
