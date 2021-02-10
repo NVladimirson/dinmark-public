@@ -1281,6 +1281,22 @@
             padding: 8px;
             margin-left: 6px;
         }
+        .user_price, .limit_amount_price_1, .limit_amount_price_2 { font-weight: 900 }
+        p.limits { display: flex; margin: 0; }
+        p.limits span { width: 50%; color:#fff; padding: 2px 5px }
+        p.limit_1, p.limit_2 { margin-bottom: 2px; display: none; }
+        p.limit_1 .limit, p.limit_2 .limit {
+            color:#fff;
+            margin-bottom: 0px;
+            padding: 2px 5px
+        }
+        p.limit_1 { color: #96ca0a }
+        p.limit_1 .limit, p.limits span.limit_1 { background: #96ca0a }
+        p.limit_2 { color: #f0c674 }
+        p.limit_2 .limit, p.limits span.limit_2 { background: #f0c674 }
+
+        tr:hover p.limits { display: none }
+        tr:hover p.limit_1, tr:hover p.limit_2 { display: block }
 
         .myModal.show { display: flex }
         .myModal {
