@@ -257,8 +257,8 @@
                     "serverSide": true,
                     "ajax": {
                         // "url": "{!! route('products.all_ajax') !!}",
-                        url: 'http://dinmark.localhost/api/products/list',
-                        // url: 'https://dinmark.com.ua/api/products/list',
+                        // url: 'http://dinmark.localhost/api/products/list',
+                        url: 'https://dinmark.com.ua/api/products/list',
                         "data": {
                             "client_id": function() {
                                 return '{{auth()->user()->id}}';
