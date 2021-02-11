@@ -31,8 +31,8 @@
     <div id="selected_products" style="display:none"></div>
 
     <header class="nav sticky" data-margin-top="85" data-sticky-for="1024">
-        <div id="groupsToggle" onclick="$('#filterGroups').addClass('show')"><i class="fas fa-th-large"></i> Категорія</div>
-        <div id="optionsToggle"><i class="fa fa-filter"></i> Властивості</div>
+        <div id="groupsToggle" onclick="$('#filterGroups').addClass('show')"><i class="fas fa-th-large"></i> @lang('product.groups')</div>
+        <div id="optionsToggle"><i class="fa fa-filter"></i> @lang('product.filters-with-properties')</div>
         <div>
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="instockToggler">
@@ -112,15 +112,15 @@
             <i class="far fa-times-circle submit"></i>
             <h2>@lang('product.all_categories_name')</h2>
             <div id="jstreeGroups"></div>
-            <button class="btn btn-success m-t-5 submit">Застосувати</button>
+            <button class="btn btn-success m-t-5 submit">@lang('product.submit')</button>
         </article>
     </div>
     <div id="filterOptions" class="myModal">
         <article>
             <i class="far fa-times-circle submit" onclick="$('#filterOptions').removeClass('show');"></i>
             <h2>@lang('product.filters-with-properties')</h2>
-            <div id="optionfilters">Підбираємо...</div>
-            <button class="btn btn-success m-t-5 submit">Застосувати</button>
+            <div id="optionfilters">@lang('product.select')...</div>
+            <button class="btn btn-success m-t-5 submit">@lang('product.submit')</button>
         </article>
     </div>
 
@@ -263,6 +263,9 @@
                         // url: 'http://dinmark.localhost/api/products/list',
                         url: 'https://dinmark.com.ua/api/products/list',
                         "data": {
+                            "language": function() {
+                                return '{{ mb_strtolower(LaravelLocalization::getCurrentLocale()) }}'
+                            },
                             "client_id": function() {
                                 return '{{auth()->user()->id}}';
                             },
@@ -548,6 +551,9 @@
                 // url: '{{env('DINMARK_URL')}}api/products/filters',
                 url: 'https://dinmark.com.ua/api/products/filters',
                 data: {
+                    "language": function() {
+                        return '{{ mb_strtolower(LaravelLocalization::getCurrentLocale()) }}'
+                    },
                     filter_with_options: function () {
                         let filter_selected_map = $(".filterElem[filter-selected=true]");
                         if(filter_selected_map.length)
@@ -1283,7 +1289,7 @@
         }
         .user_price, .limit_amount_price_1, .limit_amount_price_2 { font-weight: 900 }
         p.limits { display: flex; margin: 0; }
-        p.limits span { width: 50%; color:#fff; padding: 2px 5px }
+        p.limits span { width: 50%; color:#fff }
         p.limit_1, p.limit_2 { margin-bottom: 2px; display: none; }
         p.limit_1 .limit, p.limit_2 .limit {
             color:#fff;

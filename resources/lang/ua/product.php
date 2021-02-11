@@ -29,6 +29,9 @@ return [
         'discount' => 'Акціонні пропозиції',
     ],
     'filters-with-properties' => 'Фільтри з властивостями',
+    'groups' => 'Категорія',
+    'submit' => 'Застосувати',
+    'select' => 'Підбираємо',
 
 
   'mass_actions' =>
