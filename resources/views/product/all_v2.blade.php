@@ -72,12 +72,6 @@
     <table id="data-table-buttons" class="table-responsive table-striped table-bordered table-td-valign-middle">
         <thead>
             <tr>
-                <th colspan="4" class="text-nowrap"> @lang('product.table_header_info') </th>
-                <th class="text-nowrap"> @lang('product.table_header_price_per_100') </th>
-                <th rowspan="2" class="text-nowrap"> @lang('product.table_header_storage') </th>
-                <th colspan="4" class="text-nowrap"> @lang('product.table_header_calc_price') </th>
-            </tr>
-            <tr>
                 <th></th>
                 <th>
                     <div class="checkbox checkbox-css">
@@ -87,7 +81,8 @@
                 </th>
                 <th data-orderable="false">@lang('product.table_header_photo')</th>
                 <th class="text-nowrap">@lang('product.table_header_name/article')</th>
-                <th class="text-nowrap">@lang('product.table_header_price')</th>
+                <th class="text-nowrap">@lang('product.table_header_price_per_100')</th>
+                <th class="text-nowrap"> @lang('product.table_header_storage') </th>
                 <th> @lang('product.table_header_quantity') </th>
                 <th> @lang('product.table_header_package_weight') </th>
                 <th> @lang('product.table_header_sum_w_taxes') </th>
@@ -154,6 +149,7 @@
     <script src="/assets/plugins/sticky.min.js"></script>
     <script>
         let get__products = get__FilterOptions = true;
+        var sticky = new Sticky('header.sticky');
 
         const wrapTable = new Vue({
             el: "#data-table-buttons",
@@ -177,8 +173,6 @@
         jQuery(function($) {
 
             $('#loading').hide();
-
-            var sticky = new Sticky('header.sticky');
 
             // storages
             document.getElementsByClassName('btn dropdown-toggle btn-white')[0].setAttribute('title','@lang('product.select_term')');
@@ -1135,6 +1129,8 @@
         header.nav > div.select { width: 250px }
         header.nav > div:not(.select):hover { background-color: #01aadf; color: #fff }
         header.nav > div > i { font-size: 20px; margin-right: 10px }
+
+        table.dataTable thead tr th { padding-top: 5px; padding-bottom: 5px; }
 
         .checkbox.checkbox-css label {
             padding: 8px;
