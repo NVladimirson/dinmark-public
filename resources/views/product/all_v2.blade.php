@@ -151,6 +151,10 @@
         let get__products = get__FilterOptions = true;
         var sticky = new Sticky('header.sticky');
 
+        $( window ).resize(function() {
+            sticky.update();
+        });
+
         const wrapTable = new Vue({
             el: "#data-table-buttons",
             data: {
@@ -637,6 +641,9 @@
             let amount = parseInt( quantityinput.val() );
             let weight = parseFloat( quantityinput.attr('weight') );
 
+            if(package <= 0)
+                package = 1;
+
             if (amount % package > 0) {
                  let add = amount % package;
                  amount = amount + package - add;
@@ -649,7 +656,7 @@
 
             let package_weight = $('#package_weight_'+product_id);
             package_weight.find('.multiplier').text((amount / package) + ' уп.');
-            package_weight.find('.weight').text(weightTotal + ' кг');
+            package_weight.find('.weight').text(weightTotal.toFixed(2) + ' кг');
 
             $('#limits_'+product_id+', #limits_'+product_id+' span, #limit_1_'+product_id+', #limit_2_'+product_id).addClass('hide');
             sum_w_taxes.find('.discount').addClass('hide');
