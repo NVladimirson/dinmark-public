@@ -115,8 +115,8 @@ class ProductController extends Controller
     }
 
     public function test(Request $request){
-      $product = Product::find(4864);
-      dump($product->storages->pluck('storage_id'),ProductServices::getName($product,'ru'));
+      // $products = ReclamationProduct::with('product.orderProduct.product')->get()->pluck('product.orderProduct.product');
+      // dd($products->pluck('product.orderProduct.product'));
     }
 
     public function allAjax(Request $request){

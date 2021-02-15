@@ -190,8 +190,12 @@ class ReclamationController extends Controller
 	}
 
 	public function update($reclamation_id){
-		$reclamation = Reclamation::where('id',$reclamation_id)->first();
-		return view('reclamation.update',compact('reclamation'));
+		$reclamation = Reclamation::find($reclamation_id);
+		$products = ReclamationProduct::with('product.orderProduct.product')->where('reclamation_id',$reclamation_id)->get()->pluck('product.orderProduct.product','id');
+		dd($products);
+		$implementations = Implementation::where('customer_id',auth()->user()->id)->get();
+		//dd(Implementation::where('customer_id',1728)->get()->pluck('customer_id','id'));
+		return view('reclamation.update',compact('reclamation','products','implementations'));
 	}
 
 	public function createByImplementation($implementation_id){

@@ -95,7 +95,7 @@ class GlobalSearchService
         $product_info = [];
         $instance =  static::getInstance();
         $language = static::getInstance()->lang;
-
+        $user_id = auth()->user()->id;
 
         if($limited){
           $products = json_decode(
@@ -108,7 +108,7 @@ class GlobalSearchService
               INNER JOIN s_shopshowcase_products AS p ON p.id = cp.product_id
               INNER JOIN wl_ntkd AS c ON p.id = c.content
               INNER JOIN s_cart AS cart ON cart.id = cp.cart
-              WHERE c.alias = 8 AND c.`language` = '".$language."'
+              WHERE c.alias = 8 AND c.`language` = '".$language."' AND cart.user = '".$user_id."'
               AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
               ORDER BY position_in_name,c.`name`,position_in_article
               LIMIT 5
@@ -156,7 +156,7 @@ class GlobalSearchService
           $product_info = [];
           $instance =  static::getInstance();
           $language = static::getInstance()->lang;
-
+          $user_id = auth()->user()->id;
 
           if($limited){
             $products = json_decode(
@@ -170,7 +170,7 @@ class GlobalSearchService
                 INNER JOIN s_shopshowcase_products AS p ON p.id = cp.product_id
                 INNER JOIN wl_ntkd AS c ON p.id = c.content
                 INNER JOIN b2b_implementations AS i ON ip.implementation_id = i.id
-                WHERE c.alias = 8 AND c.`language` = '".$language."'
+                WHERE c.alias = 8 AND c.`language` = '".$language."' AND i.customer_id = '".$user_id."'
                 AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
                 ORDER BY position_in_name,c.`name`,position_in_article
                 LIMIT 5
@@ -226,6 +226,7 @@ class GlobalSearchService
         $product_info = [];
         $instance =  static::getInstance();
         $language = static::getInstance()->lang;
+        $user_id = auth()->user()->id;
 
         if($limited){
           $products = json_decode(
@@ -240,7 +241,7 @@ class GlobalSearchService
               INNER JOIN s_shopshowcase_products AS p ON p.id = cp.product_id
               INNER JOIN wl_ntkd AS c ON p.id = c.content
               INNER JOIN b2b_reclamations AS r ON rp.reclamation_id = r.id
-              WHERE c.alias = 8 AND c.`language` = '".$language."'
+              WHERE c.alias = 8 AND c.`language` = '".$language."' AND r.author = '".$user_id."'
               AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
               ORDER BY position_in_name,c.`name`,position_in_article
               LIMIT 5
