@@ -141,11 +141,11 @@ td:hover .data-product_name {
     margin: 0;
 }
 
-/* .image-container {
+.image-container {
     width: 30px;
     height: 35px;
     margin-right: 5px;
-} */
+}
 
 .image-container img {
     max-height: 100%;
@@ -234,20 +234,21 @@ tr:hover .datatable_actions_class div a {
     flex-wrap: wrap;
 } */
 
-/*.datatable_sum_class p span {
+.datatable_sum_class p span {
     background: #ccc;
+    /* text-decoration: underline; */
     margin: 1px 2px;
     padding: 0 2px;
     border-radius: 3px;
 }
-*/
-/*.datatable_weight_class p span:not(:nth-child(2)) {
+
+.datatable_weight_class p span:not(:nth-child(2)) {
+    /* text-decoration: underline; */
     background: #ccc;
     padding: 0 2px;
     margin: 1px 2px;
     border-radius: 3px;
 }
-*/
 /* tr:hover .datatable_weight_class p span {
 	text-shadow: 1px 1px 1px #000;
 } */
@@ -276,7 +277,7 @@ tr:hover .datatable_actions_class div a {
 }
 
 
-/* .dropdown-menu.inner.show li a {
+.dropdown-menu.inner.show li a {
     padding-left: 23px;
     position: relative;
 }
@@ -289,7 +290,7 @@ tr:hover .datatable_actions_class div a {
     left: 5px;
     padding-left: 4px;
     border: 1px solid silver;
-} */
+}
 
 #jstree {
     padding-left: 0;

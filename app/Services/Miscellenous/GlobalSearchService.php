@@ -49,43 +49,40 @@ class GlobalSearchService
       $product_info = [];
       $language = static::getInstance()->lang;
 
+        $products = Product::whereHas('content', function($content) use($search,$language){
+          $content->where([
+            ['language',$language],
+            ['alias', 8],
+            ['name', 'like',"%" . $search . "%"]
+          ]);
+        })->orwhereHas('options', function($options) use($search,$language){
+          $options->whereIn('option',[23,30])->whereHas('val', function($option_name) use($search,$language){
+            $option_name->where([
+              ['language',$language],
+              ['name', 'like',"%" . $search . "%"]
+            ]);
+          });
+        })->orWhere([['article', 'like',"%" . $search . "%"]]);
+
         if($limited){
-          $products = json_decode(
-            json_encode(
-              \DB::select("
-              SELECT p.`id`, p.`article_show`, c.`name`,
-              POSITION(\"".$search."\" IN c.`name`) AS 'position_in_name',
-              POSITION(\"".$search."\" IN p.`article_show`) AS 'position_in_article'
-              FROM s_shopshowcase_products AS p
-              JOIN wl_ntkd AS c ON p.id = c.content
-              WHERE c.alias = 8 AND c.`language` = '".$language."'
-              AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
-              ORDER BY position_in_name,c.`name`,position_in_article
-              LIMIT 5
-              "
-              )
-          )
-        );
+          $products = $products->limit(5);
+          $products = $products->get();
+
+          $product_info = [];
           foreach ($products as $key => $product) {
             $product_info[] = [
               'id' => $product->id,
-              'text' => $product->name .' ('.$product->article_show.')',
+              'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
               'category' => 'products'
+              // 'url' => route('products.show', ['id' => $product->id]),
+              // 'min' => $min,
+              // 'max' => $max,
+              // 'storage_id' => $storage_id,
             ];
           }
         return $product_info;
         }
         else{
-          $products = Product::whereHas('content', function($content) use($search,$language){
-            $content->where([
-              ['language',$language],
-              ['alias', 8],
-              ['name', 'like',"%" . $search . "%"]
-            ]);
-          })
-          ->orWhere([
-          ['article_show', 'like', $search . "%"]
-          ]);
           return $products;
         }
 
@@ -95,59 +92,86 @@ class GlobalSearchService
         $product_info = [];
         $instance =  static::getInstance();
         $language = static::getInstance()->lang;
-        $user_id = auth()->user()->id;
+        $allowed_orders = Order::whereHas('getUser',function ($users){
+                $users->where('id',auth()->user()->id)->whereHas('getCompany',function ($companies){
+                    $companies->where([
+                        ['id', session('current_company_id')],
+                    ]);
+                });
+        })->pluck('id');
+
+        $allowed_products = OrderProduct::whereIn('cart',$allowed_orders)->pluck('product_id');
+        // dd($allowed_products);
+        $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
+          $content->where([
+            ['language',$language],
+            ['alias', 8],
+            ['name', 'like',"%" . $search . "%"]
+          ]);
+        });
 
         if($limited){
-          $products = json_decode(
-            json_encode(
-              \DB::select("
-              SELECT cp.id, p.`id` AS 'product_id', p.`article_show`, c.`name`,
-              POSITION(\"".$search."\" IN c.`name`) AS 'position_in_name',
-              POSITION(\"".$search."\" IN p.`article_show`) AS 'position_in_article'
-              FROM s_cart_products AS cp
-              INNER JOIN s_shopshowcase_products AS p ON p.id = cp.product_id
-              INNER JOIN wl_ntkd AS c ON p.id = c.content
-              INNER JOIN s_cart AS cart ON cart.id = cp.cart
-              WHERE c.alias = 8 AND c.`language` = '".$language."' AND cart.user = '".$user_id."'
-              AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
-              ORDER BY position_in_name,c.`name`,position_in_article
-              LIMIT 5
-              "
-              )
-          )
-        );
+          $products = $products->limit(5);
+          $products = $products->get();
+
+          $product_info = [];
           foreach ($products as $key => $product) {
             $product_info[] = [
-              'id' => $product->id,
-              'product_id' => $product->product_id,
-              'text' => $product->name .' ('.$product->article_show.')',
+              'id' => $product->orderProducts->whereIn('cart', $allowed_orders)->first()->getCart->id,
+              'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
               'category' => 'orders'
             ];
           }
         return $product_info;
         }
         else{
-          $allowed_orders = Order::whereHas('getUser',function ($users){
-                  $users->where('id',auth()->user()->id)->whereHas('getCompany',function ($companies){
-                      $companies->where([
-                          ['id', session('current_company_id')],
-                      ]);
-                  });
-          })->pluck('id');
+          return $products;
+        }
+      }
 
-          $allowed_products = OrderProduct::whereIn('cart',$allowed_orders)->pluck('product_id');
-          // dd($allowed_products);
-          $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
-            $content->where([
-              ['language',$language],
-              ['alias', 8],
-              ['name', 'like',"%" . $search . "%"]
-            ]);
-          })
-          ->orWhereIn('id',$allowed_products)
-          ->where([
-          ['article_show', 'like', $search . "%"]
+      public static function getReclamationProductsSearch($search,$limited = true){
+        $product_info = [];
+        $instance =  static::getInstance();
+        $language = static::getInstance()->lang;
+        $allowed_reclamations = Reclamation::whereHas('user',function ($users){
+                $users->whereHas('getCompany',function ($companies){
+                    $companies->where([
+                        ['id', session('current_company_id')],
+                    ]);
+                });
+        })->pluck('id');
+
+        $allowed_products = ReclamationProduct::whereIn('reclamation_id',$allowed_reclamations)->pluck('implementation_product_id');
+
+        $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
+          $content->where([
+            ['language',$language],
+            ['alias', 8],
+            ['name', 'like',"%" . $search . "%"]
           ]);
+        });
+
+        if($limited){
+          $products = $products->limit(10);
+          $products = $products->get();
+
+          $product_info = [];
+          foreach ($products as $key => $product) {
+            $orderProduct = $product->orderProducts->first();
+            if($orderProduct){
+              $product_info[] = [
+                'id' => $product->orderProducts->first()->getCart->id,
+                'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                'category' => 'reclamations'
+              ];
+            }
+            if(count($product_info)>5){
+              break;
+            }
+          }
+        return $product_info;
+        }
+        else{
           return $products;
         }
       }
@@ -156,138 +180,138 @@ class GlobalSearchService
           $product_info = [];
           $instance =  static::getInstance();
           $language = static::getInstance()->lang;
-          $user_id = auth()->user()->id;
+          $allowed_implementations = Implementation::whereHas('sender',function ($users){
+                  $users->whereHas('getCompany',function ($companies){
+                      $companies->where([
+                          ['id', session('current_company_id')],
+                      ]);
+                  });
+          })->orwhereHas('customer',function ($users){
+                  $users->whereHas('getCompany',function ($companies){
+                      $companies->where([
+                          ['id', session('current_company_id')],
+                      ]);
+                  });
+          })->pluck('id');
+
+          $allowed_implementation_products = ImplementationProduct::whereIn('implementation_id',$allowed_implementations)->pluck('order_product_id');
+
+          $allowed_order_products = OrderProduct::whereIn('id', $allowed_implementation_products)->pluck('product_id');
+
+          $products = Product::whereIn('id',$allowed_order_products)->whereHas('content', function($content) use($search,$language){
+            $content->where([
+              ['language',$language],
+              ['alias', 8],
+              ['name', 'like',"%" . $search . "%"]
+            ]);
+          });
 
           if($limited){
-            $products = json_decode(
-              json_encode(
-                \DB::select("
-                SELECT i.id, p.`id` AS 'product_id', p.`article_show`, c.`name`,
-                POSITION(\"".$search."\" IN c.`name`) AS 'position_in_name',
-                POSITION(\"".$search."\" IN p.`article_show`) AS 'position_in_article'
-                FROM b2b_implementation_products AS ip
-                INNER JOIN s_cart_products AS cp ON ip.order_product_id = cp.id
-                INNER JOIN s_shopshowcase_products AS p ON p.id = cp.product_id
-                INNER JOIN wl_ntkd AS c ON p.id = c.content
-                INNER JOIN b2b_implementations AS i ON ip.implementation_id = i.id
-                WHERE c.alias = 8 AND c.`language` = '".$language."' AND i.customer_id = '".$user_id."'
-                AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
-                ORDER BY position_in_name,c.`name`,position_in_article
-                LIMIT 5
-                "
-                )
-            )
-          );
+            $products = $products->limit(5);
+            $products = $products->get();
+
+            $product_info = [];
             foreach ($products as $key => $product) {
-              $product_info[] = [
-                'id' => $product->id,
-                'product_id' => $product->product_id,
-                'text' => $product->name .' ('.$product->article_show.')',
-                'category' => 'implementations'
-              ];
+              $orderProduct = $product->orderProducts->first();
+              if($orderProduct){
+                $product_info[] = [
+                  'id' => $product->orderProducts->first()->getCart->id,
+                  'text' => ProductServices::getName($product,$language).' ('.$product->article_show.')',
+                  'category' => 'implementations'
+                ];
+              }
+              if(count($product_info)>5){
+                break;
+              }
             }
+            $product_info = array_values(Arr::sort($product_info, function ($value) {
+              return $value['text'];
+            }));
           return $product_info;
           }
           else{
-            $allowed_implementations = Implementation::whereHas('sender',function ($users){
-                    $users->whereHas('getCompany',function ($companies){
-                        $companies->where([
-                            ['id', session('current_company_id')],
-                        ]);
-                    });
-            })->orwhereHas('customer',function ($users){
-                    $users->whereHas('getCompany',function ($companies){
-                        $companies->where([
-                            ['id', session('current_company_id')],
-                        ]);
-                    });
-            })->pluck('id');
-
-            $allowed_implementation_products = ImplementationProduct::whereIn('implementation_id',$allowed_implementations)->pluck('order_product_id');
-
-            $allowed_order_products = OrderProduct::whereIn('id', $allowed_implementation_products)->pluck('product_id');
-
-            $products = Product::with('orderProducts.implementationProduct.implementation')->whereIn('id',$allowed_order_products)->whereHas('content', function($content) use($search,$language){
-              $content->where([
-                ['language',$language],
-                ['alias', 8],
-                ['name', 'like',"%" . $search . "%"]
-              ]);
-            })
-            ->orWhereIn('id',$allowed_order_products)
-            ->where([
-            ['article_show', 'like', $search . "%"]
-            ]);
             return $products;
           }
       }
 
-      public static function getReclamationProductsSearch($search,$limited = true){
-        $product_info = [];
-        $instance =  static::getInstance();
-        $language = static::getInstance()->lang;
-        $user_id = auth()->user()->id;
+    // public static function getReclamationProductsSearch($search){
+    //     $reclamations = ReclamationProduct::with('product')->get();
+    //
+    //     $implementation_map = [];
+    //     foreach ($reclamations as $reclamation){
+    //         if($reclamation->product){
+    //             $implementation_map[] = $reclamation->product->id;
+    //         }
+    //     }
+    //
+    //     $res = GlobalSearchService::getImplementationProductsSearch($search,$implementation_map);
+    //     return $res;
+    //
+    //
+    // }
 
-        if($limited){
-          $products = json_decode(
-            json_encode(
-              \DB::select("
-              SELECT r.id, p.`id` AS 'product_id', p.`article_show`, c.`name`,
-              POSITION(\"".$search."\" IN c.`name`) AS 'position_in_name',
-              POSITION(\"".$search."\" IN p.`article_show`) AS 'position_in_article'
-              FROM b2b_reclamation_products AS rp
-              INNER JOIN b2b_implementation_products AS ip ON rp.implementation_product_id = ip.id
-              INNER JOIN s_cart_products AS cp ON ip.order_product_id = cp.id
-              INNER JOIN s_shopshowcase_products AS p ON p.id = cp.product_id
-              INNER JOIN wl_ntkd AS c ON p.id = c.content
-              INNER JOIN b2b_reclamations AS r ON rp.reclamation_id = r.id
-              WHERE c.alias = 8 AND c.`language` = '".$language."' AND r.author = '".$user_id."'
-              AND (c.`name` LIKE '%".$search."%' OR p.`article_show` LIKE '%".$search."%')
-              ORDER BY position_in_name,c.`name`,position_in_article
-              LIMIT 5
-              "
-              )
-          )
-        );
-          foreach ($products as $key => $product) {
-            $product_info[] = [
-              'id' => $product->id,
-              'product_id' => $product->product_id,
-              'text' => $product->name .' ('.$product->article_show.')',
-              'category' => 'reclamations'
-            ];
-          }
-        return $product_info;
-        }
-          else{
-            $allowed_reclamations = \App\Models\Reclamation\Reclamation::whereHas('user',function ($users){
-                    $users->whereHas('getCompany',function ($companies){
-                        $companies->where([
-                            ['id', session('current_company_id')],
-                        ]);
-                    });
-            })->pluck('id');
-
-            $allowed_implementation_products = ReclamationProduct::whereIn('reclamation_id',$allowed_reclamations)->pluck('implementation_product_id');
-
-            $allowed_order_products = ImplementationProduct::whereIn('id',$allowed_implementation_products)->pluck('order_product_id');
-
-            $allowed_products = OrderProduct::whereIn('id',$allowed_order_products)->pluck('product_id');
-
-            $products = Product::whereIn('id',$allowed_products)->whereHas('content', function($content) use($search,$language){
-              $content->where([
-                ['language',$language],
-                ['alias', 8],
-                ['name', 'like',"%" . $search . "%"]
-              ]);
-            })
-            ->orWhereIn('id',$allowed_products)
-            ->where([
-            ['article_show', 'like', $search . "%"]
-            ]);
-            return $products;
-          }
-      }
+    // public static function getImplementationProductsSearch($search, $filter_implementation_products = []){
+    //
+    //     if(empty($filter_implementation_products)){
+    //         $implementations = ImplementationProduct::with('orderProduct')->get();
+    //     }
+    //     else{
+    //         $implementations = ImplementationProduct::with('orderProduct')->whereIn('id',$filter_implementation_products)->get();
+    //     }
+    //
+    //     $ordered_product_map = [];
+    //     foreach ($implementations as $implementation){
+    //         if($implementation->orderProduct){
+    //             $ordered_product_map[] = $implementation->orderProduct->id;
+    //         }
+    //     }
+    //
+    //     $res = GlobalSearchService::getOrderProductsSearch($search,$ordered_product_map);
+    //     return $res;
+    // }
 
 
+    // public static function getOrderProductsSearch($search,$filter_order_products = []){
+    //
+    //     $instance =  static::getInstance();
+    //     if(empty($filter_order_products)){
+    //         $products_in_order = OrderProduct::with('product')->where('user',auth()->user()->id)->get();
+    //     }else{
+    //         $products_in_order = OrderProduct::with('product')->where('user',auth()->user()->id)->whereIn('id',$filter_order_products)->get();
+    //     }
+    //
+    //     $content_map=[
+    //     ];
+    //     foreach ($products_in_order as $order_product) {
+    //         $product_id = $order_product->product->id;
+    //         $content = Product::with('content')->where('id',$product_id)->first()->content->filter(function ($value, $key) use (&$instance) {
+    //             return $value->language == $language;
+    //         })
+    //             ->first();
+    //         $content_map[] = $content->id;
+    //     }
+    //
+    //     $names = Content::where('name', 'like',"%" . $search . "%")
+    //         ->whereIn('id',$content_map)->pluck('name','content')->toArray();
+    //     $res = [];
+    //     foreach ($names as $content_id => $name){
+    //         $res[] = [
+    //             'id' => $content_id,
+    //             'text' => $name
+    //         ];
+    //         if(count($res) >= 5){
+    //             break;
+    //         }
+    //     }
+    //
+    //     if(empty($res)){
+    //         $res = [
+    //             [
+    //                 'text' => __('global.global_search.nothing_to_show')
+    //             ]
+    //         ];
+    //     }
+    //
+    //     return $res;
+    // }
 }

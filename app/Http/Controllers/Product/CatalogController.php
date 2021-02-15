@@ -173,28 +173,28 @@ class CatalogController extends Controller
 
 	public function allAjax(Request $request){
 		$group = LikeGroup::with(['price'])->find($request->group);
+
 		session(['current_catalog' => $group->id]);
-
-		// $products = Product::whereHas('likes',function($likes) use ($group){
-		// 	$likes->where([
-		// 		['user',$group->user_id],
-		// 		['group_id',$group->group_id],
-		// 		['alias',8],
-		// 	]);
-		// });
-		$product_ids = \App\Models\Wishlist\Like::where([['user',$group->user_id],['group_id',$group->group_id],['alias',8]])->pluck('content');
-		$products = Product::whereIn('id',$product_ids);
-
+		$products = Product::whereHas('likes',function($likes) use ($group){
+			$likes->where([
+				['user',$group->user_id],
+				['group_id',$group->group_id],
+				['alias',8],
+			]);
+		});
 		$holdingId = auth()->user()->getCompany->holding;
 		 $ids = null;
-		 $search_article = null;
-
-		if($request->has('search')){
-				$search_article = request('search')['value'];
-		}
+		// if($request->has('search')){
+		// 	$ids = ProductServices::getIdsSearch(request('search')['value']);
+		// }
+		// $search_article = null;
+		//
+		// if($request->has('search')){
+		// 		$search_article = request('search')['value'];
+		// }
 		if($request->filter_with_options){
 				$language = CategoryServices::getLang();
-				$request_options = explode(',',$request->filter_with_options);
+				$request_options = explode(',',$request->filter_with_options);;
 				foreach ($request_options as $key => $request_option) {
 					if($key == 0){
 						$products = $products->whereHas('options', function($options) use ($request_option,$language){
@@ -260,50 +260,13 @@ class CatalogController extends Controller
       //           }
       //           return number_format(0,2,'.',' ');
 			// })
-			->addColumn('retail_user_prices', function (Product $product) use ($group){
-				// $coef = 1;
-				// if($group->price){
-				// 	$coef = $group->price->koef;
-				// }
-				// 				if(\App\Services\Product\Product::hasAmount($product->storages)){
-				// 						return '<div id="catalog_catalog_price_'.$product->id.'">'.\App\Services\Product\Product::getPriceWithCoef($product,$coef).'</div>';
-				// 				}
-				// 				return number_format(0,2,'.',' ');
-
+			->addColumn('retail_user_prices', function (Product $product) {
 					if(ProductServices::hasAmount($product->storages)){
 							$storage = $product->storages->first();
 							$package = $storage->package;
 							$retail = ProductServices::getBasePrice($product,$storage->storage_id);
 							$user_price = ProductServices::getPrice($product,$storage->id);
 							$old_price = ProductServices::getOldPrice($product,$storage->storage_id);
-
-							$coef = 1;
-							if($group->price){
-								if(str_contains($group->price->name, '%')){
-									$coef = $group->price->koef;
-													if(\App\Services\Product\Product::hasAmount($product->storages)){
-														$catalog_price = \App\Services\Product\Product::getPriceWithCoef($product,$coef/100);
-													}
-													else{
-														$catalog_price = number_format(0,2,'.',' ');
-													}
-								}
-								else{
-									$coef = $group->price->koef;
-													if(\App\Services\Product\Product::hasAmount($product->storages)){
-														$catalog_price = \App\Services\Product\Product::getPriceWithCoef($product,$coef);
-													}
-													else{
-														$catalog_price = number_format(0,2,'.',' ');
-													}
-								}
-
-							}
-							else{
-								$catalog_price = number_format(0,2,'.',' ');
-							}
-
-
 							// <span style="color:#f0c674">
 							if($product->old_price){
 								return '<p id="retail_user_price_'.$product->id.'" style="margin-bottom:0px">
@@ -312,12 +275,7 @@ class CatalogController extends Controller
 								<br>
 								<span>'.__('product.table_header_price').': </span>
 								<span class="old_price" style="color:red"><strike>'.$old_price.'</strike></span>
-								<span class="user_price">'. $user_price .'</span>
-								<br>
-								<span>'.__('product.table_header_catalog_price').' (x'.$coef.'): </span>
-								<br>
-								<span class="catalog_price">' . $catalog_price . '</span>
-								</p>';
+								<span class="user_price">'. $user_price .'</span></p>';
 							}else{
 								return '<p id="retail_user_price_'.$product->id.'" style="margin-bottom:0px">
 								<span>'.__('product.table_header_price_retail').': </span>
@@ -325,13 +283,10 @@ class CatalogController extends Controller
 								<br>
 								<span>'.__('product.table_header_price').': </span>
 								<span class="old_price" style="display:none;color:red"><strike>'.$old_price.'</strike></span>
-								<span class="user_price">'. $user_price .'</span>
-								<br>
-								<span>'.__('product.table_header_catalog_price').' (x'.$coef.'): </span>
-								<br>
-								<span class="catalog_price">' . $catalog_price . '</span>
-								</p>';
+								<span class="user_price">'. $user_price .'</span></p>';
 							}
+
+
 					}
 					return number_format(0,2,'.',' ');
 			})
@@ -367,7 +322,6 @@ class CatalogController extends Controller
 			->addColumn('storage_html', function (Product $product) {
 				$value = trans('product.storage_empty');
 				$emptyvalue = trans('product.storage_choose');
-				$emptystorages = true;
 				if($product->storages){
 						$storages = $product->storages;
 						if(count($storages)){
@@ -507,25 +461,13 @@ class CatalogController extends Controller
 			->filterColumn('article_show_html', function($product, $keyword) {
 				$product->where('article_show', 'like',["%{$keyword}%"]);
 			})
-			->filterColumn('name_article_html', function($product, $keyword) use($search_article) {
-				if($search_article){
-				 $language = CategoryServices::getLang();
-					$product->whereHas('content', function($content) use($search_article,$language){
-						$content->where([
-							['language',$language],
-							['alias', 8],
-							['name', 'like',"%" . $search_article . "%"]
-						]);
-					})
-					->orWhere([
-					['article', 'like',"%" . $search_article . "%"]
-					])
-					->orWhere([
-					['article_show', 'like',"%" . $search_article . "%"]
-					]);
-				}else{
-						$product->select();
-				}
+			->filterColumn('name_html', function($product, $keyword) use($ids) {
+				// if($ids){
+				// 	$product->whereIn('id',$ids);
+				// }else{
+				// 	$product->select();
+				// }
+				$product->select();
 			})
 			->filter(function ($product) use ($request,$ids) {
 				if (request()->has('storage_html')) {

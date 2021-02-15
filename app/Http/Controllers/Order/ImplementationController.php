@@ -20,18 +20,6 @@ use PDF;
 
 class ImplementationController extends Controller
 {
-
-  	private  $lang;
-  	private static $instance;
-  	public static function getInstance()
-  	{
-  			if (null === static::$instance) {
-  					static::$instance = new static();
-  			}
-
-  			return static::$instance;
-  	}
-
     public function index(Request $request){
 		SEOTools::setTitle(trans('implementation.page_list'));
 
@@ -60,40 +48,6 @@ class ImplementationController extends Controller
 
 		return view('order.implementation',compact('senders','customers','locale'));
 	}
-
-  public function show(Request $request){
-    $instance =  static::getInstance();
-    $language = static::getInstance()->lang;
-
-    $id = $request->all()['implementation'];
-    isset($request->all()['focus']) ? $product_focused = $request->all()['focus'] : $product_focused = false;
-    $implementation = Implementation::find($id);
-
-    $products = json_decode(json_encode(\DB::select('
-        SELECT p.id,p.article,ip.quantity,ip.total, i.public_number
-        FROM s_shopshowcase_products AS p
-        JOIN s_cart_products AS cp ON p.id = cp.product_id
-        JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
-        JOIN b2b_implementations AS i ON ip.implementation_id = i.id
-        WHERE i.id = '.$id)),true);
-
-    foreach ($products as $key => $product) {
-        $products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);
-    }
-    foreach ($products as $key => $product) {
-      if($product_focused && $product['id'] == $product_focused){
-        if($key){
-          $focused = $products[$key];
-          $temp = $products[0];
-          $products[0] = $focused;
-          $products[$key] = $temp;
-        }
-        break;
-      }
-    }
-    //dd($products);
-    return view('order.implementation_show',compact('implementation','products', 'product_focused'));
-  }
 
 	public function ajax(Request $request)
 	{

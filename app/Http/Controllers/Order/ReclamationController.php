@@ -17,62 +17,9 @@ use Ramsey\Uuid\Uuid;
 
 class ReclamationController extends Controller
 {
-
-	private  $lang;
-	private static $instance;
-	public static function getInstance()
-	{
-			if (null === static::$instance) {
-					static::$instance = new static();
-			}
-
-			return static::$instance;
-	}
-
-
 	public function index(){
 		SEOTools::setTitle(trans('reclamation.page_list'));
 		return view('reclamation.index');
-	}
-
-	public function show(Request $request){
-		$instance =  static::getInstance();
-		$language = static::getInstance()->lang;
-
-		$id = $request->all()['reclamation'];
-		isset($request->all()['focus']) ? $product_focused = $request->all()['focus'] : $product_focused = false;
-		$reclamation = Reclamation::find($id);
-
-		$products = json_decode(json_encode(\DB::select('
-			SELECT p.id,p.article,rp.quantity,rp.note, i.public_number
-			FROM s_shopshowcase_products AS p
-			JOIN s_cart_products AS cp ON p.id = cp.product_id
-			JOIN b2b_implementation_products AS ip ON cp.id = ip.order_product_id
-			JOIN b2b_implementations AS i ON ip.implementation_id = i.id
-			JOIN b2b_reclamation_products AS rp ON rp.implementation_product_id = ip.id
-			JOIN b2b_reclamations AS r ON r.id = rp.reclamation_id
-			WHERE r.id ='.$id)),true);
-
-		foreach ($products as $key => $product) {
-				$products[$key]['name'] = ProductServices::getName(\App\Models\Product\Product::find($product['id']),$language);
-		}
-		foreach ($products as $key => $product) {
-			if($product_focused && $product['id'] == $product_focused){
-				if($key){
-
-					$focused = $products[$key];
-					$temp = $products[0];
-
-					$products[0] = $focused;
-					$products[$key] = $temp;
-
-				}
-
-				break;
-			}
-		}
-
-		return view('reclamation.show',compact('reclamation','products', 'product_focused'));
 	}
 
 	public function ajax(Request $request){
@@ -190,12 +137,8 @@ class ReclamationController extends Controller
 	}
 
 	public function update($reclamation_id){
-		$reclamation = Reclamation::find($reclamation_id);
-		$products = ReclamationProduct::with('product.orderProduct.product')->where('reclamation_id',$reclamation_id)->get()->pluck('product.orderProduct.product','id');
-		dd($products);
-		$implementations = Implementation::where('customer_id',auth()->user()->id)->get();
-		//dd(Implementation::where('customer_id',1728)->get()->pluck('customer_id','id'));
-		return view('reclamation.update',compact('reclamation','products','implementations'));
+		$reclamation = Reclamation::where('id',$reclamation_id)->first();
+		return view('reclamation.update',compact('reclamation'));
 	}
 
 	public function createByImplementation($implementation_id){

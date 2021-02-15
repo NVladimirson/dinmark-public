@@ -1940,7 +1940,7 @@ div.selected {
     position: relative;
 }
 #wrap-form-select {
-    max-height: 100vh!important;
+    max-height: 70vh;
 }
 #chross {
     position: absolute;
